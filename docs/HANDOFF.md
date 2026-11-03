@@ -434,3 +434,68 @@ deltas, and prevent double attribution even when
 different event IDs are presented.
 
 Production funds remain NOT APPROVED.
+
+## M2/07D/3 — Canonical offer finality and provenance
+
+Base commit: `8730a6c`.
+Date: 2026-11-03.
+
+### Isolated Rust model — M2/07D/3A
+
+- Canonical key: OfferFunding(offer_id).
+- The first successful simulated credit finalizes
+  that funding record in the isolated model.
+- Further allocation, restoration or credit against
+  that record is rejected, even with another event ID.
+- Failed credit does not finalize the record.
+- Other offer funding records remain independent.
+- TaskFunding finality is NOT defined by this gate.
+- 17 tests PASS in the event-guard test target.
+
+The in-memory model is not connected to NEAR state.
+Its terminal credit does not independently establish
+the entitlement or completeness of a real refund.
+
+### Real NEAR Sandbox — M2/07D/3B
+
+- Two buyers, two reserve providers, one outsider.
+- Four funded offers released after task cancellation.
+- Four distinct-account replay attempts rejected.
+- Original provider receives collateral and rebate,
+  regardless of which eligible actor triggers release.
+- Four released offer collateral records are absent.
+- Unreleased offers remain available and funded.
+- Measured net storage reductions: 3, 3, 88, 88 bytes.
+- Total measured release reduction: 182 bytes.
+- Total storage rebate: 0.00182 NEAR.
+- Cross-owner financial accounting PASS.
+- Native rebate withdrawal PASS.
+
+The Sandbox checks the CURRENT contract's existing
+offer state machine, not integration of the new ledger.
+
+### Limitations
+
+- Source and destination of every shared storage byte
+  are not yet independently attributed.
+- The physical storage delta cannot be submitted as
+  an arbitrary caller-provided credit entitlement.
+- An event ID is not evidence of storage release.
+- Other record categories have no general finality
+  and refund policy.
+- New persistent structures, gas costs, contract
+  state migration and minimal-capital operation
+  remain unverified.
+
+No changes to the contract's withdrawal backing
+rule or persistent NEAR state were made.
+
+Optional Sandbox regression:
+
+`npm run sandbox:provenance`
+
+Next: design the trusted transition-to-ledger bridge,
+including exact allocation boundaries and persistent
+storage cost attribution.
+
+Production funds remain NOT APPROVED.

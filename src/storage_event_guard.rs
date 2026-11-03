@@ -31,6 +31,7 @@ pub struct InternalEvent {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum GuardError {
     Replay,
+    TerminalOfferFunding,
     WrongPayer,
     UnknownRecord,
     ZeroDelta,
@@ -42,6 +43,7 @@ pub enum GuardError {
 pub struct GuardedBook {
     book: Book,
     processed: BTreeSet<u64>,
+    finalized_offer_funding: BTreeSet<Record>,
 }
 
 impl GuardedBook {
@@ -73,6 +75,13 @@ impl GuardedBook {
     ) -> Result<Option<(String, u128)>, GuardError> {
         if self.processed.contains(&event.id) {
             return Err(GuardError::Replay);
+        }
+
+        // A funded offer's terminal credit is one-shot.
+        // The record key, not the supplied event ID,
+        // determines whether it was already finalized.
+        if self.finalized_offer_funding.contains(&event.record) {
+            return Err(GuardError::TerminalOfferFunding);
         }
 
         if byte_price == 0 {
@@ -121,8 +130,17 @@ impl GuardedBook {
 
         candidate.totals().map_err(GuardError::Book)?;
 
+        let finalize_offer = matches!(
+            (event.record, event.change),
+            (Record::OfferFunding(_), Change::Credit(_))
+        );
+
         self.book = candidate;
         self.processed.insert(event.id);
+
+        if finalize_offer {
+            self.finalized_offer_funding.insert(event.record);
+        }
 
         Ok(payout)
     }
@@ -154,6 +172,110 @@ mod tests {
             .unwrap();
 
         book
+    }
+
+    #[test]
+    fn different_event_ids_cannot_recredit_same_offer() {
+        let mut book = setup();
+        let key = Record::OfferFunding(1);
+
+        book.apply_internal(event(100, key, A, Change::Allocate(100)), 1)
+            .unwrap();
+
+        book.apply_internal(event(101, key, A, Change::Restore(40)), 1)
+            .unwrap();
+
+        assert_eq!(
+            book.apply_internal(event(102, key, A, Change::Credit(40)), 1)
+                .unwrap(),
+            Some((A.into(), 40))
+        );
+
+        let before = book.clone();
+
+        for (id, change) in [
+            (103, Change::Credit(1)),
+            (104, Change::Allocate(1)),
+            (105, Change::Restore(1)),
+        ] {
+            assert_eq!(
+                book.apply_internal(event(id, key, A, change), 1),
+                Err(GuardError::TerminalOfferFunding)
+            );
+            assert_eq!(book, before);
+        }
+
+        assert_eq!(book.processed_count(), 3);
+    }
+
+    #[test]
+    fn separate_offers_can_finalize_independently() {
+        let mut book = setup();
+
+        let first = book
+            .apply_internal(
+                event(110, Record::OfferFunding(1), A, Change::Credit(20)),
+                1,
+            )
+            .unwrap();
+
+        let second = book
+            .apply_internal(
+                event(111, Record::OfferFunding(2), B, Change::Credit(30)),
+                1,
+            )
+            .unwrap();
+
+        assert_eq!(first, Some((A.into(), 20)));
+        assert_eq!(second, Some((B.into(), 30)));
+        assert_eq!(book.processed_count(), 2);
+
+        let totals = book.totals().unwrap();
+        assert_eq!(totals.released, 50);
+        assert_eq!(totals.unused, 250);
+    }
+
+    #[test]
+    fn failed_credit_does_not_finalize_offer() {
+        let mut book = setup();
+        let key = Record::OfferFunding(1);
+        let before = book.clone();
+
+        assert_eq!(
+            book.apply_internal(event(120, key, A, Change::Credit(151)), 1),
+            Err(GuardError::Book(BookError::InsufficientUnused))
+        );
+
+        assert_eq!(book, before);
+
+        assert_eq!(
+            book.apply_internal(event(120, key, A, Change::Credit(25)), 1)
+                .unwrap(),
+            Some((A.into(), 25))
+        );
+
+        assert_eq!(book.processed_count(), 1);
+    }
+
+    #[test]
+    fn task_funding_remains_outside_one_shot_policy() {
+        let mut book = GuardedBook::default();
+        let key = Record::TaskFunding(7);
+
+        book.register(key, "buyer.test.near".into(), 100).unwrap();
+
+        // Deliberately documents the scope: this
+        // model does not yet define task finality.
+        for id in [130, 131] {
+            assert_eq!(
+                book.apply_internal(event(id, key, "buyer.test.near", Change::Credit(10),), 1,)
+                    .unwrap(),
+                Some(("buyer.test.near".into(), 10))
+            );
+        }
+
+        assert_eq!(book.get(key).unwrap().released, 20);
+        assert_eq!(book.totals().unwrap().total, 100);
     }
 
     #[test]
