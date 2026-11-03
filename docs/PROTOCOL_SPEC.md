@@ -1,6 +1,6 @@
 # Economic Commitment Protocol — M0 Specification
 
-**Status:** DRAFT v0.1 — design only, neither implemented nor approved.
+**Status:** DRAFT v0.2 — design only, neither implemented nor approved.
 **Target:** NEAR Rust smart contract, native NEAR on testnet.
 **Scope:** one buyer, one consenting primary, one reserve, one option per task; multiple tasks share a global slot registry.
 
@@ -50,7 +50,7 @@ Store NEAR amounts as integer `u128` yoctoNEAR with checked arithmetic. No float
 
 `Ledger`: authenticated deposits, segregated task funds, reserved collateral, per-account claimable balances, withdrawal IDs and pending transfers, transfer results; storage reserve separately from economic escrow.
 
-**Economic policy v0.1:** collateral must be at least `reserve_reward + option_premium`; premium remains escrowed until terminal settlement. This prevents the trivial `premium=100, collateral=1` default profit, but is not a theorem of incentive compatibility. Limits and account storage economics require sandbox validation.
+**Economic policy v0.2:** collateral must be at least `reserve_reward + option_premium`; premium remains escrowed until terminal settlement. This prevents the trivial `premium=100, collateral=1` default profit, but is not a theorem of incentive compatibility. Limits and account storage economics require sandbox validation.
 
 ## 4. Registration and funding
 
@@ -60,7 +60,9 @@ Store NEAR amounts as integer `u128` yoctoNEAR with checked arithmetic. No float
 
 `post_offer(task_id, slot_id, expiry)` (reserve, payable): allowed only in `SeekingReserve`; provider differs from buyer and primary, `now < expiry <= primary_deadline`, matching task prices, sufficient collateral plus separately accounted storage. Creates an `Available` offer. Reserve can cancel an unaccepted offer and reclaim its collateral; cannot withdraw collateral from an accepted live option.
 
-`buy_option(task_id, offer_id)` (buyer): task in `SeekingReserve`, no existing accepted option, offer unexpired and for the task, provider slot not locked elsewhere, before primary deadline. Atomically locks the slot and transitions to `Running`. No immediate premium or reward distribution.
+`buy_option(task_id, offer_id)` (buyer): task in `SeekingReserve`, no existing accepted option, offer unexpired and for the task, provider slot not locked elsewhere, before primary deadline. Atomically locks the slot and transitions to `Running`. No immediate premium or reward distribution; Q is earned for purchased standby and allocated at terminal settlement.
+
+`release_unaccepted_offer(offer_id)`: the reserve owner may release an available offer at any time. After offer expiry, task cancellation, or unmatched task expiry, anyone may trigger release. Collateral is credited only to the offer owner. Accepted or previously released offers cannot use this operation.
 
 ## 5. Lifecycle
 
@@ -69,8 +71,8 @@ Store NEAR amounts as integer `u128` yoctoNEAR with checked arithmetic. No float
 While `Running`:
 
 - `submit_primary_proof`: only designated primary, only `now < primary_deadline`, valid proof; terminal `PrimarySucceeded`.
-- `trigger_backup`: any account, only `primary_deadline <= now < reserve_deadline`; `Running -> BackupActive`, records activating keeper and credits exactly one bounty.
-- `close_unactivated`: any account, only `now >= reserve_deadline`; terminal `UnactivatedExpired`. This is a documented liveness fallback if no keeper activated; it does **not** guarantee continuous failover.
+- `trigger_backup`: any account, only `primary_deadline <= now < reserve_deadline`; `Running -> BackupActive`, records the activating keeper but does not credit the bounty yet. K is credited exactly once at terminal settlement.
+- `close_unactivated`: any account, only `now >= reserve_deadline`; terminal `UnactivatedExpired`. The reserve receives the purchased standby premium Q. This is a documented liveness fallback if no keeper activated; it does **not** guarantee continuous failover.
 
 While `BackupActive`:
 
@@ -80,6 +82,9 @@ While `BackupActive`:
 Before an option is bought:
 
 - `cancel_unmatched`: buyer may cancel `SeekingPrimary` or `SeekingReserve`, refund its unused economic funding; unaccepted offers remain separately cancellable by their owners. Terminal `Cancelled`.
+- `expire_unmatched`: any account may expire an unmatched task after the primary deadline; buyer funding is refunded and unaccepted offers remain independently refundable to their owners. Terminal `UnmatchedExpired`.
+
+Every accepted-option terminal settlement atomically releases its capacity-slot lock and marks the associated offer released. Neither terminal replay nor offer release may unlock another task's slot or credit collateral again.
 
 No method may mutate a terminal task to another terminal state. A late proof must never resurrect a task. Return explicit errors on invalid transitions.
 
@@ -92,10 +97,14 @@ Let `P=primary_reward`, `R=reserve_reward`, `Q=option_premium`, `K=keeper_bounty
 | `PrimarySucceeded` | `R+K` | `P` | `Q+C` | `0` |
 | `ReserveSucceeded` | `P` | `0` | `R+Q+C` | `K` |
 | `ReserveFailed` | `P+R+Q+C` | `0` | `0` | `K` |
-| `UnactivatedExpired` | `P+R+Q+K` | `0` | `C` | `0` |
-| `Cancelled` (before option) | `P+R+Q+K` | `0` | unaccepted collateral returned separately | `0` |
+| `UnactivatedExpired` | `P+R+K` | `0` | `Q+C` | `0` |
+| `Cancelled` / `UnmatchedExpired` (before option) | `P+R+Q+K` | `0` | unaccepted collateral returned separately | `0` |
 
 The last row has no accepted option: collateral is still owned by independent *unaccepted* offers and must be returned via their own cancellation/refund transition; do not invent a task-specific `C` that was never locked.
+
+Purchased standby Q belongs to reserve when primary succeeds, reserve succeeds, or the option expires without activation. If activated reserve defaults, Q returns to buyer and C is forfeited. Keeper K is earmarked on activation and credited only at terminal settlement.
+
+Example: P=20, R=10, Q=3, K=2, C=13; total deposits=48. Primary success: buyer 12, primary 20, reserve 16. Reserve success: buyer 20, reserve 26, keeper 2. Reserve failure: buyer 46, keeper 2. Unactivated expiry: buyer 32, reserve 16. Each outcome totals 48.
 
 The *sum* of credits in each accepted-option terminal state must equal `P+R+Q+K+C`. The ledger must reconstruct this from original deposits, not from a claimed `money_conserved` flag. Economic entitlement must never be created by settlement replay.
 
@@ -141,11 +150,16 @@ T-12. Primary completion returns unused R and K to buyer.
 T-13. Async payout fails, claim restored once, later successful withdrawal pays once.
 T-14. Two unaccepted offers may declare the same slot; only one can be accepted at a time.
 T-15. Replaying settlement, claim or cancellation does not alter balances.
-T-16. No keeper activates; after reserve deadline `UnactivatedExpired` refunds buyer and reserve.
+T-16. No keeper activates; after reserve deadline buyer receives P+R+K and reserve receives Q+C.
 T-17. Arithmetic overflow and underfunded deposit fail.
 T-18. Every settlement branch preserves authenticated deposits plus collateral, excluding separately accounted storage.
 T-19. A clean checkout executes documented independent tests and NEAR sandbox lifecycle(s).
 T-20. Independent buyer, primary, reserve and keeper sign actual testnet transactions; receipts are recorded.
+T-21. An unrelated caller expires an unmatched task; buyer funds are refunded and unaccepted collateral remains reclaimable.
+T-22. Primary succeeds; reserve receives purchased-standby Q although backup was unused.
+T-23. Keeper activation creates no claimable bounty; terminal settlement credits K exactly once.
+T-24. Releasing an unaccepted offer returns collateral only to its owner, without duplicate credits.
+T-25. Every terminal settlement releases its accepted slot lock; another task can subsequently reserve that slot.
 
 ## 10. Threat model and excluded claims
 
