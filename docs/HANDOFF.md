@@ -1,5 +1,14 @@
 # Élő munkamenet-átadás — minden chat végén frissítendő
 
+> **M3 STRATEGIC DIRECTIVE — READ FIRST:**
+> [NOMOGENESIS NORTH STAR](M3_NORTH_STAR.md).
+> Goal: investor-level economic asymmetry,
+> RecoveryRight + dependency-aware capital AND
+> capacity clearing + real NEAR settlement.
+> M2 overtesting STOP. Continue with M3/01.
+> Do not restart strategic brainstorming.
+
+
 > **Nem chatnapló.** Ez egy 2–5 perces, ellenőrzött indítási pont a következő fejlesztőnek. Ne találj ki állapotot. A munkamenetek történetét alul add hozzá.
 
 ## Aktuális ellenőrzött állapot
