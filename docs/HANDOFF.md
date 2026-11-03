@@ -554,3 +554,92 @@ writes and future mutation capacity.
 The isolated storage ledger is not on-chain.
 General storage refunds are not approved.
 Production funds remain NOT APPROVED.
+
+## M2/07E/2A — Complete storage transition matrix
+
+Base commit: `387dff9`.
+Local NEAR Sandbox, 2026-11-03.
+
+### Verified physical measurements
+
+- 21 successful state transitions instrumented.
+- Each raw KV delta reconciled against storage_usage.
+- Total persistent growth: 2339 bytes.
+- Difference between reconstructed and actual
+  storage usage: zero bytes.
+- Four funded offer records deleted.
+- Four cross-caller replay attempts rejected.
+- Native refund withdrawal PASS.
+- Existing contract WASM unchanged.
+
+### Retained storage after lifecycle
+
+| Category | Records | Bytes |
+|---|---:|---:|
+| Tasks | 2 | 334 |
+| Task creation bonds | 2 | 186 |
+| Task funding | 2 | 270 |
+| Offers | 4 | 460 |
+| Offer creation bonds | 4 | 384 |
+| Settlement markers | 2 | 112 |
+| Claimable balances | 4 | 336 |
+| Shared or unknown | 1 | 257 |
+| TOTAL | 21 | 2339 |
+
+Named record categories account for 2082 bytes.
+The remaining 257 bytes were classified as
+shared_or_unknown, not assigned to a customer.
+
+### Transaction groups
+
+- Task creation: +777 bytes, including 257 bytes
+  classified as shared_or_unknown.
+- Task funding: +270 bytes.
+- Primary acceptance: 0 net bytes.
+- Offer posting: +844 bytes.
+- Offer funding: +352 bytes.
+- Task cancellation: +278 bytes.
+- Offer release: -182 bytes.
+- Native withdrawal: 0 net bytes.
+
+Total: +2339 bytes.
+
+All amounts above describe the tested workload.
+
+### Attribution boundary
+
+Physical storage ownership and contractual
+cost-bearing responsibility are different.
+
+The presence of a payer's creation bond does
+not establish that all subsequent storage for
+that task or offer is refundable.
+
+The claimable record's beneficiary does not
+automatically establish who finances its
+persistent storage.
+
+The 257-byte shared_or_unknown allocation
+must not be arbitrarily assigned to the first
+task creator merely because that transaction
+first created the record.
+
+Retained audit, terminal, funding and bond
+records may require long-term storage backing.
+
+The model does not establish future mutation
+bounds, migration safety, universal storage
+costs or general refund eligibility.
+
+### Regression
+
+`npm run sandbox:transition-matrix`
+
+Next: M2/07E/2B — explicitly define funding
+responsibility by record category and prove
+that refundable capacity remains protected
+against future storage obligations.
+
+The current contract remains unchanged.
+No general refund authorization is granted.
+Production funds remain NOT APPROVED.

@@ -21,7 +21,8 @@
     "sandbox:capital-lifecycle": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/capital_lifecycle_probe.cjs",
     "sandbox:capital-shadow": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/capital_shadow_reconcile.cjs",
     "sandbox:provenance": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/offer_provenance_audit.cjs",
-    "sandbox:storage-keys": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/storage_key_attribution_audit.cjs"
+    "sandbox:storage-keys": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/storage_key_attribution_audit.cjs",
+    "sandbox:transition-matrix": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/storage_transition_matrix.cjs"
   },
   "devDependencies": {
     "binaryen": "132.0.0",
