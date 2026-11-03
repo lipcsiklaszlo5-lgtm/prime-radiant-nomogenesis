@@ -1,26 +1,27 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/03B, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/04D — withdrawal checkpoint, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
 | Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
 | Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
 | Fejlesztési ág | `feat/m2-escrow` |
-| Előző ellenőrzött commit | `67585d4` — M2/02 |
+| Előző rögzített checkpoint | `984da8d` — M2/03 |
 | Állapotgép | Minden tervezett fő M1 életciklus implementálva |
 | Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
 | Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
-| Natív Rust unit tesztek | **95 PASS, 0 FAIL** |
+| Natív Rust unit tesztek | **103 PASS, 0 FAIL** |
 | Mockolt NEAR storage reload | PASS — 2 célzott teszt |
 | Terminális állapotok auditja | PASS — 6 állapot, 7 új teszt |
 | `cargo check --locked --target wasm32-unknown-unknown` | PASS |
 | `cargo clippy --locked --all-targets -- -D warnings` | PASS |
 | NEAR-kompatibilis release WASM | PASS |
-| Helyi NEAR Sandbox tranzakciók | PASS — 4 integrációs csomag |
+| Helyi NEAR Sandbox tranzakciók | PASS — 6 integrációs csomag |
+| Native NEAR withdrawal és callback | PASS — success + fault-injected failure on local sandbox |
 | Testnet tranzakciók / receipts | NOT VERIFIED |
-| Gazdasági escrow és belső settlement | PASS — local sandbox; külső payout nincs |
-| Storage deposit és refund accounting | NOT IMPLEMENTED |
+| Gazdasági escrow és belső settlement | PASS — local sandbox |
+| Storage reserve és refund | Provisional 2048-byte reserves; exact accounting and refunds NOT VERIFIED |
 | Python V2 referenciateszt | 95/95 PASS korábbi független audit alapján |
 | Gazdasági optimalizációs fölény | NOT PROVEN |
 | Hackathon nevezés kész | NO |
@@ -40,7 +41,7 @@
 
 ## Next task
 
-M2/04: withdrawal, callback safety and exact storage accounting.
+Next: exact storage accounting, refund lifecycle, and economic security audit.
 No production funds before these controls are verified.
 
 ## Frissítési szabály
@@ -76,3 +77,21 @@ SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
 - Exact storage accounting NOT IMPLEMENTED.
 - Public testnet NOT VERIFIED.
 - Production funds NOT APPROVED.
+
+
+## M2/04D — Native withdrawal and callback checkpoint
+
+- Base commit: `984da8d`.
+- 103 Rust unit tests, including eight withdrawal tests.
+- Local NEAR Sandbox/01 through /06 integrated.
+- Three native withdrawal transfers, totaling 1.9 NEAR, verified.
+- 2.9 NEAR remained as internal claimable balances.
+- Successful payout callbacks removed pending obligations.
+- Failed native transfer recovered credit via callback.
+- Failure scenario used a separate fault-injected test WASM.
+- Zero/oversized/foreign withdrawals rejected.
+- Private callback access enforced.
+- Replay tests verified in Rust unit tests.
+- Provisional storage backing only; exact cost NOT VERIFIED.
+- Production deployment NOT APPROVED.
+- No public testnet, independent audit or migration verification.

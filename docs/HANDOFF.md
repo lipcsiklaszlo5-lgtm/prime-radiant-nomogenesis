@@ -6,24 +6,21 @@
 
 - Dátum: **2026-11-03**
 - Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
-- Branch: `feat/m1-near-contract`
-- Auditált Rust checkpoint: `01996a3d12e229ec3edb819c683defb60d90e13b`
-- Megépítve: Merkle verifier, feladat- és ajánlatkezelés,
-  kizárólagos slot-foglalás, primary és reserve proof,
-  keeper activation, sikeres és sikertelen lezárások,
-  unmatched cancellation/expiry, unactivated expiry.
-- M1 unit tesztek: **75/75 PASS**.
-- Mockolt NEAR állapotmentés és újratöltés: PASS.
-- Mind a hat terminális állapot regressziós auditja: PASS.
-- WASM target check: PASS; Clippy: PASS.
-- **Nem igazolt:** release WASM, sandbox, testnet receipts.
-- **Nem implementált:** NEAR escrow, collateral, keeper bounty,
-  storage accounting, withdrawal, async payout callback.
-- Előzmény: Python V2 referencia 95/95 PASS; nem Rust-teszt.
+- Branch: `feat/m2-escrow`
+- Előző rögzített checkpoint: `984da8d` (M2/03).
+- M2/04 fejlesztés: native NEAR withdrawal, pending ledger,
+  sikeres callback, sikertelen átutalás utáni helyreállítás.
+- Rust-tesztek: **103/103 PASS**.
+- NEAR Sandbox: **6 integrációs tesztcsomag**.
+- Clippy, WASM, pénzmegmaradási tesztek: PASS.
+- Kifizetés: három valódi helyi átutalás összesen 1.9 NEAR.
+- Sikertelen átutalás: hibainjektált WASM, callback
+  után a követelés helyreáll; natív receipt failure igazolt.
+- Nem igazolt: pontos storage költség, teljes storage-refund,
+  publikus testnet, szerződésmigráció, külső security audit.
+- **Éles pénzes használatra nem jóváhagyott.**
 - Következő egyetlen feladat:
-  **telepíthető WASM build és NEAR sandbox előkészítés**.
-- Fontos: az auditált kód SHA-ja nem feltétlenül azonos
-  a későbbi dokumentációs commit SHA-jával.
+  **pontos storage accounting és visszatérítési életciklus**.
 
 ## Munkamenetindító parancsok
 
@@ -127,3 +124,17 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - Storage accounting remains provisional.
 - Withdrawals and async callbacks not implemented.
 - Next: M2/04 withdrawal and storage security.
+
+
+### 2026-11-03 — M2/04D withdrawal checkpoint
+
+- Base: `984da8d`, branch `feat/m2-escrow`.
+- 103/103 Rust tests, Clippy, compatible WASM PASS.
+- Six local NEAR sandbox suites integrated.
+- Native payout success and callback finalization verified.
+- Fault-injected native transfer failure and callback recovery verified.
+- Double callback does not recreate credit in unit tests.
+- Failure-injection harness restores original source and WASM.
+- Exact storage liability and refund lifecycle NOT VERIFIED.
+- Public testnet and independent security review NOT DONE.
+- Next: exact storage accounting and liability invariants.

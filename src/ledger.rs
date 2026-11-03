@@ -10,7 +10,7 @@ use crate::{
 };
 
 impl Nomogenesis {
-    fn credit_accounts(&mut self, credits: &[(AccountId, u128)]) {
+    pub(crate) fn credit_accounts(&mut self, credits: &[(AccountId, u128)]) {
         let mut grouped = BTreeMap::<AccountId, u128>::new();
 
         for (account, amount) in credits {

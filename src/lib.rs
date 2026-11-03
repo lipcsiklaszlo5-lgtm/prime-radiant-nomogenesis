@@ -4,6 +4,7 @@ mod ledger;
 mod offer;
 pub mod settlement;
 mod task;
+mod withdrawal;
 use escrow::{OfferDeposit, TaskDeposit, reserve_cost};
 use offer::{Offer, OfferStatus};
 use sha2::{Digest, Sha256};
@@ -24,6 +25,9 @@ pub struct Nomogenesis {
     claimables: LookupMap<AccountId, u128>,
     claimable_total: u128,
     settled_tasks: LookupMap<u64, bool>,
+    next_withdrawal_id: u64,
+    pending_withdrawals: LookupMap<u64, withdrawal::PendingWithdrawal>,
+    pending_total: u128,
 }
 
 impl Default for Nomogenesis {
@@ -42,12 +46,34 @@ impl Default for Nomogenesis {
             claimables: LookupMap::new(b"claims".as_slice()),
             claimable_total: 0,
             settled_tasks: LookupMap::new(b"settled".as_slice()),
+            next_withdrawal_id: 0,
+            pending_withdrawals: LookupMap::new(b"pending".as_slice()),
+            pending_total: 0,
         }
     }
 }
 
 #[near]
 impl Nomogenesis {
+    pub fn payout_totals(&self) -> (U128, U128) {
+        (U128(self.claimable_total), U128(self.pending_total))
+    }
+
+    pub fn get_pending_withdrawal(&self, withdrawal_id: u64) -> Option<(AccountId, U128)> {
+        self.pending_withdrawals
+            .get(&withdrawal_id)
+            .map(|p| (p.owner.clone(), U128(p.amount)))
+    }
+
+    pub fn withdraw(&mut self, amount: U128) {
+        self.begin_withdrawal(amount.0)
+    }
+
+    #[private]
+    pub fn on_withdraw_complete(&mut self, withdrawal_id: u64) {
+        self.finish_withdrawal(withdrawal_id);
+    }
+
     pub fn get_claimable(&self, account: AccountId) -> U128 {
         U128(self.claimables.get(&account).copied().unwrap_or(0))
     }
@@ -754,3 +780,6 @@ mod escrow_tests;
 
 #[cfg(test)]
 mod ledger_tests;
+
+#[cfg(test)]
+mod withdrawal_tests;
