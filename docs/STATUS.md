@@ -1,13 +1,13 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/07D/3 — canonical offer provenance, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/07E/1 — raw storage attribution, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
 | Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
 | Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
 | Fejlesztési ág | `feat/m2-escrow` |
-| Előző rögzített checkpoint | `8730a6c` — M2/07D/2 |
+| Előző rögzített checkpoint | `8e3a580` — M2/07D/3 |
 | Állapotgép | Minden tervezett fő M1 életciklus implementálva |
 | Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
 | Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
@@ -467,4 +467,59 @@ Next: design the trusted transition-to-ledger bridge,
 including exact allocation boundaries and persistent
 storage cost attribution.
 
+Production funds remain NOT APPROVED.
+
+## M2/07E/1 — Raw NEAR storage key attribution
+
+Base commit: `8e3a580`.
+Local NEAR Sandbox, 2026-11-03.
+
+Four funded, unselected offers were released.
+Raw persisted key/value differences were inspected
+through NEAR Sandbox view_state.
+
+Measured results:
+
+- Four offer funding records deleted.
+- Each deleted record occupied 88 bytes.
+- Total deleted storage: 352 bytes.
+- First claimable creation for each provider:
+  85 bytes.
+- Two new claimable records: 170 bytes.
+- Existing claimable updates added zero bytes.
+- Net storage released: 182 bytes.
+- Storage rebates: 0.00182 NEAR.
+- Raw KV deltas matched storage_usage changes.
+- Four cross-caller replay attempts rejected.
+- Original reserve providers received the credits.
+- Native refund withdrawal PASS.
+
+Specific release deltas: 3, 3, 88, 88 bytes.
+
+The 85-byte claimable allocation depends on the
+tested account identifiers and storage encoding.
+It is not a universal constant.
+
+The observed 40-byte per-key overhead was checked
+against the measured NEAR storage_usage delta.
+
+This is read-only external storage inspection.
+The contract does not expose raw storage keys.
+
+The audit proves exact attribution of the inspected
+key changes in this local scenario, not ownership
+of all shared or future storage allocations.
+
+Rust contract, persistent state and WASM unchanged.
+
+Optional regression:
+
+`npm run sandbox:storage-keys`
+
+Next: M2/07E/2 — per-transition storage cost
+attribution, including retained records, shared
+writes and future mutation capacity.
+
+The isolated storage ledger is not on-chain.
+General storage refunds are not approved.
 Production funds remain NOT APPROVED.
