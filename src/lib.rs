@@ -169,8 +169,14 @@ impl Nomogenesis {
             OfferStatus::Available,
             "offer is not available"
         );
+        let task = self.tasks.get(&offer.task_id).expect("missing offer task");
+        let task_closed = matches!(
+            task.phase,
+            TaskPhase::Cancelled | TaskPhase::UnmatchedExpired
+        );
+
         assert!(
-            caller == offer.reserve || now >= offer.expires_at,
+            caller == offer.reserve || now >= offer.expires_at || task_closed,
             "only owner can release before expiry"
         );
 
@@ -191,6 +197,40 @@ impl Nomogenesis {
         assert!(now < task.primary_deadline, "primary deadline passed");
 
         task.phase = TaskPhase::SeekingReserve;
+    }
+
+    pub fn cancel_unmatched(&mut self, task_id: u64) {
+        let caller = env::predecessor_account_id();
+        let task = self.tasks.get_mut(&task_id).expect("unknown task");
+
+        assert_eq!(caller, task.buyer, "not task buyer");
+        assert!(
+            matches!(
+                task.phase,
+                TaskPhase::SeekingPrimary | TaskPhase::SeekingReserve
+            ),
+            "task is not unmatched"
+        );
+        assert!(task.selected_offer.is_none(), "option already selected");
+
+        task.phase = TaskPhase::Cancelled;
+    }
+
+    pub fn expire_unmatched(&mut self, task_id: u64) {
+        let now = env::block_timestamp();
+        let task = self.tasks.get_mut(&task_id).expect("unknown task");
+
+        assert!(
+            matches!(
+                task.phase,
+                TaskPhase::SeekingPrimary | TaskPhase::SeekingReserve
+            ),
+            "task is not unmatched"
+        );
+        assert!(task.selected_offer.is_none(), "option already selected");
+        assert!(now >= task.primary_deadline, "task not expired");
+
+        task.phase = TaskPhase::UnmatchedExpired;
     }
 
     pub fn get_task(&self, task_id: u64) -> Option<Task> {
@@ -484,3 +524,6 @@ mod reserve_proof_tests;
 
 #[cfg(test)]
 mod reserve_failure_tests;
+
+#[cfg(test)]
+mod unmatched_tests;

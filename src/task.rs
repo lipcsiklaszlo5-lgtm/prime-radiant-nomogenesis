@@ -11,6 +11,8 @@ pub enum TaskPhase {
     BackupActive,
     ReserveProofAccepted,
     ReserveFailed,
+    Cancelled,
+    UnmatchedExpired,
 }
 
 #[near(serializers = [borsh, json])]
