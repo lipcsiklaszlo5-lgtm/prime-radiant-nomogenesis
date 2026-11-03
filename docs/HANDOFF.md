@@ -731,3 +731,107 @@ Next: M2/07E/2B/2 — future mutation reserve,
 global backing invariants and zero-capital stress.
 
 Production funds remain NOT APPROVED.
+
+## M2/07E/2B/2A — Global backing stress model
+
+Base commit: `5149b76`.
+Date: 2026-11-03.
+
+### Verified evidence
+
+- 21 successful Sandbox storage transitions.
+- 22 backing samples, including baseline.
+- Actual account balances and physical storage.
+- Current economic, collateral, claimable,
+  pending and storage reserve liabilities.
+- Conservative backing guard reconstructed.
+- Hypothetical consumed/unused backing model.
+- Five adversarial input mutations rejected.
+- Rust contract and WASM unchanged.
+
+### Final accounting
+
+Measured physical storage growth: 2339 bytes.
+
+Attributed consumed storage: 2082 bytes.
+Shared storage: 257 bytes.
+Unused contribution capacity: 22312 bytes.
+Previously credited storage refunds: 182 bytes.
+
+Recorded remaining storage reserve:
+24394 byte-equivalent.
+
+The observed accounting identities hold:
+
+2339 = 2082 + 257
+
+24394 = 2082 + 22312
+
+### Treasury margin scenarios
+
+All margins below are counterfactual.
+They reduce the starting treasury balance while
+preserving observed transaction balance changes.
+
+| Margin | Conservative | Shadow |
+|---|---|---|
+| 0 NEAR | FAIL | FAIL |
+| 0.015 NEAR | FAIL | FAIL |
+| 0.060 NEAR | PASS | PASS |
+| 0.120 NEAR | PASS | PASS |
+
+Approximate implied minimum initial margins
+for the sampled transition trace:
+
+Conservative: 0.04514410 NEAR.
+Shadow: 0.02302421 NEAR.
+
+These are conditional model thresholds,
+NOT proven safe funding requirements.
+
+### Future capacity test
+
+The model tested incremental consumption of
+unused capacity without new storage deposits.
+
+The following requests were algebraically
+covered within the simulated reserve:
+
+0, 2048, 4096, 8192 and 22312 bytes.
+
+A 22313-byte request exceeded the modeled
+22312-byte unused capacity and was rejected.
+
+The assumed future minimum was 2048 bytes.
+This is a test parameter, not a proven upper
+bound for future legitimate state changes.
+
+Converting unused storage reserves to an
+equal claimable liability does not by itself
+create free capital.
+
+### Unresolved security boundaries
+
+- Actual low-margin Sandbox deployments
+  have not been run for these scenarios.
+- No universal future storage growth bound.
+- No proof of every lifecycle and callback.
+- The shadow split is not persisted on-chain.
+- Model calculations use a fixed verified
+  transaction trace and known fixture categories.
+- Storage ownership and refund entitlement
+  remain separate questions.
+- No migration safety proof.
+- No permission to relax withdrawal backing.
+- No general refund authorization.
+
+### Regression
+
+1. npm run sandbox:backing-probe
+2. npm run sandbox:backing-stress -- /path/to/log
+
+Next: M2/07E/2B/2B — actual low-margin
+Sandbox deployments, native payout checks
+and alternative lifecycle stress.
+
+Production funds remain NOT APPROVED.
