@@ -6,7 +6,7 @@ pub enum TaskPhase {
     SeekingPrimary,
     SeekingReserve,
     OfferSelected,
-    SelectionExpired,
+    UnactivatedExpired,
     PrimaryProofAccepted,
     BackupActive,
     ReserveProofAccepted,

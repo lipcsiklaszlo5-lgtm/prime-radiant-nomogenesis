@@ -100,14 +100,14 @@ fn old_release_cannot_unlock_new_buyers_reservation() {
     c.select_offer(first, old);
 
     actor(4, 300);
-    c.expire_unfunded_selection(first);
+    c.close_unactivated(first);
 
     actor(3, 301);
     c.select_offer(second, new);
 
     actor(4, 302);
     rejected(|| c.release_unaccepted_offer(old));
-    rejected(|| c.expire_unfunded_selection(first));
+    rejected(|| c.close_unactivated(first));
 
     assert_eq!(c.slot_holder(accounts(2), "shared".into()), Some(new));
     assert_eq!(c.get_offer(new).unwrap().status, OfferStatus::Selected);

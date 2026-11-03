@@ -135,7 +135,7 @@ impl Nomogenesis {
         task.phase = TaskPhase::OfferSelected;
     }
 
-    pub fn expire_unfunded_selection(&mut self, task_id: u64) {
+    pub fn close_unactivated(&mut self, task_id: u64) {
         let now = env::block_timestamp();
         let task = self.tasks.get(&task_id).expect("unknown task");
 
@@ -144,6 +144,8 @@ impl Nomogenesis {
 
         let id = task.selected_offer.expect("missing selection");
         let offer = self.offers.get(&id).expect("missing offer");
+        assert_eq!(offer.task_id, task_id, "offer/task mismatch");
+        assert!(task.backup_activator.is_none(), "backup already activated");
         let key = format!("{}|{}", offer.reserve, offer.slot_id);
 
         assert_eq!(self.slot_locks.get(&key).copied(), Some(id));
@@ -151,7 +153,7 @@ impl Nomogenesis {
 
         assert_eq!(self.slot_locks.remove(&key), Some(id));
         self.offers.get_mut(&id).unwrap().status = OfferStatus::Released;
-        self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::SelectionExpired;
+        self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::UnactivatedExpired;
     }
 
     pub fn slot_holder(&self, reserve: AccountId, slot_id: String) -> Option<u64> {
@@ -527,3 +529,6 @@ mod reserve_failure_tests;
 
 #[cfg(test)]
 mod unmatched_tests;
+
+#[cfg(test)]
+mod unactivated_tests;

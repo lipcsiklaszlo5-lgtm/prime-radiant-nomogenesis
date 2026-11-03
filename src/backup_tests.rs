@@ -58,10 +58,10 @@ fn neither_activation_nor_expiration_can_preempt_deadline() {
 
     actor(4, 199);
     rejected(|| c.trigger_backup(task));
-    rejected(|| c.expire_unfunded_selection(task));
+    rejected(|| c.close_unactivated(task));
 
     actor(4, 200);
-    rejected(|| c.expire_unfunded_selection(task));
+    rejected(|| c.close_unactivated(task));
 
     assert_eq!(c.get_task(task).unwrap().phase, TaskPhase::OfferSelected);
     assert_eq!(
@@ -81,8 +81,11 @@ fn activation_at_reserve_deadline_is_too_late() {
     actor(4, 300);
     rejected(|| c.trigger_backup(task));
 
-    c.expire_unfunded_selection(task);
-    assert_eq!(c.get_task(task).unwrap().phase, TaskPhase::SelectionExpired);
+    c.close_unactivated(task);
+    assert_eq!(
+        c.get_task(task).unwrap().phase,
+        TaskPhase::UnactivatedExpired
+    );
     assert_eq!(c.get_offer(offer).unwrap().status, OfferStatus::Released);
     assert_eq!(c.slot_holder(accounts(2), "backup_slot".into()), None);
 }
@@ -152,7 +155,7 @@ fn primary_success_blocks_backup_and_backup_blocks_primary() {
     rejected(|| second.submit_primary_proof(task, b"charlie".to_vec(), siblings));
 
     actor(4, 300);
-    rejected(|| second.expire_unfunded_selection(task));
+    rejected(|| second.close_unactivated(task));
 
     assert_eq!(
         second.get_task(task).unwrap().phase,
