@@ -1,0 +1,15 @@
+{
+  "name": "prime-radiant-nomogenesis",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "wasm:build": "bash scripts/build-wasm.sh",
+    "sandbox:primary": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/smoke.cjs",
+    "sandbox:backup": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/backup.cjs",
+    "test:sandbox": "npm run wasm:build && npm run sandbox:primary && npm run sandbox:backup"
+  },
+  "devDependencies": {
+    "binaryen": "132.0.0",
+    "near-workspaces": "5.0.0"
+  }
+}
