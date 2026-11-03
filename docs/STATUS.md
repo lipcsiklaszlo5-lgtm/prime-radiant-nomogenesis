@@ -1,13 +1,13 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/05C — storage admission, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/05D — capital solvency audit, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
 | Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
 | Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
 | Fejlesztési ág | `feat/m2-escrow` |
-| Előző rögzített checkpoint | `e9c9c9a` — M2/05A |
+| Előző rögzített checkpoint | `26579ef` — M2/05C |
 | Állapotgép | Minden tervezett fő M1 életciklus implementálva |
 | Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
 | Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
@@ -17,7 +17,7 @@
 | `cargo check --locked --target wasm32-unknown-unknown` | PASS |
 | `cargo clippy --locked --all-targets -- -D warnings` | PASS |
 | NEAR-kompatibilis release WASM | PASS |
-| Helyi NEAR Sandbox tranzakciók | PASS — 8 integrációs csomag |
+| Helyi NEAR Sandbox tranzakciók | PASS — 9 integrációs csomag |
 | Native NEAR withdrawal és callback | PASS — success + fault-injected failure on local sandbox |
 | Testnet tranzakciók / receipts | NOT VERIFIED |
 | Gazdasági escrow és belső settlement | PASS — local sandbox |
@@ -125,4 +125,25 @@ SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
 - Exact storage refunds NOT IMPLEMENTED.
 - Historic deployed-state migration NOT VERIFIED.
 - Independent economic security review NOT DONE.
+- Production funds NOT APPROVED.
+
+
+## M2/05D — Low-capital solvency regression
+
+- Base commit: `26579ef`.
+- 106 Rust unit tests.
+- Nine local NEAR Sandbox integrations.
+- Contract baseline: 314430 storage bytes.
+- Baseline storage stake: 3.1443 NEAR.
+- Scenario A: 0.06 NEAR additional operating capital.
+- Scenario A: 0.5 NEAR withdrawal succeeded.
+- Scenario B: 0.015 NEAR additional operating capital.
+- Scenario B: withdrawal backing guard rejected payment.
+- Failed attempt preserved the original customer claim.
+- These are two measured scenarios, not global bounds.
+- Storage prepayments remain nonrefundable.
+- Current withdrawal guard includes both storage reserves
+  and the full measured storage stake.
+- Exact storage refund accounting NOT IMPLEMENTED.
+- Public testnet and independent security audit NOT DONE.
 - Production funds NOT APPROVED.

@@ -7,19 +7,20 @@
 - Dátum: **2026-11-03**
 - Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
 - Branch: `feat/m2-escrow`
-- Kiinduló checkpoint: `e9c9c9a` (M2/05A).
+- Kiinduló checkpoint: `26579ef` (M2/05C).
 - M2/05C: fizetős task/offer létrehozás, per-rekord
   storage-befizető és előleg nyilvántartása.
 - Rust-tesztek: **106/106 PASS**.
-- NEAR Sandbox: **8 integrációs csomag**.
+- NEAR Sandbox: **9 integrációs csomag**.
 - Clippy és kompatibilis WASM: PASS.
 - Native NEAR payout és callback recovery: PASS,
   a sikertelen eset hibainjektált binárissal igazolt.
 - Tényleges mérés: 1930 byte tartós növekedés.
 - Provisional storage reserves: 16384 byte-equivalent.
+- Minimális tőkefedezet: két célzott Sandbox-forgatókönyv
+  PASS; általános minimális tőkeigény NEM bizonyított.
 - Nem igazolt: pontos storage-refund, migráció,
-  publikus testnet, minimális saját tőkéből fedezett
-  működés, külső security audit.
+  publikus testnet, külső security audit.
 - Éles pénzes használatra: **NEM JÓVÁHAGYOTT**.
 - Következő feladat: pontos storage-felszabadítási
   és visszatérítési életciklus tervezése és tesztje.
@@ -168,3 +169,19 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - Refund mechanism NOT IMPLEMENTED.
 - Public testnet, migration, independent audit NOT DONE.
 - Next: precise storage and refund lifecycle.
+
+
+### 2026-11-03 — M2/05D capital solvency checkpoint
+
+- Base commit: `26579ef`, branch `feat/m2-escrow`.
+- Baseline deployed WASM stake: 3.1443 NEAR.
+- Additional operating margin 0.06 NEAR: payout PASS.
+- Additional operating margin 0.015 NEAR:
+  withdrawal rejected; claimant balance preserved.
+- Nine local NEAR sandbox regression suites.
+- Storage reserves and actual storage stake are both
+  included in the current conservative backing guard.
+- Universal capital sufficiency NOT PROVEN.
+- Storage refund lifecycle NOT IMPLEMENTED.
+- Next: precise refund eligibility and storage release
+  accounting, with no weakening of economic solvency.

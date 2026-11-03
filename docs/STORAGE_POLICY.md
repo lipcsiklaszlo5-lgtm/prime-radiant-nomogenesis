@@ -158,3 +158,53 @@ solvency is not proof of self-financing operation.
 The measured deltas are not universal upper bounds.
 The previous measurement in this document describes
 the earlier contract version and is retained as history.
+
+
+## M2/05D — Independently measured contract capitalization
+
+Local NEAR Sandbox, 2026-11-03.
+
+Baseline contract storage: 314430 bytes.
+Storage byte cost: 10000000000000000000 yoctoNEAR.
+Baseline stake: 3.1443 NEAR.
+
+Two separately deployed contracts were tested.
+
+Scenario A:
+- Starting balance: 3.2043 NEAR.
+- Starting balance above code stake: 0.06 NEAR.
+- A 0.5 NEAR withdrawal succeeded after funding and
+  terminal settlement.
+
+Scenario B:
+- Starting balance: 3.1593 NEAR.
+- Starting balance above code stake: 0.015 NEAR.
+- A 0.5 NEAR withdrawal was rejected by the
+  native backing guard.
+- The beneficiary's original 1.2 NEAR claim survived.
+
+Both scenarios passed under the local Sandbox protocol
+configuration and the tested contract workload.
+
+### Open capitalization and refund issue
+
+Current withdrawal backing calculation includes:
+
+economic_escrow + collateral_escrow + claimable_total
++ pending_total + storage_reserves
++ (storage_usage + 2048) * storage_byte_cost
+
+This intentionally protects the entire recorded storage
+reserve as a liability in addition to the actual stake.
+
+As a result, customer storage prepayments do not by
+themselves replace the contract's initial storage capital.
+
+A refund implementation must define which storage
+contributions remain refundable, which are consumed
+by retained data, and how the actual locked storage
+stake is financed without double counting.
+
+The test does NOT establish general self-financing
+operation, exact refund eligibility, or safe deployment
+on a public network.

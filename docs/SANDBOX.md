@@ -19,7 +19,7 @@ Known limitations: exact storage accounting, storage-reserve refund policy, publ
 
 ## M2 terminal settlement sandbox
 
-`npm run test:sandbox` runs eight independent local suites.
+`npm run test:sandbox` runs nine independent local suites.
 
 The settlement suite tests four funded tasks in one sandbox:
 
@@ -100,3 +100,25 @@ Its earlier 1535-byte figure belongs to the pre-admission
 implementation; the updated lifecycle measures 1930 bytes.
 
 No independent security audit or public testnet validation.
+
+
+## M2/05D — Capital solvency sandbox
+
+Sandbox/09 (`sandbox/capital_audit.cjs`) tests
+two deployments with explicitly limited initial NEAR balances.
+
+Both deployments include the storage stake necessary to
+hold the deployed WASM. The available operating capital is
+then independently limited:
+
+- 0.06 NEAR: real withdrawal succeeds
+- 0.015 NEAR: backing guard rejects withdrawal
+- Rejected payout leaves the customer's claim unchanged
+
+The test does not establish a universally sufficient
+minimum capitalization.
+
+The current withdrawal guard reserves funding for both
+the entire storage-reserve ledger and the actual byte stake.
+This conservative design requires additional operating
+capital and must be revisited before storage refunds.
