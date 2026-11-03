@@ -158,6 +158,24 @@ impl Nomogenesis {
         self.slot_locks.get(&key).copied()
     }
 
+    pub fn release_unaccepted_offer(&mut self, offer_id: u64) {
+        let caller = env::predecessor_account_id();
+        let now = env::block_timestamp();
+        let offer = self.offers.get(&offer_id).expect("unknown offer");
+
+        assert_eq!(
+            offer.status,
+            OfferStatus::Available,
+            "offer is not available"
+        );
+        assert!(
+            caller == offer.reserve || now >= offer.expires_at,
+            "only owner can release before expiry"
+        );
+
+        self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
+    }
+
     pub fn get_offer(&self, offer_id: u64) -> Option<Offer> {
         self.offers.get(&offer_id).cloned()
     }
@@ -310,3 +328,6 @@ mod offer_tests;
 
 #[cfg(test)]
 mod reservation_tests;
+
+#[cfg(test)]
+mod release_tests;
