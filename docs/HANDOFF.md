@@ -379,3 +379,58 @@ Next: M2/07D/2 — event identity, replay protection,
 trusted storage attribution and adversarial tests.
 
 No production funds approved.
+
+## M2/07D/2 — Isolated event replay guard
+
+Base commit: `e123e15`.
+Date: 2026-11-03.
+
+New files:
+
+- `src/storage_event_guard.rs`
+- `tests/storage_event_guard_spec.rs`
+
+Verified local results:
+
+- Seven event guard tests PASS.
+- Thirteen tests in combined event guard target PASS.
+- Six original storage ledger tests PASS.
+- 108 existing contract unit tests PASS.
+- Clippy, formatting and WASM target checks PASS.
+
+Verified model properties:
+
+- An identical event ID cannot be processed twice.
+- Reusing an ID against another owner is rejected.
+- Payer mismatch is rejected.
+- Invalid arithmetic does not mutate the ledger.
+- Failed operations do not consume event IDs.
+- Processed restore events cannot be replayed.
+- Tested balances preserve ledger conservation.
+
+These tests verify an isolated arithmetic and
+event bookkeeping model, NOT NEAR authorization.
+
+Remaining security gaps:
+
+1. Event authenticity is not established.
+2. Distinct event IDs can describe the same physical
+   storage change; global byte uniqueness is unproven.
+3. Unused capacity alone does not prove refund
+   eligibility or finality of a record.
+4. The event source is simulated in unit tests.
+5. The in-memory BTreeSet and full Book cloning are
+   not approved on-chain persistence/gas strategies.
+6. Allocation of shared storage and future mutation
+   capacity remains unresolved.
+7. Persistent state migration remains unimplemented.
+
+The current contract storage backing and withdrawal
+rules must remain unchanged.
+
+Next gate: M2/07D/3 — derive event provenance from
+trusted state transitions, measure actual storage
+deltas, and prevent double attribution even when
+different event IDs are presented.
+
+Production funds remain NOT APPROVED.
