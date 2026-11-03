@@ -1,23 +1,23 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/05D — capital solvency audit, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/06B — scoped storage rebate, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
 | Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
 | Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
 | Fejlesztési ág | `feat/m2-escrow` |
-| Előző rögzített checkpoint | `26579ef` — M2/05C |
+| Előző rögzített checkpoint | `ae554a4` — M2/05D |
 | Állapotgép | Minden tervezett fő M1 életciklus implementálva |
 | Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
 | Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
-| Natív Rust unit tesztek | **106 PASS, 0 FAIL** |
+| Natív Rust unit tesztek | **108 PASS, 0 FAIL** |
 | Mockolt NEAR storage reload | PASS — 2 célzott teszt |
 | Terminális állapotok auditja | PASS — 6 állapot, 7 új teszt |
 | `cargo check --locked --target wasm32-unknown-unknown` | PASS |
 | `cargo clippy --locked --all-targets -- -D warnings` | PASS |
 | NEAR-kompatibilis release WASM | PASS |
-| Helyi NEAR Sandbox tranzakciók | PASS — 9 integrációs csomag |
+| Helyi NEAR Sandbox tranzakciók | PASS — 10 integrációs csomag |
 | Native NEAR withdrawal és callback | PASS — success + fault-injected failure on local sandbox |
 | Testnet tranzakciók / receipts | NOT VERIFIED |
 | Gazdasági escrow és belső settlement | PASS — local sandbox |
@@ -146,4 +146,25 @@ SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
   and the full measured storage stake.
 - Exact storage refund accounting NOT IMPLEMENTED.
 - Public testnet and independent security audit NOT DONE.
+- Production funds NOT APPROVED.
+
+
+## M2/06B — Scoped storage rebate
+
+- Base checkpoint: `ae554a4`.
+- 108 Rust unit tests.
+- Ten local NEAR Sandbox integration suites.
+- Refund applies only when an unselected funded offer
+  releases its collateral storage record.
+- Measured first release: -5 bytes, 0.00005 NEAR credit.
+- Measured second release: -88 bytes, 0.00088 NEAR credit.
+- Refund attribution: original reserve funding owner.
+- Refund limited to net freed storage and the original
+  collateral-record storage contribution.
+- Repeated release rejected; balances remain unchanged.
+- Storage reserves plus claimable obligations conserved.
+- Task and offer creation bonds remain held.
+- Other funding storage reserves remain held.
+- Exact general refund accounting NOT IMPLEMENTED.
+- Public testnet, migration and external audit NOT DONE.
 - Production funds NOT APPROVED.

@@ -7,11 +7,11 @@
 - Dátum: **2026-11-03**
 - Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
 - Branch: `feat/m2-escrow`
-- Kiinduló checkpoint: `26579ef` (M2/05C).
+- Kiinduló checkpoint: `ae554a4` (M2/05D).
 - M2/05C: fizetős task/offer létrehozás, per-rekord
   storage-befizető és előleg nyilvántartása.
-- Rust-tesztek: **106/106 PASS**.
-- NEAR Sandbox: **9 integrációs csomag**.
+- Rust-tesztek: **108/108 PASS**.
+- NEAR Sandbox: **10 integrációs csomag**.
 - Clippy és kompatibilis WASM: PASS.
 - Native NEAR payout és callback recovery: PASS,
   a sikertelen eset hibainjektált binárissal igazolt.
@@ -185,3 +185,20 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - Storage refund lifecycle NOT IMPLEMENTED.
 - Next: precise refund eligibility and storage release
   accounting, with no weakening of economic solvency.
+
+
+### 2026-11-03 — M2/06B scoped refund validation
+
+- Base: `ae554a4`, branch `feat/m2-escrow`.
+- 108 Rust unit tests; ten local Sandbox suites.
+- Exact net-byte rebate on released unselected
+  collateral funding record.
+- First observed rebate: 5 byte-equivalent.
+- Second observed rebate: 88 byte-equivalent.
+- Owner attribution and replay protection tested.
+- All unrelated storage contributions remain reserved.
+- Historical M2/06A preflight archived.
+- General storage refund policy NOT complete.
+- No public testnet or independent security audit.
+- Next: audit per-record lifetime storage attribution
+  and withdrawal solvency after storage rebates.

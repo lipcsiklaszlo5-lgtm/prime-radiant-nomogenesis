@@ -267,13 +267,33 @@ async function main() {
     await snapshot('Post second offer');
 
     await fundOffer(offer2);
-    await snapshot('Fund second offer');
+    const beforeRelease = await snapshot('Fund second offer');
 
     await reserve.call(contract, 'release_unaccepted_offer', {
       offer_id: offer2
     });
 
-    await snapshot('Release unselected');
+    const afterRelease = await snapshot('Release unselected');
+
+    const freed = beforeRelease.usage > afterRelease.usage
+      ? beforeRelease.usage - afterRelease.usage
+      : 0n;
+
+    const releaseRebate = (
+      freed * byteCost < reservePerRecord
+        ? freed * byteCost
+        : reservePerRecord
+    );
+
+    assert.equal(
+      beforeRelease.escrow[2] - afterRelease.escrow[2],
+      releaseRebate
+    );
+
+    assert.equal(
+      afterRelease.payout[0] - beforeRelease.payout[0],
+      13n * UNIT + releaseRebate
+    );
 
     await buyer.call(contract, 'cancel_unmatched', {
       task_id: task2
@@ -283,16 +303,16 @@ async function main() {
 
     assert.equal(await credit(buyer), 42n * UNIT);
     assert.equal(await credit(primary), 20n * UNIT);
-    assert.equal(await credit(reserve), 29n * UNIT);
+    assert.equal(await credit(reserve), 29n * UNIT + releaseRebate);
 
     assert.deepEqual(
       final.escrow,
-      [0n, 0n, 8n * reservePerRecord]
+      [0n, 0n, 8n * reservePerRecord - releaseRebate]
     );
 
     assert.deepEqual(
       final.payout,
-      [91n * UNIT, 0n]
+      [91n * UNIT + releaseRebate, 0n]
     );
 
     console.log('=== MEASURED STORAGE FINDINGS ===');

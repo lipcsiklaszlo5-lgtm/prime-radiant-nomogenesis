@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use near_sdk::AccountId;
+use near_sdk::{AccountId, env};
 
 use crate::{
     Nomogenesis,
@@ -162,6 +162,15 @@ impl Nomogenesis {
             .expect("collateral already returned");
 
         let collateral = deposit.collateral;
+        let storage_cap = deposit.storage_reserve;
+
+        // LookupMap delays writes until flush/drop.
+        // Establish a storage baseline with the affected
+        // collections synchronized to actual NEAR storage.
+        self.offer_deposits.flush();
+        self.claimables.flush();
+
+        let storage_before = env::storage_usage();
 
         let remaining = self
             .collateral_escrow
@@ -171,5 +180,36 @@ impl Nomogenesis {
         self.credit_accounts(&[(offer.reserve.clone(), collateral)]);
         self.collateral_escrow = remaining;
         self.offer_deposits.remove(&offer_id);
+
+        // Only the net reduction is eligible. A newly created
+        // claimable record consumes storage before this calculation.
+        // No other records are deleted in this function.
+        // Account for collateral-record deletion and any
+        // newly created claimable record before calculating
+        // a refund. No refund is based on cached changes.
+        self.offer_deposits.flush();
+        self.claimables.flush();
+
+        let freed_bytes = storage_before.saturating_sub(env::storage_usage());
+
+        let freed_value = u128::from(freed_bytes)
+            .checked_mul(env::storage_byte_cost().as_yoctonear())
+            .expect("storage refund calculation overflow");
+
+        // Never exceed the contribution from this exact
+        // collateral funding record.
+        let rebate = freed_value.min(storage_cap);
+
+        if rebate > 0 {
+            let remaining_storage = self
+                .storage_reserves
+                .checked_sub(rebate)
+                .expect("storage refund reserve underflow");
+
+            // The collateral credit already created or updated
+            // this same account's claimable record.
+            self.credit_accounts(&[(offer.reserve.clone(), rebate)]);
+            self.storage_reserves = remaining_storage;
+        }
     }
 }

@@ -208,3 +208,45 @@ stake is financed without double counting.
 The test does NOT establish general self-financing
 operation, exact refund eligibility, or safe deployment
 on a public network.
+
+
+## M2/06B — Scoped collateral storage rebate
+
+A narrowly scoped rebate is implemented for release
+of a funded, unselected reserve offer.
+
+The release procedure:
+
+1. Synchronizes the affected lazy LookupMaps.
+2. Records actual storage usage.
+3. Credits the original reserve provider's collateral.
+4. Deletes the collateral funding record.
+5. Flushes the affected LookupMaps again.
+6. Measures net storage reduction.
+7. Caps rebate at that record's storage contribution.
+8. Moves exactly the rebate amount from storage_reserves
+   to the same provider's claimable balance.
+
+Measured on local NEAR Sandbox:
+
+| Operation | Net storage | Rebate |
+|---|---:|---:|
+| First funded offer release | -5 bytes | 0.00005 NEAR |
+| Second funded offer release | -88 bytes | 0.00088 NEAR |
+| Unfunded offer release | 0 bytes | 0 |
+
+The original offer record and creation bond remain
+persisted. Selected offer settlement does not currently
+refund its storage contribution.
+
+Refund conservation identity for this transition:
+
+storage_reserves_before + claimable_before
+= storage_reserves_after + claimable_after
+  - collateral_returned
+
+This is a scoped accounting result, not a complete
+storage ownership or production solvency proof.
+
+The general refund lifecycle, permanent record costs,
+state migration and security review remain unresolved.

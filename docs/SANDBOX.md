@@ -19,7 +19,7 @@ Known limitations: exact storage accounting, storage-reserve refund policy, publ
 
 ## M2 terminal settlement sandbox
 
-`npm run test:sandbox` runs nine independent local suites.
+`npm run test:sandbox` runs ten independent local suites.
 
 The settlement suite tests four funded tasks in one sandbox:
 
@@ -122,3 +122,25 @@ The current withdrawal guard reserves funding for both
 the entire storage-reserve ledger and the actual byte stake.
 This conservative design requires additional operating
 capital and must be revisited before storage refunds.
+
+
+## M2/06B — Scoped storage refund integration
+
+Sandbox/10 (`sandbox/refund_integration.cjs`) verifies:
+
+- Net storage measurement on two funded offer releases
+- Different storage effects for first and repeated credits
+- Exact transfer from storage reserve to internal claimable
+- Original reserve provider receives the storage credit
+- Replayed release cannot claim a second refund
+- Unfunded releases do not refund creation bonds
+- Global economic and storage-ledger conservation
+
+Refund amounts are observations of this workload,
+not universal fixed refund rates.
+
+The historical pre-refund measurement is archived under
+`docs/audit-archive/` and is not an active regression.
+
+General refund eligibility, storage-account ownership
+attribution and adversarial concurrency remain open.

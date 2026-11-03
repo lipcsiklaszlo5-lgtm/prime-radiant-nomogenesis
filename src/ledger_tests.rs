@@ -158,10 +158,21 @@ fn unused_collateral_returns_to_reserve() {
     actor(2, 130, 13 + reserve_cost());
     c.fund_offer(offer, U128(13));
 
+    let storage_before_release = c.storage_reserves;
+
     actor(4, 181, 0);
     c.release_unaccepted_offer(offer);
 
-    assert_eq!(c.get_claimable(accounts(2)), U128(13));
+    let reserve_credit = c.get_claimable(accounts(2)).0;
+    let storage_rebate = reserve_credit
+        .checked_sub(13)
+        .expect("collateral not fully returned");
+
+    assert!(storage_rebate <= reserve_cost());
+    assert_eq!(
+        c.storage_reserves.checked_add(storage_rebate),
+        Some(storage_before_release)
+    );
     assert_eq!(c.get_claimable(accounts(4)), U128(0));
     assert_eq!(c.collateral_escrow, 0);
 
@@ -171,7 +182,7 @@ fn unused_collateral_returns_to_reserve() {
     c.cancel_unmatched(id);
 
     assert_eq!(c.get_claimable(accounts(0)), U128(35));
-    assert_eq!(c.claimable_total(), U128(48));
+    assert_eq!(c.claimable_total(), U128(48 + storage_rebate));
 }
 
 #[test]
