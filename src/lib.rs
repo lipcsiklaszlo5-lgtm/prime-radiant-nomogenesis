@@ -1,7 +1,9 @@
-use near_sdk::{AccountId, env, near, store::LookupMap};
+use near_sdk::{AccountId, env, json_types::U128, near, store::LookupMap};
+mod escrow;
 mod offer;
 pub mod settlement;
 mod task;
+use escrow::{OfferDeposit, TaskDeposit, reserve_cost};
 use offer::{Offer, OfferStatus};
 use sha2::{Digest, Sha256};
 use task::{Task, TaskPhase};
@@ -13,6 +15,11 @@ pub struct Nomogenesis {
     next_offer_id: u64,
     offers: LookupMap<u64, Offer>,
     slot_locks: LookupMap<String, u64>,
+    task_deposits: LookupMap<u64, TaskDeposit>,
+    offer_deposits: LookupMap<u64, OfferDeposit>,
+    economic_escrow: u128,
+    collateral_escrow: u128,
+    storage_reserves: u128,
 }
 
 impl Default for Nomogenesis {
@@ -23,12 +30,165 @@ impl Default for Nomogenesis {
             next_offer_id: 0,
             offers: LookupMap::new(b"offers".as_slice()),
             slot_locks: LookupMap::new(b"locks".as_slice()),
+            task_deposits: LookupMap::new(b"taskdep".as_slice()),
+            offer_deposits: LookupMap::new(b"offerdep".as_slice()),
+            economic_escrow: 0,
+            collateral_escrow: 0,
+            storage_reserves: 0,
         }
     }
 }
 
 #[near]
 impl Nomogenesis {
+    pub fn storage_reserve_required(&self) -> U128 {
+        U128(reserve_cost())
+    }
+
+    pub fn escrow_totals(&self) -> (U128, U128, U128) {
+        (
+            U128(self.economic_escrow),
+            U128(self.collateral_escrow),
+            U128(self.storage_reserves),
+        )
+    }
+
+    pub fn is_task_funded(&self, task_id: u64) -> bool {
+        self.task_deposits.get(&task_id).is_some()
+    }
+
+    pub fn is_offer_collateralized(&self, offer_id: u64) -> bool {
+        self.offer_deposits.get(&offer_id).is_some()
+    }
+
+    #[payable]
+    pub fn fund_task(
+        &mut self,
+        task_id: u64,
+        primary_reward: U128,
+        reserve_reward: U128,
+        option_premium: U128,
+        keeper_bounty: U128,
+    ) {
+        let buyer = env::predecessor_account_id();
+        let task = self.tasks.get(&task_id).expect("unknown task");
+
+        assert_eq!(buyer, task.buyer, "not task buyer");
+        assert_eq!(
+            task.phase,
+            TaskPhase::SeekingPrimary,
+            "task no longer fundable"
+        );
+        assert!(
+            env::block_timestamp() < task.primary_deadline,
+            "primary deadline passed"
+        );
+        assert!(
+            self.task_deposits.get(&task_id).is_none(),
+            "task already funded"
+        );
+
+        let record = TaskDeposit {
+            primary_reward: primary_reward.0,
+            reserve_reward: reserve_reward.0,
+            option_premium: option_premium.0,
+            keeper_bounty: keeper_bounty.0,
+            storage_reserve: reserve_cost(),
+        };
+
+        let funding = record
+            .budget()
+            .funding()
+            .expect("invalid or overflowing budget");
+
+        let required = funding
+            .checked_add(record.storage_reserve)
+            .expect("deposit overflow");
+
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            required,
+            "incorrect attached task deposit"
+        );
+
+        let next_economic = self
+            .economic_escrow
+            .checked_add(funding)
+            .expect("economic escrow overflow");
+
+        let next_storage = self
+            .storage_reserves
+            .checked_add(record.storage_reserve)
+            .expect("storage reserve overflow");
+
+        self.task_deposits.insert(task_id, record);
+        self.economic_escrow = next_economic;
+        self.storage_reserves = next_storage;
+    }
+
+    #[payable]
+    pub fn fund_offer(&mut self, offer_id: u64, collateral: U128) {
+        let caller = env::predecessor_account_id();
+        let offer = self.offers.get(&offer_id).expect("unknown offer");
+
+        assert_eq!(caller, offer.reserve, "not reserve owner");
+        assert_eq!(offer.status, OfferStatus::Available, "offer unavailable");
+        assert!(env::block_timestamp() < offer.expires_at, "offer expired");
+        assert!(
+            self.offer_deposits.get(&offer_id).is_none(),
+            "offer already funded"
+        );
+
+        let task = self.tasks.get(&offer.task_id).expect("missing task");
+
+        assert_eq!(task.phase, TaskPhase::SeekingReserve, "invalid task state");
+
+        let task_deposit = self
+            .task_deposits
+            .get(&offer.task_id)
+            .expect("task has no buyer funding");
+
+        let minimum = task_deposit
+            .budget()
+            .minimum_collateral()
+            .expect("collateral calculation overflow");
+
+        assert!(collateral.0 >= minimum, "insufficient reserve collateral");
+
+        let storage_reserve = reserve_cost();
+        let required = collateral
+            .0
+            .checked_add(storage_reserve)
+            .expect("deposit overflow");
+
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            required,
+            "incorrect attached collateral deposit"
+        );
+
+        let next_collateral = self
+            .collateral_escrow
+            .checked_add(collateral.0)
+            .expect("collateral escrow overflow");
+
+        let next_storage = self
+            .storage_reserves
+            .checked_add(storage_reserve)
+            .expect("storage reserve overflow");
+
+        self.offer_deposits.insert(
+            offer_id,
+            OfferDeposit {
+                collateral: collateral.0,
+                storage_reserve,
+            },
+        );
+
+        self.collateral_escrow = next_collateral;
+        self.storage_reserves = next_storage;
+    }
+
     pub fn create_task(
         &mut self,
         primary: AccountId,
@@ -125,6 +285,14 @@ impl Nomogenesis {
         assert_eq!(offer.task_id, task_id, "offer belongs to another task");
         assert_eq!(offer.status, OfferStatus::Available, "offer unavailable");
         assert!(now < offer.expires_at, "offer expired");
+
+        // A funded task may not select an unfunded reserve offer.
+        if self.task_deposits.get(&task_id).is_some() {
+            assert!(
+                self.offer_deposits.get(&offer_id).is_some(),
+                "reserve offer lacks collateral"
+            );
+        }
 
         let key = format!("{}|{}", offer.reserve, offer.slot_id);
         assert!(self.slot_locks.get(&key).is_none(), "slot already reserved");
@@ -539,3 +707,6 @@ mod persistence_audit_tests;
 
 #[cfg(test)]
 mod terminal_audit_tests;
+
+#[cfg(test)]
+mod escrow_tests;

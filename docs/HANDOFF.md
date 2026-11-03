@@ -107,3 +107,11 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - Compatible WASM SHA-256: 22f451680c7f4c8e62e69b467b6641c86c52402ee1f1755891a9a38cbb9b0cab
 - No testnet receipts or economic settlement.
 - Next: M2 deterministic accounting core.
+
+### 2026-11-03 — M2 funding checkpoint
+
+- Base commit: 684782c.
+- On-chain buyer and reserve funding methods added.
+- Six additional Rust tests PASS.
+- Third sandbox funding integration PASS.
+- Pending: terminal ledger, refunds, withdrawals, callback replay protection, storage measurement.

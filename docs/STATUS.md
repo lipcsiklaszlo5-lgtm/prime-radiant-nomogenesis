@@ -49,3 +49,14 @@ Minden új mérföldkőnél rögzíteni kell a pontos commitot,
 lefuttatott parancsokat, bizonyított PASS/FAIL eredményeket
 és a még NEM igazolt állításokat. A dokumentációs commit
 SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
+
+## M2/02A — Funding implementation
+
+- 89 Rust unit tests PASS.
+- Clippy and WASM checks PASS.
+- Local funding sandbox PASS.
+- Native NEAR attached deposits verified in sandbox.
+- Buyer budget and reserve collateral persist.
+- Financial withdrawal and terminal settlement NOT IMPLEMENTED.
+- Storage reserve is provisional, not measured.
+- Not approved for production funds.
