@@ -16,8 +16,8 @@
 | Terminális állapotok auditja | PASS — 6 állapot, 7 új teszt |
 | `cargo check --locked --target wasm32-unknown-unknown` | PASS |
 | `cargo clippy --locked --all-targets -- -D warnings` | PASS |
-| Telepíthető release WASM | NOT VERIFIED |
-| Valódi NEAR sandbox tranzakció | NOT VERIFIED |
+| NEAR-kompatibilis release WASM | PASS |
+| Helyi NEAR Sandbox tranzakciók | PASS — primary, reserve success, reserve failure |
 | Testnet tranzakciók / receipts | NOT VERIFIED |
 | Gazdasági escrow, collateral, payout | NOT IMPLEMENTED |
 | Storage deposit és refund accounting | NOT IMPLEMENTED |
@@ -25,21 +25,23 @@
 | Gazdasági optimalizációs fölény | NOT PROVEN |
 | Hackathon nevezés kész | NO |
 
-## Mérföldkő-értelmezés
+## M1 Final Gate — PASS
 
-Az M1 lokális Rust-állapotgépe és regressziós auditja elkészült.
-Ez **nem** teljes M1 sandbox-igazolás, nem M2 pénzügyi
-implementáció, és nem bizonyít valódi kapacitást.
+2026-11-03: fresh Git checkout at b2d0a71.
 
-Az SDK-szintű WASM check nem helyettesíti a kiadható
-WASM-fájl tényleges megépítését és NEAR VM-futtatását.
+- 75/75 Rust tests PASS.
+- Compatible release WASM build PASS.
+- SHA-256: 22f451680c7f4c8e62e69b467b6641c86c52402ee1f1755891a9a38cbb9b0cab
+- Sandbox/01 primary lifecycle PASS.
+- Sandbox/02 reserve success and failure PASS.
+- Working tree CLEAN.
+- Public testnet NOT VERIFIED.
+- Escrow, collateral and withdrawals NOT IMPLEMENTED.
 
-## Következő egyetlen feladat
+## Next task
 
-**M1 Sandbox/Build:** ellenőrizni a Codespaces build-környezetet,
-majd a `cargo near build` segítségével megépíteni a
-telepíthető WASM-artifactot. Csak ezután következik a
-NEAR sandbox életciklus-teszt.
+M2/01: deterministic settlement accounting and conservation tests.
+No real funds until escrow and storage accounting are validated.
 
 ## Frissítési szabály
 
