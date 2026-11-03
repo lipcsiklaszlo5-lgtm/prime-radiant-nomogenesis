@@ -1,5 +1,7 @@
 use near_sdk::{AccountId, env, near, store::LookupMap};
+mod offer;
 mod task;
+use offer::Offer;
 use sha2::{Digest, Sha256};
 use task::{Task, TaskPhase};
 
@@ -7,6 +9,8 @@ use task::{Task, TaskPhase};
 pub struct Nomogenesis {
     next_task_id: u64,
     tasks: LookupMap<u64, Task>,
+    next_offer_id: u64,
+    offers: LookupMap<u64, Offer>,
 }
 
 impl Default for Nomogenesis {
@@ -14,6 +18,8 @@ impl Default for Nomogenesis {
         Self {
             next_task_id: 0,
             tasks: LookupMap::new(b"tasks".as_slice()),
+            next_offer_id: 0,
+            offers: LookupMap::new(b"offers".as_slice()),
         }
     }
 }
@@ -59,6 +65,48 @@ impl Nomogenesis {
             },
         );
         id
+    }
+
+    pub fn post_offer(&mut self, task_id: u64, slot_id: String, expires_at: u64) -> u64 {
+        let reserve = env::predecessor_account_id();
+        let now = env::block_timestamp();
+        let task = self.tasks.get(&task_id).expect("unknown task");
+
+        assert_eq!(task.phase, TaskPhase::SeekingReserve, "invalid state");
+        assert_ne!(reserve, task.buyer, "buyer cannot provide reserve");
+        assert_ne!(reserve, task.primary, "primary cannot be reserve");
+        assert!(
+            now < expires_at && expires_at <= task.primary_deadline,
+            "invalid offer expiry"
+        );
+        assert!(
+            !slot_id.is_empty()
+                && slot_id.len() <= 64
+                && slot_id
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_'),
+            "invalid slot identifier"
+        );
+
+        let id = self.next_offer_id;
+        self.next_offer_id = id.checked_add(1).expect("offer ID overflow");
+
+        self.offers.insert(
+            id,
+            Offer {
+                id,
+                task_id,
+                reserve,
+                slot_id,
+                expires_at,
+            },
+        );
+
+        id
+    }
+
+    pub fn get_offer(&self, offer_id: u64) -> Option<Offer> {
+        self.offers.get(&offer_id).cloned()
     }
 
     pub fn accept_primary(&mut self, task_id: u64) {
@@ -203,3 +251,6 @@ mod tests {
 
 #[cfg(test)]
 mod task_tests;
+
+#[cfg(test)]
+mod offer_tests;
