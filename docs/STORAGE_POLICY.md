@@ -1,6 +1,6 @@
 # M2/05 — Storage accounting policy
 
-Status: M2/05C STORAGE ADMISSION IMPLEMENTED; EXACT REFUNDS PENDING.
+Status: M2/06C SCOPED REFUNDS TESTED; GENERAL REFUNDS PENDING.
 Not approved for production funds.
 
 ## Verified local measurement
@@ -250,3 +250,32 @@ storage ownership or production solvency proof.
 
 The general refund lifecycle, permanent record costs,
 state migration and security review remain unresolved.
+
+
+## M2/06C — Multiple owners and release ordering
+
+Local NEAR Sandbox verified two buyers, two reserve
+providers, four funded offers and one unrelated caller.
+
+After buyers cancelled unmatched tasks, the unrelated
+caller released offers in five tested orderings.
+
+Every release conserved total recorded liabilities:
+economic escrow + collateral escrow + storage reserves
++ claimables + pending withdrawals.
+
+The collateral and storage rebate belonged to the
+original offer provider, regardless of release caller.
+
+Five of 24 possible orders passed. Provider totals were
+stable in those five tests; not a universal theorem.
+
+The audit used explicitly capitalized sandbox
+deployments and also demonstrated a real NEAR withdrawal
+of a storage rebate.
+
+Not yet proven: global storage ownership attribution,
+all transaction orders, adversarial concurrency, or
+universal solvency under minimal contract funding.
+
+No public testnet or independent security review.

@@ -7,11 +7,11 @@
 - Dátum: **2026-11-03**
 - Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
 - Branch: `feat/m2-escrow`
-- Kiinduló checkpoint: `ae554a4` (M2/05D).
+- Kiinduló checkpoint: `10db9d7` (M2/06B).
 - M2/05C: fizetős task/offer létrehozás, per-rekord
   storage-befizető és előleg nyilvántartása.
 - Rust-tesztek: **108/108 PASS**.
-- NEAR Sandbox: **10 integrációs csomag**.
+- NEAR Sandbox: **11 integrációs csomag**.
 - Clippy és kompatibilis WASM: PASS.
 - Native NEAR payout és callback recovery: PASS,
   a sikertelen eset hibainjektált binárissal igazolt.
@@ -19,7 +19,7 @@
 - Provisional storage reserves: 16384 byte-equivalent.
 - Minimális tőkefedezet: két célzott Sandbox-forgatókönyv
   PASS; általános minimális tőkeigény NEM bizonyított.
-- Nem igazolt: pontos storage-refund, migráció,
+- Nem igazolt: általános storage-refund, migráció,
   publikus testnet, külső security audit.
 - Éles pénzes használatra: **NEM JÓVÁHAGYOTT**.
 - Következő feladat: pontos storage-felszabadítási
@@ -202,3 +202,23 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - No public testnet or independent security audit.
 - Next: audit per-record lifetime storage attribution
   and withdrawal solvency after storage rebates.
+
+
+### 2026-11-03 — M2/06C ownership audit
+
+- Base commit: `10db9d7`, branch `feat/m2-escrow`.
+- Rust code unchanged; 108 unit tests.
+- Eleventh sandbox suite: cross-owner refund audit.
+- Two buyers, two providers, external release caller.
+- Early unauthorized calls rejected.
+- Original provider credited under valid external release.
+- Other providers and buyers remain unaffected.
+- Replay blocked without ledger or storage mutation.
+- Native refund withdrawal tested.
+- Five of 24 offer-release permutations PASS.
+- Tested owner rebate total: 0.00091 NEAR each.
+- Optional repeat: `npm run sandbox:ownership-orders`.
+- Scoped-only evidence; general refund system unproven.
+- No public testnet or independent audit.
+- Next: analyze allocation ownership and minimum-capital
+  backing across longer mixed lifecycles.

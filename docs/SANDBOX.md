@@ -19,7 +19,7 @@ Known limitations: exact storage accounting, storage-reserve refund policy, publ
 
 ## M2 terminal settlement sandbox
 
-`npm run test:sandbox` runs ten independent local suites.
+`npm run test:sandbox` runs eleven independent local suites.
 
 The settlement suite tests four funded tasks in one sandbox:
 
@@ -144,3 +144,37 @@ The historical pre-refund measurement is archived under
 
 General refund eligibility, storage-account ownership
 attribution and adversarial concurrency remain open.
+
+
+## M2/06C — Cross-owner audit
+
+Sandbox/11 (`sandbox/refund_ownership_audit.cjs`) tests:
+
+- Two buyers, two reserve providers and an outsider
+- Rejection of unauthorized early release
+- Third-party release after cancellation
+- Storage rebate attributed to the original provider
+- Unaffected balances of other parties
+- Per-offer replay rejection
+- Exact aggregate ledger conservation
+- Native payout of credited storage rebate
+
+Default release order: [2,0,1,3].
+
+Four additional independently deployed scenarios were
+validated locally:
+
+- [0,2,3,1]
+- [1,3,0,2]
+- [2,1,0,3]
+- [3,0,1,2]
+
+Run those four scenarios again with:
+
+`npm run sandbox:ownership-orders`
+
+The observed aggregate rebate remained 0.00091 NEAR
+per provider in each tested scenario.
+
+Five of the 24 possible orders were tested.
+This is not exhaustive concurrency or security proof.

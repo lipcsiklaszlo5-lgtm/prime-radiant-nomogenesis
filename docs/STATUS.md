@@ -1,13 +1,13 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/06B — scoped storage rebate, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/06C — cross-owner refund audit, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
 | Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
 | Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
 | Fejlesztési ág | `feat/m2-escrow` |
-| Előző rögzített checkpoint | `ae554a4` — M2/05D |
+| Előző rögzített checkpoint | `10db9d7` — M2/06B |
 | Állapotgép | Minden tervezett fő M1 életciklus implementálva |
 | Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
 | Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
@@ -17,11 +17,11 @@
 | `cargo check --locked --target wasm32-unknown-unknown` | PASS |
 | `cargo clippy --locked --all-targets -- -D warnings` | PASS |
 | NEAR-kompatibilis release WASM | PASS |
-| Helyi NEAR Sandbox tranzakciók | PASS — 10 integrációs csomag |
+| Helyi NEAR Sandbox tranzakciók | PASS — 11 integrációs csomag |
 | Native NEAR withdrawal és callback | PASS — success + fault-injected failure on local sandbox |
 | Testnet tranzakciók / receipts | NOT VERIFIED |
 | Gazdasági escrow és belső settlement | PASS — local sandbox |
-| Storage reserve és refund | Provisional 2048-byte reserves; exact accounting and refunds NOT VERIFIED |
+| Storage reserve és refund | Scoped unselected-offer rebate PASS locally; general refunds NOT VERIFIED |
 | Python V2 referenciateszt | 95/95 PASS korábbi független audit alapján |
 | Gazdasági optimalizációs fölény | NOT PROVEN |
 | Hackathon nevezés kész | NO |
@@ -167,4 +167,27 @@ SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
 - Other funding storage reserves remain held.
 - Exact general refund accounting NOT IMPLEMENTED.
 - Public testnet, migration and external audit NOT DONE.
+- Production funds NOT APPROVED.
+
+
+## M2/06C — Cross-owner refund audit
+
+- Base commit: `10db9d7`.
+- Rust code unchanged: 108 unit tests.
+- Eleventh local NEAR Sandbox suite registered.
+- Two independent buyers and two reserve providers.
+- Unauthorized early offer release rejected.
+- External caller may release offers after task cancellation.
+- Collateral and storage rebates credited to the
+  original reserve provider, never the external caller.
+- Other providers' and buyers' balances unchanged.
+- Replayed releases leave storage and balances unchanged.
+- Native withdrawal of a storage rebate verified.
+- Five tested release orders PASS, from 24 possible.
+- Four alternate orders available via
+  `npm run sandbox:ownership-orders`.
+- Both providers received 0.00091 NEAR in each
+  tested multi-owner ordering.
+- General storage ownership and solvency NOT PROVEN.
+- No public testnet or independent audit.
 - Production funds NOT APPROVED.
