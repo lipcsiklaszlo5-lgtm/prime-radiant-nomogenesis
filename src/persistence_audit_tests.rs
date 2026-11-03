@@ -22,13 +22,13 @@ fn selected() -> (Nomogenesis, u64, u64) {
 
     actor(0, 100);
     let mut c = Nomogenesis::default();
-    let id = c.create_task(accounts(1), root, 2, 2, 200, 300);
+    let id = c.test_create_task(accounts(1), root, 2, 2, 200, 300);
 
     actor(1, 110);
     c.accept_primary(id);
 
     actor(2, 120);
-    let offer = c.post_offer(id, "audit_slot".into(), 180);
+    let offer = c.test_post_offer(id, "audit_slot".into(), 180);
 
     actor(0, 130);
     c.select_offer(id, offer);

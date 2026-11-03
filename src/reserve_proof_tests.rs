@@ -15,13 +15,13 @@ fn selected(c: &mut Nomogenesis) -> (u64, u64) {
     let (root, _) = fixture();
 
     actor(0, 100);
-    let task = c.create_task(accounts(1), root, 2, 2, 200, 300);
+    let task = c.test_create_task(accounts(1), root, 2, 2, 200, 300);
 
     actor(1, 110);
     c.accept_primary(task);
 
     actor(2, 120);
-    let offer = c.post_offer(task, "reserve_slot".into(), 180);
+    let offer = c.test_post_offer(task, "reserve_slot".into(), 180);
 
     actor(0, 130);
     c.select_offer(task, offer);
@@ -142,13 +142,13 @@ fn replay_cannot_unlock_another_buyers_slot() {
     let (root, siblings) = fixture();
 
     actor(3, 201);
-    let second = c.create_task(accounts(1), root, 2, 2, 400, 500);
+    let second = c.test_create_task(accounts(1), root, 2, 2, 400, 500);
 
     actor(1, 202);
     c.accept_primary(second);
 
     actor(2, 203);
-    let new_offer = c.post_offer(second, "reserve_slot".into(), 380);
+    let new_offer = c.test_post_offer(second, "reserve_slot".into(), 380);
 
     actor(3, 204);
     rejected(|| c.select_offer(second, new_offer));

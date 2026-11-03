@@ -12,7 +12,7 @@ fn actor(id: usize, now: u64) {
 
 fn task(c: &mut Nomogenesis, root: Vec<u8>, index: u64) -> u64 {
     actor(0, 100);
-    c.create_task(accounts(1), root, 2, index, 200, 400)
+    c.test_create_task(accounts(1), root, 2, index, 200, 400)
 }
 
 #[test]

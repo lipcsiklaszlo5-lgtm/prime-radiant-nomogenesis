@@ -159,7 +159,7 @@ async function main() {
           index: 2,
           primary_deadline: deadlines.primary,
           reserve_deadline: deadlines.reserve
-        }
+        }, { attachedDeposit: reservePerRecord.toString() }
       ));
     }
 
@@ -183,7 +183,7 @@ async function main() {
           task_id: task,
           slot_id: slot,
           expires_at: deadlines.offer
-        }
+        }, { attachedDeposit: reservePerRecord.toString() }
       ));
     }
 
@@ -287,7 +287,7 @@ async function main() {
 
     assert.deepEqual(
       final.escrow,
-      [0n, 0n, 4n * reservePerRecord]
+      [0n, 0n, 8n * reservePerRecord]
     );
 
     assert.deepEqual(

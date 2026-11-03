@@ -16,7 +16,7 @@ fn context(actor: usize, timestamp: u64, attached: u128) {
 
 fn task(c: &mut Nomogenesis) -> u64 {
     context(0, 100, 0);
-    c.create_task(accounts(1), vec![7; 32], 2, 2, 200, 400)
+    c.test_create_task(accounts(1), vec![7; 32], 2, 2, 200, 400)
 }
 
 fn fund(c: &mut Nomogenesis, id: u64) {
@@ -35,7 +35,10 @@ fn authenticated_buyer_funding_is_accounted_once() {
     fund(&mut c, id);
 
     assert!(c.is_task_funded(id));
-    assert_eq!(c.escrow_totals(), (U128(35), U128(0), U128(reserve_cost())));
+    assert_eq!(
+        c.escrow_totals(),
+        (U128(35), U128(0), U128(2 * reserve_cost()))
+    );
 
     context(0, 111, 35 + reserve_cost());
     rejected(|| {
@@ -66,7 +69,7 @@ fn wrong_buyer_or_deposit_cannot_create_credit() {
     });
 
     assert!(!c.is_task_funded(id));
-    assert_eq!(c.escrow_totals(), (U128(0), U128(0), U128(0)));
+    assert_eq!(c.escrow_totals(), (U128(0), U128(0), U128(reserve_cost())));
 }
 
 #[test]
@@ -79,7 +82,7 @@ fn funded_task_requires_collateralized_offer() {
     c.accept_primary(id);
 
     context(2, 120, 0);
-    let offer = c.post_offer(id, "funded_slot".into(), 180);
+    let offer = c.test_post_offer(id, "funded_slot".into(), 180);
 
     context(0, 125, 0);
     rejected(|| c.select_offer(id, offer));
@@ -99,7 +102,7 @@ fn funded_task_requires_collateralized_offer() {
 
     assert_eq!(
         c.escrow_totals(),
-        (U128(35), U128(13), U128(2 * reserve_cost()))
+        (U128(35), U128(13), U128(4 * reserve_cost()))
     );
 
     context(0, 135, 0);
@@ -118,7 +121,7 @@ fn collateral_replay_is_rejected() {
     c.accept_primary(id);
 
     context(2, 120, 0);
-    let offer = c.post_offer(id, "slot".into(), 180);
+    let offer = c.test_post_offer(id, "slot".into(), 180);
 
     context(2, 130, 13 + reserve_cost());
     c.fund_offer(offer, U128(13));

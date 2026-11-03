@@ -31,6 +31,10 @@ async function main() {
 
     console.log('=== CREATE TASK TRANSACTION ===');
 
+    const creationStorage = BigInt(
+      await contract.view('storage_reserve_required', {})
+    );
+
     const now = Date.now();
     const primary_deadline =
       Math.floor((now + 600000) * 1000000);
@@ -47,7 +51,7 @@ async function main() {
         index: 2,
         primary_deadline,
         reserve_deadline
-      }
+      }, { attachedDeposit: creationStorage.toString() }
     );
 
     assert.equal(Number(taskId), 0);
@@ -83,7 +87,7 @@ async function main() {
         task_id: 0,
         slot_id: 'sandbox_slot',
         expires_at: primary_deadline - 60000000000
-      }
+      }, { attachedDeposit: creationStorage.toString() }
     );
 
     assert.equal(Number(offerId), 0);

@@ -7,6 +7,13 @@ const RESERVED_BYTES: u128 = 2048;
 
 #[near(serializers = [borsh])]
 #[derive(Debug, Clone)]
+pub struct StorageBond {
+    pub payer: near_sdk::AccountId,
+    pub amount: u128,
+}
+
+#[near(serializers = [borsh])]
+#[derive(Debug, Clone)]
 pub struct TaskDeposit {
     pub primary_reward: u128,
     pub reserve_reward: u128,

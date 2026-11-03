@@ -13,7 +13,7 @@ fn context(actor: usize, timestamp: u64) {
 
 fn ready_task(contract: &mut Nomogenesis) -> u64 {
     context(0, 100);
-    let id = contract.create_task(accounts(1), vec![7; 32], 2, 2, 200, 400);
+    let id = contract.test_create_task(accounts(1), vec![7; 32], 2, 2, 200, 400);
     context(1, 110);
     contract.accept_primary(id);
     id
@@ -25,7 +25,7 @@ fn reserve_registers_offer_for_existing_task() {
     let task = ready_task(&mut contract);
 
     context(2, 120);
-    let id = contract.post_offer(task, "node_A".into(), 180);
+    let id = contract.test_post_offer(task, "node_A".into(), 180);
     let offer = contract.get_offer(id).unwrap();
 
     assert_eq!(offer.id, 0);
@@ -45,7 +45,7 @@ fn buyer_and_primary_cannot_list_reserve_offer() {
         context(actor, 120);
         assert!(
             catch_unwind(AssertUnwindSafe(|| {
-                contract.post_offer(task, "slot_1".into(), 180)
+                contract.test_post_offer(task, "slot_1".into(), 180)
             }))
             .is_err()
         );
@@ -59,11 +59,11 @@ fn invalid_expiry_slot_and_task_state_are_rejected() {
     let mut contract = Nomogenesis::default();
 
     context(0, 100);
-    let pending = contract.create_task(accounts(1), vec![7; 32], 2, 2, 200, 400);
+    let pending = contract.test_create_task(accounts(1), vec![7; 32], 2, 2, 200, 400);
     context(2, 120);
     assert!(
         catch_unwind(AssertUnwindSafe(|| {
-            contract.post_offer(pending, "slot_1".into(), 180)
+            contract.test_post_offer(pending, "slot_1".into(), 180)
         }))
         .is_err()
     );
@@ -80,7 +80,7 @@ fn invalid_expiry_slot_and_task_state_are_rejected() {
     ] {
         assert!(
             catch_unwind(AssertUnwindSafe(|| {
-                contract.post_offer(task, slot, expiry)
+                contract.test_post_offer(task, slot, expiry)
             }))
             .is_err()
         );
@@ -95,8 +95,8 @@ fn independent_offer_ids_do_not_collide() {
     let task = ready_task(&mut contract);
 
     context(2, 120);
-    let first = contract.post_offer(task, "slot_A".into(), 180);
-    let second = contract.post_offer(task, "slot_B".into(), 190);
+    let first = contract.test_post_offer(task, "slot_A".into(), 180);
+    let second = contract.test_post_offer(task, "slot_B".into(), 190);
 
     assert_eq!((first, second), (0, 1));
     assert_ne!(

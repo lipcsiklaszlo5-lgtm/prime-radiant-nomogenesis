@@ -20,13 +20,13 @@ fn make_terminal(phase: TaskPhase) -> (Nomogenesis, u64, u64) {
 
     actor(0, 100);
     let mut c = Nomogenesis::default();
-    let id = c.create_task(accounts(1), root, 2, 2, 200, 300);
+    let id = c.test_create_task(accounts(1), root, 2, 2, 200, 300);
 
     actor(1, 110);
     c.accept_primary(id);
 
     actor(2, 120);
-    let offer = c.post_offer(id, "audit_slot".into(), 180);
+    let offer = c.test_post_offer(id, "audit_slot".into(), 180);
 
     match phase {
         TaskPhase::Cancelled => {
@@ -87,7 +87,7 @@ fn audit_terminal(phase: TaskPhase) {
 
     actor(2, 310);
     rejected(|| {
-        c.post_offer(id, "new_slot".into(), 320);
+        c.test_post_offer(id, "new_slot".into(), 320);
     });
     rejected(|| c.submit_reserve_proof(id, b"charlie".to_vec(), siblings.clone()));
 

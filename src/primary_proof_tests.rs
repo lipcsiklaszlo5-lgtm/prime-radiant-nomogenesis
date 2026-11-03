@@ -15,7 +15,7 @@ fn ready(c: &mut Nomogenesis, buyer: usize, deadline: u64) -> u64 {
     let (root, _) = fixture();
 
     actor(buyer, 100);
-    let id = c.create_task(accounts(1), root, 2, 2, deadline, deadline + 100);
+    let id = c.test_create_task(accounts(1), root, 2, 2, deadline, deadline + 100);
     actor(1, 110);
     c.accept_primary(id);
     id
@@ -25,7 +25,7 @@ fn selected(c: &mut Nomogenesis, buyer: usize, deadline: u64) -> (u64, u64) {
     let id = ready(c, buyer, deadline);
 
     actor(2, 120);
-    let offer = c.post_offer(id, "shared".into(), deadline - 20);
+    let offer = c.test_post_offer(id, "shared".into(), deadline - 20);
 
     actor(buyer, 130);
     c.select_offer(id, offer);

@@ -39,7 +39,7 @@ fn earned_credit() -> Nomogenesis {
     let (root, siblings) = super::tests::fixture();
 
     actor(0, 100);
-    let task = c.create_task(accounts(1), root, 2, 2, 200, 300);
+    let task = c.test_create_task(accounts(1), root, 2, 2, 200, 300);
 
     let reserve = reserve_cost();
 
@@ -57,7 +57,7 @@ fn earned_credit() -> Nomogenesis {
     c.accept_primary(task);
 
     actor(2, 110);
-    let offer = c.post_offer(task, "withdraw_slot".into(), 180);
+    let offer = c.test_post_offer(task, "withdraw_slot".into(), 180);
 
     let mut b = VMContextBuilder::new();
     b.current_account_id("contract.near".parse().unwrap())

@@ -5,7 +5,7 @@ mod offer;
 pub mod settlement;
 mod task;
 mod withdrawal;
-use escrow::{OfferDeposit, TaskDeposit, reserve_cost};
+use escrow::{OfferDeposit, StorageBond, TaskDeposit, reserve_cost};
 use offer::{Offer, OfferStatus};
 use sha2::{Digest, Sha256};
 use task::{Task, TaskPhase};
@@ -22,6 +22,8 @@ pub struct Nomogenesis {
     economic_escrow: u128,
     collateral_escrow: u128,
     storage_reserves: u128,
+    task_creation_bonds: LookupMap<u64, StorageBond>,
+    offer_creation_bonds: LookupMap<u64, StorageBond>,
     claimables: LookupMap<AccountId, u128>,
     claimable_total: u128,
     settled_tasks: LookupMap<u64, bool>,
@@ -43,6 +45,8 @@ impl Default for Nomogenesis {
             economic_escrow: 0,
             collateral_escrow: 0,
             storage_reserves: 0,
+            task_creation_bonds: LookupMap::new(b"taskbond".as_slice()),
+            offer_creation_bonds: LookupMap::new(b"offerbond".as_slice()),
             claimables: LookupMap::new(b"claims".as_slice()),
             claimable_total: 0,
             settled_tasks: LookupMap::new(b"settled".as_slice()),
@@ -55,6 +59,18 @@ impl Default for Nomogenesis {
 
 #[near]
 impl Nomogenesis {
+    pub fn task_storage_bond(&self, task_id: u64) -> Option<(AccountId, U128)> {
+        self.task_creation_bonds
+            .get(&task_id)
+            .map(|bond| (bond.payer.clone(), U128(bond.amount)))
+    }
+
+    pub fn offer_storage_bond(&self, offer_id: u64) -> Option<(AccountId, U128)> {
+        self.offer_creation_bonds
+            .get(&offer_id)
+            .map(|bond| (bond.payer.clone(), U128(bond.amount)))
+    }
+
     pub fn payout_totals(&self) -> (U128, U128) {
         (U128(self.claimable_total), U128(self.pending_total))
     }
@@ -234,6 +250,7 @@ impl Nomogenesis {
         self.storage_reserves = next_storage;
     }
 
+    #[payable]
     pub fn create_task(
         &mut self,
         primary: AccountId,
@@ -255,6 +272,19 @@ impl Nomogenesis {
             "invalid deadlines"
         );
 
+        let creation_reserve = reserve_cost();
+
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            creation_reserve,
+            "incorrect task creation storage deposit"
+        );
+
+        let next_storage = self
+            .storage_reserves
+            .checked_add(creation_reserve)
+            .expect("storage reserve overflow");
+
         let id = self.next_task_id;
         self.next_task_id = id.checked_add(1).expect("task ID overflow");
 
@@ -274,9 +304,20 @@ impl Nomogenesis {
                 backup_activator: None,
             },
         );
+
+        self.task_creation_bonds.insert(
+            id,
+            StorageBond {
+                payer: env::predecessor_account_id(),
+                amount: creation_reserve,
+            },
+        );
+
+        self.storage_reserves = next_storage;
         id
     }
 
+    #[payable]
     pub fn post_offer(&mut self, task_id: u64, slot_id: String, expires_at: u64) -> u64 {
         let reserve = env::predecessor_account_id();
         let now = env::block_timestamp();
@@ -298,6 +339,19 @@ impl Nomogenesis {
             "invalid slot identifier"
         );
 
+        let creation_reserve = reserve_cost();
+
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            creation_reserve,
+            "incorrect offer creation storage deposit"
+        );
+
+        let next_storage = self
+            .storage_reserves
+            .checked_add(creation_reserve)
+            .expect("storage reserve overflow");
+
         let id = self.next_offer_id;
         self.next_offer_id = id.checked_add(1).expect("offer ID overflow");
 
@@ -313,6 +367,15 @@ impl Nomogenesis {
             },
         );
 
+        self.offer_creation_bonds.insert(
+            id,
+            StorageBond {
+                payer: env::predecessor_account_id(),
+                amount: creation_reserve,
+            },
+        );
+
+        self.storage_reserves = next_storage;
         id
     }
 
@@ -783,3 +846,6 @@ mod ledger_tests;
 
 #[cfg(test)]
 mod withdrawal_tests;
+
+#[cfg(test)]
+mod storage_admission_tests;

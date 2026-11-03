@@ -12,7 +12,7 @@ fn actor(id: usize, now: u64) {
 
 fn ready(c: &mut Nomogenesis, buyer: usize, deadline: u64) -> u64 {
     actor(buyer, 100);
-    let id = c.create_task(accounts(1), vec![7; 32], 2, 2, deadline, deadline + 100);
+    let id = c.test_create_task(accounts(1), vec![7; 32], 2, 2, deadline, deadline + 100);
     actor(1, 110);
     c.accept_primary(id);
     id
@@ -20,7 +20,7 @@ fn ready(c: &mut Nomogenesis, buyer: usize, deadline: u64) -> u64 {
 
 fn listed(c: &mut Nomogenesis, task: u64, expiry: u64) -> u64 {
     actor(2, 120);
-    c.post_offer(task, "shared".into(), expiry)
+    c.test_post_offer(task, "shared".into(), expiry)
 }
 
 fn rejected(f: impl FnOnce()) {

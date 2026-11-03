@@ -1,6 +1,6 @@
 # M2/05 — Storage accounting policy
 
-Status: DESIGN / MEASUREMENT CHECKPOINT.
+Status: M2/05C STORAGE ADMISSION IMPLEMENTED; EXACT REFUNDS PENDING.
 Not approved for production funds.
 
 ## Verified local measurement
@@ -45,7 +45,7 @@ bounds for arbitrary workloads or account identifiers.
 The deployed WASM and initial contract state consume
 additional storage outside this lifecycle's net delta.
 
-## Existing security gap — unpaid persistent writes
+## Historical security gap — addressed in M2/05C
 
 create_task and post_offer currently accept calls
 without attached storage deposits.
@@ -55,7 +55,7 @@ Both can increase persistent storage.
 An attacker can repeatedly allocate contract storage
 without funding the corresponding storage liability.
 
-This must be fixed before public deployment.
+Task and offer creation now require prepaid storage bonds. The description above records the pre-M2/05C behavior.
 
 ## Required accounting model
 
@@ -125,3 +125,36 @@ No public testnet proof.
 No independently verified storage refunds.
 No contract-state migration mechanism.
 No permission to deploy with real customer funds.
+
+
+## M2/05C — New measured admission accounting
+
+Local NEAR Sandbox measurement after storage-bond
+ownership records were added:
+
+- First task creation: +513 bytes.
+- Second task creation: +256 bytes.
+- Offer creation, 64-character slot: +262 bytes.
+- Persistent net growth after full measured lifecycle:
+  1930 bytes.
+- Eight 2048-byte provisional storage contributions:
+  16384 byte-equivalent.
+- Reserve minus measured incremental storage stake:
+  14454 byte-equivalent = 0.14454 NEAR.
+
+The surplus difference is NOT an approved refund.
+
+The creation methods now require exact attached
+storage deposits and persist payer/amount ownership.
+
+These additions do not implement refundable storage
+credits, refunds, storage release attribution or
+state migration.
+
+Local sandbox deployment starts with substantial
+pre-funded contract balance. Positive measured
+solvency is not proof of self-financing operation.
+
+The measured deltas are not universal upper bounds.
+The previous measurement in this document describes
+the earlier contract version and is retained as history.

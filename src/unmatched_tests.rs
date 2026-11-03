@@ -12,7 +12,7 @@ fn actor(id: usize, now: u64) {
 
 fn create(c: &mut Nomogenesis, buyer: usize) -> u64 {
     actor(buyer, 100);
-    c.create_task(accounts(1), vec![7; 32], 2, 2, 200, 300)
+    c.test_create_task(accounts(1), vec![7; 32], 2, 2, 200, 300)
 }
 
 fn accepted(c: &mut Nomogenesis, buyer: usize) -> u64 {
@@ -49,7 +49,7 @@ fn cancellation_keeps_unaccepted_offer_releasable() {
     let task = accepted(&mut c, 0);
 
     actor(2, 120);
-    let offer = c.post_offer(task, "slot_A".into(), 180);
+    let offer = c.test_post_offer(task, "slot_A".into(), 180);
 
     actor(0, 121);
     c.cancel_unmatched(task);
@@ -103,7 +103,7 @@ fn unmatched_expiry_cannot_destroy_selected_slot() {
     let task = accepted(&mut c, 0);
 
     actor(2, 120);
-    let offer = c.post_offer(task, "slot_A".into(), 180);
+    let offer = c.test_post_offer(task, "slot_A".into(), 180);
 
     actor(0, 130);
     c.select_offer(task, offer);

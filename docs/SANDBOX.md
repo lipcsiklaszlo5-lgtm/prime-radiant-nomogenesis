@@ -19,7 +19,7 @@ Known limitations: exact storage accounting, storage-reserve refund policy, publ
 
 ## M2 terminal settlement sandbox
 
-`npm run test:sandbox` runs six independent local suites.
+`npm run test:sandbox` runs eight independent local suites.
 
 The settlement suite tests four funded tasks in one sandbox:
 
@@ -79,5 +79,24 @@ The difference is not automatically refundable.
 
 See `docs/STORAGE_POLICY.md`.
 
-Known critical limitation: task and offer creation still
-permit persistent writes without storage prepayment.
+Historical limitation: unpaid task and offer creation
+was addressed in M2/05C. Exact storage refunds remain pending.
+
+
+## M2/05C — Storage admission sandbox
+
+Sandbox/08 verifies:
+
+- Zero, insufficient and excessive storage deposits rejected.
+- Two independent callers tested for both creation endpoints.
+- Twelve rejected attempts leave contract storage unchanged.
+- Task and offer storage-bond owners persisted on-chain.
+- Storage liabilities kept separate from economic escrow.
+- Measured storage growth remains within each 2048-byte
+  provisional creation contribution in the tested cases.
+
+Sandbox/07 remains a measured lifecycle regression.
+Its earlier 1535-byte figure belongs to the pre-admission
+implementation; the updated lifecycle measures 1930 bytes.
+
+No independent security audit or public testnet validation.

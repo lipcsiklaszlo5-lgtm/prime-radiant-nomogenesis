@@ -102,6 +102,10 @@ async function main() {
     const reserve = await root.createSubAccount('reserve');
     const keeper = await root.createSubAccount('keeper');
 
+    const creationStorage = BigInt(
+      await contract.view('storage_reserve_required', {})
+    );
+
     const now = Date.now();
     const primaryDeadline = (now + 90_000) * 1e6;
     const reserveDeadline = (now + 1_800_000) * 1e6;
@@ -115,7 +119,7 @@ async function main() {
           index: 2,
           primary_deadline: primaryDeadline,
           reserve_deadline: reserveDeadline
-        }
+        }, { attachedDeposit: creationStorage.toString() }
       ));
 
       await primary.call(contract, 'accept_primary', {
@@ -127,7 +131,7 @@ async function main() {
           task_id: task,
           slot_id: slot,
           expires_at: primaryDeadline - 10_000_000_000
-        }
+        }, { attachedDeposit: creationStorage.toString() }
       ));
 
       await buyer.call(contract, 'select_offer', {

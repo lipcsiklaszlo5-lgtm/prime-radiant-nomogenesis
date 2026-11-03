@@ -13,7 +13,7 @@ fn context(actor: usize, timestamp: u64) {
 
 fn new_task(contract: &mut Nomogenesis) -> u64 {
     context(0, 100);
-    contract.create_task(accounts(1), vec![7; 32], 2, 2, 200, 400)
+    contract.test_create_task(accounts(1), vec![7; 32], 2, 2, 200, 400)
 }
 
 #[test]
@@ -69,7 +69,7 @@ fn invalid_commitment_does_not_create_task() {
     let mut contract = Nomogenesis::default();
     context(0, 100);
     let invalid = catch_unwind(AssertUnwindSafe(|| {
-        contract.create_task(accounts(1), vec![0; 31], 2, 2, 200, 400)
+        contract.test_create_task(accounts(1), vec![0; 31], 2, 2, 200, 400)
     }));
     assert!(invalid.is_err());
     assert!(contract.get_task(0).is_none());
@@ -87,7 +87,7 @@ fn invalid_deadlines_and_same_account_fail() {
     ] {
         assert!(
             catch_unwind(AssertUnwindSafe(|| {
-                contract.create_task(primary, vec![0; 32], 2, 2, first, second)
+                contract.test_create_task(primary, vec![0; 32], 2, 2, first, second)
             }))
             .is_err()
         );

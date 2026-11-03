@@ -88,7 +88,7 @@ async function main() {
         index: 2,
         primary_deadline: (now + 600000) * 1e6,
         reserve_deadline: (now + 1200000) * 1e6
-      }
+      }, { attachedDeposit: storage.toString() }
     ));
 
     await buyer.call(contract, 'fund_task', {
@@ -110,7 +110,7 @@ async function main() {
         task_id: task,
         slot_id: 'withdrawal_slot',
         expires_at: (now + 500000) * 1e6
-      }
+      }, { attachedDeposit: storage.toString() }
     ));
 
     await reserve.call(contract, 'fund_offer', {
@@ -287,7 +287,7 @@ async function main() {
 
     assert.deepEqual(
       escrow,
-      [0n, 0n, 2n * storage]
+      [0n, 0n, 4n * storage]
     );
 
     assert.equal(

@@ -76,7 +76,7 @@ async function main() {
         index: 2,
         primary_deadline: (now + 600000) * 1e6,
         reserve_deadline: (now + 1200000) * 1e6
-      }
+      }, { attachedDeposit: storage.toString() }
     ));
 
     await buyer.call(contract, 'fund_task', {
@@ -98,7 +98,7 @@ async function main() {
         task_id: task,
         slot_id: 'failure_slot',
         expires_at: (now + 500000) * 1e6
-      }
+      }, { attachedDeposit: storage.toString() }
     ));
 
     await reserve.call(contract, 'fund_offer', {

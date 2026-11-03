@@ -1,23 +1,23 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/05A — measured storage audit, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/05C — storage admission, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
 | Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
 | Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
 | Fejlesztési ág | `feat/m2-escrow` |
-| Előző rögzített checkpoint | `984da8d` — M2/03 |
+| Előző rögzített checkpoint | `e9c9c9a` — M2/05A |
 | Állapotgép | Minden tervezett fő M1 életciklus implementálva |
 | Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
 | Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
-| Natív Rust unit tesztek | **103 PASS, 0 FAIL** |
+| Natív Rust unit tesztek | **106 PASS, 0 FAIL** |
 | Mockolt NEAR storage reload | PASS — 2 célzott teszt |
 | Terminális állapotok auditja | PASS — 6 állapot, 7 új teszt |
 | `cargo check --locked --target wasm32-unknown-unknown` | PASS |
 | `cargo clippy --locked --all-targets -- -D warnings` | PASS |
 | NEAR-kompatibilis release WASM | PASS |
-| Helyi NEAR Sandbox tranzakciók | PASS — 6 integrációs csomag |
+| Helyi NEAR Sandbox tranzakciók | PASS — 8 integrációs csomag |
 | Native NEAR withdrawal és callback | PASS — success + fault-injected failure on local sandbox |
 | Testnet tranzakciók / receipts | NOT VERIFIED |
 | Gazdasági escrow és belső settlement | PASS — local sandbox |
@@ -107,4 +107,22 @@ SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
 - Difference is NOT yet validated as refundable.
 - Unfunded task/offer creation allows unpaid storage growth.
 - Required next milestone: paid creation admission gates.
+- Production funds NOT APPROVED.
+
+
+## M2/05C — Paid storage admission
+
+- Base commit: `e9c9c9a`.
+- Rust tests: 106/106 PASS.
+- Eight local NEAR Sandbox suites integrated.
+- Task and offer creation require storage prepayment.
+- Storage bond payer and amount persisted per record.
+- Invalid deposits reject writes before ID allocation.
+- Sandbox/08 tests 12 invalid creation attempts.
+- Economic escrow and payouts remain separate.
+- New measured persistent storage growth: 1930 bytes.
+- Eight provisional storage reserves: 16384 byte-equivalent.
+- Exact storage refunds NOT IMPLEMENTED.
+- Historic deployed-state migration NOT VERIFIED.
+- Independent economic security review NOT DONE.
 - Production funds NOT APPROVED.

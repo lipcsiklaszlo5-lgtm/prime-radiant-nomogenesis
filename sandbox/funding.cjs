@@ -28,7 +28,9 @@ async function main() {
 
     const now = Date.now();
 
-    const taskId = await buyer.call(
+    console.log('=== REJECT UNFUNDED TASK CREATION ===');
+
+    await assert.rejects(() => buyer.call(
       contract,
       'create_task',
       {
@@ -39,9 +41,38 @@ async function main() {
         primary_deadline: (now + 600000) * 1000000,
         reserve_deadline: (now + 1200000) * 1000000
       }
+    ));
+
+    assert.equal(
+      await contract.view('task_storage_bond', {task_id: 0}),
+      null
+    );
+
+    console.log('Unfunded task creation rejected: PASS');
+
+    const taskId = await buyer.call(
+      contract,
+      'create_task',
+      {
+        primary: primary.accountId,
+        root,
+        height: 2,
+        index: 2,
+        primary_deadline: (now + 600000) * 1000000,
+        reserve_deadline: (now + 1200000) * 1000000
+      }, { attachedDeposit: storage.toString() }
     );
 
     assert.equal(Number(taskId), 0);
+
+    assert.deepEqual(
+      await contract.view('task_storage_bond', {
+        task_id: 0
+      }),
+      [buyer.accountId, storage.toString()]
+    );
+
+    console.log('Task creation storage owner: PASS');
 
     const budget = {
       task_id: 0,
@@ -65,7 +96,7 @@ async function main() {
 
     assert.deepEqual(
       await totals(),
-      [0n, 0n, 0n]
+      [0n, 0n, storage]
     );
 
     console.log('=== REJECT UNAUTHORIZED FUNDING ===');
@@ -115,7 +146,7 @@ async function main() {
 
     assert.deepEqual(
       await totals(),
-      [funding, 0n, storage]
+      [funding, 0n, 2n * storage]
     );
 
     console.log('Buyer deposit persisted: PASS');
@@ -137,7 +168,9 @@ async function main() {
       {task_id: 0}
     );
 
-    const offerId = await reserve.call(
+    console.log('=== REJECT UNFUNDED OFFER CREATION ===');
+
+    await assert.rejects(() => reserve.call(
       contract,
       'post_offer',
       {
@@ -145,9 +178,35 @@ async function main() {
         slot_id: 'funded_slot',
         expires_at: (now + 500000) * 1000000
       }
+    ));
+
+    assert.equal(
+      await contract.view('offer_storage_bond', {offer_id: 0}),
+      null
+    );
+
+    console.log('Unfunded offer creation rejected: PASS');
+
+    const offerId = await reserve.call(
+      contract,
+      'post_offer',
+      {
+        task_id: 0,
+        slot_id: 'funded_slot',
+        expires_at: (now + 500000) * 1000000
+      }, { attachedDeposit: storage.toString() }
     );
 
     assert.equal(Number(offerId), 0);
+
+    assert.deepEqual(
+      await contract.view('offer_storage_bond', {
+        offer_id: 0
+      }),
+      [reserve.accountId, storage.toString()]
+    );
+
+    console.log('Offer creation storage owner: PASS');
 
     console.log('=== REJECT UNFUNDED OFFER ===');
 
@@ -202,7 +261,7 @@ async function main() {
 
     assert.deepEqual(
       await totals(),
-      [35n, 13n, storage * 2n]
+      [35n, 13n, storage * 4n]
     );
 
     console.log('Reserve collateral persisted: PASS');

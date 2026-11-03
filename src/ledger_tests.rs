@@ -20,7 +20,7 @@ fn funded() -> (Nomogenesis, u64, u64, Vec<Vec<u8>>) {
     let storage = reserve_cost();
 
     actor(0, 100, 0);
-    let task = c.create_task(accounts(1), root, 2, 2, 200, 300);
+    let task = c.test_create_task(accounts(1), root, 2, 2, 200, 300);
 
     actor(0, 101, 35 + storage);
     c.fund_task(task, U128(20), U128(10), U128(3), U128(2));
@@ -29,7 +29,7 @@ fn funded() -> (Nomogenesis, u64, u64, Vec<Vec<u8>>) {
     c.accept_primary(task);
 
     actor(2, 110, 0);
-    let offer = c.post_offer(task, "ledger_slot".into(), 180);
+    let offer = c.test_post_offer(task, "ledger_slot".into(), 180);
 
     actor(2, 115, 13 + storage);
     c.fund_offer(offer, U128(13));
@@ -97,7 +97,7 @@ fn four_terminal_outcomes_conserve_funds() {
         assert_eq!(c.economic_escrow, 0);
         assert_eq!(c.collateral_escrow, 0);
         assert!(c.offer_deposits.get(&offer).is_none());
-        assert_eq!(c.storage_reserves, 2 * reserve_cost());
+        assert_eq!(c.storage_reserves, 4 * reserve_cost());
     }
 }
 
@@ -122,7 +122,7 @@ fn unmatched_cancellation_refunds_buyer() {
     let (root, _) = super::tests::fixture();
 
     actor(0, 100, 0);
-    let id = c.create_task(accounts(1), root, 2, 2, 200, 300);
+    let id = c.test_create_task(accounts(1), root, 2, 2, 200, 300);
 
     actor(0, 110, 35 + reserve_cost());
     c.fund_task(id, U128(20), U128(10), U128(3), U128(2));
@@ -144,7 +144,7 @@ fn unused_collateral_returns_to_reserve() {
     let (root, _) = super::tests::fixture();
 
     actor(0, 100, 0);
-    let id = c.create_task(accounts(1), root, 2, 2, 200, 300);
+    let id = c.test_create_task(accounts(1), root, 2, 2, 200, 300);
 
     actor(0, 101, 35 + reserve_cost());
     c.fund_task(id, U128(20), U128(10), U128(3), U128(2));
@@ -153,7 +153,7 @@ fn unused_collateral_returns_to_reserve() {
     c.accept_primary(id);
 
     actor(2, 120, 0);
-    let offer = c.post_offer(id, "free_slot".into(), 180);
+    let offer = c.test_post_offer(id, "free_slot".into(), 180);
 
     actor(2, 130, 13 + reserve_cost());
     c.fund_offer(offer, U128(13));

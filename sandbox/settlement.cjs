@@ -123,7 +123,7 @@ async function main() {
           index: 2,
           primary_deadline: primaryDeadline,
           reserve_deadline: reserveDeadline
-        }
+        }, { attachedDeposit: storage.toString() }
       ));
 
       await buyer.call(contract, 'fund_task', {
@@ -145,7 +145,7 @@ async function main() {
           task_id: task,
           slot_id: slot,
           expires_at: offerExpiry
-        }
+        }, { attachedDeposit: storage.toString() }
       ));
 
       await reserve.call(contract, 'fund_offer', {
@@ -186,7 +186,7 @@ async function main() {
 
       assert.equal(totals[0], economic);
       assert.equal(totals[1], collateral);
-      assert.equal(totals[2], 8n * storage);
+      assert.equal(totals[2], 16n * storage);
 
       assert.equal(
         economic + collateral + claims,

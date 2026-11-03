@@ -7,20 +7,22 @@
 - Dátum: **2026-11-03**
 - Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
 - Branch: `feat/m2-escrow`
-- Előző rögzített checkpoint: `984da8d` (M2/03).
-- M2/04 fejlesztés: native NEAR withdrawal, pending ledger,
-  sikeres callback, sikertelen átutalás utáni helyreállítás.
-- Rust-tesztek: **103/103 PASS**.
-- NEAR Sandbox: **6 integrációs tesztcsomag**.
-- Clippy, WASM, pénzmegmaradási tesztek: PASS.
-- Kifizetés: három valódi helyi átutalás összesen 1.9 NEAR.
-- Sikertelen átutalás: hibainjektált WASM, callback
-  után a követelés helyreáll; natív receipt failure igazolt.
-- Nem igazolt: pontos storage költség, teljes storage-refund,
-  publikus testnet, szerződésmigráció, külső security audit.
-- **Éles pénzes használatra nem jóváhagyott.**
-- Következő egyetlen feladat:
-  **pontos storage accounting és visszatérítési életciklus**.
+- Kiinduló checkpoint: `e9c9c9a` (M2/05A).
+- M2/05C: fizetős task/offer létrehozás, per-rekord
+  storage-befizető és előleg nyilvántartása.
+- Rust-tesztek: **106/106 PASS**.
+- NEAR Sandbox: **8 integrációs csomag**.
+- Clippy és kompatibilis WASM: PASS.
+- Native NEAR payout és callback recovery: PASS,
+  a sikertelen eset hibainjektált binárissal igazolt.
+- Tényleges mérés: 1930 byte tartós növekedés.
+- Provisional storage reserves: 16384 byte-equivalent.
+- Nem igazolt: pontos storage-refund, migráció,
+  publikus testnet, minimális saját tőkéből fedezett
+  működés, külső security audit.
+- Éles pénzes használatra: **NEM JÓVÁHAGYOTT**.
+- Következő feladat: pontos storage-felszabadítási
+  és visszatérítési életciklus tervezése és tesztje.
 
 ## Munkamenetindító parancsok
 
@@ -152,3 +154,17 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - New design: docs/STORAGE_POLICY.md.
 - Next: require funded storage admission for both
   persistent creation endpoints and migrate tests.
+
+
+### 2026-11-03 — M2/05C storage admission checkpoint
+
+- Base: `e9c9c9a`, branch `feat/m2-escrow`.
+- 106 Rust unit tests.
+- Eight local NEAR sandbox suites.
+- Storage prepayment required for task/offer creation.
+- Ownership tracked in persistent storage bonds.
+- 12 rejected creation transactions leave storage unchanged.
+- Exact economic payout logic remains unchanged.
+- Refund mechanism NOT IMPLEMENTED.
+- Public testnet, migration, independent audit NOT DONE.
+- Next: precise storage and refund lifecycle.
