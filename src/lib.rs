@@ -1,12 +1,82 @@
-use near_sdk::near;
+use near_sdk::{AccountId, env, near, store::LookupMap};
+mod task;
 use sha2::{Digest, Sha256};
+use task::{Task, TaskPhase};
 
 #[near(contract_state)]
-#[derive(Default)]
-pub struct Nomogenesis {}
+pub struct Nomogenesis {
+    next_task_id: u64,
+    tasks: LookupMap<u64, Task>,
+}
+
+impl Default for Nomogenesis {
+    fn default() -> Self {
+        Self {
+            next_task_id: 0,
+            tasks: LookupMap::new(b"tasks".as_slice()),
+        }
+    }
+}
 
 #[near]
 impl Nomogenesis {
+    pub fn create_task(
+        &mut self,
+        primary: AccountId,
+        root: Vec<u8>,
+        height: u8,
+        index: u64,
+        primary_deadline: u64,
+        reserve_deadline: u64,
+    ) -> u64 {
+        let buyer = env::predecessor_account_id();
+        let now = env::block_timestamp();
+
+        assert_ne!(buyer, primary, "buyer and primary must differ");
+        assert_eq!(root.len(), 32, "invalid commitment root");
+        assert!((1..=10).contains(&height), "invalid tree height");
+        assert!(index < (1u64 << height), "invalid leaf index");
+        assert!(
+            now < primary_deadline && primary_deadline < reserve_deadline,
+            "invalid deadlines"
+        );
+
+        let id = self.next_task_id;
+        self.next_task_id = id.checked_add(1).expect("task ID overflow");
+
+        self.tasks.insert(
+            id,
+            Task {
+                id,
+                buyer,
+                primary,
+                root,
+                height,
+                index,
+                primary_deadline,
+                reserve_deadline,
+                phase: TaskPhase::SeekingPrimary,
+            },
+        );
+        id
+    }
+
+    pub fn accept_primary(&mut self, task_id: u64) {
+        let caller = env::predecessor_account_id();
+        let now = env::block_timestamp();
+        let task = self.tasks.get_mut(&task_id).expect("unknown task");
+
+        assert_eq!(caller, task.primary, "not designated primary");
+        assert_eq!(task.phase, TaskPhase::SeekingPrimary, "invalid state");
+        assert!(now < task.primary_deadline, "primary deadline passed");
+
+        task.phase = TaskPhase::SeekingReserve;
+    }
+
+    pub fn get_task(&self, task_id: u64) -> Option<Task> {
+        self.tasks.get(&task_id).cloned()
+    }
+
     pub fn verify_chunk(
         &self,
         root: Vec<u8>,
@@ -69,7 +139,9 @@ mod tests {
     fn hex(input: &str) -> Vec<u8> {
         input
             .as_bytes()
-            .chunks_exact(2)
+            .as_chunks::<2>()
+            .0
+            .iter()
             .map(|pair| u8::from_str_radix(std::str::from_utf8(pair).unwrap(), 16).unwrap())
             .collect()
     }
@@ -128,3 +200,6 @@ mod tests {
         assert!(!verify_merkle(&root, 2, 2, b"charlie", &siblings[..1]));
     }
 }
+
+#[cfg(test)]
+mod task_tests;
