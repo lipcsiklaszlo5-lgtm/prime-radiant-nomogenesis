@@ -6,10 +6,10 @@
 
 - Utolsó frissítés: **2026-11-03 (első starter)**
 - Repo URL: **https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis** — public; GitHub kapcsolatból ellenőrizve
-- Branch / HEAD SHA: **main, pontos SHA ellenőrzendő**
+- Branch / HEAD SHA: **docs/m0-protocol-spec; alap: ce9c9e4 (main)**
 - Ténylegesen megépített Rust-modul: **NEM IGAZOLT**
 - Utolsó hiteles Python referenciateszt: **95/95**, az auditált V2 ZIP-ben, nem az új Rust repóban
-- A következő **egyetlen** ticket: **M0 — a projektmemória Git-commitjának és HEAD SHA-jának rögzítése; utána protokollspecifikáció**
+- A következő **egyetlen** ticket: **M0 — protokollspecifikáció és funkcionális tesztvektorok kidolgozása**
 - Függőség és akadály: a projektmemória integrálása, code provenance és objektív proof definíciója
 - Tiltott téves állítás: „van on-chain Economic Commitment Protocol V2”, „a gazdasági fölény bizonyított”
 
@@ -47,3 +47,12 @@ A különálló korábbi Python prototípusokat és független auditot feldolgoz
 ### 2026-11-03 — GitHub repo és Codespaces állapot ellenőrizve (commit előtt)
 
 Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public). A felhasználó a `main` branch-en megnyitotta a Codespaces-t asztali VS Code-ban. A dokumentumok telepítését, commitját és tesztjét a következő terminálkimenettel kell igazolni; ezen csomag **önmagában nem bizonyít commitot**.
+
+### 2026-11-03 — M0 projektmemória rögzítve
+
+- Commit: `ce9c9e4a5e13e89d06f0f30c3673de8318564323`.
+- 11 Markdown-fájl sikeresen commitolva és pusholva.
+- GitHub-kapcsolaton keresztül a commit és a fájllista ellenőrizve.
+- Codespaces working tree a commit után: `CLEAN`.
+- Rust build, funkcionális teszt vagy NEAR-tranzakció még nem történt.
+- Következő feladat: M0 protokollspecifikáció.
