@@ -1,5 +1,6 @@
 use near_sdk::{AccountId, env, json_types::U128, near, store::LookupMap};
 mod escrow;
+mod ledger;
 mod offer;
 pub mod settlement;
 mod task;
@@ -20,6 +21,9 @@ pub struct Nomogenesis {
     economic_escrow: u128,
     collateral_escrow: u128,
     storage_reserves: u128,
+    claimables: LookupMap<AccountId, u128>,
+    claimable_total: u128,
+    settled_tasks: LookupMap<u64, bool>,
 }
 
 impl Default for Nomogenesis {
@@ -35,12 +39,27 @@ impl Default for Nomogenesis {
             economic_escrow: 0,
             collateral_escrow: 0,
             storage_reserves: 0,
+            claimables: LookupMap::new(b"claims".as_slice()),
+            claimable_total: 0,
+            settled_tasks: LookupMap::new(b"settled".as_slice()),
         }
     }
 }
 
 #[near]
 impl Nomogenesis {
+    pub fn get_claimable(&self, account: AccountId) -> U128 {
+        U128(self.claimables.get(&account).copied().unwrap_or(0))
+    }
+
+    pub fn claimable_total(&self) -> U128 {
+        U128(self.claimable_total)
+    }
+
+    pub fn is_task_settled(&self, task_id: u64) -> bool {
+        self.settled_tasks.get(&task_id).copied().unwrap_or(false)
+    }
+
     pub fn storage_reserve_required(&self) -> U128 {
         U128(reserve_cost())
     }
@@ -323,6 +342,9 @@ impl Nomogenesis {
         assert_eq!(self.slot_locks.remove(&key), Some(id));
         self.offers.get_mut(&id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::UnactivatedExpired;
+        if self.task_deposits.get(&task_id).is_some() {
+            self.settle_funded_task(task_id);
+        }
     }
 
     pub fn slot_holder(&self, reserve: AccountId, slot_id: String) -> Option<u64> {
@@ -352,6 +374,10 @@ impl Nomogenesis {
         );
 
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
+
+        if self.offer_deposits.get(&offer_id).is_some() {
+            self.refund_released_offer(offer_id);
+        }
     }
 
     pub fn get_offer(&self, offer_id: u64) -> Option<Offer> {
@@ -385,6 +411,9 @@ impl Nomogenesis {
         assert!(task.selected_offer.is_none(), "option already selected");
 
         task.phase = TaskPhase::Cancelled;
+        if self.task_deposits.get(&task_id).is_some() {
+            self.settle_funded_task(task_id);
+        }
     }
 
     pub fn expire_unmatched(&mut self, task_id: u64) {
@@ -402,6 +431,9 @@ impl Nomogenesis {
         assert!(now >= task.primary_deadline, "task not expired");
 
         task.phase = TaskPhase::UnmatchedExpired;
+        if self.task_deposits.get(&task_id).is_some() {
+            self.settle_funded_task(task_id);
+        }
     }
 
     pub fn get_task(&self, task_id: u64) -> Option<Task> {
@@ -442,6 +474,9 @@ impl Nomogenesis {
         self.slot_locks.remove(&key);
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::PrimaryProofAccepted;
+        if self.task_deposits.get(&task_id).is_some() {
+            self.settle_funded_task(task_id);
+        }
     }
 
     pub fn trigger_backup(&mut self, task_id: u64) {
@@ -513,6 +548,9 @@ impl Nomogenesis {
         self.slot_locks.remove(&key);
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::ReserveProofAccepted;
+        if self.task_deposits.get(&task_id).is_some() {
+            self.settle_funded_task(task_id);
+        }
     }
 
     pub fn finalize_reserve_failure(&mut self, task_id: u64) {
@@ -542,6 +580,9 @@ impl Nomogenesis {
         assert_eq!(self.slot_locks.remove(&key), Some(offer_id));
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::ReserveFailed;
+        if self.task_deposits.get(&task_id).is_some() {
+            self.settle_funded_task(task_id);
+        }
     }
 
     pub fn verify_task_chunk(
@@ -710,3 +751,6 @@ mod terminal_audit_tests;
 
 #[cfg(test)]
 mod escrow_tests;
+
+#[cfg(test)]
+mod ledger_tests;

@@ -115,3 +115,15 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - Six additional Rust tests PASS.
 - Third sandbox funding integration PASS.
 - Pending: terminal ledger, refunds, withdrawals, callback replay protection, storage measurement.
+
+
+### 2026-11-03 — M2/03 terminal ledger checkpoint
+
+- Base commit: `67585d4`, branch `feat/m2-escrow`.
+- Rust 95/95 PASS; Clippy and WASM PASS.
+- Four local NEAR sandbox suites PASS.
+- Terminal claims and collateral slashing verified on-chain.
+- Conservation: 192 yoctoNEAR across four funded tasks.
+- Storage accounting remains provisional.
+- Withdrawals and async callbacks not implemented.
+- Next: M2/04 withdrawal and storage security.
