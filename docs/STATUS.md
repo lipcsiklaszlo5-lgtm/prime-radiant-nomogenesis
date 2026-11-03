@@ -1,22 +1,49 @@
 # STATUS — Prime Radiant
 
-> Egyszerre **egy ellenőrzött aktuális állapot**. Utolsó valós frissítés: 2026-11-03 (M1 Rust checkpoint); következő frissítéskor add meg a branch-t és commit SHA-t.
+**Utolsó ellenőrzött M1 Rust checkpoint:** 2026-11-03
 
-| Mező | Jelenleg |
+| Mező | Ellenőrzött állapot |
 |---|---|
-| Projekt | Economic Commitment Protocol V2 → minimal NEAR Rust MVP |
-| Go/No-Go | Feltételes GO az MVP-re; NO-GO kész nevezésként |
-| Repozitórium | **https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis** (public; 2026-11-03, GitHub kapcsolatból ellenőrizve) |
-| Aktuális branch / SHA | `feat/m1-near-contract`, HEAD `129e8a8` (GitHubon ellenőrizve) |
-| Rust szerződés | Merkle proof verifier és kezdeti task állapotgép megépítve; nem kész protokoll |
-| Sandbox teszt | Nem igazolt |
-| Testnet receipts | Nem igazolt |
-| Python referencia | 95/95 teszt PASS a 2026-11-03-as auditban |
-| Független gazdasági előny | Nem bizonyított egy erősebb baseline ellen |
-| Nyitott P0 | PR-001, PR-002, PR-003 |
-| Legutóbbi futtatott parancs | `cargo test --locked --lib`: 12/12 PASS; WASM check PASS; Clippy PASS |
-| Következő feladat | **M1**: tartalékajánlatok és egyedi kapacitás-slotok foglalása funkcionális tesztekkel |
+| Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
+| Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
+| Fejlesztési ág | `feat/m1-near-contract` |
+| Auditált Rust commit | `01996a3d12e229ec3edb819c683defb60d90e13b` |
+| Állapotgép | Minden tervezett fő M1 életciklus implementálva |
+| Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
+| Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
+| Natív Rust unit tesztek | **75 PASS, 0 FAIL** |
+| Mockolt NEAR storage reload | PASS — 2 célzott teszt |
+| Terminális állapotok auditja | PASS — 6 állapot, 7 új teszt |
+| `cargo check --locked --target wasm32-unknown-unknown` | PASS |
+| `cargo clippy --locked --all-targets -- -D warnings` | PASS |
+| Telepíthető release WASM | NOT VERIFIED |
+| Valódi NEAR sandbox tranzakció | NOT VERIFIED |
+| Testnet tranzakciók / receipts | NOT VERIFIED |
+| Gazdasági escrow, collateral, payout | NOT IMPLEMENTED |
+| Storage deposit és refund accounting | NOT IMPLEMENTED |
+| Python V2 referenciateszt | 95/95 PASS korábbi független audit alapján |
+| Gazdasági optimalizációs fölény | NOT PROVEN |
+| Hackathon nevezés kész | NO |
 
-## Állapotfrissítési szabály
+## Mérföldkő-értelmezés
 
-Minden mérföldkő után rögzítsd a **dátumot, parancsot, kimenetet, branch-t és commit SHA-t**, valamint a következő egy feladatot. Ha a vizsgálat nem történt meg, az állapot `NOT VERIFIED`, nem `PASS`. Ne próbálj mérföldköveket előre megjelölni azért, mert a tervezett architektúra már dokumentált.
+Az M1 lokális Rust-állapotgépe és regressziós auditja elkészült.
+Ez **nem** teljes M1 sandbox-igazolás, nem M2 pénzügyi
+implementáció, és nem bizonyít valódi kapacitást.
+
+Az SDK-szintű WASM check nem helyettesíti a kiadható
+WASM-fájl tényleges megépítését és NEAR VM-futtatását.
+
+## Következő egyetlen feladat
+
+**M1 Sandbox/Build:** ellenőrizni a Codespaces build-környezetet,
+majd a `cargo near build` segítségével megépíteni a
+telepíthető WASM-artifactot. Csak ezután következik a
+NEAR sandbox életciklus-teszt.
+
+## Frissítési szabály
+
+Minden új mérföldkőnél rögzíteni kell a pontos commitot,
+lefuttatott parancsokat, bizonyított PASS/FAIL eredményeket
+és a még NEM igazolt állításokat. A dokumentációs commit
+SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.

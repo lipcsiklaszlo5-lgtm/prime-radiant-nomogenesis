@@ -4,14 +4,26 @@
 
 ## Aktuális ellenőrzött állapot
 
-- Utolsó frissítés: **2026-11-03 (M1 Rust checkpoint)**
-- Repo URL: **https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis** — public; GitHub kapcsolatból ellenőrizve
-- Branch / HEAD SHA: **feat/m1-near-contract; HEAD 129e8a8**
-- Ténylegesen megépített Rust-modul: **Merkle verifier + task registration/primary acceptance**
-- Utolsó hiteles Python referenciateszt: **95/95**, az auditált V2 ZIP-ben, nem az új Rust repóban
-- A következő **egyetlen** ticket: **M1 — tartalékajánlatok, slot-lock és negatív funkcionális tesztek**
-- Függőség és akadály: a projektmemória integrálása, code provenance és objektív proof definíciója
-- Tiltott téves állítás: „van on-chain Economic Commitment Protocol V2”, „a gazdasági fölény bizonyított”
+- Dátum: **2026-11-03**
+- Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
+- Branch: `feat/m1-near-contract`
+- Auditált Rust checkpoint: `01996a3d12e229ec3edb819c683defb60d90e13b`
+- Megépítve: Merkle verifier, feladat- és ajánlatkezelés,
+  kizárólagos slot-foglalás, primary és reserve proof,
+  keeper activation, sikeres és sikertelen lezárások,
+  unmatched cancellation/expiry, unactivated expiry.
+- M1 unit tesztek: **75/75 PASS**.
+- Mockolt NEAR állapotmentés és újratöltés: PASS.
+- Mind a hat terminális állapot regressziós auditja: PASS.
+- WASM target check: PASS; Clippy: PASS.
+- **Nem igazolt:** release WASM, sandbox, testnet receipts.
+- **Nem implementált:** NEAR escrow, collateral, keeper bounty,
+  storage accounting, withdrawal, async payout callback.
+- Előzmény: Python V2 referencia 95/95 PASS; nem Rust-teszt.
+- Következő egyetlen feladat:
+  **telepíthető WASM build és NEAR sandbox előkészítés**.
+- Fontos: az auditált kód SHA-ja nem feltétlenül azonos
+  a későbbi dokumentációs commit SHA-jával.
 
 ## Munkamenetindító parancsok
 
@@ -70,3 +82,19 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - A proof view metódus jelenleg hívótól kapott rootot
   vizsgál; még nincs task állapotához kötve.
 - Következő: tartalékajánlat + kizárólagos slot-foglalás.
+
+
+### 2026-11-03 — M1 állapotgép és regressziós audit lezárása
+
+- Ellenőrzött Rust commit: `01996a3d12e229ec3edb819c683defb60d90e13b`.
+- Funkciók: task / offer / slot-lock / primary proof /
+  backup activation / reserve proof / minden fő lezárási út.
+- 75 sikeres natív Rust unit teszt.
+- 2 mock storage-reload teszt és 7 terminális audit-teszt
+  része a 75 tesztnek, nem hozzáadandó új eredmény.
+- `cargo check --locked --target wasm32-unknown-unknown`: PASS.
+- `cargo clippy --locked --all-targets -- -D warnings`: PASS.
+- `git diff --check`: PASS.
+- Még nem történt bizonyított sandbox-telepítés,
+  testnet-tranzakció vagy gazdasági settlement.
+- Következő: release WASM build, majd sandbox-integráció.
