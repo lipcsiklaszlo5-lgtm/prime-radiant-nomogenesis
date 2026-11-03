@@ -65,6 +65,7 @@ impl Nomogenesis {
                 reserve_deadline,
                 phase: TaskPhase::SeekingPrimary,
                 selected_offer: None,
+                backup_activator: None,
             },
         );
         id
@@ -139,7 +140,7 @@ impl Nomogenesis {
         let task = self.tasks.get(&task_id).expect("unknown task");
 
         assert_eq!(task.phase, TaskPhase::OfferSelected, "invalid task state");
-        assert!(now >= task.primary_deadline, "selection not expired");
+        assert!(now >= task.reserve_deadline, "selection not expired");
 
         let id = task.selected_offer.expect("missing selection");
         let offer = self.offers.get(&id).expect("missing offer");
@@ -230,6 +231,36 @@ impl Nomogenesis {
         self.slot_locks.remove(&key);
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::PrimaryProofAccepted;
+    }
+
+    pub fn trigger_backup(&mut self, task_id: u64) {
+        let keeper = env::predecessor_account_id();
+        let now = env::block_timestamp();
+        let task = self.tasks.get(&task_id).expect("unknown task");
+
+        assert_eq!(task.phase, TaskPhase::OfferSelected, "invalid task state");
+        assert!(
+            now >= task.primary_deadline && now < task.reserve_deadline,
+            "outside backup activation window"
+        );
+        assert!(task.backup_activator.is_none(), "already activated");
+
+        let offer_id = task.selected_offer.expect("missing selection");
+        let offer = self.offers.get(&offer_id).expect("missing offer");
+
+        assert_eq!(offer.task_id, task_id, "offer/task mismatch");
+        assert_eq!(offer.status, OfferStatus::Selected);
+
+        let key = format!("{}|{}", offer.reserve, offer.slot_id);
+        assert_eq!(
+            self.slot_locks.get(&key).copied(),
+            Some(offer_id),
+            "slot lock mismatch"
+        );
+
+        let task = self.tasks.get_mut(&task_id).unwrap();
+        task.phase = TaskPhase::BackupActive;
+        task.backup_activator = Some(keeper);
     }
 
     pub fn verify_task_chunk(
@@ -374,3 +405,6 @@ mod proof_tests;
 
 #[cfg(test)]
 mod primary_proof_tests;
+
+#[cfg(test)]
+mod backup_tests;

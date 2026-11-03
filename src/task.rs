@@ -8,6 +8,7 @@ pub enum TaskPhase {
     OfferSelected,
     SelectionExpired,
     PrimaryProofAccepted,
+    BackupActive,
 }
 
 #[near(serializers = [borsh, json])]
@@ -23,4 +24,5 @@ pub struct Task {
     pub reserve_deadline: u64,
     pub phase: TaskPhase,
     pub selected_offer: Option<u64>,
+    pub backup_activator: Option<AccountId>,
 }

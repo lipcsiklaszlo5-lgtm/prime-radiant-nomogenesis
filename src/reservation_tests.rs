@@ -113,17 +113,17 @@ fn different_providers_can_use_identical_slot_names() {
 fn expired_unfunded_selection_releases_slot_for_new_buyer() {
     let mut c = Nomogenesis::default();
     let first = ready(&mut c, 0, 200);
-    let second = ready(&mut c, 3, 300);
+    let second = ready(&mut c, 3, 450);
     let a = listed(&mut c, first, 2, "shared", 180);
-    let b = listed(&mut c, second, 2, "shared", 280);
+    let b = listed(&mut c, second, 2, "shared", 430);
 
     actor(0, 130);
     c.select_offer(first, a);
 
-    actor(4, 199);
+    actor(4, 299);
     rejected(|| c.expire_unfunded_selection(first));
 
-    actor(4, 200);
+    actor(4, 300);
     c.expire_unfunded_selection(first);
     assert_eq!(c.slot_holder(accounts(2), "shared".into()), None);
     assert_eq!(c.get_offer(a).unwrap().status, OfferStatus::Released);
@@ -133,7 +133,7 @@ fn expired_unfunded_selection_releases_slot_for_new_buyer() {
     );
     rejected(|| c.expire_unfunded_selection(first));
 
-    actor(3, 201);
+    actor(3, 301);
     c.select_offer(second, b);
     assert_eq!(c.slot_holder(accounts(2), "shared".into()), Some(b));
 }

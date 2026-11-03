@@ -92,20 +92,20 @@ fn selected_offer_cannot_be_cancelled_by_owner_or_stranger() {
 fn old_release_cannot_unlock_new_buyers_reservation() {
     let mut c = Nomogenesis::default();
     let first = ready(&mut c, 0, 200);
-    let second = ready(&mut c, 3, 300);
+    let second = ready(&mut c, 3, 450);
     let old = listed(&mut c, first, 180);
-    let new = listed(&mut c, second, 280);
+    let new = listed(&mut c, second, 430);
 
     actor(0, 130);
     c.select_offer(first, old);
 
-    actor(4, 200);
+    actor(4, 300);
     c.expire_unfunded_selection(first);
 
-    actor(3, 201);
+    actor(3, 301);
     c.select_offer(second, new);
 
-    actor(4, 202);
+    actor(4, 302);
     rejected(|| c.release_unaccepted_offer(old));
     rejected(|| c.expire_unfunded_selection(first));
 
