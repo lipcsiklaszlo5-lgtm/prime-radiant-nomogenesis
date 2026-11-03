@@ -325,3 +325,49 @@ refundable balances and retained-record ownership
 across mixed terminal and withdrawal lifecycles.
 
 Production funds remain NOT APPROVED.
+
+## M2/07B — Mixed lifecycle capital audit
+
+Local NEAR Sandbox, 2026-11-03.
+
+- Base commit: `650983c`.
+- Original M2/06C ownership audit preserved.
+- Rust contract and WASM unchanged.
+- 23 state snapshots collected.
+- Two buyers, two reserve providers, outsider caller.
+- Unauthorized early releases rejected.
+- Two funded tasks cancelled.
+- Four collateralized offers released.
+- Replay protection PASS.
+- Ownership and financial conservation PASS.
+- Native storage rebate withdrawal PASS.
+- Initial free capital: 0.12000000 NEAR.
+- Net storage growth: 2339 bytes.
+- Storage stake growth: 0.02339000 NEAR.
+- Net capital reduction: approximately 0.02251805 NEAR.
+- Final free capital: approximately 0.09748195 NEAR.
+- Final guarded capital: approximately 0.07700195 NEAR.
+- Remaining recorded storage reserve: 0.24394000 NEAR.
+
+The observed financial ledger remained conserved
+through the tested releases and native withdrawal.
+
+Recorded storage reserves remain protected as
+liabilities in addition to actual storage stake.
+
+All sampled states maintained nonnegative surplus.
+
+Intermediate funding transitions were not all
+sampled individually.
+
+This is a bounded local lifecycle experiment,
+not an exhaustive solvency or concurrency proof.
+
+Optional regression:
+
+`npm run sandbox:capital-lifecycle`
+
+Next: classify consumed versus refundable storage
+capital and model minimal-capital operation.
+
+No production funds approved.
