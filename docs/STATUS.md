@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/07B — mixed lifecycle capital audit, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/07C — shadow reconciliation, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
@@ -283,3 +283,28 @@ Next: classify consumed versus refundable storage
 capital and model minimal-capital operation.
 
 No production funds approved.
+
+## M2/07C — Shadow storage reconciliation
+
+- Base: `53ca3a9`.
+- Local Sandbox shadow reconciliation PASS.
+- 23 observed states.
+- Hypothetical consumed storage: 0.02339 NEAR.
+- Hypothetical unused reserve: 0.22055 NEAR.
+- Conservative free capital: 0.09748195 NEAR.
+- Shadow free capital: 0.12087195 NEAR.
+- No on-chain economic or storage logic changed.
+- No per-owner refund eligibility established.
+- Shadow identity is algebraic, not a
+  standalone security or solvency proof.
+
+Optional regression:
+
+`npm run sandbox:capital-shadow`
+
+Proposed implementation requirements:
+
+`docs/STORAGE_RECONCILIATION_ADR.md`
+
+General storage refunds, migration and
+production solvency remain unverified.
