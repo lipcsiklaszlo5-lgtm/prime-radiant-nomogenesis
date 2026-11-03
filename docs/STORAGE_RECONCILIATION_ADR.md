@@ -97,3 +97,43 @@ state transitions, not only at withdrawal.
 
 No current withdrawal or storage backing guard
 may be relaxed solely on shadow evidence.
+
+## M2/07D/1 — Pure Rust storage ledger model
+
+Base commit: `4eb25a7`.
+
+An isolated Rust arithmetic model has been created in:
+
+- `src/storage_ledger_model.rs`
+- `tests/storage_ledger_spec.rs`
+
+Six new tests PASS. The existing 108 Rust unit tests
+remain unchanged and PASS.
+
+The model tracks payer, original contribution,
+consumed capacity, unused capacity and simulated
+released credit for four record categories.
+
+Its accounting invariant is:
+
+total = consumed + unused + released
+
+This model does not modify the NEAR contract state,
+WASM interface, withdrawal guard or escrow ledger.
+
+Security limitations:
+
+- Release eligibility is not authenticated.
+- Storage deltas are not independently authenticated.
+- Shared storage attribution remains unresolved.
+- Future storage growth has no proven upper bound.
+- Repeated partial simulated credits are not
+  protected by a trusted one-time event identity.
+- Caller-provided event IDs alone would not
+  constitute sufficient replay protection.
+- State migration remains unimplemented.
+
+Next: M2/07D/2 — event identity, replay protection,
+trusted storage attribution and adversarial tests.
+
+No production funds approved.
