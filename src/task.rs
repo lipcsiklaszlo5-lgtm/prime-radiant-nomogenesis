@@ -7,6 +7,7 @@ pub enum TaskPhase {
     SeekingReserve,
     OfferSelected,
     SelectionExpired,
+    PrimaryProofAccepted,
 }
 
 #[near(serializers = [borsh, json])]
