@@ -304,6 +304,35 @@ impl Nomogenesis {
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::ReserveProofAccepted;
     }
 
+    pub fn finalize_reserve_failure(&mut self, task_id: u64) {
+        let now = env::block_timestamp();
+
+        let (offer_id, key) = {
+            let task = self.tasks.get(&task_id).expect("unknown task");
+
+            assert_eq!(task.phase, TaskPhase::BackupActive, "backup not active");
+            assert!(now >= task.reserve_deadline, "reserve deadline not reached");
+
+            let offer_id = task.selected_offer.expect("missing selection");
+            let offer = self.offers.get(&offer_id).expect("missing offer");
+
+            assert_eq!(offer.task_id, task_id, "offer/task mismatch");
+            assert_eq!(offer.status, OfferStatus::Selected);
+
+            (offer_id, format!("{}|{}", offer.reserve, offer.slot_id))
+        };
+
+        assert_eq!(
+            self.slot_locks.get(&key).copied(),
+            Some(offer_id),
+            "slot lock mismatch"
+        );
+
+        assert_eq!(self.slot_locks.remove(&key), Some(offer_id));
+        self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
+        self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::ReserveFailed;
+    }
+
     pub fn verify_task_chunk(
         &self,
         task_id: u64,
@@ -452,3 +481,6 @@ mod backup_tests;
 
 #[cfg(test)]
 mod reserve_proof_tests;
+
+#[cfg(test)]
+mod reserve_failure_tests;
