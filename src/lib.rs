@@ -196,15 +196,16 @@ impl Nomogenesis {
         self.tasks.get(&task_id).cloned()
     }
 
-    pub fn verify_chunk(
+    pub fn verify_task_chunk(
         &self,
-        root: Vec<u8>,
-        height: u8,
-        index: u64,
+        task_id: u64,
         payload: Vec<u8>,
         siblings: Vec<Vec<u8>>,
     ) -> bool {
-        verify_merkle(&root, height, index, &payload, &siblings)
+        let Some(task) = self.tasks.get(&task_id) else {
+            return false;
+        };
+        verify_merkle(&task.root, task.height, task.index, &payload, &siblings)
     }
 }
 
@@ -265,7 +266,7 @@ mod tests {
             .collect()
     }
 
-    fn fixture() -> (Vec<u8>, Vec<Vec<u8>>) {
+    pub(super) fn fixture() -> (Vec<u8>, Vec<Vec<u8>>) {
         let root = hex("37931d88e0728e9809cc9a71af1494e90174f8ecee166627eb22eac5b40c9314");
         let siblings = vec![
             hex("dc5fe2eda0ba5ac4f85d2c3d30c93cef8994276ede3f4008ce395526fb9e2f35"),
@@ -277,7 +278,7 @@ mod tests {
     #[test]
     fn accepts_independent_reference_vector() {
         let (root, siblings) = fixture();
-        assert!(Nomogenesis::default().verify_chunk(root, 2, 2, b"charlie".to_vec(), siblings));
+        assert!(verify_merkle(&root, 2, 2, b"charlie", &siblings));
     }
 
     #[test]
@@ -331,3 +332,6 @@ mod reservation_tests;
 
 #[cfg(test)]
 mod release_tests;
+
+#[cfg(test)]
+mod proof_tests;
