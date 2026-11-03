@@ -4,12 +4,12 @@
 
 ## Aktuális ellenőrzött állapot
 
-- Utolsó frissítés: **2026-11-03 (első starter)**
+- Utolsó frissítés: **2026-11-03 (M1 Rust checkpoint)**
 - Repo URL: **https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis** — public; GitHub kapcsolatból ellenőrizve
-- Branch / HEAD SHA: **docs/m0-protocol-spec; alap: ce9c9e4 (main)**
-- Ténylegesen megépített Rust-modul: **NEM IGAZOLT**
+- Branch / HEAD SHA: **feat/m1-near-contract; HEAD 129e8a8**
+- Ténylegesen megépített Rust-modul: **Merkle verifier + task registration/primary acceptance**
 - Utolsó hiteles Python referenciateszt: **95/95**, az auditált V2 ZIP-ben, nem az új Rust repóban
-- A következő **egyetlen** ticket: **M0 — protokollspecifikáció és funkcionális tesztvektorok kidolgozása**
+- A következő **egyetlen** ticket: **M1 — tartalékajánlatok, slot-lock és negatív funkcionális tesztek**
 - Függőség és akadály: a projektmemória integrálása, code provenance és objektív proof definíciója
 - Tiltott téves állítás: „van on-chain Economic Commitment Protocol V2”, „a gazdasági fölény bizonyított”
 
@@ -56,3 +56,17 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - Codespaces working tree a commit után: `CLEAN`.
 - Rust build, funkcionális teszt vagy NEAR-tranzakció még nem történt.
 - Következő feladat: M0 protokollspecifikáció.
+
+### 2026-11-03 — M1 Rust checkpoint
+
+- Branch: `feat/m1-near-contract`.
+- Commit: `129e8a8beaf88f45e2c80300770d90ce14eb9ada`.
+- Megépítve: objektív Merkle-proof ellenőrző, task létrehozás, kijelölt primary elfogadás.
+- Natív Rust unit tesztek: 12 PASS, 0 FAIL.
+- `cargo check --locked --target wasm32-unknown-unknown`: PASS.
+- `cargo clippy --locked --all-targets -- -D warnings`: PASS.
+- NEM igazolt: NEAR sandbox, telepíthető szerződés,
+  escrow, fedezet, backup aktiválás, valódi lánctranzakció.
+- A proof view metódus jelenleg hívótól kapott rootot
+  vizsgál; még nincs task állapotához kötve.
+- Következő: tartalékajánlat + kizárólagos slot-foglalás.
