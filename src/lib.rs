@@ -263,6 +263,47 @@ impl Nomogenesis {
         task.backup_activator = Some(keeper);
     }
 
+    pub fn submit_reserve_proof(&mut self, task_id: u64, payload: Vec<u8>, siblings: Vec<Vec<u8>>) {
+        let caller = env::predecessor_account_id();
+        let now = env::block_timestamp();
+
+        let (offer_id, key) = {
+            let task = self.tasks.get(&task_id).expect("unknown task");
+
+            assert_eq!(task.phase, TaskPhase::BackupActive, "backup not active");
+            assert!(
+                now >= task.primary_deadline && now < task.reserve_deadline,
+                "outside reserve proof window"
+            );
+
+            let offer_id = task.selected_offer.expect("missing selection");
+            let offer = self.offers.get(&offer_id).expect("missing offer");
+
+            assert_eq!(caller, offer.reserve, "not designated reserve");
+            assert_eq!(offer.task_id, task_id, "offer/task mismatch");
+            assert_eq!(offer.status, OfferStatus::Selected);
+
+            let key = format!("{}|{}", offer.reserve, offer.slot_id);
+
+            assert_eq!(
+                self.slot_locks.get(&key).copied(),
+                Some(offer_id),
+                "slot lock mismatch"
+            );
+
+            assert!(
+                verify_merkle(&task.root, task.height, task.index, &payload, &siblings),
+                "invalid reserve proof"
+            );
+
+            (offer_id, key)
+        };
+
+        self.slot_locks.remove(&key);
+        self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
+        self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::ReserveProofAccepted;
+    }
+
     pub fn verify_task_chunk(
         &self,
         task_id: u64,
@@ -408,3 +449,6 @@ mod primary_proof_tests;
 
 #[cfg(test)]
 mod backup_tests;
+
+#[cfg(test)]
+mod reserve_proof_tests;
