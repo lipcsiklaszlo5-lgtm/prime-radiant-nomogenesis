@@ -1,5 +1,6 @@
 use near_sdk::{AccountId, env, near, store::LookupMap};
 mod offer;
+pub mod settlement;
 mod task;
 use offer::{Offer, OfferStatus};
 use sha2::{Digest, Sha256};
