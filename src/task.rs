@@ -5,6 +5,8 @@ use near_sdk::{AccountId, near};
 pub enum TaskPhase {
     SeekingPrimary,
     SeekingReserve,
+    OfferSelected,
+    SelectionExpired,
 }
 
 #[near(serializers = [borsh, json])]
@@ -19,4 +21,5 @@ pub struct Task {
     pub primary_deadline: u64,
     pub reserve_deadline: u64,
     pub phase: TaskPhase,
+    pub selected_offer: Option<u64>,
 }

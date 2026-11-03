@@ -1,7 +1,7 @@
 use near_sdk::{AccountId, env, near, store::LookupMap};
 mod offer;
 mod task;
-use offer::Offer;
+use offer::{Offer, OfferStatus};
 use sha2::{Digest, Sha256};
 use task::{Task, TaskPhase};
 
@@ -11,6 +11,7 @@ pub struct Nomogenesis {
     tasks: LookupMap<u64, Task>,
     next_offer_id: u64,
     offers: LookupMap<u64, Offer>,
+    slot_locks: LookupMap<String, u64>,
 }
 
 impl Default for Nomogenesis {
@@ -20,6 +21,7 @@ impl Default for Nomogenesis {
             tasks: LookupMap::new(b"tasks".as_slice()),
             next_offer_id: 0,
             offers: LookupMap::new(b"offers".as_slice()),
+            slot_locks: LookupMap::new(b"locks".as_slice()),
         }
     }
 }
@@ -62,6 +64,7 @@ impl Nomogenesis {
                 primary_deadline,
                 reserve_deadline,
                 phase: TaskPhase::SeekingPrimary,
+                selected_offer: None,
             },
         );
         id
@@ -99,10 +102,60 @@ impl Nomogenesis {
                 reserve,
                 slot_id,
                 expires_at,
+                status: OfferStatus::Available,
             },
         );
 
         id
+    }
+
+    pub fn select_offer(&mut self, task_id: u64, offer_id: u64) {
+        let buyer = env::predecessor_account_id();
+        let now = env::block_timestamp();
+        let task = self.tasks.get(&task_id).expect("unknown task");
+
+        assert_eq!(buyer, task.buyer, "not task buyer");
+        assert_eq!(task.phase, TaskPhase::SeekingReserve, "invalid task state");
+        assert!(task.selected_offer.is_none(), "option already selected");
+        assert!(now < task.primary_deadline, "task deadline passed");
+
+        let offer = self.offers.get(&offer_id).expect("unknown offer");
+        assert_eq!(offer.task_id, task_id, "offer belongs to another task");
+        assert_eq!(offer.status, OfferStatus::Available, "offer unavailable");
+        assert!(now < offer.expires_at, "offer expired");
+
+        let key = format!("{}|{}", offer.reserve, offer.slot_id);
+        assert!(self.slot_locks.get(&key).is_none(), "slot already reserved");
+
+        self.slot_locks.insert(key, offer_id);
+        self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Selected;
+        let task = self.tasks.get_mut(&task_id).unwrap();
+        task.selected_offer = Some(offer_id);
+        task.phase = TaskPhase::OfferSelected;
+    }
+
+    pub fn expire_unfunded_selection(&mut self, task_id: u64) {
+        let now = env::block_timestamp();
+        let task = self.tasks.get(&task_id).expect("unknown task");
+
+        assert_eq!(task.phase, TaskPhase::OfferSelected, "invalid task state");
+        assert!(now >= task.primary_deadline, "selection not expired");
+
+        let id = task.selected_offer.expect("missing selection");
+        let offer = self.offers.get(&id).expect("missing offer");
+        let key = format!("{}|{}", offer.reserve, offer.slot_id);
+
+        assert_eq!(self.slot_locks.get(&key).copied(), Some(id));
+        assert_eq!(offer.status, OfferStatus::Selected);
+
+        assert_eq!(self.slot_locks.remove(&key), Some(id));
+        self.offers.get_mut(&id).unwrap().status = OfferStatus::Released;
+        self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::SelectionExpired;
+    }
+
+    pub fn slot_holder(&self, reserve: AccountId, slot_id: String) -> Option<u64> {
+        let key = format!("{reserve}|{slot_id}");
+        self.slot_locks.get(&key).copied()
     }
 
     pub fn get_offer(&self, offer_id: u64) -> Option<Offer> {
@@ -254,3 +307,6 @@ mod task_tests;
 
 #[cfg(test)]
 mod offer_tests;
+
+#[cfg(test)]
+mod reservation_tests;
