@@ -532,3 +532,6 @@ mod unmatched_tests;
 
 #[cfg(test)]
 mod unactivated_tests;
+
+#[cfg(test)]
+mod persistence_audit_tests;
