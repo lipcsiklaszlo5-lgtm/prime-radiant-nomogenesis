@@ -65,3 +65,19 @@ original Rust source and normal WASM artifact after execution.
 Neither suite establishes production safety. Storage obligations
 are still provisionally reserved, and no public testnet or
 independent security audit has been performed.
+
+
+## M2/05 measured storage audit
+
+Sandbox/07 measures 15 chain-observed storage checkpoints:
+task and offer creation, deposits, selection, settlement,
+withdrawal, offer release and cancellation.
+
+Measured growth: 1535 bytes.
+Provisional reserve: 8192 bytes.
+The difference is not automatically refundable.
+
+See `docs/STORAGE_POLICY.md`.
+
+Known critical limitation: task and offer creation still
+permit persistent writes without storage prepayment.

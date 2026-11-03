@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant
 
-**Aktuális fejlesztési állapot:** M2/04D — withdrawal checkpoint, 2026-11-03
+**Aktuális fejlesztési állapot:** M2/05A — measured storage audit, 2026-11-03
 
 | Mező | Ellenőrzött állapot |
 |---|---|
@@ -95,3 +95,16 @@ SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
 - Provisional storage backing only; exact cost NOT VERIFIED.
 - Production deployment NOT APPROVED.
 - No public testnet, independent audit or migration verification.
+
+
+## M2/05A — Storage audit checkpoint
+
+- Real local NEAR Sandbox storage measurements.
+- 15 lifecycle checkpoints.
+- Persistent growth: 1535 bytes.
+- Four provisional reserves: 8192 bytes.
+- Reserve-versus-growth difference: 6657 byte-equivalent.
+- Difference is NOT yet validated as refundable.
+- Unfunded task/offer creation allows unpaid storage growth.
+- Required next milestone: paid creation admission gates.
+- Production funds NOT APPROVED.

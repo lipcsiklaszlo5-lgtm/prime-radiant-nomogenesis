@@ -138,3 +138,17 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - Exact storage liability and refund lifecycle NOT VERIFIED.
 - Public testnet and independent security review NOT DONE.
 - Next: exact storage accounting and liability invariants.
+
+
+### 2026-11-03 — M2/05A storage measurement
+
+- Base: `8cc009c`, branch `feat/m2-escrow`.
+- Fifteen real local Sandbox storage checkpoints PASS.
+- Persistent net growth: 1535 bytes.
+- Current provisional storage reserves: 8192 bytes.
+- Excess storage reserve must NOT yet be refunded.
+- Unpaid create_task/post_offer storage growth is a
+  confirmed design gap.
+- New design: docs/STORAGE_POLICY.md.
+- Next: require funded storage admission for both
+  persistent creation endpoints and migrate tests.
