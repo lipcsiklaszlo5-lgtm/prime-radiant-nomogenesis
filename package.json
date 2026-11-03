@@ -16,7 +16,8 @@
     "sandbox:capital": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/capital_audit.cjs",
     "sandbox:refund": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/refund_integration.cjs",
     "sandbox:ownership": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/refund_ownership_audit.cjs",
-    "sandbox:ownership-orders": "bash scripts/test-refund-orders.sh"
+    "sandbox:ownership-orders": "bash scripts/test-refund-orders.sh",
+    "sandbox:capital-drift": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/capital_drift_audit.cjs"
   },
   "devDependencies": {
     "binaryen": "132.0.0",

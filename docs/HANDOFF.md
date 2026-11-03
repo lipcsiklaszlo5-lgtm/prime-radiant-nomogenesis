@@ -222,3 +222,49 @@ Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis (public).
 - No public testnet or independent audit.
 - Next: analyze allocation ownership and minimum-capital
   backing across longer mixed lifecycles.
+
+## M2/07A — Capital drift measurement
+
+Local NEAR Sandbox, 2026-11-03.
+
+- Starting commit: `dd93929`.
+- Rust and compatible WASM unchanged.
+- Six sequential task creation transactions PASS.
+- Initial free capital: 0.08000000 NEAR.
+- Six creation bonds: 0.12288000 NEAR.
+- Persistent storage growth: 1883 bytes.
+- Actual storage stake growth: 0.01883000 NEAR.
+- Additional contract balance inflow: approximately
+  0.00018419 NEAR.
+- Net free capital reduction: approximately
+  0.01864580 NEAR.
+- Remaining free capital: 0.06135419 NEAR.
+- Remaining capital after payout buffer:
+  0.04087419 NEAR.
+
+The entire creation bond remains recorded as a
+storage reserve liability while actual allocated
+storage separately increases the backing requirement.
+
+This causes measured free-capital consumption despite
+the user's storage prepayment.
+
+The test accounts for additional observed contract
+balance inflows rather than assuming exact equality
+between attached deposits and balance changes.
+
+This is one measured workload, not a universal
+capital bound or proof of insolvency.
+
+The audit is optional and is not yet part of the
+eleven-suite default Sandbox regression.
+
+Run independently:
+
+`npm run sandbox:capital-drift`
+
+Next: classify permanently consumed storage capital,
+refundable balances and retained-record ownership
+across mixed terminal and withdrawal lifecycles.
+
+Production funds remain NOT APPROVED.
