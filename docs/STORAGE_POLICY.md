@@ -605,3 +605,91 @@ against future storage obligations.
 The current contract remains unchanged.
 No general refund authorization is granted.
 Production funds remain NOT APPROVED.
+
+## M2/07E/2B/1 — Isolated storage cost policy
+
+Base commit: `0c16b18`.
+Date: 2026-11-03.
+
+### Evidence
+
+A fresh 21-transition NEAR Sandbox matrix was
+processed by the isolated cost-policy model.
+
+Verified results:
+
+- 12 independently tracked storage contributions.
+- Each contribution preserves:
+  total = consumed + unused + released.
+- Five manipulated scenarios rejected.
+- Physical storage reconciliation PASS.
+- Rust contract and WASM unchanged.
+
+### Model totals
+
+| Component | Byte-equivalent |
+|---|---:|
+| Original storage contributions | 24576 |
+| Attributed persistent customer storage | 2082 |
+| Hypothetical unused capacity | 22312 |
+| Previously released credit | 182 |
+| Separate shared storage | 257 |
+
+Accounting:
+
+24576 = 2082 + 22312 + 182
+
+2339 = 2082 + 257
+
+Existing on-chain storage reserve after the
+tested rebates is 24394 byte-equivalent.
+
+The proposed accounting split is:
+
+24394 = 2082 + 22312
+
+### Proposed cost-bearing assumptions
+
+- Task creation bond covers task record
+  and task creation bond storage.
+- Task funding bond covers task funding,
+  settlement marker and buyer claimable creation
+  in this tested unmatched lifecycle.
+- Offer creation bond covers offer record
+  and offer creation bond storage.
+- Offer funding bond covers its original
+  funding record until deletion.
+- The first provider claimable creation is
+  provisionally charged to the corresponding
+  offer funding bond.
+- Shared storage remains separately backed.
+
+These are design assumptions, not established
+refund entitlements.
+
+### Security limitations
+
+- Future storage obligations are not bounded.
+- Different lifecycle outcomes may have
+  different storage requirements.
+- Storage costs can depend on account and slot
+  identifier lengths.
+- Claimable ownership does not automatically
+  establish storage cost responsibility.
+- The model parses Sandbox evidence and uses
+  expected fixture values; it is not itself
+  an authenticated on-chain ledger.
+- Adversarial tests demonstrate rejection of
+  the tested mutations, not exhaustive security.
+- General refunds and migration remain unproven.
+- No new withdrawal or payout rights are enabled.
+
+Optional regression:
+
+1. npm run sandbox:transition-matrix
+2. npm run sandbox:cost-policy -- /path/to/log
+
+Next: M2/07E/2B/2 — future mutation reserve,
+global backing invariants and zero-capital stress.
+
+Production funds remain NOT APPROVED.
