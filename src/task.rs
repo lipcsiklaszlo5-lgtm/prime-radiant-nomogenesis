@@ -16,7 +16,7 @@ pub enum TaskPhase {
 }
 
 #[near(serializers = [borsh, json])]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Task {
     pub id: u64,
     pub buyer: AccountId,

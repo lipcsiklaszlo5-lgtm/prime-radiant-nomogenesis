@@ -535,3 +535,6 @@ mod unactivated_tests;
 
 #[cfg(test)]
 mod persistence_audit_tests;
+
+#[cfg(test)]
+mod terminal_audit_tests;
