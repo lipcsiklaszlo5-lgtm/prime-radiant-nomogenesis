@@ -3,28 +3,29 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- R2-02B base: `df44175`
-- Verified implementation: atomic funded rescue job plus rescue mandate
-- Focused funding tests: 6 PASS
-- Full Rust suite: 155 PASS
+- R2-03A base: `f19bad9`
+- Verified implementation: replay-safe manual release of pre-award M3 principal
+- Focused release tests: 6 PASS
+- Full Rust suite: 161 PASS
 - Clippy, WASM target check and diff check: PASS
-- Exact funding deposit: worker reward plus rescue cap plus the 576-byte storage quote
-- Measured job-plus-mandate write: 307 bytes
-- Conservative job-plus-mandate quote: 576 bytes
-- Worker acceptance is authenticated and liability-neutral
-- Worker rewards and rescue caps are included in `rescue_escrow`
-- Withdrawal backing protects the complete active M3 principal
+- Buyer may cancel only an unaccepted job before the dependency deadline
+- Cancellation releases the worker reward and any still-open rescue cap
+- Buyer may revoke an open mandate without cancelling the worker job
+- Every release moves equal value from `rescue_escrow` to authenticated claimables
+- Repeated, foreign, reordered and overflowing release attempts preserve state
+- Terminal release state and accounting totals survive reload
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- Cancellation, revocation, expiry and one-time refund credits are not implemented yet
-- Next single action: M3-R2-03 terminal release paths for pre-award liabilities
+- Permissionless deadline expiry is not implemented yet
+- Next single action: M3-R2-03B permissionless deadline expiry
 
-R2-02B creates immediate economic value: a buyer can fund useful work and
-simultaneously authorize a bounded contribution toward recovery of the shared
-dependency. The worker reward, rescue authority and storage funding enter one
-atomic transaction, so no unfunded mandate or half-created job can remain.
+R2-03A closes the buyer-controlled side of the pre-award liability lifecycle.
+Worker reward and recovery authority are now independently reversible without
+duplicating value. Accept-versus-cancel and revoke-versus-cancel ordering has
+one economically valid result.
 
-This checkpoint does not yet prove cancellation, expiry, bundle award,
-provider bonding, proof settlement, Sandbox execution or public testnet use.
+This checkpoint does not yet prove dependency-deadline expiry, award-window
+expiry, accepted-job expiry, bundle award, recovery settlement, Sandbox
+execution or public testnet operation.
 
 ## Munkamenetindító parancsok
 
@@ -52,6 +53,24 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R2-03A manual liability release
+
+- Base: `f19bad9`.
+- Added buyer-only cancellation of unaccepted rescue jobs.
+- Added buyer-only revocation of open rescue mandates.
+- Cancellation releases held worker reward and any still-open cap.
+- A previously revoked cap is not credited again during cancellation.
+- Accepted jobs cannot be cancelled through the unaccepted-job path.
+- Mandate revocation leaves the funded or accepted worker job intact.
+- Every successful release decreases `rescue_escrow` by the credited amount.
+- Foreign callers, replays and claimable overflow preserve economic state.
+- Terminal job, mandate and claimable state survives reload.
+- Focused release tests: 6 passed, 0 failed.
+- Full Rust suite: 161 passed, 0 failed.
+- Clippy, WASM target check and diff check passed.
+- Preserve: `sandbox/real_low_margin_audit.cjs`.
+- Next: M3-R2-03B permissionless deadline expiry.
 
 ### 2026-11-04 — M3-R2-02B atomic funded job and mandate
 

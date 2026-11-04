@@ -1,29 +1,30 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R2-02B verified
+**Current state:** M3-R2-03A verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Current implementation base:** `df44175` plus verified R2-02B checkpoint
+**Current implementation base:** `f19bad9` plus verified R2-03A checkpoint
 
 | Area | Verified state |
 |---|---|
 | Product direction | Jointly funded rescue market approved |
-| M3 executable specification | Written; R2 storage and liability design locked |
+| M3 executable specification | Written; R2 liability design locked |
 | M3 rescue-market model | 11 focused tests PASS |
-| M3 persistent state | Bounded case, funded-job and rescue-mandate records verified |
-| Rescue-case creation | Typed canonical descriptor and contract-bound ID verified |
-| Case storage admission | Exact payment; 256 measured bytes, 893-byte bounded quote |
-| Funded job admission | Atomic reward, rescue cap and storage funding verified |
-| Job-plus-mandate storage | 307 measured bytes, 576-byte conservative quote |
-| Rescue mandate | Buyer-bound, case-bound and cap-bounded |
-| Worker acceptance | Designated worker only; deadline-bound and liability-neutral |
-| M3 liability boundary | `rescue_escrow` includes worker rewards and rescue caps |
-| Withdrawal protection | Complete active M3 principal included in backing guard |
-| Rejected-input atomicity | IDs, collections and totals remain unchanged |
-| Persistence | Funded job, mandate and totals survive state reload |
-| Full Rust regression | 155 tests PASS |
+| Atomic funded job and mandate | Verified |
+| Exact funding admission | Reward, rescue cap and storage required |
+| Job-plus-mandate storage | 307 measured bytes, 576-byte quote |
+| Worker acceptance | Authenticated and deadline-bound |
+| Buyer cancellation | Unaccepted reward and open cap released once |
+| Mandate revocation | Open cap released without cancelling worker job |
+| Independent lifecycles | Revoke-then-cancel credits each principal once |
+| Replay protection | Terminal phase prevents repeated credits |
+| Overflow atomicity | Job, mandate and escrow remain unchanged |
+| M3 liability boundary | Release decreases `rescue_escrow` exactly |
+| Withdrawal path | Released principal uses authenticated claimables |
+| Persistence | Terminal states and accounting survive reload |
+| Full Rust regression | 161 tests PASS |
 | Clippy and WASM target | PASS |
-| Pre-award terminal release paths | NOT IMPLEMENTED |
+| Permissionless expiry | NOT IMPLEMENTED |
 | Bundle award and provider bonds | NOT IMPLEMENTED |
 | M3 Sandbox/testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
@@ -31,26 +32,23 @@
 
 ## Current gate
 
-R2-02B is verified. A buyer can now create a useful funded job and a bounded
-shared-recovery mandate in one atomic transaction. The exact attached deposit
-covers the worker reward, rescue cap and conservative storage quote. The
-contract rejects partial, duplicated, malformed, late or overflowing funding
-attempts before persistent economic state changes.
+R2-03A is verified. Buyers can unwind pre-award capital without creating a
+second economic claim. Cancellation, mandate revocation and their possible
+ordering preserve the invariant that every released yoctoNEAR leaves
+`rescue_escrow` exactly when it enters the buyer's claimable balance.
 
-This is the first persistent M3 economic-principal checkpoint. It proves funded
-demand and bounded recovery authority, but it does not yet prove safe release
-of those liabilities. R2-03 must add cancellation, revocation and expiry paths
-that move principal from `rescue_escrow` to its original owners' claimable
-balances exactly once.
+R2-03B must now make abandoned liabilities permissionlessly recoverable at
+their exact deadlines. This prevents inactive buyers, workers or keepers from
+leaving capital trapped indefinitely.
 
 Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
 not proof of M3.
 
 ## Next task
 
-M3-R2-03: implement cancellation of unaccepted jobs, revocation of open rescue
-mandates, deadline expiry and one-time `rescue_escrow` release into authenticated
-claimable balances. Prove replay rejection and total-value conservation.
+M3-R2-03B: add permissionless expiry at the dependency deadline, award close
+and final job deadline. Prove exact-boundary behavior, locked-mandate
+protection, replay rejection and full value conservation.
 
 ## Frissítési szabály
 
