@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R5-02 signed file-backed local Sandbox verified
+**Current state:** M3-R5-03/01 isolated signer Sandbox verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -21,6 +21,23 @@
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R5-03/01 — isolated signer proof
+
+Base: `f36fa7c`, 2026-11-04.
+
+- Two separate Node.js signer processes verified.
+- Each process generated its own private signing key.
+- Controller provisioned accounts using public keys.
+- Two independently signed local Sandbox transactions PASS.
+- Each transaction created a valid rescue case.
+- Actor private keys were not transmitted through IPC.
+- Administrator key retained for Sandbox setup.
+- Evidence: /workspaces/nomogenesis-r5-03-evidence.log
+- Full role-specific signer integration is pending.
+- Public testnet and independent audit are pending.
+
+Next: M3-R5-03/02 full signer integration.
 
 ## M3-R5-02 — signed file-backed economic demo
 

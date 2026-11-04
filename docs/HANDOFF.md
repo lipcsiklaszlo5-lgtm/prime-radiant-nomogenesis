@@ -1,5 +1,24 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R5-03/01 checkpoint — 2026-11-04
+
+- Base: `f36fa7c`.
+- Separate child-process private key generation.
+- Public-key-only test-account provisioning.
+- Two independent on-chain signed transactions.
+- Coordinator keeps only Sandbox administrator key.
+- Existing Rust contract and R5-02 demo untouched.
+- Status: local Sandbox PASS.
+- Two distinct Node.js child processes verified.
+- Actor keys generated inside their signer processes.
+- Coordinator received only actor public keys.
+- Two separately signed rescue-case creations PASS.
+- Signer identities and transaction hashes verified.
+- Sandbox administrator remains a trusted setup actor.
+- Full buyer/provider/worker isolation not yet tested.
+- No public testnet or independent security audit.
+- Next: R5-03/02 full role-specific signer integration.
+
 ## Current M3-R5-02 checkpoint — 2026-11-04
 
 - Base: `d699580`.
