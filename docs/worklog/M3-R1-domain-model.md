@@ -45,3 +45,9 @@ most az API nevéhez igazodik.
 - `cargo clippy --locked --all-targets -- -D warnings`: passed.
 - `git diff --check`: passed.
 - The first focused failure was caused by an over-collateralized test fixture; after correcting its bond and matching the existing `clear_bundle` API, all focused tests passed.
+
+## Pushed checkpoint
+
+- Commit: `14dc877` (`feat(m3): add rescue market domain model`)
+- Push: `origin/feat/m2-escrow` succeeded.
+- Next: M3-R2 storage design for funded jobs, rescue mandates and separate M3 liability.

@@ -7,7 +7,7 @@
 - M3-R1 focused tests: 7 passed.
 - Full Rust test suite, Clippy, and diff check: passed.
 - The local audit file `sandbox/real_low_margin_audit.cjs` remains untouched.
-- Next action: commit and push the verified M3-R1 checkpoint.
+- Next action: M3-R2 — design storage for funded jobs and rescue mandates, including the separate M3 liability boundary.
 
 
 ## Current M3 checkpoint — 2026-11-04
