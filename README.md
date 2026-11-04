@@ -30,5 +30,13 @@ the same economic lifecycle with role-specific signatures,
 independent CSV checks and receipt-verified withdrawal.
 The legacy single-process demo also passed regression.
 
-Next: M3-R6 — public testnet evidence and submission demo.
+M3-R6-03: deployed the verified WASM to public
+NEAR Testnet, with byte-for-byte verification via two RPCs.
+
+- Contract: `nomogenesis-70e59593a3.testnet`
+- Deployment transaction: `49NZ9qDKmfy42K9A7UKQDrDbQ9FWETFhijWQaUvcR5Qd`
+- WASM SHA-256: `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`
+
+Next: R6-04 public Testnet economic smoke and submission demo.
+The full multi-role lifecycle is not yet Testnet-verified.
 Public testnet evidence is not yet available.

@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R5-03/02 full isolated-role Sandbox verified
+**Current state:** M3-R6-03 public Testnet deployment verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -18,9 +18,27 @@
 | M3-R2 lifecycle and R3 release | SANDBOX PASS |
 | Component proofs / terminal settlement | UNIT + SANDBOX PASS / UNIT + SANDBOX PASS |
 | Worker result and reward lifecycle | UNIT + SANDBOX PASS |
-| Public testnet evidence | NOT VERIFIED |
+| Public testnet deployment | VERIFIED; economic lifecycle pending |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R6-03 — public Testnet deployment
+
+Base commit: `c2bcc45`, 2026-11-04.
+
+- Contract account: `nomogenesis-70e59593a3.testnet`.
+- Deployment transaction: `49NZ9qDKmfy42K9A7UKQDrDbQ9FWETFhijWQaUvcR5Qd`.
+- Local and deployed WASM: 539608 bytes.
+- Deployed SHA-256: `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`.
+- On-chain code hash: `Hc2soWJ38GHn4i2gVy87jexrBYEgquboFg6VJLUL56wQ`.
+- Two independent public Testnet RPC bytecode checks PASS.
+- Public `m3_storage_quote` call PASS.
+- Credentials kept outside the Git repository.
+- Deployment is public; funded multi-role execution
+  has not yet been demonstrated on Testnet.
+- No mainnet deployment or independent security audit.
+
+Next: R6-04 public Testnet economic smoke test.
 
 ## M3-R5-03/02 — isolated-role economic lifecycle
 

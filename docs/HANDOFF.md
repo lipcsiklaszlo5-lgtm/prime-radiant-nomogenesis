@@ -1,5 +1,28 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R6-03 checkpoint — 2026-11-04
+
+- Base commit: `c2bcc45`.
+- R6-01: two independent Testnet RPC probes PASS.
+- R6-02: funded Testnet account provisioned, 10 NEAR.
+- Deployment account: nomogenesis-70e59593a3.testnet.
+- Local compatible WASM: 539608 bytes.
+- Verify full deployed code against local SHA-256.
+- Verify callable M3 storage quote.
+- Never expose private credentials.
+- Status: PUBLIC TESTNET DEPLOYMENT PASS.
+- Deployed contract: `nomogenesis-70e59593a3.testnet`.
+- Deployment transaction: `49NZ9qDKmfy42K9A7UKQDrDbQ9FWETFhijWQaUvcR5Qd`.
+- On-chain code hash: `Hc2soWJ38GHn4i2gVy87jexrBYEgquboFg6VJLUL56wQ`.
+- Two independent RPC bytecode comparisons PASS.
+- Both returned SHA-256 `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`.
+- Callable `m3_storage_quote` PASS.
+- Credentials stored outside the repository.
+- The 12-role economic lifecycle remains Sandbox-only.
+- No mainnet or independently audited deployment.
+- Next: R6-04 public Testnet economic smoke test.
+- No public economic lifecycle claim yet.
+
 ## Current M3-R5-03/02 checkpoint — 2026-11-04
 
 - Base commit: `3a66f57`.
