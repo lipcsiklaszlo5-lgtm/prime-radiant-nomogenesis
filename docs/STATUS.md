@@ -22,6 +22,22 @@
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
 
+## M3-R7-01 — exploratory economic emergence
+
+- Target: internal 98/100 evidence-readiness,
+  not a confirmed score.
+- New strategic document: `docs/M3_R7_NORTH_STAR.md`.
+- Four synthetic strategy comparisons implemented.
+- Nine focused automated tests passed.
+- Nomogenesis wins one constructed case.
+- Standby wins another.
+- Reactive spot search wins another.
+- One case is infeasible for all strategies.
+- Results are scenario-dependent, not measured
+  economic surplus or demonstrated real-world ROI.
+- Rust contract and Testnet evidence unchanged.
+- Next: sensitivity and comparator fairness review.
+
 ## M3-R6-06A — white interactive jury demo
 
 - Light, standalone HTML interface.

@@ -16,7 +16,16 @@ Branch: `feat/r7-economic-emergence`
 - Preserve the verified R6 Testnet evidence and white UI.
 - First implementation: deterministic economic comparison.
 - No unverified economic superiority claims.
-- Status: R7-01 IMPLEMENTATION PENDING.
+- Status: R7-01 EXPLORATORY IMPLEMENTATION PASS.
+- Nine focused regression/negative tests.
+- Four deterministic synthetic scenarios.
+- Includes cases where reserve and spot beat Nomogenesis.
+- Pure local model; not chain execution.
+- Source: `scripts/m3/r7_emergence_benchmark.cjs`.
+- Tests: `scripts/m3/r7_emergence_benchmark.test.cjs`.
+- Output: `/workspaces/nomogenesis-r7-01-synthetic.json`.
+- Limitations: hypothetical values and fixed outcomes.
+- Next: R7-01B parameter sensitivity and fairness audit.
 
 ## Current M3-R6-06A — VERIFIED GITHUB CHECKPOINT
 
