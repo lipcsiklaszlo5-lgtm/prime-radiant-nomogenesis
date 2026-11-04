@@ -2,18 +2,16 @@
 
 ## Current M3 checkpoint — 2026-11-04
 
-- Branch: `feat/m2-escrow`; base: `97e9178` (R3-01A).
-- R3-01B bounded offer/bundle schema and v2 storage quote: verified.
-- Case/offer/bundle maximum records: 866/237/231 serialized bytes.
-- Case quote: 1233 bytes, including one future bundle record.
-- Offer quote: 613 bytes; no provider bond is accepted yet.
-- Focused schema/case tests: 2 + 4 PASS; full Rust suite: 173 PASS.
-- Clippy and compatible WASM build: PASS.
-- WASM SHA-256: `242765bb258020878b957e81507be839ed939459380230c69c85ec58a324c2bf`.
-- M2 primary, backup, settlement and M3-R2 Sandbox: PASS.
+- Branch: `feat/m2-escrow`; base: `314d44b`.
+- M3-R3-02A funded provider offer admission: verified on fresh state.
+- Six focused offer tests and 179 full Rust tests: PASS.
+- Clippy, compatible WASM build and Node syntax: PASS.
+- WASM SHA-256: `a82f0c54d1e1d24d92d2a745a4882ac7e381c6c27b7094e4aee09f0291b367c5`.
+- M3 offer Sandbox plus M2 primary, backup, settlement and M3-R2 Sandboxes: PASS.
+- Two separate provider bonds are funded; offer posting leaves slots unreserved.
 - Preserve untracked `sandbox/real_low_margin_audit.cjs`.
-- Offer funding, bond release, bundle award and public testnet: not verified.
-- Next single action: M3-R3-02A payable provider offer admission.
+- Offer terminal release, bundle award and public testnet: not verified.
+- Next single action: M3-R3-02B provider offer terminal release.
 
 ## Munkamenetindító parancsok
 
@@ -41,6 +39,16 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R3-02A funded provider admission
+
+- Base: `314d44b`; fresh deployment only.
+- Exact bond plus storage deposit, six-offer limit and authenticated provider.
+- Six focused tests; 179 full Rust tests; Clippy and WASM: PASS.
+- WASM SHA-256: `a82f0c54d1e1d24d92d2a745a4882ac7e381c6c27b7094e4aee09f0291b367c5`.
+- M3 offer and four existing lifecycle Sandboxes: PASS.
+- Posting does not reserve an M2/M3 capacity slot.
+- Next: R3-02B offer release and provider claimable accounting.
 
 ### 2026-11-04 — M3-R3-01B bounded provider records
 

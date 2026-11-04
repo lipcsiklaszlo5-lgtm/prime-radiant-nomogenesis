@@ -56,11 +56,11 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R3-01B. A bounded offer/bundle
-séma és v2 storage quote nulla új liability mellett készült. 173 Rust
-teszt, Clippy, kompatibilis WASM build, három M2 és az M3-R2 Sandbox
-átment. Valódi M3 offer, bond, bundle award és public testnet működés
-még nincs igazolva. A következő ticket M3-R3-02A offer admission.
+Jelenlegi ellenőrzött kapu: M3-R3-02A. Két provider külön
+fedezett ajánlata helyi Sandboxban átment; a slotok még szabadok.
+179 Rust teszt, Clippy, kompatibilis WASM, három M2 és két M3 Sandbox
+átment. Offer release, bundle award és public testnet működés még
+nincs igazolva. A következő ticket M3-R3-02B terminal release.
 
 ## 5. Munkamenet lezárás
 

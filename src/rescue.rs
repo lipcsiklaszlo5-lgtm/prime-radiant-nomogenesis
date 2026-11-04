@@ -95,6 +95,50 @@ pub struct RescueOffer {
     pub release_reason: Option<RescueOfferReleaseReason>,
 }
 
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescueOfferInput {
+    pub case_id: Vec<u8>,
+    pub component_index: u8,
+    pub slot_id: String,
+    pub fee: U128,
+    pub bond_capacity: U128,
+}
+
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescueOfferView {
+    pub id: u64,
+    pub case_id: Vec<u8>,
+    pub component_index: u8,
+    pub provider: AccountId,
+    pub slot_id: String,
+    pub fee: U128,
+    pub bond_capacity: U128,
+    pub held_bond: U128,
+    pub phase: RescueOfferPhase,
+    pub locked_bundle_id: Option<u64>,
+    pub release_reason: Option<RescueOfferReleaseReason>,
+}
+
+impl From<&RescueOffer> for RescueOfferView {
+    fn from(value: &RescueOffer) -> Self {
+        Self {
+            id: value.id,
+            case_id: value.case_id.to_vec(),
+            component_index: value.component_index,
+            provider: value.provider.clone(),
+            slot_id: value.slot_id.clone(),
+            fee: U128(value.fee),
+            bond_capacity: U128(value.bond_capacity),
+            held_bond: U128(value.held_bond),
+            phase: value.phase.clone(),
+            locked_bundle_id: value.locked_bundle_id,
+            release_reason: value.release_reason.clone(),
+        }
+    }
+}
+
 #[near(serializers = [borsh, json])]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RescueBundlePhase {

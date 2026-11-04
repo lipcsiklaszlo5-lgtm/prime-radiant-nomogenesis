@@ -724,6 +724,121 @@ impl Nomogenesis {
         self.rescue_offers.get(&offer_id).is_some()
     }
 
+    pub fn get_rescue_offer(&self, offer_id: u64) -> Option<rescue::RescueOfferView> {
+        self.rescue_offers
+            .get(&offer_id)
+            .map(rescue::RescueOfferView::from)
+    }
+
+    #[payable]
+    pub fn post_rescue_offer(&mut self, input: rescue::RescueOfferInput) -> u64 {
+        let provider = env::predecessor_account_id();
+        let now = env::block_timestamp();
+        let case_id = rescue::parse_case_id(input.case_id).expect("invalid rescue case ID");
+        let mut case = self
+            .rescue_cases
+            .get(&case_id)
+            .cloned()
+            .expect("unknown rescue case");
+
+        assert_eq!(
+            case.phase,
+            rescue::RescueCasePhase::Open,
+            "case is not open"
+        );
+        assert!(now < case.bid_close, "bid close reached");
+        assert!(
+            usize::from(input.component_index) < rescue::COMPONENT_COUNT,
+            "invalid rescue component"
+        );
+        assert_ne!(provider, env::current_account_id(), "contract cannot offer");
+        assert_ne!(
+            provider, case.original_provider,
+            "original provider cannot offer"
+        );
+        assert!(input.fee.0 > 0, "zero rescue fee");
+        assert!(
+            input.bond_capacity.0 >= input.fee.0,
+            "insufficient bond capacity"
+        );
+        assert!(
+            !input.slot_id.is_empty()
+                && input.slot_id.len() <= rescue::MAX_RESCUE_SLOT_BYTES
+                && input
+                    .slot_id
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_'),
+            "invalid rescue slot"
+        );
+        assert!(
+            case.offer_ids.len() < rescue::MAX_RESCUE_OFFERS,
+            "case offers full"
+        );
+
+        for existing_id in &case.offer_ids {
+            let existing = self
+                .rescue_offers
+                .get(existing_id)
+                .expect("case offer index is corrupt");
+            assert!(
+                existing.provider != provider
+                    || existing.component_index != input.component_index
+                    || existing.phase != rescue::RescueOfferPhase::Open,
+                "provider already has open offer for component"
+            );
+        }
+
+        let storage_payment = rescue::offer_storage_cost();
+        let required = input
+            .bond_capacity
+            .0
+            .checked_add(storage_payment)
+            .expect("offer deposit overflow");
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            required,
+            "incorrect funded rescue offer deposit"
+        );
+
+        let id = self.next_rescue_offer_id;
+        let next_id = id.checked_add(1).expect("rescue offer ID overflow");
+        assert!(
+            self.rescue_offers.get(&id).is_none(),
+            "offer ID already used"
+        );
+        let next_escrow = self
+            .rescue_escrow
+            .checked_add(input.bond_capacity.0)
+            .expect("rescue escrow overflow");
+        let next_storage = self
+            .storage_reserves
+            .checked_add(storage_payment)
+            .expect("storage reserve overflow");
+
+        case.offer_ids.push(id);
+        self.rescue_offers.insert(
+            id,
+            rescue::RescueOffer {
+                id,
+                case_id,
+                component_index: input.component_index,
+                provider,
+                slot_id: input.slot_id,
+                fee: input.fee.0,
+                bond_capacity: input.bond_capacity.0,
+                held_bond: input.bond_capacity.0,
+                phase: rescue::RescueOfferPhase::Open,
+                locked_bundle_id: None,
+                release_reason: None,
+            },
+        );
+        self.rescue_cases.insert(case_id, case);
+        self.next_rescue_offer_id = next_id;
+        self.rescue_escrow = next_escrow;
+        self.storage_reserves = next_storage;
+        id
+    }
+
     pub fn has_rescue_bundle(&self, bundle_id: u64) -> bool {
         self.rescue_bundles.get(&bundle_id).is_some()
     }
@@ -1571,6 +1686,9 @@ mod withdrawal_tests;
 
 #[cfg(test)]
 mod rescue_schema_tests;
+
+#[cfg(test)]
+mod rescue_offer_tests;
 
 #[cfg(test)]
 mod rescue_case_tests;

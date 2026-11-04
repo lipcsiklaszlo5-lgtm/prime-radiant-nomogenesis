@@ -1,35 +1,35 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R3-01B bounded offer/bundle schema verified
+**Current state:** M3-R3-02A funded provider offers verified locally
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Verified implementation base:** `97e9178` plus R3-01B checkpoint
+**Verified implementation base:** `314d44b` plus R3-02A checkpoint
 
 | Area | Verified state |
 |---|---|
 | R2 funded demand and liability | COMPLETE |
 | Typed M2/M3 capacity registry | IMPLEMENTED |
-| Bounded provider offer and bundle schema | IMPLEMENTED, zero new liability |
-| Case/offer storage quote | v2, 1233/613 bytes |
-| Full Rust regression | 173 tests PASS |
+| Provider offer admission and individual bonds | SANDBOX PASS |
+| Separate storage and M3 economic liability | SANDBOX PASS |
+| Full Rust regression | 179 tests PASS |
 | Clippy and compatible WASM | PASS |
 | M2 primary, backup, settlement and M3-R2 Sandbox | PASS |
-| Provider offer admission and bond funding | NOT IMPLEMENTED |
+| Provider offer terminal release | NOT IMPLEMENTED |
 | Atomic RecoveryRight award | NOT IMPLEMENTED |
 | Public testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 
 ## Current gate
 
-R3-01B reserves bounded case, offer and future bundle storage on fresh state.
-The four Sandbox runs passed on WASM SHA-256
-`242765bb258020878b957e81507be839ed939459380230c69c85ec58a324c2bf`.
-No provider bond or bundle award transition exists yet.
+Two provider offers funded separate bonds in local Sandbox on WASM
+`a82f0c54d1e1d24d92d2a745a4882ac7e381c6c27b7094e4aee09f0291b367c5`. Underpayment and duplicate component posting were rejected;
+neither offer reserved a capacity slot. Settlement and default paths for
+provider bonds remain unimplemented.
 
 ## Next task
 
-M3-R3-02A: payable provider offer admission with exact funding, bounded
-slot validation and separate bond liability.
+M3-R3-02B: authenticated cancellation and permissionless terminal release
+of open offers, with exact claimable credit and replay protection.
 
 ## Frissítési szabály
 

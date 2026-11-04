@@ -26,7 +26,8 @@
     "sandbox:cost-policy": "node sandbox/storage_cost_policy_audit.cjs",
     "sandbox:backing-probe": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/storage_backing_probe.cjs",
     "sandbox:backing-stress": "node sandbox/storage_backing_stress.cjs",
-    "sandbox:m3-r2": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_rescue_lifecycle.cjs"
+    "sandbox:m3-r2": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_rescue_lifecycle.cjs",
+    "sandbox:m3-r3-offer": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_provider_offer_admission.cjs"
   },
   "devDependencies": {
     "binaryen": "132.0.0",
