@@ -21,6 +21,12 @@
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
 
+## M3-R4-00 — design checkpoint
+
+Authenticated component proof and terminal settlement rules specified in `docs/M3_R4_PROOF_AND_SETTLEMENT_SPEC.md`.
+Documentation only; no R4 Rust implementation or Sandbox verification is claimed.
+Next: M3-R4-01 bounded proof parser and authentication.
+
 ## Current gate — M3-R3-03B-02
 
 Nine focused award tests passed, including successful award,

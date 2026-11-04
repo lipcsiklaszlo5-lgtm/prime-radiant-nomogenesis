@@ -1,5 +1,13 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R4-00 checkpoint — 2026-11-04
+
+- Base: `2bf546d`; documentation-only milestone.
+- Canonical component proof and 3Q settlement rules specified.
+- Rust and WASM unchanged; R4 runtime not tested.
+- Previous 206 Rust tests and local award Sandbox remain the R3 checkpoint evidence.
+- Next single action: R4-01 authenticated component proof.
+
 ## Current M3-R3-03B-02 checkpoint — 2026-11-04
 
 - Base commit: `af9c518`, branch: `feat/m2-escrow`.
