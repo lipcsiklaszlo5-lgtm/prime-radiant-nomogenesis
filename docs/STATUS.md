@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R3-03A deterministic on-chain preflight verified locally
+**Current state:** M3-R3-03B-01 sponsor allocation verified locally; atomic award not implemented
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation base:** `46c0080` plus R3-03A checkpoint
@@ -12,7 +12,7 @@
 | Provider offer funding, cancel and expiry | SANDBOX PASS |
 | Read-only deterministic pair preview | SANDBOX PASS |
 | Separate storage and M3 economic liability | SANDBOX PASS |
-| Full Rust regression | 191 tests PASS |
+| Full Rust regression | 197 tests PASS |
 | Clippy and compatible WASM | PASS |
 | M2 and M3-R2 Sandbox | PRIOR CHECKPOINT PASS |
 | Atomic RecoveryRight award | NOT IMPLEMENTED |
@@ -32,8 +32,7 @@ Earlier M2 and M3-R2 Sandboxes were not rerun on this WASM.
 
 ## Next task
 
-M3-R3-03B: capped-equal sponsor allocations and atomic bundle award,
-with the shared M2/M3 capacity locks and complete liability transition.
+M3-R3-03B-02: atomic bundle award and shared M2/M3 capacity locking.
 
 ## Frissítési szabály
 

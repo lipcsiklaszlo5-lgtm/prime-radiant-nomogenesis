@@ -1778,6 +1778,9 @@ mod rescue_schema_tests;
 
 #[cfg(test)]
 mod rescue_clearing_tests;
+
+#[cfg(test)]
+mod rescue_allocation_tests;
 #[cfg(test)]
 mod rescue_offer_release_tests;
 #[cfg(test)]

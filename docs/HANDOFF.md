@@ -14,7 +14,9 @@
 - Preserve untracked `sandbox/real_low_margin_audit.cjs`.
 - Earlier M2 and M3-R2 Sandboxes were not rerun in this ticket.
 - Bundle award, RecoveryRight, proof settlement and public testnet: not verified.
-- Next single action: M3-R3-03B capped-equal allocation and atomic award.
+- M3-R3-03B-01 allocation: 6 focused tests and 197 full Rust tests PASS.
+- Clippy, rustfmt, WASM and M3 pair-preview Sandbox PASS. WASM SHA-256: `652c1bd8d79748f6ea6e25ebc96214d25ec0b4a8f928dc9698b8823a8c6bdec3`.
+- Next single action: M3-R3-03B-02 atomic award integration.
 
 ## Munkamenetindító parancsok
 

@@ -9,6 +9,79 @@ pub(crate) struct RescuePairPlan {
     pub eligible_cap_total: u128,
 }
 
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "Pending M3-R3-03B-02 atomic award integration")
+)]
+pub(crate) fn allocate_rescue_cost(
+    caps: &[(u64, u128)],
+    price: u128,
+) -> Result<Vec<rescue::RescueAllocation>, &'static str> {
+    if caps.is_empty() || price == 0 {
+        return Err("empty sponsors or zero price");
+    }
+    if caps.len() > rescue::MAX_RESCUE_JOBS {
+        return Err("too many sponsors");
+    }
+
+    let mut rows = caps.to_vec();
+    rows.sort_unstable_by_key(|row| row.0);
+    if rows.windows(2).any(|pair| pair[0].0 == pair[1].0) {
+        return Err("duplicate job ID");
+    }
+
+    let mut cap_total = 0u128;
+    for (_, cap) in &rows {
+        if *cap == 0 {
+            return Err("zero rescue cap");
+        }
+        cap_total = cap_total.checked_add(*cap).ok_or("cap overflow")?;
+    }
+    if cap_total < price {
+        return Err("insufficient caps");
+    }
+
+    let mut amounts = vec![0u128; rows.len()];
+    let mut remaining = price;
+    while remaining > 0 {
+        let active: Vec<usize> = amounts
+            .iter()
+            .enumerate()
+            .filter_map(|(i, amount)| (*amount < rows[i].1).then_some(i))
+            .collect();
+        if active.is_empty() {
+            return Err("insufficient caps");
+        }
+
+        let count = active.len() as u128;
+        let share = remaining / count;
+        let remainder = (remaining % count) as usize;
+        let mut paid = 0u128;
+        for (rank, i) in active.into_iter().enumerate() {
+            let requested = share
+                .checked_add(u128::from(rank < remainder))
+                .ok_or("allocation overflow")?;
+            let amount = requested.min(rows[i].1 - amounts[i]);
+            amounts[i] = amounts[i]
+                .checked_add(amount)
+                .ok_or("allocation overflow")?;
+            remaining = remaining
+                .checked_sub(amount)
+                .ok_or("allocation invariant")?;
+            paid = paid.checked_add(amount).ok_or("allocation overflow")?;
+        }
+        if paid == 0 {
+            return Err("allocation made no progress");
+        }
+    }
+
+    Ok(rows
+        .into_iter()
+        .zip(amounts)
+        .map(|((job_id, _), amount)| rescue::RescueAllocation { job_id, amount })
+        .collect())
+}
+
 impl Nomogenesis {
     pub(crate) fn select_rescue_pair(&self, case_id: [u8; 32], now: u64) -> Option<RescuePairPlan> {
         let case = self
