@@ -1,5 +1,15 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## M3-R1 verified checkpoint
+
+- Branch: `feat/m2-escrow`
+- Base: `eb81676`
+- M3-R1 focused tests: 7 passed.
+- Full Rust test suite, Clippy, and diff check: passed.
+- The local audit file `sandbox/real_low_margin_audit.cjs` remains untouched.
+- Next action: commit and push the verified M3-R1 checkpoint.
+
+
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: feat/m2-escrow

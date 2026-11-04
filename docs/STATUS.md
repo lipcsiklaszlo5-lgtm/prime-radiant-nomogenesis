@@ -1,5 +1,15 @@
 # STATUS — Prime Radiant / Nomogenesis
 
+## M3-R1 verified model
+
+- The isolated rescue-market model is implemented in `src/rescue_market_model.rs`.
+- Focused model tests: 7 passed.
+- Full `cargo test --locked`: passed; existing unit tests and all integration targets passed.
+- `cargo clippy --locked --all-targets -- -D warnings`: passed.
+- `git diff --check`: passed.
+- The model is test-only and is not declared in `src/lib.rs`; persistent NEAR state and entry points are unchanged.
+
+
 **Current state:** M3-R0 strategy and executable specification
 **Date:** 2026-11-04
 **Branch:** feat/m2-escrow
