@@ -3,36 +3,31 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- R2-04 base: `3bfb9cb`
-- M3-R2 persistent funding and liability milestone: COMPLETE
-- Native Rust regression at base: 168 PASS
-- Compatible release WASM build: PASS
-- WASM SHA-256: `ab129cc27fa133a29412e6198bc550e6bc81cf4ff24b37790362727d120e1a03`
-- Multi-party local NEAR Sandbox: PASS
-- Independent actors: three buyers, three workers, keeper and outsider
-- Case storage quote: 893 bytes / 0.00893 NEAR
-- Job storage quote: 576 bytes / 0.00576 NEAR
-- Total tested M3 economic principal: 0.09 NEAR
-- Exact deposit underpayments rejected before liability mutation
-- Three designated workers accepted through real NEAR receipts
-- Manual and permissionless releases conserved all principal
-- Terminal replay attempts rejected on-chain
-- `rescue_escrow` reached exactly zero
-- One 0.02 NEAR M3-generated native withdrawal completed with callback
-- Remaining internal claimables: 0.07 NEAR
+- Verified implementation base: `643e19c`
+- M3-R2 funding, liability and local Sandbox milestone: COMPLETE
+- Active ticket: M3-R3-00 provider-market and atomic-award design
+- Binding product object: one atomic `RecoveryRight`
+- Award caller will supply only the case ID
+- Pair, price, sponsors and allocations are contract-derived
+- Selected providers must be distinct
+- Each selected provider locks the complete bundle price `Q`
+- Provider bond capacity is funded per offer; no collateral reuse
+- Buyer allocation uses deterministic capped-equal sharing
+- M2 and M3 will share one typed capacity-lock registry
+- R3 state uses a fresh deployment boundary
+- Case and offer storage quotes must be revised before funding
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- Bundle offers, provider bonds and atomic clearing are not implemented yet
-- Next single action: M3-R3-00 provider-market and atomic-award design
+- No R3 Rust implementation or award claim exists yet
+- Next single action: M3-R3-01 zero-liability persistent schema
 
-R2 now proves more than an in-memory escrow model. Three independently funded
-jobs entered one canonical recovery market through real local NEAR
-transactions. Their worker rewards and rescue mandates followed independent
-lifecycles, expired capital returned to immutable owners, and one resulting
-claim was paid out natively.
+R2 already proves multi-party funded demand and safe capital release on local
+NEAR Sandbox. R3 creates the complementary provider market. The decisive
+economic transition is not offer posting: it is the atomic conversion of
+separate buyer mandates and provider bond capacities into one fully backed,
+capacity-locked RecoveryRight.
 
-This evidence is bounded local Sandbox evidence. It does not prove public
-testnet operation, production solvency, provider availability, bundle award,
-recovery proofs, adoption or universal economic superiority.
+The design does not claim provider availability, successful recovery,
+settlement, public testnet operation or production safety.
 
 ## Munkamenetindító parancsok
 
@@ -60,6 +55,22 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R3-00 provider market design
+
+- Base: `643e19c`.
+- Locked the funded provider-offer and bond-capacity model.
+- Defined the atomic RecoveryRight creation boundary.
+- Award caller supplies only the case ID.
+- Provider pair, price, sponsors and allocations are contract-derived.
+- Selected providers are distinct and each locks full bundle price `Q`.
+- Defined capped-equal mandate locking and unused-cap credit.
+- Defined selected-provider excess-bond credit.
+- Chose one typed M2/M3 capacity registry on fresh state.
+- Defined storage ownership and terminal offer-release paths.
+- Added ADR-011 and ADR-012.
+- Documentation-only checkpoint; no Rust or Sandbox claim.
+- Next: M3-R3-01 zero-liability persistent schema.
 
 ### 2026-11-04 — M3-R2-04 multi-party Sandbox
 

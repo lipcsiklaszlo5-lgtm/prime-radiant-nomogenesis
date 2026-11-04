@@ -200,3 +200,34 @@ to claimables decreases it by exactly the credited amount.
 
 The complete record, transition and storage policy is normative in
 `docs/M3_R2_STORAGE_AND_LIABILITY.md`.
+
+
+## 13. M3-R3 provider market and binding award
+
+An M3 provider offer deposits independent bond capacity plus separately quoted
+storage before bid close. Bond capacity belongs to one offer and cannot secure
+another offer.
+
+Clearing is permissionless during `[bid_close, award_close)`. The caller
+supplies only the case ID. The contract derives eligible accepted jobs, open
+mandates, admissible complementary offer pairs, the winning price and
+capped-equal allocations.
+
+A binding RecoveryRight exists only after one atomic transaction locks:
+
+- one offer for each component;
+- two distinct providers;
+- deterministic buyer allocations totaling `Q`;
+- exactly `Q` of bond from each provider;
+- two exclusive typed capacity slots;
+- one immutable bundle and recovery deadline.
+
+The lowest admissible price wins. Equal prices use ascending offer-ID pairs.
+Under-bonded, slot-conflicting and malformed pairs are filtered before price
+comparison.
+
+M2 and M3 use one typed capacity registry on fresh state. R3 does not claim
+migration compatibility.
+
+Normative records, liability transitions, storage ownership and release paths
+are defined in `docs/M3_R3_PROVIDER_MARKET_AND_AWARD.md`.

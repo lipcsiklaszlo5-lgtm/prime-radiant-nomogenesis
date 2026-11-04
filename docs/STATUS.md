@@ -1,56 +1,45 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R2 COMPLETE — local multi-party Sandbox verified
+**Current state:** M3-R2 verified; M3-R3 design locked
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Current implementation base:** `3bfb9cb` plus verified R2-04 Sandbox checkpoint
+**Verified implementation base:** `643e19c`
+**Active documentation ticket:** M3-R3-00
 
 | Area | Verified state |
 |---|---|
-| Product direction | Jointly funded rescue market approved |
-| M3 rescue-market model | 11 focused model tests PASS |
+| R2 funded demand and liability | COMPLETE |
+| R2 local multi-party Sandbox | PASS |
 | Native Rust regression | 168 tests PASS at `3bfb9cb` |
-| Atomic funded job and mandate | Verified |
-| Exact storage admission | Case and job underpayments rejected on-chain |
-| Worker acceptance | Three independent workers verified in Sandbox |
-| Manual cap release | Verified through real receipt |
-| Permissionless cap expiry | Two independent buyers verified |
-| Permissionless job expiry | Three accepted jobs verified |
-| Replay protection | Terminal replay receipts rejected |
-| M3 economic principal | 0.09 NEAR tested |
-| M3 liability conservation | 0.02 paid + 0.07 claimable + 0 escrow |
-| Native M3 payout | 0.02 NEAR withdrawal and callback completed |
-| Pending payout residue | Zero |
-| Case storage quote | 893 bytes / 0.00893 NEAR |
-| Job storage quote | 576 bytes / 0.00576 NEAR |
-| Compatible WASM build | PASS |
-| Local M3 Sandbox | PASS |
-| Public testnet evidence | NOT VERIFIED |
-| Provider offer market | NOT IMPLEMENTED |
-| Atomic rescue bundle award | NOT IMPLEMENTED |
+| Provider-market design | LOCKED |
+| Binding RecoveryRight boundary | SPECIFIED |
+| Provider offer schema | NOT IMPLEMENTED |
+| Provider bond admission | NOT IMPLEMENTED |
+| Unified M2/M3 capacity registry | NOT IMPLEMENTED |
+| Atomic bundle award | NOT IMPLEMENTED |
 | Recovery proof settlement | NOT IMPLEMENTED |
+| Public testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 | Hackathon submission ready | NO |
 
 ## Current gate
 
-M3-R2 is complete. The repository now proves funded multi-party demand,
-independent worker acceptance, bounded recovery authority, replay-safe capital
-release and native payout on a real local NEAR runtime.
+M3-R3-00 defines the supply side without claiming it exists in Rust. A funded
+offer is not yet a capacity guarantee. A binding RecoveryRight will exist only
+after atomic award locks deterministic buyer allocations, two distinct
+providers' complete `Q` bonds, two exclusive slots and one deadline.
 
-The next economic gate is not another escrow endpoint. R3 must create the
-supply side of the rescue market: two complementary recovery offers from
-distinct providers, fully funded bonds, deterministic pair selection and one
-atomic award funded by multiple mandates.
+The award caller cannot choose the winning offers, sponsors, allocations or
+credit recipients.
 
 Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
-not proof of later M3 bundle settlement.
+not proof of R3 implementation.
 
 ## Next task
 
-M3-R3-00: design the provider-offer record, full-bond admission, M2/M3 slot
-exclusivity bridge, deterministic two-component clearing and atomic mandate
-locking. Lock the financial invariants before persistent implementation.
+M3-R3-01: add zero-liability persistent RescueOffer, RescueBundle and typed
+capacity-lock schema. Preserve all M2 behavior and prove empty-state,
+serialization-bound and cross-lock regressions before enabling provider funds.
 
 ## Frissítési szabály
 

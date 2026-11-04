@@ -37,3 +37,19 @@ M3 provider-bondokat. Belső allokáció nem változtatja az aggregált liabilit
 Claimable kredit ugyanazzal az összeggel csökkenti. Az M3 funding bekapcsolása
 előtt a withdrawal backing ezt a meglévő M2 kötelezettségeken felül tartalmazza.
 Storage-hozzájárulás nem számít gazdasági principalnak.
+
+
+### ADR-011 — 2026-11-04 — RecoveryRight csak teljes atomi awarddal
+**Állapot: Elfogadva.** A pre-funded mandate és a funded provider offer még nem
+garantált helyreállítás. Kötelező RecoveryRight csak akkor jön létre, ha egy
+tranzakció egyszerre zárolja a teljes kétkomponensű provider-párt, a
+determinisztikus buyer-allokációkat, mindkét provider teljes Q bondját, a két
+exkluzív kapacitásslotot és a recovery deadline-t. Részleges award nem maradhat
+állapotban.
+
+### ADR-012 — 2026-11-04 — Egyetlen típusos M2/M3 kapacitásregiszter
+**Állapot: Elfogadva.** Az M2 option és az M3 rescue offer ugyanazt a
+provider-plus-slot kulcsú, típusos lock-regisztert használja. A lock tulajdonosa
+`M2Offer` vagy `M3RescueOffer`. Mindkét piac ellenőrzi a másik foglalását, és
+csak a pontos típusos tulajdonos oldhatja fel. A változás fresh-state R3
+deploymentet igényel; korábbi állapot migrációja nincs állítva.
