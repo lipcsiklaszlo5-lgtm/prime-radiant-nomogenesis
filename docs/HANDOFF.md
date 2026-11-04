@@ -1,5 +1,27 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R5-02 checkpoint — 2026-11-04
+
+- Base: `d699580`.
+- One funded case, three buyers, three workers.
+- Two distinct provider accounts and one keeper.
+- Providers independently encode their own CSV inputs.
+- Buyers commit to minimum thresholds before data delivery.
+- Workers recompute results after both proofs and settlement.
+- Target: complete local NEAR Sandbox economic lifecycle.
+- Status: local NEAR Sandbox PASS.
+- Five off-chain Node tests PASS.
+- Three independently funded buyer jobs.
+- Two distinct provider accounts delivered CSV proofs.
+- Three independently signed worker completions PASS.
+- Unauthorized proof, replay and forged result rejected.
+- Full economic conservation: 114 units.
+- Native payout: 20 units, receipt and callback verified.
+- Exact WASM unchanged from R4-05.
+- Distinct NEAR accounts, but one harness process.
+- No public testnet or independent audit.
+- Next: R5-03 independent signer-process verification.
+
 ## Current M3-R5-01 checkpoint — 2026-11-04
 
 - Base commit: `7b68ebf`.

@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R4-05 reproducibility and full regression verified
+**Current state:** M3-R5-02 signed file-backed local Sandbox verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -21,6 +21,28 @@
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R5-02 — signed file-backed economic demo
+
+Base: `d699580`, 2026-11-04.
+
+- Five targeted Node tests PASS.
+- Three buyer accounts funded one recovery case.
+- Two bonded providers delivered independently encoded
+  quantity and price CSV component proofs.
+- Three worker accounts recomputed the result (632).
+- Forged worker result, replay and unauthorized proof rejected.
+- Local NEAR Sandbox economic conservation: 114 units.
+- Provider credits: 36 units; worker credits: 75;
+  buyer refunds: 3.
+- One 20-unit native withdrawal verified by successful
+  Transfer receipt and callback.
+- The contract WASM was not changed.
+- Evidence log: /workspaces/nomogenesis-r5-02-evidence.log
+- Signers are separate NEAR accounts in one harness process.
+- Independent signer processes and public testnet are pending.
+
+Next: R5-03 signer-process isolation.
 
 ## M3-R5-01 — file-backed data preparation
 

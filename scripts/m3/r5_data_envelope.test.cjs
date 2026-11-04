@@ -99,3 +99,24 @@ test('bad job IDs and case IDs are rejected', () => {
     makeWorkerResult(data, Buffer.alloc(32), 1, 0)
   );
 });
+
+test('funding and worker commitments match', () => {
+  const {
+    minimumCommitment
+  } = require('./r5_data_envelope.cjs');
+
+  const data = load(quantities, prices);
+  const caseId = Buffer.alloc(32, 19);
+
+  for (const threshold of [500n, 600n, 632n]) {
+    const funded = minimumCommitment(
+      caseId, threshold
+    );
+
+    const worker = makeWorkerResult(
+      data, caseId, 7, threshold
+    );
+
+    assert.deepEqual(funded, worker.commitment);
+  }
+});

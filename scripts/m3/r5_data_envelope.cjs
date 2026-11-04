@@ -111,9 +111,42 @@ function merkle(kind, payload) {
   return {sibling, root};
 }
 
+function componentFromCsv(filename, kind) {
+  assert(kind === 0 || kind === 1, 'invalid component kind');
+
+  const rows = readCsv(
+    filename, kind === 0 ? 'quantity' : 'unit_price'
+  );
+  const payload = encode(kind, rows);
+  const proof = merkle(kind, payload);
+
+  return {rows, payload, sibling: proof.sibling, root: proof.root};
+}
+
+function minimumCommitment(caseId, threshold) {
+  const id = Buffer.from(caseId);
+  assert.equal(id.length, 32, 'case ID must be 32 bytes');
+
+  const value = integer(String(threshold), U128_MAX);
+  assert(value > 0n, 'zero threshold');
+
+  return sha(Buffer.concat([
+    Buffer.from('NOMOGENESIS/M3/MIN-SUM/V1\0'),
+    id,
+    u128(value)
+  ]));
+}
+
 function load(quantitiesPath, pricesPath) {
-  const quantities = readCsv(quantitiesPath, 'quantity');
-  const prices = readCsv(pricesPath, 'unit_price');
+  const quantityComponent = componentFromCsv(
+    quantitiesPath, 0
+  );
+  const priceComponent = componentFromCsv(
+    pricesPath, 1
+  );
+
+  const quantities = quantityComponent.rows;
+  const prices = priceComponent.rows;
 
   assert.equal(
     quantities.length,
@@ -139,14 +172,8 @@ function load(quantitiesPath, pricesPath) {
     assert(total <= U128_MAX, 'sum overflow');
   }
 
-  const payloads = [
-    encode(0, quantities),
-    encode(1, prices)
-  ];
-
-  const proofs = payloads.map(
-    (bytes, i) => merkle(i, bytes)
-  );
+  const proofs = [quantityComponent, priceComponent];
+  const payloads = proofs.map(p => p.payload);
 
   return {
     total,
@@ -196,7 +223,9 @@ function makeWorkerResult(data, caseId, jobId, threshold = null) {
 module.exports = {
   load,
   makeWorkerResult,
-  readCsv
+  readCsv,
+  componentFromCsv,
+  minimumCommitment
 };
 
 if (require.main === module) {

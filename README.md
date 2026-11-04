@@ -20,4 +20,10 @@ including two corrected storage-audit expectations.
 This is a local Sandbox prototype, not an independently audited
 or public-testnet-verified production system.
 
-Next: M3-R5 — independent signers and real data-work demo.
+M3-R5-02: signed local Sandbox demo using two CSV
+components, three funded buyers, two providers and three
+worker completions. A native withdrawal is verified from
+its Transfer and callback receipts.
+
+Next: M3-R5-03 — independent signer processes.
+Public testnet evidence is not yet available.
