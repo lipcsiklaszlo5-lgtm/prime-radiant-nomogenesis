@@ -155,7 +155,9 @@ pub fn clear_bundle(
                 continue;
             }
 
-            let price = a.fee.checked_add(b.fee).ok_or("price overflow")?;
+            let Some(price) = a.fee.checked_add(b.fee) else {
+                continue;
+            };
             if a.bond < price || b.bond < price {
                 continue;
             }
@@ -417,5 +419,109 @@ mod tests {
         assert_eq!(credits[&Recipient::Buyer(1)], 12);
         assert_eq!(credits[&Recipient::Buyer(2)], 12);
         assert_eq!(credits[&Recipient::Buyer(3)], 12);
+    }
+
+    #[test]
+    fn invalid_mandate_boundaries_are_rejected() {
+        assert!(
+            allocate_cost(
+                &[Mandate { job_id: 1, cap: 5 }, Mandate { job_id: 1, cap: 5 },],
+                5,
+            )
+            .is_err()
+        );
+
+        assert!(
+            allocate_cost(
+                &[Mandate { job_id: 1, cap: 2 }, Mandate { job_id: 2, cap: 2 },],
+                5,
+            )
+            .is_err()
+        );
+
+        assert!(
+            allocate_cost(
+                &[
+                    Mandate {
+                        job_id: 1,
+                        cap: u128::MAX,
+                    },
+                    Mandate { job_id: 2, cap: 1 },
+                ],
+                1,
+            )
+            .is_err()
+        );
+
+        let too_many: Vec<Mandate> = (0..=MAX_SPONSORS as u64)
+            .map(|job_id| Mandate { job_id, cap: 1 })
+            .collect();
+
+        assert!(allocate_cost(&too_many, 1).is_err());
+    }
+
+    #[test]
+    fn overflowing_pair_does_not_block_valid_pair() {
+        let mut overflow_a = offer(1, 1, "overflow-a", u128::MAX);
+        let mut overflow_b = offer(2, 2, "valid-a", 1);
+        let mut valid_a = offer(3, 1, "valid-a", 3);
+        let mut valid_b = offer(4, 2, "valid-b", 4);
+
+        overflow_a.bond = u128::MAX;
+        overflow_b.bond = u128::MAX;
+        valid_a.bond = 7;
+        valid_b.bond = 7;
+
+        let bundle = clear_bundle(
+            &[Mandate { job_id: 1, cap: 10 }],
+            [1, 2],
+            &[overflow_a, overflow_b, valid_a, valid_b],
+            10,
+        )
+        .unwrap();
+
+        assert_eq!(bundle.price, 7);
+        assert_eq!([bundle.offers[0].id, bundle.offers[1].id], [3, 4]);
+    }
+
+    #[test]
+    fn expiry_boundary_and_duplicate_ids_are_rejected() {
+        assert!(
+            clear_bundle(
+                &[Mandate { job_id: 1, cap: 10 }],
+                [1, 2],
+                &[offer(1, 1, "a", 2), offer(2, 2, "b", 2)],
+                50,
+            )
+            .is_err()
+        );
+
+        assert!(
+            clear_bundle(
+                &[Mandate { job_id: 1, cap: 10 }],
+                [1, 2],
+                &[offer(1, 1, "a", 2), offer(1, 2, "b", 2)],
+                10,
+            )
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn equal_price_tie_breaks_by_offer_ids() {
+        let bundle = clear_bundle(
+            &[Mandate { job_id: 1, cap: 10 }],
+            [1, 2],
+            &[
+                offer(5, 1, "a-five", 3),
+                offer(9, 2, "b-nine", 4),
+                offer(3, 1, "a-three", 3),
+                offer(8, 2, "b-eight", 4),
+            ],
+            10,
+        )
+        .unwrap();
+
+        assert_eq!([bundle.offers[0].id, bundle.offers[1].id], [3, 8]);
     }
 }

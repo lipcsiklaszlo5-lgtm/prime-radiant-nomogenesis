@@ -43,6 +43,7 @@ impl Nomogenesis {
         let obligations = [
             self.economic_escrow,
             self.collateral_escrow,
+            self.rescue_escrow,
             new_claimable_total,
             new_pending_total,
             self.storage_reserves,

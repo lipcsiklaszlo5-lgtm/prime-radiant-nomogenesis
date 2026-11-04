@@ -1,18 +1,21 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R1 verified; M3-R2 design active
+**Current state:** M3-R2-01 verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Current documentation base:** `d531cbc`
+**Current implementation base:** `b3eb084` plus verified R2-01 checkpoint
 
 | Area | Verified state |
 |---|---|
 | Product direction | Jointly funded rescue market approved |
-| M3 executable specification | Written; R2 persistent rules being locked |
-| M3 Rust domain model | 7 focused tests PASS at M3-R1 |
-| Full Rust regression at M3-R1 | PASS |
-| Clippy at M3-R1 | PASS |
-| M3 persistent contract state | NOT IMPLEMENTED |
+| M3 executable specification | Written; R2 storage and liability design locked |
+| M3 rescue-market model | 11 focused tests PASS |
+| M3 persistent contract state | Empty bounded case, job and mandate collections verified |
+| M3 liability boundary | Zero initial liability; withdrawal backing includes `rescue_escrow` |
+| Full Rust regression | 145 tests PASS |
+| Clippy | PASS with warnings denied |
+| WASM target check | PASS |
+| M3 funding endpoint | NOT IMPLEMENTED |
 | M3 Sandbox/testnet evidence | NOT VERIFIED |
 | Public testnet receipts | NOT VERIFIED |
 | Production funds | NOT APPROVED |
@@ -20,9 +23,10 @@
 
 ## Current gate
 
-M3-R2 begins with the funded-job, rescue-mandate, storage and complete
-`rescue_escrow` design. No M3 funding endpoint may be enabled until withdrawal
-backing includes every held M3 principal.
+R2-01 is verified. The contract can represent empty bounded M3 state and its
+withdrawal guard protects `rescue_escrow`. R2-02 may now introduce the first
+M3 payable endpoint, but only with atomic job-plus-mandate creation, exact
+attached value, bounded storage admission and authenticated worker acceptance.
 
 Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
 not proof of M3.
@@ -42,8 +46,8 @@ not proof of M3.
 
 ## Next task
 
-Next: exact storage accounting, refund lifecycle, and economic security audit.
-No production funds before these controls are verified.
+M3-R2-02: atomic funded rescue job plus mandate, worker acceptance, exact
+attached-deposit validation and authenticated read views.
 
 ## Frissítési szabály
 

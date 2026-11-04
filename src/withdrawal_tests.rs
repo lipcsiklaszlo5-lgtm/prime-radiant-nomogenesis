@@ -233,3 +233,24 @@ fn insufficient_native_backing_rejects_withdrawal() {
     assert_eq!(c.payout_totals(), (U128(48), U128(0)));
     assert!(c.get_pending_withdrawal(0).is_none());
 }
+
+#[test]
+fn active_rescue_liability_is_protected_from_withdrawal() {
+    let mut c = earned_credit();
+    let protected = NearToken::from_near(101).as_yoctonear();
+    c.rescue_escrow = protected;
+
+    actor(0, 160);
+
+    assert!(
+        catch_unwind(AssertUnwindSafe(|| {
+            c.withdraw(U128(5));
+        }))
+        .is_err()
+    );
+
+    assert_eq!(c.rescue_escrow_total(), U128(protected));
+    assert_eq!(c.get_claimable(accounts(0)), U128(12));
+    assert_eq!(c.payout_totals(), (U128(48), U128(0)));
+    assert!(c.get_pending_withdrawal(0).is_none());
+}

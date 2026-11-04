@@ -3,18 +3,20 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- HEAD before R2-00: `d531cbc`
-- Verified implementation: M3-R1 pure Rust domain model
-- Focused M3-R1 tests: 7 PASS
-- Full Rust regression, Clippy and diff check: PASS
+- R2-01 base: `b3eb084`
+- Verified implementation: bounded empty M3 schema and complete withdrawal liability boundary
+- Rescue-market focused tests: 11 PASS
+- M3 schema tests: 2 PASS
+- Full Rust suite: 145 PASS
+- Clippy, WASM target check and diff check: PASS
+- Serialized records: case 292, job 266, mandate 68 Borsh bytes
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- Active ticket: M3-R2-00 persistent storage and liability design
-- Authoritative R2 design: `docs/M3_R2_STORAGE_AND_LIABILITY.md`
-- Next single action: review and commit R2-00, then start R2-01 boundary tests
+- No M3 funding endpoint is enabled
+- Next single action: M3-R2-02 atomic funded rescue job plus mandate
 
-M3 persistent state, bundle award, proof settlement and testnet evidence are
-not yet implemented.
-
+R2-01 proves that active M3 principal cannot be omitted from native-withdrawal
+backing. It does not yet prove funded-job creation, real Sandbox storage cost,
+bundle award, proof settlement or testnet operation.
 ## Munkamenetindító parancsok
 
 ```bash
@@ -41,6 +43,18 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R2-01 zero-liability schema
+
+- Base: `b3eb084`.
+- Added bounded rescue case, job and mandate records.
+- Added zero-initialized `rescue_escrow` and empty M3 collections.
+- Withdrawal backing now includes active M3 principal.
+- Fixed overflowing offer-pair admission so one invalid pair cannot block a valid bundle.
+- 145 Rust tests, Clippy, WASM target check and diff check passed.
+- No M3 funding endpoint or real Sandbox storage quote was introduced.
+- Next: M3-R2-02 atomic funded job plus mandate.
+
 
 ### 2026-11-04 — M3-R0B governance alignment
 

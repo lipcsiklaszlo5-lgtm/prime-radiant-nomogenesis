@@ -2,6 +2,7 @@ use near_sdk::{AccountId, env, json_types::U128, near, store::LookupMap};
 mod escrow;
 mod ledger;
 mod offer;
+pub mod rescue;
 pub mod settlement;
 mod task;
 mod withdrawal;
@@ -30,6 +31,11 @@ pub struct Nomogenesis {
     next_withdrawal_id: u64,
     pending_withdrawals: LookupMap<u64, withdrawal::PendingWithdrawal>,
     pending_total: u128,
+    next_rescue_job_id: u64,
+    rescue_cases: LookupMap<[u8; 32], rescue::RescueCase>,
+    rescue_jobs: LookupMap<u64, rescue::RescueJob>,
+    rescue_mandates: LookupMap<u64, rescue::RescueMandate>,
+    rescue_escrow: u128,
 }
 
 impl Default for Nomogenesis {
@@ -53,12 +59,40 @@ impl Default for Nomogenesis {
             next_withdrawal_id: 0,
             pending_withdrawals: LookupMap::new(b"pending".as_slice()),
             pending_total: 0,
+            next_rescue_job_id: 0,
+            rescue_cases: LookupMap::new(b"m3cases".as_slice()),
+            rescue_jobs: LookupMap::new(b"m3jobs".as_slice()),
+            rescue_mandates: LookupMap::new(b"m3mandates".as_slice()),
+            rescue_escrow: 0,
         }
     }
 }
 
 #[near]
 impl Nomogenesis {
+    pub fn rescue_escrow_total(&self) -> U128 {
+        U128(self.rescue_escrow)
+    }
+
+    pub fn next_rescue_job_id(&self) -> u64 {
+        self.next_rescue_job_id
+    }
+
+    pub fn has_rescue_case(&self, case_id: Vec<u8>) -> bool {
+        let Ok(key) = <[u8; 32]>::try_from(case_id) else {
+            return false;
+        };
+        self.rescue_cases.get(&key).is_some()
+    }
+
+    pub fn has_rescue_job(&self, job_id: u64) -> bool {
+        self.rescue_jobs.get(&job_id).is_some()
+    }
+
+    pub fn has_rescue_mandate(&self, job_id: u64) -> bool {
+        self.rescue_mandates.get(&job_id).is_some()
+    }
+
     pub fn task_storage_bond(&self, task_id: u64) -> Option<(AccountId, U128)> {
         self.task_creation_bonds
             .get(&task_id)
@@ -846,6 +880,9 @@ mod ledger_tests;
 
 #[cfg(test)]
 mod withdrawal_tests;
+
+#[cfg(test)]
+mod rescue_schema_tests;
 
 #[cfg(test)]
 mod storage_admission_tests;
