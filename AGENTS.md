@@ -56,7 +56,7 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi kapu: M3-R0. A következő kódváltozás kizárólag M3-R1 lehet. A korábbi 108 Rust-teszt és 11 Sandbox-suite dokumentált M2-bizonyíték; M3-R0-ban nem lett újrafuttatva.
+Jelenlegi ellenőrzött kapu: M3-R1. A pure Rust allocation, clearing és settlement modell commitja `14dc877`; a dokumentációs átadás HEAD-je `d531cbc`. A következő ticket M3-R2, elsőként a persistent séma, a teljes M3 liability és a withdrawal backing rögzítésével. Bundle award, proof settlement és testnet működés még nincs igazolva.
 
 ## 5. Munkamenet lezárás
 

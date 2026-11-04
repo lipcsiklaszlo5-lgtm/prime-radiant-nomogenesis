@@ -1,28 +1,17 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-## M3-R1 verified model
-
-- The isolated rescue-market model is implemented in `src/rescue_market_model.rs`.
-- Focused model tests: 7 passed.
-- Full `cargo test --locked`: passed; existing unit tests and all integration targets passed.
-- `cargo clippy --locked --all-targets -- -D warnings`: passed.
-- `git diff --check`: passed.
-- The model is test-only and is not declared in `src/lib.rs`; persistent NEAR state and entry points are unchanged.
-
-
-**Current state:** M3-R0 strategy and executable specification
+**Current state:** M3-R1 verified; M3-R2 design active
 **Date:** 2026-11-04
-**Branch:** feat/m2-escrow
-**M3-R0 base:** aceae9b
+**Branch:** `feat/m2-escrow`
+**Current documentation base:** `d531cbc`
 
 | Area | Verified state |
 |---|---|
 | Product direction | Jointly funded rescue market approved |
-| M3 executable specification | Written; implementation not started |
-| Existing M2 Rust/NEAR kernel | Preserved |
-| Recorded Rust tests | 108 PASS; not rerun in M3-R0 |
-| Recorded default Sandbox suites | 11 PASS; not rerun in M3-R0 |
-| M3 Rust domain model | NOT IMPLEMENTED |
+| M3 executable specification | Written; R2 persistent rules being locked |
+| M3 Rust domain model | 7 focused tests PASS at M3-R1 |
+| Full Rust regression at M3-R1 | PASS |
+| Clippy at M3-R1 | PASS |
 | M3 persistent contract state | NOT IMPLEMENTED |
 | M3 Sandbox/testnet evidence | NOT VERIFIED |
 | Public testnet receipts | NOT VERIFIED |
@@ -31,11 +20,12 @@
 
 ## Current gate
 
-Next: M3-R1 pure Rust allocation, offer-pair clearing and settlement domain model.
+M3-R2 begins with the funded-job, rescue-mandate, storage and complete
+`rescue_escrow` design. No M3 funding endpoint may be enabled until withdrawal
+backing includes every held M3 principal.
 
-M3-R1 may not modify persistent NEAR state. It must first pass deterministic allocation, conservation, partial-default, overflow and replay-oriented domain tests.
-
-Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints, not proof of M3.
+Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
+not proof of M3.
 
 ## M1 Final Gate — PASS
 

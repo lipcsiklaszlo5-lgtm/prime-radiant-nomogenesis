@@ -29,3 +29,11 @@ Korábbi döntést **ne törölj**: új `ADR-...` bejegyzéssel helyettesítsd �
 
 ### ADR-009 — 2026-11-04 — Külön M3 liability
 **Állapot: Elfogadva.** Minden jóvá nem írt M3 principal a rescue_escrow kötelezettségben marad. A withdrawal backing ezt a meglévő M2 kötelezettségeken, storage stake-en és bufferen felül védi.
+
+### ADR-010 — 2026-11-04 — Teljes M3 principal egy rescue liability-ben
+**Állapot: Elfogadva.** A `rescue_escrow` minden még jóvá nem írt M3 gazdasági
+principalt védi: worker-díjat, nyitott vagy zárolt mandate-pénzt és később az
+M3 provider-bondokat. Belső allokáció nem változtatja az aggregált liability-t.
+Claimable kredit ugyanazzal az összeggel csökkenti. Az M3 funding bekapcsolása
+előtt a withdrawal backing ezt a meglévő M2 kötelezettségeken felül tartalmazza.
+Storage-hozzájárulás nem számít gazdasági principalnak.

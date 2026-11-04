@@ -1,28 +1,19 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## M3-R1 verified checkpoint
-
-- Branch: `feat/m2-escrow`
-- Base: `eb81676`
-- M3-R1 focused tests: 7 passed.
-- Full Rust test suite, Clippy, and diff check: passed.
-- The local audit file `sandbox/real_low_margin_audit.cjs` remains untouched.
-- Next action: M3-R2 — design storage for funded jobs and rescue mandates, including the separate M3 liability boundary.
-
-
 ## Current M3 checkpoint — 2026-11-04
 
-- Branch: feat/m2-escrow
-- M3-R0 base: aceae9b
-- Current HEAD: the commit containing this handoff after M3-R0 is committed
-- Preserve untracked: sandbox/real_low_margin_audit.cjs
-- Product: jointly funded rescue market
-- Authoritative spec: docs/M3_RESCUE_MARKET_SPEC.md
-- M3 implementation: not started
-- Recorded M2 evidence: preserved, not rerun in M3-R0
-- Next single ticket: M3-R1 pure Rust domain model
+- Branch: `feat/m2-escrow`
+- HEAD before R2-00: `d531cbc`
+- Verified implementation: M3-R1 pure Rust domain model
+- Focused M3-R1 tests: 7 PASS
+- Full Rust regression, Clippy and diff check: PASS
+- Preserve untracked: `sandbox/real_low_margin_audit.cjs`
+- Active ticket: M3-R2-00 persistent storage and liability design
+- Authoritative R2 design: `docs/M3_R2_STORAGE_AND_LIABILITY.md`
+- Next single action: review and commit R2-00, then start R2-01 boundary tests
 
-Do not restart product brainstorming, resume storage research, or mutate persistent NEAR state before M3-R1 domain tests pass.
+M3 persistent state, bundle award, proof settlement and testnet evidence are
+not yet implemented.
 
 ## Munkamenetindító parancsok
 

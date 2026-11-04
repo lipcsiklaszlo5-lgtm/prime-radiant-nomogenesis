@@ -176,3 +176,27 @@ M3-R1 creates a pure Rust domain module only:
 - conservation and adversarial tests.
 
 M3-R1 does not mutate persistent NEAR state.
+
+## 12. M3-R2 persistent boundary
+
+A canonical `RescueCase` binds the original provider, exactly two ordered
+component commitments and the shared deadlines.
+
+Timeline:
+
+`dependency_deadline < bid_close < award_close < recovery_deadline < final_job_deadline`
+
+Jobs enroll and workers accept before the dependency deadline. Clearing is
+allowed only during `[bid_close, award_close)`. Open mandates and offers remain
+eligible until `award_close`.
+
+A funded job and its mandate are created atomically from an exact attached
+deposit containing worker reward, rescue cap and separately quoted storage.
+Worker reward and rescue authority have independent state transitions.
+
+`rescue_escrow` includes every still-held M3 worker reward, mandate principal
+and later M3 provider bond. Internal allocation does not change it. Moving value
+to claimables decreases it by exactly the credited amount.
+
+The complete record, transition and storage policy is normative in
+`docs/M3_R2_STORAGE_AND_LIABILITY.md`.
