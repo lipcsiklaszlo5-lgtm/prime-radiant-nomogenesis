@@ -1,5 +1,37 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R6-05B checkpoint — 2026-11-04
+
+- Base commit: `b471895`.
+- Original R6-04 case and transactions remain untouched.
+- Create a separate, short-window Testnet rescue case.
+- Reuse three existing R6-04 identities.
+- Fund seven additional role-specific accounts.
+- Three buyers fund three accepted rescue jobs.
+- Two distinct providers post bonded component offers.
+- Preserve each transaction in an external journal.
+- Verify 114 UNIT incremental economic escrow.
+- Do not award before the on-chain bid close.
+- Status: FULL PUBLIC TESTNET ECONOMIC LIFECYCLE PASS.
+- Nine consortium transactions and eight settlement transactions.
+- Case creation transaction: `FTgpTeickEKF8n6Xre87RL6cxKZKWwyhgRmj8k6CXbm`.
+- Atomic award transaction: `67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT`.
+- Terminal settlement transaction: `7wFv9zQWkKcUMSjxMSCMDA4jQM9J9BkpZTryNa4ixgsA`.
+- Native withdrawal transaction: `AiDr3cP7BWF38k49VsnrKULjcSNU2fXuSKgRHm9GDPWs`.
+- New consortium escrow: 114 UNIT; fully distributed.
+- Provider credits: 36 UNIT.
+- Worker rewards: 75 UNIT.
+- Buyer refunds: 3 UNIT.
+- Native withdrawal: 20 UNIT, receipt and callback PASS.
+- Remaining claimable total: 94 UNIT.
+- Prior R6-04 escrow remains: 30 UNIT.
+- Both public RPCs independently verified 17 transactions
+  and final economic state, without private credentials.
+- Portable manifest: `docs/evidence/R6-05-public.json`.
+- Read-only verifier: `node scripts/m3/r6_verify_public.cjs`.
+- Synthetic Testnet demonstration, not independent audit.
+- Next: M3-R6-06 submission demo and review.
+
 ## Current M3-R6-04 checkpoint — 2026-11-04
 
 - Base commit: `5d4750a`.

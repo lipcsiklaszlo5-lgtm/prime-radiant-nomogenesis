@@ -56,7 +56,7 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R6-04.
+Jelenlegi ellenőrzött kapu: M3-R6-05B.
 242 Rust teszt, Clippy, reprodukált WASM PASS.
 26 M2/M3 Sandbox kapu, két javított offline
 storage-audit és withdrawal fault injection PASS.
@@ -87,7 +87,15 @@ tranzakció, 30 UNIT zárolt gazdasági letét,
 külön vevő és dolgozó, két RPC finality PASS.
 Teljes mentés, elszámolás, kifizetés Testneten
 még NINCS igazolva.
-Következő: M3-R6-05 teljes Testnet életciklus.
+M3-R6-05B: teljes nyilvános Testnet mentési életciklus PASS.
+17 nyilvános konzorciumi tranzakció, két RPC ellenőrzés,
+114 UNIT gazdasági megmaradás, 20 UNIT natív kifizetés,
+Transfer + callback receipt PASS.
+A korábbi R6-04 30 UNIT letétje megmaradt.
+Nyilvános, kulcsmentes ellenőrzés:
+`node scripts/m3/r6_verify_public.cjs`.
+Független üzemeltetői hálózat, audit és mainnet NINCS.
+Következő: M3-R6-06 nevezési demó és review.
 
 ## 5. Munkamenet lezárás
 

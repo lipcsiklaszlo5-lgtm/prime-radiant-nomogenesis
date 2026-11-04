@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R6-04 funded public Testnet smoke verified
+**Current state:** M3-R6-05B public Testnet lifecycle verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -18,9 +18,39 @@
 | M3-R2 lifecycle and R3 release | SANDBOX PASS |
 | Component proofs / terminal settlement | UNIT + SANDBOX PASS / UNIT + SANDBOX PASS |
 | Worker result and reward lifecycle | UNIT + SANDBOX PASS |
-| Public testnet deployment | VERIFIED; economic lifecycle pending |
+| Public Testnet lifecycle | 17/17 consortium transactions; full economic settlement PASS |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R6-05B — public Testnet rescue lifecycle
+
+Base commit: `b471895`, 2026-11-04.
+
+- Case ID: `446f769d1ed037f5916709c888ade5886a5b195c25acbc4728364fbdcc96f8a5`.
+- Contract: `nomogenesis-70e59593a3.testnet`.
+- Nine funding/setup and eight settlement transactions.
+- Case creation: `FTgpTeickEKF8n6Xre87RL6cxKZKWwyhgRmj8k6CXbm`.
+- Atomic shared award: `67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT`.
+- Terminal settlement: `7wFv9zQWkKcUMSjxMSCMDA4jQM9J9BkpZTryNa4ixgsA`.
+- Native 20 UNIT transfer: `AiDr3cP7BWF38k49VsnrKULjcSNU2fXuSKgRHm9GDPWs`.
+- Three accepted and completed rescue jobs.
+- Two bonded providers supplied Merkle-authenticated CSV.
+- Deterministic shared 12 UNIT rescue purchase.
+- Three sponsors allocated 4 UNIT each.
+- Provider credits: 36 UNIT; workers: 75 UNIT;
+  buyer refunds: 3 UNIT.
+- 114 UNIT newly committed, completely accounted for.
+- Remaining claimable balance: 94 UNIT.
+- The earlier 30 UNIT funded job remains held separately.
+- Two public RPCs verified the 17 transactions,
+  deployed code identity and final economic state.
+- No private credentials required for public verification.
+- Reproduce: `node scripts/m3/r6_verify_public.cjs`.
+- Manifest: `docs/evidence/R6-05-public.json`.
+- Synthetic demonstration; no independent audit,
+  mainnet deployment or independent operator network.
+
+Next: M3-R6-06 submission-ready demo and review.
 
 ## M3-R6-04 — public funded economic smoke
 

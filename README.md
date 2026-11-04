@@ -17,8 +17,9 @@ reward refunds and native withdrawals.
 
 M3-R4-05: 242 Rust tests and 29 regression gates verified,
 including two corrected storage-audit expectations.
-This is a local Sandbox prototype, not an independently audited
-or public-testnet-verified production system.
+The contract was validated in local Sandbox and subsequently
+deployed to public NEAR Testnet. It is not independently audited
+or approved for production.
 
 M3-R5-02: signed local Sandbox demo using two CSV
 components, three funded buyers, two providers and three
@@ -42,6 +43,31 @@ case creation, buyer funding and worker acceptance.
 The contract holds 30 UNIT (0.03 testNEAR) in rescue
 escrow. Full public recovery and payout are pending.
 
-Next: R6-05 public Testnet recovery and settlement.
-The full multi-role lifecycle is not yet Testnet-verified.
-Public testnet evidence is not yet available.
+M3-R6-05B: full public Testnet rescue lifecycle PASS.
+
+- 3 funded buyers, 2 bonded providers, 3 workers.
+- 17 signed public consortium transactions.
+- Atomic award, 2 CSV proofs, terminal settlement.
+- 114 UNIT economic conservation, 20 UNIT native payout.
+- The earlier R6-04 escrow remains separately held.
+- Independently rechecked through two public RPCs.
+
+**Public verification without a wallet or private keys:**
+
+```bash
+node scripts/m3/r6_verify_public.cjs
+```
+
+Public transaction manifest:
+[`docs/evidence/R6-05-public.json`](docs/evidence/R6-05-public.json)
+
+Key transactions:
+- [Atomic award](https://testnet.nearblocks.io/txns/67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT)
+- [Settlement](https://testnet.nearblocks.io/txns/7wFv9zQWkKcUMSjxMSCMDA4jQM9J9BkpZTryNa4ixgsA)
+- [Native payout](https://testnet.nearblocks.io/txns/AiDr3cP7BWF38k49VsnrKULjcSNU2fXuSKgRHm9GDPWs)
+
+Limitations: synthetic data, Testnet only, one demonstration
+operator controlling the participating accounts; no independent
+security audit, mainnet deployment or proven market advantage.
+
+Next: M3-R6-06 submission demo and review.

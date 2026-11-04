@@ -552,7 +552,7 @@ async function main() {
   console.log('=== M3-R6-04 RESULT: PASS ===');
 }
 
-main().catch(error => {
+if (require.main === module) main().catch(error => {
   console.error('=== M3-R6-04 RESULT: FAIL ===');
   console.error(error.stack || error.message);
   console.error(
@@ -560,3 +560,18 @@ main().catch(error => {
   );
   process.exitCode = 1;
 });
+
+// Shared public-Testnet helpers. Importing does not
+// execute the original R6-04 transaction sequence.
+module.exports = {
+  rpc,
+  view,
+  accountState,
+  provision,
+  connect,
+  signedCall,
+  verifyTransaction,
+  eventuallyView,
+  save,
+  load
+};

@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "network": "testnet",
+  "contract": "nomogenesis-70e59593a3.testnet",
+  "contract_code_hash": "Hc2soWJ38GHn4i2gVy87jexrBYEgquboFg6VJLUL56wQ",
+  "wasm_sha256": "f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7",
+  "case_id_hex": "446f769d1ed037f5916709c888ade5886a5b195c25acbc4728364fbdcc96f8a5",
+  "bundle_id": 0,
+  "job_ids": [
+    1,
+    2,
+    3
+  ],
+  "offer_ids": [
+    0,
+    1
+  ],
+  "prior_funded_job_id": 0,
+  "unit_yocto": "1000000000000000000000",
+  "actors": {
+    "creator": "nmg-creator-be81fe60a5.testnet",
+    "buyer0": "nmg-buyer-fdf715605c.testnet",
+    "worker0": "nmg-worker-cab03ebf2d.testnet",
+    "buyer1": "nmg-buyer1-d840182ae4.testnet",
+    "worker1": "nmg-worker1-9b86f5cc3a.testnet",
+    "buyer2": "nmg-buyer2-688b49db79.testnet",
+    "worker2": "nmg-worker2-ae194846e1.testnet",
+    "quantities": "nmg-quantities-36cbb96203.testnet",
+    "prices": "nmg-prices-bdcfb35f28.testnet"
+  },
+  "transactions": [
+    {
+      "step": "case",
+      "role": "creator",
+      "method": "create_rescue_case",
+      "signer": "nmg-creator-be81fe60a5.testnet",
+      "tx": "FTgpTeickEKF8n6Xre87RL6cxKZKWwyhgRmj8k6CXbm"
+    },
+    {
+      "step": "buyer0-fund",
+      "role": "buyer0",
+      "method": "create_funded_rescue_job",
+      "signer": "nmg-buyer-fdf715605c.testnet",
+      "tx": "Af6ZyEE8Xhuhi3BP2BhPtsaVc5ERcuMxJG3phS63UCC5"
+    },
+    {
+      "step": "worker0-accept",
+      "role": "worker0",
+      "method": "accept_rescue_job",
+      "signer": "nmg-worker-cab03ebf2d.testnet",
+      "tx": "Gi73b8opLfWMqSJRgto3Zyf458XyPQS81uVuGSDPjxdW"
+    },
+    {
+      "step": "buyer1-fund",
+      "role": "buyer1",
+      "method": "create_funded_rescue_job",
+      "signer": "nmg-buyer1-d840182ae4.testnet",
+      "tx": "2NfWKUdyQcmvgRLwq4eWEwMDHZtgEHTEdbKvAaitv1FM"
+    },
+    {
+      "step": "worker1-accept",
+      "role": "worker1",
+      "method": "accept_rescue_job",
+      "signer": "nmg-worker1-9b86f5cc3a.testnet",
+      "tx": "CdQR1WkRmYCHzdyUcZXJDNuYksu32wwSWieCsrBQe7qY"
+    },
+    {
+      "step": "buyer2-fund",
+      "role": "buyer2",
+      "method": "create_funded_rescue_job",
+      "signer": "nmg-buyer2-688b49db79.testnet",
+      "tx": "FfMXxrrGKoqTr7BXcZC7UQ3MofikzzR5Fwz56uHdBqBZ"
+    },
+    {
+      "step": "worker2-accept",
+      "role": "worker2",
+      "method": "accept_rescue_job",
+      "signer": "nmg-worker2-ae194846e1.testnet",
+      "tx": "HNV9kmLMN4ZufK1K89UfVvzYCUhJJ1QiEPGUuw3vTbe7"
+    },
+    {
+      "step": "provider0-offer",
+      "role": "quantities",
+      "method": "post_rescue_offer",
+      "signer": "nmg-quantities-36cbb96203.testnet",
+      "tx": "9gfVHmHdPwdcvqKghGY1Ju69KrrJv76fQ13PGgmrPsHZ"
+    },
+    {
+      "step": "provider1-offer",
+      "role": "prices",
+      "method": "post_rescue_offer",
+      "signer": "nmg-prices-bdcfb35f28.testnet",
+      "tx": "4WEs5MJLCjc27NPpzk2TLd5qRe932J52vE4SKcXZeC1Z"
+    },
+    {
+      "step": "award",
+      "role": "creator",
+      "method": "award_rescue_bundle",
+      "signer": "nmg-creator-be81fe60a5.testnet",
+      "tx": "67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT"
+    },
+    {
+      "step": "proof0",
+      "role": "quantities",
+      "method": "submit_rescue_component",
+      "signer": "nmg-quantities-36cbb96203.testnet",
+      "tx": "BW8r8fNmmHWEmwHpzEJ1LmxWEs3ebqJ365D16SXpW7YU"
+    },
+    {
+      "step": "proof1",
+      "role": "prices",
+      "method": "submit_rescue_component",
+      "signer": "nmg-prices-bdcfb35f28.testnet",
+      "tx": "FWRfUbfBckfqrfucmXe5HZfDcWWUnxPDCLh244VP6csC"
+    },
+    {
+      "step": "settlement",
+      "role": "creator",
+      "method": "settle_rescue_bundle",
+      "signer": "nmg-creator-be81fe60a5.testnet",
+      "tx": "7wFv9zQWkKcUMSjxMSCMDA4jQM9J9BkpZTryNa4ixgsA"
+    },
+    {
+      "step": "worker0-complete",
+      "role": "worker0",
+      "method": "complete_rescue_job",
+      "signer": "nmg-worker-cab03ebf2d.testnet",
+      "tx": "89uT81pY6YzLqAgu7VekQoazETTDWQQSkVWUySBLfiHu"
+    },
+    {
+      "step": "worker1-complete",
+      "role": "worker1",
+      "method": "complete_rescue_job",
+      "signer": "nmg-worker1-9b86f5cc3a.testnet",
+      "tx": "9tb7L9TH2HE12teRpjDk2pmgUbkf7aJHQZrRMCBYPQ5q"
+    },
+    {
+      "step": "worker2-complete",
+      "role": "worker2",
+      "method": "complete_rescue_job",
+      "signer": "nmg-worker2-ae194846e1.testnet",
+      "tx": "9cee2HWZxFDMGJKrfL6tsztkWsbkF88C8rPNVz92ZhSQ"
+    },
+    {
+      "step": "withdraw",
+      "role": "worker0",
+      "method": "withdraw",
+      "signer": "nmg-worker-cab03ebf2d.testnet",
+      "tx": "AiDr3cP7BWF38k49VsnrKULjcSNU2fXuSKgRHm9GDPWs"
+    }
+  ],
+  "expected": {
+    "new_consortium_deposits_units": 114,
+    "provider_credits_units": 36,
+    "worker_rewards_units": 75,
+    "buyer_refunds_units": 3,
+    "native_withdrawal_units": 20,
+    "remaining_claimable_units": 94,
+    "prior_case_escrow_units": 30,
+    "global_final_escrow_units": 30,
+    "csv_result": 632
+  },
+  "limitations": [
+    "Synthetic CSV inputs and testnet funds only",
+    "Accounts controlled by one demonstration operator",
+    "No independent security audit",
+    "No mainnet or production approval"
+  ]
+}
