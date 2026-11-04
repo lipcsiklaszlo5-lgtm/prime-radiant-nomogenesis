@@ -4,6 +4,7 @@ mod escrow;
 mod ledger;
 mod offer;
 pub mod rescue;
+mod rescue_award;
 mod rescue_clearing;
 pub mod settlement;
 mod task;
@@ -740,6 +741,11 @@ impl Nomogenesis {
                 eligible_job_ids: plan.eligible_job_ids,
                 eligible_cap_total: U128(plan.eligible_cap_total),
             })
+    }
+
+    pub fn award_rescue_bundle(&mut self, case_id: Vec<u8>) -> u64 {
+        let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
+        self.award_rescue_bundle_inner(key)
     }
 
     #[payable]

@@ -1,38 +1,59 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R3-03B-01 sponsor allocation verified locally; atomic award not implemented
+**Current state:** M3-R3-03B-02 atomic RecoveryRight award locally verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Implementation base:** `46c0080` plus R3-03A checkpoint
+**Implementation starting commit:** `af9c518`
 
 | Area | Verified state |
 |---|---|
-| R2 funded demand and liability | COMPLETE |
-| Typed M2/M3 capacity registry | IMPLEMENTED |
-| Provider offer funding, cancel and expiry | SANDBOX PASS |
-| Read-only deterministic pair preview | SANDBOX PASS |
-| Separate storage and M3 economic liability | SANDBOX PASS |
-| Full Rust regression | 197 tests PASS |
-| Clippy and compatible WASM | PASS |
-| M2 and M3-R2 Sandbox | PRIOR CHECKPOINT PASS |
-| Atomic RecoveryRight award | NOT IMPLEMENTED |
+| M3-R2 funded jobs and mandates | SANDBOX PASS |
+| M3-R3 provider funding and release | SANDBOX PASS |
+| Deterministic capped-equal allocation | UNIT PASS |
+| Atomic bundle award | UNIT + SANDBOX PASS |
+| Shared M2/M3 capacity locking | UNIT + SANDBOX PASS |
+| Full Rust regression | 206/206 PASS |
+| Strict Clippy and compatible WASM | PASS |
+| M2 primary, backup and settlement | SANDBOX PASS |
+| M3-R2 lifecycle and R3 release | SANDBOX PASS |
+| Bundle component proofs and terminal settlement | NOT IMPLEMENTED |
 | Public testnet evidence | NOT VERIFIED |
+| Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
 
-## Current gate
+## Current gate — M3-R3-03B-02
 
-The fresh local Sandbox selected the fully bonded offers `[2, 3]` for
-three accepted jobs with a total fee of 12 units and a 15-unit aggregate cap.
-The preview left the case open, offers unlocked and bundle count zero.
-Revoking one buyer's open 5-unit mandate removed the candidate without
-creating a bundle. The first run overshot `award_close`; the bounded
-fast-forward repair passed on rerun. Successful local transactions were not
-printed with receipt IDs. WASM SHA-256: `59c1cd29cd54f1c4e5985e8ff4193d558f41985b61e26144ed08556d9d7d968c`.
-Earlier M2 and M3-R2 Sandboxes were not rerun on this WASM.
+Nine focused award tests passed, including successful award,
+replay rejection, capped-equal allocation, refund conservation,
+overflow rejection, time boundaries, insufficient caps,
+M2/M3 slot conflict and persistence.
+
+A fresh local NEAR Sandbox awarded fully bonded offers [2, 3]
+for three accepted jobs. The winning bundle price was
+12 units and the sponsor allocations were 4, 4 and 4.
+
+The test rejected repeated award and release of selected offers,
+then released the two unselected, under-bonded offers.
+
+Economic conservation after release:
+111 escrow + 5 claimable = 116 original principal.
+Storage reserves remained unchanged in this scenario.
+
+Rust regression: 172 library + 11 market + 17 event + 6
+storage-ledger tests = 206 PASS.
+
+WASM SHA-256: `d77817ae80f14bfdb1845f1151069e168dbcc107cc8bf0cc89e518499e25e8fc`.
+
+The completed local Sandbox runs were M2 primary, backup,
+settlement; M3-R2 lifecycle; M3-R3 offer release; and M3-R3
+atomic award. Other historical Sandbox suites were not rerun
+on this WASM.
 
 ## Next task
 
-M3-R3-03B-02: atomic bundle award and shared M2/M3 capacity locking.
+M3-R4-00: specify authenticated component proofs,
+RecoveryRight success/default settlement and conservation
+invariants before implementing economic terminal transitions.
 
 ## Frissítési szabály
 

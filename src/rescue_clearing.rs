@@ -9,10 +9,6 @@ pub(crate) struct RescuePairPlan {
     pub eligible_cap_total: u128,
 }
 
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "Pending M3-R3-03B-02 atomic award integration")
-)]
 pub(crate) fn allocate_rescue_cost(
     caps: &[(u64, u128)],
     price: u128,

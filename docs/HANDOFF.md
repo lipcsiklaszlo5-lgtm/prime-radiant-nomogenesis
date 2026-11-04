@@ -1,6 +1,24 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## Current M3 checkpoint — 2026-11-04
+## Current M3-R3-03B-02 checkpoint — 2026-11-04
+
+- Base commit: `af9c518`, branch: `feat/m2-escrow`.
+- Atomic bundle award: local Sandbox PASS.
+- Nine focused award tests PASS.
+- Full Rust regression: 206/206 PASS.
+- Strict Clippy, WASM and diff validation: PASS.
+- WASM SHA-256: `d77817ae80f14bfdb1845f1151069e168dbcc107cc8bf0cc89e518499e25e8fc`.
+- M2 primary, backup and settlement Sandboxes: PASS.
+- M3-R2 lifecycle, provider release and atomic award Sandboxes: PASS.
+- Economic conservation: 111 escrow + 5 claimable = 116 units.
+- Storage reserves unchanged in the award scenario.
+- Component proofs and terminal settlement: NOT IMPLEMENTED.
+- Public testnet and independent security audit: NOT VERIFIED.
+- Production funds: NOT APPROVED.
+- Preserve `sandbox/real_low_margin_audit.cjs`.
+- Next task: M3-R4-00 proof and settlement specification.
+
+## Previous M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`; R3-03A implementation base: `46c0080`.
 - Deterministic, read-only on-chain pair preflight: verified locally.
@@ -16,7 +34,8 @@
 - Bundle award, RecoveryRight, proof settlement and public testnet: not verified.
 - M3-R3-03B-01 allocation: 6 focused tests and 197 full Rust tests PASS.
 - Clippy, rustfmt, WASM and M3 pair-preview Sandbox PASS. WASM SHA-256: `652c1bd8d79748f6ea6e25ebc96214d25ec0b4a8f928dc9698b8823a8c6bdec3`.
-- Next single action: M3-R3-03B-02 atomic award integration.
+- Active ticket: M3-R3-03B-02 atomic award; implementation unverified.
+- Next single action: compile and test atomic award integration.
 
 ## Munkamenetindító parancsok
 
