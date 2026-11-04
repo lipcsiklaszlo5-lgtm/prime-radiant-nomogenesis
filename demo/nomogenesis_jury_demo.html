@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NOMOGENESIS — Collective Recovery</title>
+<style>
+:root{
+  font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Arial,sans-serif;
+  background:#fafaf9;
+  color:#171717;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.wrap{max-width:1080px;margin:auto;padding:0 30px}
+header{border-bottom:1px solid #e1e1df}
+nav{
+  min-height:72px;display:flex;align-items:center;
+  justify-content:space-between;gap:16px
+}
+.logo{font-size:21px;font-weight:750;letter-spacing:-.05em}
+.tag{
+  font-size:11px;color:#476951;
+  border:1px solid #d0ded1;padding:8px 12px;
+  border-radius:30px
+}
+.hero{padding:100px 0 110px;border-bottom:1px solid #e1e1df}
+.kicker{
+  text-transform:uppercase;letter-spacing:.16em;
+  font-size:11px;color:#777;font-weight:700
+}
+h1{
+  font-size:clamp(51px,8vw,100px);
+  line-height:1.04;letter-spacing:-.075em;
+  font-weight:650;margin:25px 0
+}
+h1 span{color:#929292}
+.lead{
+  max-width:620px;font-size:19px;
+  line-height:1.7;color:#646464
+}
+.cta{
+  display:inline-block;margin-top:25px;
+  background:#171717;color:#fff;
+  padding:14px 20px;border-radius:9px;
+  text-decoration:none;font-size:13px;font-weight:600
+}
+section.content{padding:85px 0;border-bottom:1px solid #e1e1df}
+h2{
+  font-size:clamp(38px,5vw,58px);
+  letter-spacing:-.06em;line-height:1.1;
+  font-weight:650;margin:15px 0 30px
+}
+.intro{color:#6d6d6d;max-width:650px;line-height:1.7}
+.lab{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:1px solid #e1e1de;border-radius:16px;
+  overflow:hidden;margin-top:36px
+}
+.controls{padding:35px;background:#fff}
+.result{padding:35px;background:#f0f0ee}
+.line{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;font-size:13px;
+  font-weight:600;margin-bottom:15px
+}
+input[type=range]{width:100%;accent-color:#202020}
+.buyer{
+  display:grid;grid-template-columns:65px 1fr 55px;
+  align-items:center;gap:10px;
+  border-top:1px solid #eee;padding:15px 0;font-size:12px
+}
+.buyer output{text-align:right}
+.buttons{display:flex;gap:7px}
+.buttons button,.preset{
+  background:#fff;border:1px solid #ddd;
+  border-radius:8px;padding:7px 12px
+}
+.buttons button{font-size:18px}
+.buttons button:disabled{opacity:.3}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.preset{font-size:11px}
+.status{
+  font-size:clamp(32px,4vw,47px);
+  font-weight:650;letter-spacing:-.06em;
+  margin:18px 0 10px
+}
+.good{color:#37664b}
+.bad{color:#a94740}
+.muted{color:#777;font-size:13px;line-height:1.7}
+.measure{
+  display:flex;justify-content:space-between;
+  padding:17px 0;border-bottom:1px solid #d9d9d7;
+  font-size:13px;color:#777
+}
+.measure strong{color:#222;font-size:21px}
+.allocation{margin-top:30px}
+.allocrow{margin:15px 0}
+.allochead{
+  display:flex;justify-content:space-between;
+  font-size:12px;color:#666;margin-bottom:7px
+}
+.track{background:#dadad7;height:8px;border-radius:10px}
+.fill{background:#222;height:8px;border-radius:10px}
+.facts,.steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:14px;margin-top:32px
+}
+.fact strong{display:block;font-size:38px;letter-spacing:-.06em}
+.fact small{color:#777}
+.step{
+  background:#fff;border:1px solid #e3e3e1;
+  border-radius:12px;padding:23px
+}
+.step h3{font-size:19px;letter-spacing:-.04em}
+.step p{color:#777;font-size:12px;line-height:1.7;min-height:70px}
+.step a{font-size:12px}
+.accounting{display:grid;grid-template-columns:1fr 1fr;gap:35px}
+.accounting article{border-top:1px solid #222;padding-top:18px}
+.accounting strong{
+  font-size:clamp(38px,5vw,54px);
+  letter-spacing:-.065em
+}
+.proof{
+  background:#fff;border:1px solid #ddd;
+  padding:25px;border-radius:12px
+}
+pre{
+  background:#f1f1ef;padding:18px;
+  overflow:auto;border-radius:8px
+}
+details{margin-top:22px}
+summary{cursor:pointer;font-weight:650}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:15px}
+td,th{
+  text-align:left;border-top:1px solid #eee;
+  padding:12px 8px
+}
+footer{padding:45px 0 70px;color:#777;font-size:12px;line-height:1.8}
+@media(max-width:800px){
+ .lab{grid-template-columns:1fr}
+ .steps{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:500px){
+ .wrap{padding:0 20px}
+ .hero{padding:60px 0}
+ .controls,.result{padding:24px}
+ .steps,.accounting{grid-template-columns:1fr}
+ .facts{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<header><nav class="wrap">
+<div class="logo">NOMOGENESIS.</div>
+<div class="tag">● Verified on NEAR Testnet</div>
+</nav></header>
+<main class="wrap">
+<section class="hero">
+<div class="kicker">Bounded collective recovery</div>
+<h1>One failure.<br><span>A shared solution.</span></h1>
+<p class="lead">
+When independent buyers need the same recovery,
+no single buyer has to finance it alone.
+NOMOGENESIS combines bounded commitments into one
+verifiable purchase.
+</p>
+<a class="cta" href="#mechanism">Explore the mechanism ↓</a>
+</section>
+
+<section id="mechanism" class="content">
+<div class="kicker">01 / Mechanism</div>
+<h2>Change the inputs.<br>See the clearing.</h2>
+<p class="intro">
+Three buyers. Each can commit at most 5 UNIT.
+The recovery costs 12 UNIT. Change the assumptions
+and see whether joint funding works.
+</p>
+<div class="lab">
+<div class="controls">
+<div class="line">
+<label for="price">Recovery price</label>
+<output id="price-value">12 UNIT</output>
+</div>
+<input id="price" type="range" min="2" max="30" value="12">
+<div class="line" style="margin-top:32px">
+<span>Buyer limits</span>
+<div class="buttons">
+<button id="remove" type="button">−</button>
+<button id="add" type="button">+</button>
+</div></div>
+<div id="buyers"></div>
+<div class="presets">
+<button class="preset" data-example="reference">Verified example</button>
+<button class="preset" data-example="shortfall">Insufficient</button>
+<button class="preset" data-example="single">Single buyer</button>
+</div>
+<p class="muted">
+Local deterministic simulation. Maximum six buyers.
+No wallet, gas or blockchain transaction.
+</p>
+</div>
+<div class="result">
+<div class="kicker">Live calculation</div>
+<div id="outcome" class="status good">Fundable.</div>
+<p id="description" class="muted"></p>
+<div class="measure">
+<span>Combined capacity</span><strong id="capacity">15 UNIT</strong>
+</div>
+<div class="measure">
+<span>Recovery price</span><strong id="cost">12 UNIT</strong>
+</div>
+<div class="measure">
+<span>Unused capacity</span><strong id="unused">3 UNIT</strong>
+</div>
+<div class="allocation" id="allocation"></div>
+</div>
+</div>
+<div class="facts">
+<div class="fact"><strong>3</strong><small>Funded buyers</small></div>
+<div class="fact"><strong>2</strong><small>Bonded providers</small></div>
+<div class="fact"><strong>17</strong><small>Public transactions</small></div>
+<div class="fact"><strong>2/2</strong><small>RPC verifications</small></div>
+</div>
+</section>
+
+<section class="content">
+<div class="kicker">02 / Execution</div>
+<h2>From financing<br>to actual payout.</h2>
+<div class="steps">
+<article class="step">
+<small>01 / Capital</small>
+<h3>Funded jobs</h3>
+<p>Three buyers and two providers commit 114 UNIT.</p>
+<a id="link-case" target="_blank" rel="noopener noreferrer">View transaction ↗</a>
+</article>
+<article class="step">
+<small>02 / Selection</small>
+<h3>Joint award</h3>
+<p>A 12 UNIT recovery is shared by three buyers.</p>
+<a id="link-award" target="_blank" rel="noopener noreferrer">View transaction ↗</a>
+</article>
+<article class="step">
+<small>03 / Proof</small>
+<h3>Verified delivery</h3>
+<p>Two authenticated CSV components yield result 632.</p>
+<a id="link-settlement" target="_blank" rel="noopener noreferrer">View transaction ↗</a>
+</article>
+<article class="step">
+<small>04 / Payment</small>
+<h3>Native transfer</h3>
+<p>20 UNIT paid with verified transfer and callback receipts.</p>
+<a id="link-withdraw" target="_blank" rel="noopener noreferrer">View transaction ↗</a>
+</article>
+</div>
+</section>
+
+<section class="content">
+<div class="kicker">03 / Conservation</div>
+<h2>Every UNIT accounted for.</h2>
+<div class="accounting">
+<article>
+<strong>36 + 75 + 3</strong>
+<p class="muted">Providers + workers + buyer refunds = 114 UNIT.</p>
+</article>
+<article>
+<strong>94 + 20</strong>
+<p class="muted">Remaining claims + native payout = 114 UNIT.</p>
+</article>
+</div>
+</section>
+
+<section class="content">
+<div class="kicker">04 / Public evidence</div>
+<h2>Verify the chain.<br>Not the presentation.</h2>
+<div class="proof">
+<pre>node scripts/m3/r6_verify_public.cjs</pre>
+<p class="muted">
+Read-only verification through two public NEAR Testnet RPCs.
+No private keys required.
+</p>
+<details>
+<summary>Inspect all 17 public transactions</summary>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>#</th><th>Action</th><th>Role</th><th>Transaction</th></tr></thead>
+<tbody id="transactions"></tbody>
+</table>
+</div>
+</details>
+</div>
+</section>
+</main>
+<footer class="wrap">
+<strong>NOMOGENESIS.</strong>
+<p>Synthetic data and test funds only.
+All accounts were operated by one demonstration operator.
+Not independently audited or approved for production.</p>
+</footer>
+<script type="application/json" id="manifest">{"transactions":[{"step":"case","role":"creator","method":"create_rescue_case","signer":"nmg-creator-be81fe60a5.testnet","tx":"FTgpTeickEKF8n6Xre87RL6cxKZKWwyhgRmj8k6CXbm"},{"step":"buyer0-fund","role":"buyer0","method":"create_funded_rescue_job","signer":"nmg-buyer-fdf715605c.testnet","tx":"Af6ZyEE8Xhuhi3BP2BhPtsaVc5ERcuMxJG3phS63UCC5"},{"step":"worker0-accept","role":"worker0","method":"accept_rescue_job","signer":"nmg-worker-cab03ebf2d.testnet","tx":"Gi73b8opLfWMqSJRgto3Zyf458XyPQS81uVuGSDPjxdW"},{"step":"buyer1-fund","role":"buyer1","method":"create_funded_rescue_job","signer":"nmg-buyer1-d840182ae4.testnet","tx":"2NfWKUdyQcmvgRLwq4eWEwMDHZtgEHTEdbKvAaitv1FM"},{"step":"worker1-accept","role":"worker1","method":"accept_rescue_job","signer":"nmg-worker1-9b86f5cc3a.testnet","tx":"CdQR1WkRmYCHzdyUcZXJDNuYksu32wwSWieCsrBQe7qY"},{"step":"buyer2-fund","role":"buyer2","method":"create_funded_rescue_job","signer":"nmg-buyer2-688b49db79.testnet","tx":"FfMXxrrGKoqTr7BXcZC7UQ3MofikzzR5Fwz56uHdBqBZ"},{"step":"worker2-accept","role":"worker2","method":"accept_rescue_job","signer":"nmg-worker2-ae194846e1.testnet","tx":"HNV9kmLMN4ZufK1K89UfVvzYCUhJJ1QiEPGUuw3vTbe7"},{"step":"provider0-offer","role":"quantities","method":"post_rescue_offer","signer":"nmg-quantities-36cbb96203.testnet","tx":"9gfVHmHdPwdcvqKghGY1Ju69KrrJv76fQ13PGgmrPsHZ"},{"step":"provider1-offer","role":"prices","method":"post_rescue_offer","signer":"nmg-prices-bdcfb35f28.testnet","tx":"4WEs5MJLCjc27NPpzk2TLd5qRe932J52vE4SKcXZeC1Z"},{"step":"award","role":"creator","method":"award_rescue_bundle","signer":"nmg-creator-be81fe60a5.testnet","tx":"67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT"},{"step":"proof0","role":"quantities","method":"submit_rescue_component","signer":"nmg-quantities-36cbb96203.testnet","tx":"BW8r8fNmmHWEmwHpzEJ1LmxWEs3ebqJ365D16SXpW7YU"},{"step":"proof1","role":"prices","method":"submit_rescue_component","signer":"nmg-prices-bdcfb35f28.testnet","tx":"FWRfUbfBckfqrfucmXe5HZfDcWWUnxPDCLh244VP6csC"},{"step":"settlement","role":"creator","method":"settle_rescue_bundle","signer":"nmg-creator-be81fe60a5.testnet","tx":"7wFv9zQWkKcUMSjxMSCMDA4jQM9J9BkpZTryNa4ixgsA"},{"step":"worker0-complete","role":"worker0","method":"complete_rescue_job","signer":"nmg-worker-cab03ebf2d.testnet","tx":"89uT81pY6YzLqAgu7VekQoazETTDWQQSkVWUySBLfiHu"},{"step":"worker1-complete","role":"worker1","method":"complete_rescue_job","signer":"nmg-worker1-9b86f5cc3a.testnet","tx":"9tb7L9TH2HE12teRpjDk2pmgUbkf7aJHQZrRMCBYPQ5q"},{"step":"worker2-complete","role":"worker2","method":"complete_rescue_job","signer":"nmg-worker2-ae194846e1.testnet","tx":"9cee2HWZxFDMGJKrfL6tsztkWsbkF88C8rPNVz92ZhSQ"},{"step":"withdraw","role":"worker0","method":"withdraw","signer":"nmg-worker-cab03ebf2d.testnet","tx":"AiDr3cP7BWF38k49VsnrKULjcSNU2fXuSKgRHm9GDPWs"}]}</script>
+<script>
+'use strict';
+const manifest=JSON.parse(
+ document.getElementById('manifest').textContent
+);
+const tx=Object.fromEntries(
+ manifest.transactions.map(item=>[item.step,item])
+);
+const base='https://testnet.nearblocks.io/txns/';
+for(const step of ['case','award','settlement','withdraw']){
+ document.getElementById('link-'+step).href=base+tx[step].tx;
+}
+const body=document.getElementById('transactions');
+manifest.transactions.forEach((item,i)=>{
+ const tr=document.createElement('tr');
+ for(const val of [i+1,item.step,item.role]){
+  const td=document.createElement('td');
+  td.textContent=val;tr.append(td);
+ }
+ const td=document.createElement('td');
+ const a=document.createElement('a');
+ a.href=base+item.tx;
+ a.target='_blank';a.rel='noopener noreferrer';
+ a.textContent=item.tx.slice(0,12)+'… ↗';
+ td.append(a);tr.append(td);body.append(tr);
+});
+
+let caps=[5,5,5];
+const price=document.getElementById('price');
+
+function allocate(limits,cost){
+ const total=limits.reduce((a,b)=>a+b,0);
+ const values=limits.map(()=>0);
+ if(total<cost)return {ok:false,total,values};
+ let remaining=cost;
+ while(remaining>0){
+  const active=values
+   .map((v,i)=>v<limits[i]?i:-1)
+   .filter(i=>i>=0);
+  if(!active.length)throw Error('Allocation failed');
+  const share=Math.floor(remaining/active.length);
+  const remainder=remaining%active.length;
+  let paid=0;
+  active.forEach((i,r)=>{
+   const amount=Math.min(
+    limits[i]-values[i],
+    share+(r<remainder?1:0)
+   );
+   values[i]+=amount;
+   remaining-=amount;
+   paid+=amount;
+  });
+  if(!paid)throw Error('No allocation progress');
+ }
+ return {ok:true,total,values};
+}
+
+function drawBuyers(){
+ const root=document.getElementById('buyers');
+ root.replaceChildren();
+ caps.forEach((value,i)=>{
+  const row=document.createElement('div');
+  row.className='buyer';
+  const label=document.createElement('label');
+  label.textContent='Buyer '+(i+1);
+  const slider=document.createElement('input');
+  slider.type='range';slider.min=0;slider.max=15;
+  slider.value=value;
+  const output=document.createElement('output');
+  output.textContent=value+' UNIT';
+  slider.addEventListener('input',()=>{
+   caps[i]=Number(slider.value);
+   output.textContent=caps[i]+' UNIT';
+   render();
+  });
+  row.append(label,slider,output);
+  root.append(row);
+ });
+ document.getElementById('add').disabled=caps.length>=6;
+ document.getElementById('remove').disabled=caps.length<=1;
+}
+
+function render(){
+ const cost=Number(price.value);
+ const result=allocate(caps,cost);
+ document.getElementById('price-value').textContent=cost+' UNIT';
+ document.getElementById('capacity').textContent=result.total+' UNIT';
+ document.getElementById('cost').textContent=cost+' UNIT';
+ document.getElementById('unused').textContent=
+  (result.ok?result.total-cost:0)+' UNIT';
+ const outcome=document.getElementById('outcome');
+ outcome.textContent=result.ok?'Fundable.':'Not fundable.';
+ outcome.className='status '+(result.ok?'good':'bad');
+ document.getElementById('description').textContent=
+  result.ok
+  ?'Recovery is jointly funded within every individual limit.'
+  :'The buyers are short by '+(cost-result.total)+' UNIT.';
+ const root=document.getElementById('allocation');
+ root.replaceChildren();
+ caps.forEach((cap,i)=>{
+  const row=document.createElement('div');
+  row.className='allocrow';
+  const title=document.createElement('div');
+  title.className='allochead';
+  title.textContent='Buyer '+(i+1)+' — '+
+   (result.ok?result.values[i]+' UNIT':'not allocated');
+  const track=document.createElement('div');
+  track.className='track';
+  const fill=document.createElement('div');
+  fill.className='fill';
+  fill.style.width=(result.ok&&cap
+   ?result.values[i]/cap*100:0)+'%';
+  track.append(fill);row.append(title,track);
+  root.append(row);
+ });
+}
+
+price.addEventListener('input',render);
+document.getElementById('add').onclick=()=>{
+ if(caps.length<6){caps.push(5);drawBuyers();render();}
+};
+document.getElementById('remove').onclick=()=>{
+ if(caps.length>1){caps.pop();drawBuyers();render();}
+};
+document.querySelectorAll('[data-example]').forEach(b=>{
+ b.onclick=()=>{
+  caps=b.dataset.example==='reference'
+   ?[5,5,5]
+   :b.dataset.example==='shortfall'
+   ?[2,2,2]:[5];
+  price.value=12;drawBuyers();render();
+ };
+});
+drawBuyers();render();
+</script>
+</body></html>

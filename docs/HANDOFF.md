@@ -1,5 +1,21 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R6-06A — white interactive jury demo
+
+- Base commit: `dd5f1ee`.
+- Build a standalone, offline HTML demonstration.
+- Derive all transaction data from the public manifest.
+- Show the 5 UNIT individual cap vs 12 UNIT rescue.
+- Show deterministic 4 UNIT sponsor allocations.
+- Include links to all 17 public Testnet transactions.
+- Make limitations explicit: synthetic, not autonomous AI.
+- No contract, signer or public-chain mutation.
+- Status: WHITE INTERACTIVE UI IMPLEMENTED AND TESTED.
+- Offline allocation simulator and 17 Testnet references.
+- Rebuild: `node scripts/m3/r6_build_demo.cjs`.
+- Test: `node --test scripts/m3/r6_demo.test.cjs`.
+- Next: visual review and submission preparation.
+
 ## Current M3-R6-05B checkpoint — 2026-11-04
 
 - Base commit: `b471895`.

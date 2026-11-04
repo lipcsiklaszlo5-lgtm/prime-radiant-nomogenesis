@@ -71,3 +71,25 @@ operator controlling the participating accounts; no independent
 security audit, mainnet deployment or proven market advantage.
 
 Next: M3-R6-06 submission demo and review.
+
+
+## Interactive jury demo
+
+Open `demo/nomogenesis_jury_demo.html` in a browser.
+
+White, standalone interface with a local funding simulator
+and 17 linked public Testnet transactions.
+
+Rebuild:
+
+```bash
+node scripts/m3/r6_build_demo.cjs
+```
+
+Test:
+
+```bash
+node --test scripts/m3/r6_demo.test.cjs
+```
+
+The simulator is illustrative, not a live wallet interface.

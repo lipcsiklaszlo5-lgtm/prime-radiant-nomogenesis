@@ -22,6 +22,16 @@
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
 
+## M3-R6-06A — white interactive jury demo
+
+- Light, standalone HTML interface.
+- Editable rescue price and buyer funding caps.
+- Deterministic capped-equal funding allocation.
+- All 17 Testnet transactions linked from evidence.
+- No live transactions from the UI.
+- Generator, template and automated tests included.
+- Visual review and hackathon submission pending.
+
 ## M3-R6-05B — public Testnet rescue lifecycle
 
 Base commit: `b471895`, 2026-11-04.
