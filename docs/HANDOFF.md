@@ -1,20 +1,79 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## Current M3-R6-06A — white interactive jury demo
+## Current M3-R6-06A — VERIFIED GITHUB CHECKPOINT
 
-- Base commit: `dd5f1ee`.
-- Build a standalone, offline HTML demonstration.
-- Derive all transaction data from the public manifest.
-- Show the 5 UNIT individual cap vs 12 UNIT rescue.
-- Show deterministic 4 UNIT sponsor allocations.
-- Include links to all 17 public Testnet transactions.
-- Make limitations explicit: synthetic, not autonomous AI.
-- No contract, signer or public-chain mutation.
-- Status: WHITE INTERACTIVE UI IMPLEMENTED AND TESTED.
-- Offline allocation simulator and 17 Testnet references.
-- Rebuild: `node scripts/m3/r6_build_demo.cjs`.
-- Test: `node --test scripts/m3/r6_demo.test.cjs`.
-- Next: visual review and submission preparation.
+Date: 2026-11-04
+Branch: `feat/m2-escrow`
+Base: `dd5f1ee`
+Latest verified commit: `af372d1`
+
+### Implemented
+
+- Apple-like white minimalist interface.
+- User-approved visual design direction.
+- Interactive rescue-price slider.
+- Editable buyer funding caps.
+- Add/remove buyers, maximum six.
+- Deterministic capped-equal allocation.
+- Default example: three buyers, 5 UNIT caps each.
+- Rescue price: 12 UNIT.
+- Result: 4 UNIT per buyer, 1 UNIT unused per buyer.
+- Fundability changes when price/caps change.
+- All 17 verified public Testnet transactions linked.
+- Synthetic simulator explicitly separated from
+  historical on-chain evidence.
+- No wallet, API key or private signer required.
+
+### Files committed
+
+- `demo/nomogenesis_jury_demo.html`
+- `demo/nomogenesis_jury_demo.template.html`
+- `scripts/m3/r6_build_demo.cjs`
+- `scripts/m3/r6_demo.test.cjs`
+- `docs/HANDOFF.md`
+- `docs/STATUS.md`
+- `README.md`
+
+### Verification
+
+- `node scripts/m3/r6_build_demo.cjs` PASS.
+- `node --test scripts/m3/r6_demo.test.cjs`: 3/3 PASS.
+- HTML, manifest, allocation behavior verified.
+- Prior R6-05 public evidence: two RPCs, 17 TX,
+  WASM identity, native payout receipt PASS.
+- Testnet economic code unchanged.
+- GitHub push confirmed at commit `af372d1`.
+
+### Preserved project evidence
+
+- Public manifest: `docs/evidence/R6-05-public.json`.
+- Keyless verifier: `scripts/m3/r6_verify_public.cjs`.
+- Contract: `nomogenesis-70e59593a3.testnet`.
+- New consortium: 114 UNIT accounted for.
+- Native withdrawal: 20 UNIT.
+- Previous R6-04 escrow: 30 UNIT remains held.
+- No mainnet deployment or independent security audit.
+
+### Deliberately untracked local files
+
+- `NOMOGENESIS_UI_Refresh.zip`
+- `sandbox/real_low_margin_audit.cjs`
+- `scripts/m3/__pycache__/`
+- `scripts/m3/r6_demo_allocation.cjs`
+
+These are NOT included in the GitHub checkpoint.
+Do not delete or stage them without inspection.
+
+### Next single task
+
+M3-R6-07: prepare hackathon submission.
+
+- Review submission requirements and deadlines.
+- Prepare the public demonstration material.
+- Verify README and demo consistency.
+- Prepare submission text and required links.
+- Do not submit or publish externally without
+  explicit user approval.
 
 ## Current M3-R6-05B checkpoint — 2026-11-04
 
