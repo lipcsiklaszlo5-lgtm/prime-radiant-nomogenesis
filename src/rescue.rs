@@ -267,3 +267,110 @@ pub fn derive_case_id(
     hasher.update(descriptor_hash);
     hasher.finalize().into()
 }
+
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RescueResultProfile {
+    ExactCommitment,
+    MinimumThreshold,
+}
+
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FundedRescueJobInput {
+    pub case_id: Vec<u8>,
+    pub worker: AccountId,
+    pub worker_reward: U128,
+    pub rescue_cap: U128,
+    pub result_profile: RescueResultProfile,
+    pub result_commitment: Vec<u8>,
+    pub threshold: Option<U128>,
+    pub final_deadline: u64,
+}
+
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescueJobView {
+    pub id: u64,
+    pub case_id: Vec<u8>,
+    pub buyer: AccountId,
+    pub worker: AccountId,
+    pub worker_reward: U128,
+    pub held_worker_reward: U128,
+    pub result_profile: RescueResultProfile,
+    pub result_commitment: Vec<u8>,
+    pub threshold: Option<U128>,
+    pub final_deadline: u64,
+    pub phase: RescueJobPhase,
+}
+
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescueMandateView {
+    pub job_id: u64,
+    pub original_cap: U128,
+    pub held_principal: U128,
+    pub phase: RescueMandatePhase,
+    pub locked_bundle_id: Option<u64>,
+    pub locked_allocation: Option<U128>,
+    pub release_reason: Option<MandateReleaseReason>,
+}
+
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct M3TotalsView {
+    pub rescue_escrow: U128,
+    pub storage_reserves: U128,
+    pub next_rescue_job_id: u64,
+}
+
+impl From<&RescueJob> for RescueJobView {
+    fn from(value: &RescueJob) -> Self {
+        Self {
+            id: value.id,
+            case_id: value.case_id.to_vec(),
+            buyer: value.buyer.clone(),
+            worker: value.worker.clone(),
+            worker_reward: U128(value.worker_reward),
+            held_worker_reward: U128(value.held_worker_reward),
+            result_profile: if value.threshold.is_some() {
+                RescueResultProfile::MinimumThreshold
+            } else {
+                RescueResultProfile::ExactCommitment
+            },
+            result_commitment: value.result_commitment.to_vec(),
+            threshold: value.threshold.map(U128),
+            final_deadline: value.final_deadline,
+            phase: value.phase.clone(),
+        }
+    }
+}
+
+impl From<&RescueMandate> for RescueMandateView {
+    fn from(value: &RescueMandate) -> Self {
+        Self {
+            job_id: value.job_id,
+            original_cap: U128(value.original_cap),
+            held_principal: U128(value.held_principal),
+            phase: value.phase.clone(),
+            locked_bundle_id: value.locked_bundle_id,
+            locked_allocation: value.locked_allocation.map(U128),
+            release_reason: value.release_reason.clone(),
+        }
+    }
+}
+
+pub fn parse_result_commitment(value: Vec<u8>) -> Result<[u8; COMMITMENT_BYTES], &'static str> {
+    value.try_into().map_err(|_| "invalid result commitment")
+}
+
+pub fn validated_threshold(
+    profile: &RescueResultProfile,
+    threshold: Option<U128>,
+) -> Result<Option<u128>, &'static str> {
+    match (profile, threshold) {
+        (RescueResultProfile::ExactCommitment, None) => Ok(None),
+        (RescueResultProfile::MinimumThreshold, Some(U128(value))) if value > 0 => Ok(Some(value)),
+        _ => Err("result profile and threshold mismatch"),
+    }
+}

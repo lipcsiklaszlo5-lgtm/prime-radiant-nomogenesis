@@ -170,6 +170,194 @@ impl Nomogenesis {
         case_id.to_vec()
     }
 
+    pub fn m3_totals(&self) -> rescue::M3TotalsView {
+        rescue::M3TotalsView {
+            rescue_escrow: U128(self.rescue_escrow),
+            storage_reserves: U128(self.storage_reserves),
+            next_rescue_job_id: self.next_rescue_job_id,
+        }
+    }
+
+    pub fn get_rescue_job(&self, job_id: u64) -> Option<rescue::RescueJobView> {
+        self.rescue_jobs
+            .get(&job_id)
+            .map(rescue::RescueJobView::from)
+    }
+
+    pub fn get_rescue_mandate(&self, job_id: u64) -> Option<rescue::RescueMandateView> {
+        self.rescue_mandates
+            .get(&job_id)
+            .map(rescue::RescueMandateView::from)
+    }
+
+    #[payable]
+    pub fn create_funded_rescue_job(&mut self, input: rescue::FundedRescueJobInput) -> u64 {
+        let buyer = env::predecessor_account_id();
+        let now = env::block_timestamp();
+
+        let rescue::FundedRescueJobInput {
+            case_id,
+            worker,
+            worker_reward,
+            rescue_cap,
+            result_profile,
+            result_commitment,
+            threshold,
+            final_deadline,
+        } = input;
+
+        let case_id = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
+        let mut case = self
+            .rescue_cases
+            .get(&case_id)
+            .cloned()
+            .expect("unknown rescue case");
+
+        assert_eq!(
+            case.phase,
+            rescue::RescueCasePhase::Open,
+            "rescue case is not open"
+        );
+        assert!(now < case.dependency_deadline, "dependency deadline passed");
+        assert!(
+            case.job_ids.len() < rescue::MAX_RESCUE_JOBS,
+            "rescue case is full"
+        );
+        assert_ne!(buyer, worker, "buyer and worker must differ");
+        assert_ne!(
+            worker,
+            env::current_account_id(),
+            "contract cannot be worker"
+        );
+        assert!(worker_reward.0 > 0, "zero worker reward");
+        assert!(rescue_cap.0 > 0, "zero rescue cap");
+        assert!(
+            final_deadline > case.recovery_deadline,
+            "job deadline must follow recovery deadline"
+        );
+
+        for existing_id in &case.job_ids {
+            let existing = self
+                .rescue_jobs
+                .get(existing_id)
+                .expect("case job index is corrupt");
+            assert_ne!(
+                existing.buyer, buyer,
+                "buyer already registered in rescue case"
+            );
+        }
+
+        let result_commitment =
+            rescue::parse_result_commitment(result_commitment).expect("invalid result commitment");
+        let threshold = rescue::validated_threshold(&result_profile, threshold)
+            .expect("invalid result profile");
+
+        let principal = worker_reward
+            .0
+            .checked_add(rescue_cap.0)
+            .expect("rescue principal overflow");
+        let storage_payment = rescue::job_storage_cost();
+        let required = principal
+            .checked_add(storage_payment)
+            .expect("rescue job deposit overflow");
+
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            required,
+            "incorrect funded rescue job deposit"
+        );
+
+        let next_id = self
+            .next_rescue_job_id
+            .checked_add(1)
+            .expect("rescue job ID overflow");
+        let next_escrow = self
+            .rescue_escrow
+            .checked_add(principal)
+            .expect("rescue escrow overflow");
+        let next_storage = self
+            .storage_reserves
+            .checked_add(storage_payment)
+            .expect("storage reserve overflow");
+
+        let job_id = self.next_rescue_job_id;
+        assert!(
+            self.rescue_jobs.get(&job_id).is_none() && self.rescue_mandates.get(&job_id).is_none(),
+            "rescue job ID already used"
+        );
+
+        case.job_ids.push(job_id);
+
+        self.rescue_jobs.insert(
+            job_id,
+            rescue::RescueJob {
+                id: job_id,
+                case_id,
+                buyer,
+                worker,
+                worker_reward: worker_reward.0,
+                held_worker_reward: worker_reward.0,
+                result_commitment,
+                threshold,
+                final_deadline,
+                phase: rescue::RescueJobPhase::Funded,
+            },
+        );
+
+        self.rescue_mandates.insert(
+            job_id,
+            rescue::RescueMandate {
+                job_id,
+                original_cap: rescue_cap.0,
+                held_principal: rescue_cap.0,
+                phase: rescue::RescueMandatePhase::Open,
+                locked_bundle_id: None,
+                locked_allocation: None,
+                release_reason: None,
+            },
+        );
+
+        self.rescue_cases.insert(case_id, case);
+        self.next_rescue_job_id = next_id;
+        self.rescue_escrow = next_escrow;
+        self.storage_reserves = next_storage;
+
+        job_id
+    }
+
+    pub fn accept_rescue_job(&mut self, job_id: u64) {
+        let caller = env::predecessor_account_id();
+        let job = self
+            .rescue_jobs
+            .get(&job_id)
+            .cloned()
+            .expect("unknown rescue job");
+
+        assert_eq!(caller, job.worker, "not designated worker");
+        assert_eq!(
+            job.phase,
+            rescue::RescueJobPhase::Funded,
+            "rescue job is not awaiting acceptance"
+        );
+
+        let case = self
+            .rescue_cases
+            .get(&job.case_id)
+            .expect("missing rescue case");
+
+        assert_eq!(
+            case.phase,
+            rescue::RescueCasePhase::Open,
+            "rescue case is not open"
+        );
+        assert!(
+            env::block_timestamp() < case.dependency_deadline,
+            "dependency deadline passed"
+        );
+
+        self.rescue_jobs.get_mut(&job_id).unwrap().phase = rescue::RescueJobPhase::Accepted;
+    }
+
     pub fn rescue_escrow_total(&self) -> U128 {
         U128(self.rescue_escrow)
     }
@@ -986,6 +1174,9 @@ mod rescue_schema_tests;
 
 #[cfg(test)]
 mod rescue_case_tests;
+
+#[cfg(test)]
+mod rescue_funding_tests;
 
 #[cfg(test)]
 mod storage_admission_tests;

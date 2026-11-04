@@ -1,36 +1,63 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R2-02A verified
+**Current state:** M3-R2-02B verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Current implementation base:** `b9e53f1` plus verified R2-02A checkpoint
+**Current implementation base:** `df44175` plus verified R2-02B checkpoint
 
 | Area | Verified state |
 |---|---|
 | Product direction | Jointly funded rescue market approved |
 | M3 executable specification | Written; R2 storage and liability design locked |
 | M3 rescue-market model | 11 focused tests PASS |
-| M3 persistent state | Empty bounded case, job and mandate collections verified |
+| M3 persistent state | Bounded case, funded-job and rescue-mandate records verified |
 | Rescue-case creation | Typed canonical descriptor and contract-bound ID verified |
 | Case storage admission | Exact payment; 256 measured bytes, 893-byte bounded quote |
-| Future job storage quote | 576 bytes derived from job, mandate and claimable bounds |
-| M3 liability boundary | Withdrawal backing includes `rescue_escrow` |
-| Full Rust regression | 149 tests PASS |
+| Funded job admission | Atomic reward, rescue cap and storage funding verified |
+| Job-plus-mandate storage | 307 measured bytes, 576-byte conservative quote |
+| Rescue mandate | Buyer-bound, case-bound and cap-bounded |
+| Worker acceptance | Designated worker only; deadline-bound and liability-neutral |
+| M3 liability boundary | `rescue_escrow` includes worker rewards and rescue caps |
+| Withdrawal protection | Complete active M3 principal included in backing guard |
+| Rejected-input atomicity | IDs, collections and totals remain unchanged |
+| Persistence | Funded job, mandate and totals survive state reload |
+| Full Rust regression | 155 tests PASS |
 | Clippy and WASM target | PASS |
-| M3 economic funding endpoint | NOT IMPLEMENTED |
+| Pre-award terminal release paths | NOT IMPLEMENTED |
+| Bundle award and provider bonds | NOT IMPLEMENTED |
 | M3 Sandbox/testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 | Hackathon submission ready | NO |
 
 ## Current gate
 
-R2-02A is verified. Storage-only rescue cases may be created with a canonical
-contract-bound identifier and a bounded future-capacity quote. R2-02B may now
-introduce worker reward and rescue-cap funding atomically, using the verified
-576-byte job quote and the existing complete withdrawal-liability guard.
+R2-02B is verified. A buyer can now create a useful funded job and a bounded
+shared-recovery mandate in one atomic transaction. The exact attached deposit
+covers the worker reward, rescue cap and conservative storage quote. The
+contract rejects partial, duplicated, malformed, late or overflowing funding
+attempts before persistent economic state changes.
+
+This is the first persistent M3 economic-principal checkpoint. It proves funded
+demand and bounded recovery authority, but it does not yet prove safe release
+of those liabilities. R2-03 must add cancellation, revocation and expiry paths
+that move principal from `rescue_escrow` to its original owners' claimable
+balances exactly once.
 
 Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
 not proof of M3.
+
+## Next task
+
+M3-R2-03: implement cancellation of unaccepted jobs, revocation of open rescue
+mandates, deadline expiry and one-time `rescue_escrow` release into authenticated
+claimable balances. Prove replay rejection and total-value conservation.
+
+## Frissítési szabály
+
+Minden új mérföldkőnél rögzíteni kell a pontos commitot,
+lefuttatott parancsokat, bizonyított PASS/FAIL eredményeket
+és a még NEM igazolt állításokat. A dokumentációs commit
+SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
 
 ## M1 Final Gate — PASS
 

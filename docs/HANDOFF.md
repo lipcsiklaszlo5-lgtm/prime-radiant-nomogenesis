@@ -3,23 +3,29 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- R2-02A base: `b9e53f1`
-- Verified implementation: canonical immutable rescue case and bounded storage quote
-- Focused case tests: 4 PASS
-- Full Rust suite: 149 PASS
+- R2-02B base: `df44175`
+- Verified implementation: atomic funded rescue job plus rescue mandate
+- Focused funding tests: 6 PASS
+- Full Rust suite: 155 PASS
 - Clippy, WASM target check and diff check: PASS
-- Maximum case record: 814 Borsh bytes
-- Initial measured case write: 256 bytes
-- Case quote: 893 bytes
-- Future job-plus-mandate quote: 576 bytes
+- Exact funding deposit: worker reward plus rescue cap plus the 576-byte storage quote
+- Measured job-plus-mandate write: 307 bytes
+- Conservative job-plus-mandate quote: 576 bytes
+- Worker acceptance is authenticated and liability-neutral
+- Worker rewards and rescue caps are included in `rescue_escrow`
+- Withdrawal backing protects the complete active M3 principal
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- No M3 economic principal endpoint is enabled
-- Next single action: M3-R2-02B atomic funded rescue job plus mandate
+- Cancellation, revocation, expiry and one-time refund credits are not implemented yet
+- Next single action: M3-R2-03 terminal release paths for pre-award liabilities
 
-R2-02A proves deterministic, contract-bound case identity and exact
-storage-only admission against a bounded future record. It does not yet prove
-worker-reward funding, rescue-cap funding, Sandbox storage cost, bundle award,
-proof settlement or testnet operation.
+R2-02B creates immediate economic value: a buyer can fund useful work and
+simultaneously authorize a bounded contribution toward recovery of the shared
+dependency. The worker reward, rescue authority and storage funding enter one
+atomic transaction, so no unfunded mandate or half-created job can remain.
+
+This checkpoint does not yet prove cancellation, expiry, bundle award,
+provider bonding, proof settlement, Sandbox execution or public testnet use.
+
 ## Munkamenetindító parancsok
 
 ```bash
@@ -46,6 +52,24 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R2-02B atomic funded job and mandate
+
+- Base: `df44175`.
+- Added atomic creation of a funded rescue job and its bounded rescue mandate.
+- Exact deposit covers worker reward, rescue cap and the 576-byte storage quote.
+- Buyer identity, worker identity, deadlines, result profile and commitments are validated before mutation.
+- Duplicate buyer participation and the seventh case job are rejected.
+- Only the designated worker may accept before the dependency deadline.
+- Acceptance changes job state without changing economic liability.
+- Malformed and overflowing inputs leave IDs, collections and totals unchanged.
+- Job, mandate and M3 totals survive state reload.
+- Measured job-plus-mandate write: 307 bytes against a 576-byte quote.
+- Focused funding tests: 6 passed, 0 failed.
+- Full Rust suite: 155 passed, 0 failed.
+- Clippy, WASM target check and diff check passed.
+- Preserve: `sandbox/real_low_margin_audit.cjs`.
+- Next: M3-R2-03 cancellation, revocation and expiry with one-time liability release.
 
 ### 2026-11-04 — M3-R2-02A canonical case and quote
 
