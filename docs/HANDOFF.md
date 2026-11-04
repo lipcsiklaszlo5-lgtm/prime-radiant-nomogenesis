@@ -3,31 +3,36 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- R2-03B base: `a083eb2`
-- Verified implementation: complete pre-award M3 liability lifecycle
-- Focused permissionless-expiry tests: 7 PASS
-- Full Rust suite: 168 PASS
-- Clippy, WASM target check and diff check: PASS
-- Unaccepted jobs expire permissionlessly at `dependency_deadline`
-- Open mandates release permissionlessly at `award_close`
-- Accepted jobs expire permissionlessly at `final_deadline`
-- Exact boundaries have no overlapping active and expiry transition
-- Expiry callers cannot redirect value away from the immutable buyer
-- Locked mandates cannot escape through the award-expiry path
-- Replays and arithmetic overflow preserve all economic state
-- Manual and permissionless releases conserve total principal
+- R2-04 base: `3bfb9cb`
+- M3-R2 persistent funding and liability milestone: COMPLETE
+- Native Rust regression at base: 168 PASS
+- Compatible release WASM build: PASS
+- WASM SHA-256: `ab129cc27fa133a29412e6198bc550e6bc81cf4ff24b37790362727d120e1a03`
+- Multi-party local NEAR Sandbox: PASS
+- Independent actors: three buyers, three workers, keeper and outsider
+- Case storage quote: 893 bytes / 0.00893 NEAR
+- Job storage quote: 576 bytes / 0.00576 NEAR
+- Total tested M3 economic principal: 0.09 NEAR
+- Exact deposit underpayments rejected before liability mutation
+- Three designated workers accepted through real NEAR receipts
+- Manual and permissionless releases conserved all principal
+- Terminal replay attempts rejected on-chain
+- `rescue_escrow` reached exactly zero
+- One 0.02 NEAR M3-generated native withdrawal completed with callback
+- Remaining internal claimables: 0.07 NEAR
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- Local NEAR Sandbox M3 execution is not verified yet
-- Next single action: M3-R2-04 multi-party Sandbox reproduction
+- Bundle offers, provider bonds and atomic clearing are not implemented yet
+- Next single action: M3-R3-00 provider-market and atomic-award design
 
-R2-03B completes the native Rust liability lifecycle for funded jobs and rescue
-mandates before bundle implementation. Capital can no longer remain trapped
-because a buyer, worker or keeper stops acting. Any account may trigger an
-expired transition, but every yoctoNEAR returns only to its immutable owner.
+R2 now proves more than an in-memory escrow model. Three independently funded
+jobs entered one canonical recovery market through real local NEAR
+transactions. Their worker rewards and rescue mandates followed independent
+lifecycles, expired capital returned to immutable owners, and one resulting
+claim was paid out natively.
 
-This checkpoint does not yet prove real NEAR receipts, native balance changes,
-multi-account Sandbox execution, bundle award, provider bonding, recovery
-proofs or public testnet operation.
+This evidence is bounded local Sandbox evidence. It does not prove public
+testnet operation, production solvency, provider availability, bundle award,
+recovery proofs, adoption or universal economic superiority.
 
 ## Munkamenetindító parancsok
 
@@ -55,6 +60,29 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R2-04 multi-party Sandbox
+
+- Base: `3bfb9cb`.
+- Built compatible release WASM successfully.
+- WASM SHA-256: `ab129cc27fa133a29412e6198bc550e6bc81cf4ff24b37790362727d120e1a03`.
+- Deployed a fresh contract to local NEAR Sandbox.
+- Created one canonical case with three buyers and three workers.
+- Rejected case-storage and job-funding underpayments on-chain.
+- Persisted exactly 0.09 NEAR of M3 economic principal.
+- Rejected outsider worker acceptance.
+- All three designated workers accepted through separate accounts.
+- One buyer revoked its cap; two caps expired permissionlessly.
+- Three accepted jobs expired permissionlessly.
+- Terminal replay attempts were rejected.
+- `rescue_escrow` closed at zero.
+- Claimables reached 0.09 NEAR before withdrawal.
+- A 0.02 NEAR native withdrawal completed with callback.
+- Observed recipient balance increase: 0.010718153802558651764660 NEAR after transaction costs.
+- Remaining claimables: 0.07 NEAR; pending payouts: zero.
+- Economic identity: 0.02 paid + 0.07 claimable + 0 escrow = 0.09 NEAR.
+- Storage reserves remained separate and unchanged.
+- Next: M3-R3-00 provider offers, bonds and atomic bundle-award design.
 
 ### 2026-11-04 — M3-R2-03B permissionless expiry
 

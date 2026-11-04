@@ -650,3 +650,58 @@ Sandbox deployments, native payout checks
 and alternative lifecycle stress.
 
 Production funds remain NOT APPROVED.
+
+## M3-R2 multi-party rescue lifecycle
+
+Local NEAR Sandbox, 2026-11-04.
+
+Command:
+
+`npm run wasm:build && npm run sandbox:m3-r2`
+
+Compatible WASM SHA-256:
+
+`ab129cc27fa133a29412e6198bc550e6bc81cf4ff24b37790362727d120e1a03`
+
+Scenario:
+
+- one fresh contract deployment;
+- one canonical rescue case;
+- three independent buyers;
+- three independent workers;
+- one keeper and one outsider;
+- 0.025 NEAR worker reward per job;
+- 0.005 NEAR rescue cap per job;
+- 0.09 NEAR aggregate economic principal.
+
+Verified:
+
+- 893-byte case quote and 576-byte job quote read from the contract;
+- case-storage underpayment rejected before state creation;
+- job-funding underpayment rejected before ID or liability mutation;
+- three funded jobs persisted under one case;
+- outsider worker acceptance rejected;
+- all designated workers accepted independently;
+- one buyer-controlled cap revocation;
+- two permissionless cap expiries at award close;
+- three permissionless worker-reward expiries;
+- terminal replay rejection;
+- `rescue_escrow` reached zero;
+- claimables reached 0.09 NEAR;
+- one 0.02 NEAR native withdrawal completed;
+- withdrawal callback left zero pending liability;
+- remaining claimables were exactly 0.07 NEAR;
+- storage reserves remained separate;
+- aggregate M3 economic value was conserved.
+
+The recipient's observed balance increase was
+0.010718153802558651764660 NEAR after transaction costs.
+The internal transfer amount and callback accounting were exact.
+
+The Sandbox client retried transactions after two expired block hashes during
+time advancement. The final on-chain state contained each intended transition
+once, and explicit replay calls were rejected.
+
+This is bounded local evidence. It does not establish public testnet operation,
+production solvency, provider supply, bundle clearing, proof settlement,
+security audit or adoption.

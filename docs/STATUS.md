@@ -1,59 +1,56 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R2-03B verified
+**Current state:** M3-R2 COMPLETE — local multi-party Sandbox verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Current implementation base:** `a083eb2` plus verified R2-03B checkpoint
+**Current implementation base:** `3bfb9cb` plus verified R2-04 Sandbox checkpoint
 
 | Area | Verified state |
 |---|---|
 | Product direction | Jointly funded rescue market approved |
-| M3 executable specification | Written; R2 liability design locked |
-| M3 rescue-market model | 11 focused tests PASS |
+| M3 rescue-market model | 11 focused model tests PASS |
+| Native Rust regression | 168 tests PASS at `3bfb9cb` |
 | Atomic funded job and mandate | Verified |
-| Exact funding admission | Reward, rescue cap and storage required |
-| Worker acceptance | Authenticated and deadline-bound |
-| Buyer cancellation | Unaccepted reward and open cap released once |
-| Mandate revocation | Open cap released independently |
-| Unaccepted-job expiry | Permissionless at exact dependency deadline |
-| Open-mandate expiry | Permissionless at exact award close |
-| Accepted-job expiry | Permissionless at exact final deadline |
-| Boundary exclusivity | Active paths use `<`; expiry paths use `>=` |
-| Recipient integrity | Trigger caller cannot redirect buyer value |
-| Locked mandate protection | Award expiry cannot release locked principal |
-| Replay protection | Terminal state prevents repeated credits |
-| Overflow atomicity | Records, escrow and claimables remain unchanged |
-| M3 liability conservation | Escrow decrease equals claimable increase |
-| Persistence | Permissionless terminal state survives reload |
-| Full Rust regression | 168 tests PASS |
-| Clippy and WASM target | PASS |
-| Local M3 Sandbox lifecycle | NOT VERIFIED |
-| Bundle award and provider bonds | NOT IMPLEMENTED |
+| Exact storage admission | Case and job underpayments rejected on-chain |
+| Worker acceptance | Three independent workers verified in Sandbox |
+| Manual cap release | Verified through real receipt |
+| Permissionless cap expiry | Two independent buyers verified |
+| Permissionless job expiry | Three accepted jobs verified |
+| Replay protection | Terminal replay receipts rejected |
+| M3 economic principal | 0.09 NEAR tested |
+| M3 liability conservation | 0.02 paid + 0.07 claimable + 0 escrow |
+| Native M3 payout | 0.02 NEAR withdrawal and callback completed |
+| Pending payout residue | Zero |
+| Case storage quote | 893 bytes / 0.00893 NEAR |
+| Job storage quote | 576 bytes / 0.00576 NEAR |
+| Compatible WASM build | PASS |
+| Local M3 Sandbox | PASS |
 | Public testnet evidence | NOT VERIFIED |
+| Provider offer market | NOT IMPLEMENTED |
+| Atomic rescue bundle award | NOT IMPLEMENTED |
+| Recovery proof settlement | NOT IMPLEMENTED |
 | Production funds | NOT APPROVED |
 | Hackathon submission ready | NO |
 
 ## Current gate
 
-R2-03 is complete at the native Rust level. Funded jobs and rescue mandates now
-have authenticated creation, worker acceptance, buyer-controlled release and
-permissionless deadline cleanup. Every tested path preserves principal and
-prevents duplicate credit.
+M3-R2 is complete. The repository now proves funded multi-party demand,
+independent worker acceptance, bounded recovery authority, replay-safe capital
+release and native payout on a real local NEAR runtime.
 
-The next gate must move from simulated contexts to actual NEAR receipts and
-independent accounts. R2-04 must deploy a fresh WASM locally and reproduce
-three buyers, three workers, exact deposits, acceptance and at least two
-distinct terminal-release paths.
+The next economic gate is not another escrow endpoint. R3 must create the
+supply side of the rescue market: two complementary recovery offers from
+distinct providers, fully funded bonds, deterministic pair selection and one
+atomic award funded by multiple mandates.
 
 Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
-not proof of M3.
+not proof of later M3 bundle settlement.
 
 ## Next task
 
-M3-R2-04: local NEAR Sandbox reproduction with three independent buyers and
-workers. Verify exact attached deposits, persisted records, aggregate
-`rescue_escrow`, worker acceptance and native claimable outcomes after manual
-and permissionless release.
+M3-R3-00: design the provider-offer record, full-bond admission, M2/M3 slot
+exclusivity bridge, deterministic two-component clearing and atomic mandate
+locking. Lock the financial invariants before persistent implementation.
 
 ## Frissítési szabály
 
