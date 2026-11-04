@@ -552,3 +552,212 @@ fn real_m3_award_blocks_m2_slot_selection() {
     );
     assert_eq!(c.rescue_escrow_total(), U128(39));
 }
+
+fn proof_payload(component: u8) -> Vec<u8> {
+    let mut result = vec![1, component + 1, 2];
+    for (id, value) in [(4u16, 9u64), (8u16, 15u64)] {
+        result.extend_from_slice(&id.to_be_bytes());
+        result.extend_from_slice(&value.to_be_bytes());
+    }
+    result
+}
+
+fn proof_root(payload: &[u8], sibling: &[u8]) -> Vec<u8> {
+    use sha2::{Digest, Sha256};
+
+    let mut leaf = Sha256::new();
+    leaf.update([0u8]);
+    leaf.update(0u64.to_be_bytes());
+    leaf.update((payload.len() as u32).to_be_bytes());
+    leaf.update(payload);
+
+    let mut root = Sha256::new();
+    root.update([1u8]);
+    root.update(leaf.finalize());
+    root.update(sibling);
+    root.finalize().to_vec()
+}
+
+type ProofFixture = (Nomogenesis, Vec<u8>, [Vec<u8>; 2], [Vec<u8>; 2]);
+
+fn awarded_proof_fixture() -> ProofFixture {
+    let payloads = [proof_payload(0), proof_payload(1)];
+    let siblings = [
+        crate::rescue_proof::component_metadata_sibling(0).to_vec(),
+        crate::rescue_proof::component_metadata_sibling(1).to_vec(),
+    ];
+    let roots = [
+        proof_root(&payloads[0], &siblings[0]),
+        proof_root(&payloads[1], &siblings[1]),
+    ];
+
+    let mut c = Nomogenesis::default();
+    context("creator.near", 100, rescue::case_storage_cost());
+    let id = c.create_rescue_case(RescueCaseDescriptorInput {
+        descriptor_version: 1,
+        original_provider: account("source.near"),
+        component_commitments: roots.to_vec(),
+        dependency_deadline: 200,
+        bid_close: 220,
+        award_close: 240,
+        recovery_deadline: 260,
+    });
+
+    three_sponsors(&mut c, &id);
+    assert_eq!(post(&mut c, &id, "alpha.near", 0, 6, 12), 0);
+    assert_eq!(post(&mut c, &id, "beta.near", 1, 6, 12), 1);
+
+    context("keeper.near", 220, 0);
+    assert_eq!(c.award_rescue_bundle(id.clone()), 0);
+
+    (c, id, payloads, siblings)
+}
+
+#[test]
+fn proof_success_is_authenticated_and_persistent() {
+    let (mut c, id, payloads, siblings) = awarded_proof_fixture();
+
+    assert_eq!(c.rescue_escrow_total(), U128(39));
+    assert_eq!(c.claimable_total(), U128(3));
+    let original_storage = c.storage_reserves;
+
+    context("outsider.near", 225, 0);
+    rejected(|| c.submit_rescue_component(0, 0, payloads[0].clone(), siblings[0].clone()));
+
+    let mut corrupted = payloads[0].clone();
+    let last = corrupted.len() - 1;
+    corrupted[last] ^= 1;
+
+    context("alpha.near", 226, 0);
+    rejected(|| c.submit_rescue_component(0, 0, corrupted, siblings[0].clone()));
+
+    rejected(|| c.submit_rescue_component(0, 0, payloads[0].clone(), siblings[0][..31].to_vec()));
+
+    assert_eq!(
+        c.get_rescue_case(id.clone()).unwrap().resolved_payloads,
+        vec![None, None]
+    );
+    assert_eq!(
+        c.get_rescue_offer(0).unwrap().phase,
+        rescue::RescueOfferPhase::Locked
+    );
+
+    c.submit_rescue_component(0, 0, payloads[0].clone(), siblings[0].clone());
+
+    assert_eq!(
+        c.get_rescue_offer(0).unwrap().phase,
+        rescue::RescueOfferPhase::Proven
+    );
+    assert_eq!(
+        c.rescue_bundles.get(&0).unwrap().component_outcomes[0],
+        rescue::RescueComponentOutcome::Proven
+    );
+    assert_eq!(
+        c.get_rescue_case(id.clone()).unwrap().resolved_payloads[0],
+        Some(payloads[0].clone())
+    );
+
+    rejected(|| c.submit_rescue_component(0, 0, payloads[0].clone(), siblings[0].clone()));
+
+    context("beta.near", 230, 0);
+    c.submit_rescue_component(0, 1, payloads[1].clone(), siblings[1].clone());
+
+    let bundle = c.rescue_bundles.get(&0).unwrap();
+    assert_eq!(
+        bundle.component_outcomes,
+        [
+            rescue::RescueComponentOutcome::Proven,
+            rescue::RescueComponentOutcome::Proven
+        ]
+    );
+    assert_eq!(bundle.phase, rescue::RescueBundlePhase::Awarded);
+    assert_eq!(
+        c.get_rescue_case(id.clone()).unwrap().phase,
+        rescue::RescueCasePhase::BundleAwarded
+    );
+
+    for (provider, component, offer_id) in [("alpha.near", "slot_0", 0), ("beta.near", "slot_1", 1)]
+    {
+        assert_eq!(
+            c.capacity_lock_holder(account(provider), component.to_owned()),
+            Some(CapacityOwner::M3RescueOffer(offer_id))
+        );
+    }
+
+    assert_eq!(c.rescue_escrow_total(), U128(39));
+    assert_eq!(c.claimable_total(), U128(3));
+    assert_eq!(c.storage_reserves, original_storage);
+
+    c.rescue_cases.flush();
+    c.rescue_bundles.flush();
+    c.rescue_offers.flush();
+    c.capacity_locks.flush();
+    env::state_write(&c);
+    drop(c);
+
+    let reloaded: Nomogenesis = env::state_read().expect("state missing");
+    let case = reloaded.get_rescue_case(id).unwrap();
+
+    assert_eq!(
+        case.resolved_payloads,
+        vec![Some(payloads[0].clone()), Some(payloads[1].clone())]
+    );
+    assert_eq!(
+        reloaded.rescue_bundles.get(&0).unwrap().component_outcomes,
+        [
+            rescue::RescueComponentOutcome::Proven,
+            rescue::RescueComponentOutcome::Proven
+        ]
+    );
+    assert_eq!(reloaded.rescue_escrow_total(), U128(39));
+    assert_eq!(reloaded.claimable_total(), U128(3));
+}
+
+#[test]
+fn proof_rejects_deadline_component_and_capacity_mismatch() {
+    let (mut c, id, payloads, siblings) = awarded_proof_fixture();
+
+    context("alpha.near", 225, 0);
+    rejected(|| c.submit_rescue_component(99, 0, payloads[0].clone(), siblings[0].clone()));
+    rejected(|| c.submit_rescue_component(0, 2, payloads[0].clone(), siblings[0].clone()));
+
+    context("beta.near", 226, 0);
+    rejected(|| c.submit_rescue_component(0, 1, payloads[0].clone(), siblings[0].clone()));
+
+    let key = "alpha.near|slot_0".to_owned();
+    let expected_owner = CapacityOwner::M3RescueOffer(0);
+    assert_eq!(c.capacity_locks.get(&key), Some(&expected_owner));
+
+    c.capacity_locks
+        .insert(key.clone(), CapacityOwner::M2Offer(99));
+
+    context("alpha.near", 227, 0);
+    rejected(|| c.submit_rescue_component(0, 0, payloads[0].clone(), siblings[0].clone()));
+
+    assert_eq!(
+        c.capacity_locks.get(&key),
+        Some(&CapacityOwner::M2Offer(99))
+    );
+    c.capacity_locks.insert(key, expected_owner);
+
+    context("alpha.near", 260, 0);
+    rejected(|| c.submit_rescue_component(0, 0, payloads[0].clone(), siblings[0].clone()));
+
+    assert_eq!(
+        c.get_rescue_case(id).unwrap().resolved_payloads,
+        vec![None, None]
+    );
+    assert_eq!(
+        c.rescue_bundles.get(&0).unwrap().component_outcomes,
+        [
+            rescue::RescueComponentOutcome::Pending,
+            rescue::RescueComponentOutcome::Pending
+        ]
+    );
+    assert_eq!(
+        c.get_rescue_offer(0).unwrap().phase,
+        rescue::RescueOfferPhase::Locked
+    );
+    assert_eq!(c.rescue_escrow_total(), U128(39));
+    assert_eq!(c.claimable_total(), U128(3));
+}

@@ -6,6 +6,7 @@ mod offer;
 pub mod rescue;
 mod rescue_award;
 mod rescue_clearing;
+mod rescue_proof;
 pub mod settlement;
 mod task;
 mod withdrawal;
@@ -746,6 +747,16 @@ impl Nomogenesis {
     pub fn award_rescue_bundle(&mut self, case_id: Vec<u8>) -> u64 {
         let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
         self.award_rescue_bundle_inner(key)
+    }
+
+    pub fn submit_rescue_component(
+        &mut self,
+        bundle_id: u64,
+        component_index: u8,
+        payload: Vec<u8>,
+        sibling: Vec<u8>,
+    ) {
+        self.submit_rescue_component_inner(bundle_id, component_index, payload, sibling);
     }
 
     #[payable]

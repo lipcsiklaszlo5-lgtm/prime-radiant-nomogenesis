@@ -56,12 +56,14 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R3-03A. A read-only pair preflight
-helyi Sandboxban három vevő és négy ajánlat mellett átment; a mandátum
-visszavonása után nincs finanszírozható jelölt. 191 Rust teszt, Clippy és
-kompatibilis WASM átment. A korábbi M2 és M3-R2 Sandboxes ebben a ticketben
-nem futottak. Valódi bundle award és public testnet még nincs igazolva.
-Következő: M3-R3-03B capped-equal allocation és atomic award.
+Jelenlegi ellenőrzött kapu: M3-R4-01.
+211 Rust teszt, strict Clippy, kompatibilis WASM és
+friss helyi NEAR Sandbox proof-flow PASS.
+A két kiválasztott szolgáltató hitelesített komponenst
+adott be, az érvénytelen tranzakciók elutasítva.
+Settlement, dolgozói eredményfeldolgozás és public
+testnet még NINCS igazolva.
+Következő: M3-R4-02 pure terminal settlement model.
 
 ## 5. Munkamenet lezárás
 

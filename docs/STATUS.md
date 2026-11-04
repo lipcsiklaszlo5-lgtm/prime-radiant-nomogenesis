@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R3-03B-02 atomic RecoveryRight award locally verified
+**Current state:** M3-R4-01 authenticated component proofs locally verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -12,14 +12,39 @@
 | Deterministic capped-equal allocation | UNIT PASS |
 | Atomic bundle award | UNIT + SANDBOX PASS |
 | Shared M2/M3 capacity locking | UNIT + SANDBOX PASS |
-| Full Rust regression | 206/206 PASS |
+| Full Rust regression | 211/211 PASS |
 | Strict Clippy and compatible WASM | PASS |
 | M2 primary, backup and settlement | SANDBOX PASS |
 | M3-R2 lifecycle and R3 release | SANDBOX PASS |
-| Bundle component proofs and terminal settlement | NOT IMPLEMENTED |
+| Component proofs / terminal settlement | UNIT + SANDBOX PASS / NOT IMPLEMENTED |
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R4-01 — authenticated component proof
+
+Base commit: `10338cf`.
+
+- 177 library + 11 market + 17 event + 6 storage-ledger
+  Rust tests = 211 PASS.
+- Strict Clippy and rustfmt PASS.
+- Compatible WASM and local NEAR Sandbox PASS.
+- WASM SHA-256:
+  `51466911e11d2c4df741d0aa86823e69d9fc472b113b8eb94a3bcef671f2055a`.
+- Two distinct selected providers submitted valid committed
+  payloads on deployed WASM.
+- Forged, unauthorized, malformed and replayed proofs rejected.
+- Both capacity locks remained held after proof.
+- Awarded bundle remained open for terminal settlement.
+- Rescue escrow 111 + claimable 3 = 114 economic units,
+  unchanged by proof submission in this Sandbox fixture.
+- Worker rewards and storage reserves unchanged.
+- No terminal settlement or worker completion implemented.
+- No public testnet or independent audit.
+- Physical performance is NOT established by Merkle proof.
+- Post-proof storage-byte growth needs separate measurement.
+
+Next: M3-R4-02 deterministic terminal economic model.
 
 ## M3-R4-00 — design checkpoint
 
@@ -57,9 +82,8 @@ on this WASM.
 
 ## Next task
 
-M3-R4-00: specify authenticated component proofs,
-RecoveryRight success/default settlement and conservation
-invariants before implementing economic terminal transitions.
+M3-R4-02: implement the pure deterministic settlement
+allocation model with exact 3Q conservation.
 
 ## Frissítési szabály
 

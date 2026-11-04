@@ -1,5 +1,22 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R4-01 checkpoint — 2026-11-04
+
+- Base: `10338cf`, branch `feat/m2-escrow`.
+- Canonical bounded binary parser and immutable Merkle
+  commitment authentication implemented.
+- Selected-provider and typed capacity ownership enforced.
+- 211 Rust tests, Clippy and compatible WASM PASS.
+- Fresh local NEAR Sandbox proof lifecycle PASS.
+- WASM SHA-256:
+  `51466911e11d2c4df741d0aa86823e69d9fc472b113b8eb94a3bcef671f2055a`.
+- Escrow, claimables, worker reward and storage reserve
+  remained unchanged during proof submission.
+- Invalid on-chain proof receipts are expected negative tests.
+- No public testnet, external audit or production approval.
+- Terminal settlement is NOT implemented.
+- Next single action: M3-R4-02 pure settlement economics.
+
 ## Current M3-R4-00 checkpoint — 2026-11-04
 
 - Base: `2bf546d`; documentation-only milestone.
