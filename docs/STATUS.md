@@ -22,6 +22,20 @@
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
 
+## M3-R5-01 — file-backed data preparation
+
+Base commit: `7b68ebf`.
+
+- Two independent synthetic CSV input files.
+- Bounded canonical component encoding.
+- Deterministic SHA-256 Merkle roots.
+- Checked u128 quantity × price computation.
+- Result: 632.
+- Four targeted Node tests PASS.
+- No R5 on-chain verification yet.
+
+Next: R5-02 independent signer and data delivery demo.
+
 ## M3-R4-05 — clean-checkout regression
 
 Base: `6edc066`, 2026-11-04.

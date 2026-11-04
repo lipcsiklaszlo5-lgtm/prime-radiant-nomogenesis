@@ -1,5 +1,22 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R5-01 checkpoint — 2026-11-04
+
+- Base commit: `7b68ebf`.
+- Independent quantity and price CSV sources.
+- Canonical binary payload and Merkle commitment builder.
+- Off-chain deterministic u128 result reconstruction.
+- Both current worker commitment profiles supported.
+- No Rust contract modification.
+- Four targeted Node tests PASS.
+- CSV input parsing and checked arithmetic PASS.
+- Computed result: 632.
+- Two 33-byte canonical component payloads produced.
+- Independent Merkle roots generated deterministically.
+- Malformed and mismatched input rejected.
+- Off-chain only; no R5 NEAR transaction yet.
+- Next: bind distinct signer transactions to these files.
+
 ## Current M3-R4-05 checkpoint — 2026-11-04
 
 - Base commit: `6edc066`.
