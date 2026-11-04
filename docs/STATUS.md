@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R4-02 deterministic settlement economics verified
+**Current state:** M3-R4-03 atomic on-chain settlement locally verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -12,14 +12,44 @@
 | Deterministic capped-equal allocation | UNIT PASS |
 | Atomic bundle award | UNIT + SANDBOX PASS |
 | Shared M2/M3 capacity locking | UNIT + SANDBOX PASS |
-| Full Rust regression | 221/221 PASS |
+| Full Rust regression | 228/228 PASS |
 | Strict Clippy and compatible WASM | PASS |
 | M2 primary, backup and settlement | SANDBOX PASS |
 | M3-R2 lifecycle and R3 release | SANDBOX PASS |
-| Component proofs / terminal settlement | UNIT + SANDBOX PASS / NOT IMPLEMENTED |
+| Component proofs / terminal settlement | UNIT + SANDBOX PASS / UNIT + SANDBOX PASS |
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R4-03 — atomic on-chain terminal settlement
+
+Base commit: `0866b77`.
+
+- Permissionless settlement of awarded RecoveryRight bundles.
+- 7 focused Rust integration tests PASS.
+- Full regression: 194 + 11 + 17 + 6 = 228 PASS.
+- Strict Clippy and rustfmt PASS.
+- Compatible WASM build PASS.
+- WASM SHA-256: `ae3c6f8e9742004d89b8b08c74ebf2f732b72a40879eb8ce0174b1eab02191b9`.
+- Fresh local NEAR Sandbox: four independent cases PASS.
+- Both proven, each single-default ordering and two defaults verified.
+- Premature settlement and terminal replay rejected.
+- Selected typed capacity locks cleared at settlement.
+- Proven payloads preserved; worker rewards remain held.
+- Settlement credits: 4 * 3Q = 144 economic units.
+- Before withdrawal: escrow 300 + claimable 156 = 456.
+- After native withdrawal: escrow 300 + claimable 136 +
+  paid 20 = 456, all in 0.001 NEAR units.
+- Native payout callback finalized; pending withdrawal zero.
+- Measured settlement storage delta: -791 bytes.
+- Storage reserves unchanged; standalone backing audit pending.
+- First Sandbox attempt failed a net-balance assertion
+  because transaction gas exceeded its tiny payout.
+- Corrected test passed with a 20-unit native withdrawal.
+- Public testnet and independent security audit NOT performed.
+- Worker result and reward completion NOT implemented.
+
+Next: M3-R4-04 authenticated worker result lifecycle.
 
 ## M3-R4-02 — pure terminal economics
 
@@ -104,8 +134,8 @@ on this WASM.
 
 ## Next task
 
-M3-R4-02: implement the pure deterministic settlement
-allocation model with exact 3Q conservation.
+M3-R4-04: implement authenticated worker result validation
+and the separate reward settlement lifecycle.
 
 ## Frissítési szabály
 

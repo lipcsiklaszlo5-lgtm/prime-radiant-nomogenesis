@@ -1,6 +1,6 @@
 # M3-R4 — Authenticated proof and terminal settlement
 
-Status: implementation contract, not yet implemented
+Status: R4-01 through R4-03 locally verified; R4-04 pending
 Date: 2026-11-04
 Base checkpoint: 2bf546d
 

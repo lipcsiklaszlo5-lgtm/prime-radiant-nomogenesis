@@ -1,5 +1,24 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R4-03 checkpoint — 2026-11-04
+
+- Base `0866b77`, branch `feat/m2-escrow`.
+- Atomic on-chain terminal rescue settlement implemented.
+- 228 Rust tests and strict Clippy PASS.
+- Compatible WASM and fresh local Sandbox PASS.
+- WASM SHA-256: `ae3c6f8e9742004d89b8b08c74ebf2f732b72a40879eb8ce0174b1eab02191b9`.
+- Four distinct cases: full success, two partial defaults,
+  full default. All four settlement outcomes PASS.
+- Exactly 3Q settlement per bundle, no principal creation.
+- Escrow 300 + claimable 156 = 456 before withdrawal.
+- Escrow 300 + claimable 136 + paid 20 = 456 afterward.
+- Native withdrawal callback and claimable reduction PASS.
+- Measured contract storage delta -791 bytes during
+  terminal settlement sequence.
+- Worker reward liabilities deliberately unchanged.
+- No public testnet, external audit, or production approval.
+- Next single action: M3-R4-04 worker result and reward.
+
 ## Current M3-R4-02 checkpoint — 2026-11-04
 
 - Base: `0392d17`, branch `feat/m2-escrow`.

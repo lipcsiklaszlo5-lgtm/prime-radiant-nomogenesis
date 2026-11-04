@@ -8,6 +8,7 @@ mod rescue_award;
 mod rescue_clearing;
 mod rescue_proof;
 pub mod rescue_settlement;
+mod rescue_terminal;
 pub mod settlement;
 mod task;
 mod withdrawal;
@@ -748,6 +749,10 @@ impl Nomogenesis {
     pub fn award_rescue_bundle(&mut self, case_id: Vec<u8>) -> u64 {
         let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
         self.award_rescue_bundle_inner(key)
+    }
+
+    pub fn settle_rescue_bundle(&mut self, bundle_id: u64) {
+        self.settle_rescue_bundle_inner(bundle_id);
     }
 
     pub fn submit_rescue_component(
@@ -1796,6 +1801,9 @@ mod rescue_schema_tests;
 
 #[cfg(test)]
 mod rescue_clearing_tests;
+
+#[cfg(test)]
+mod rescue_terminal_tests;
 
 #[cfg(test)]
 mod rescue_allocation_tests;
