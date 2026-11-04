@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R6-03 public Testnet deployment verified
+**Current state:** M3-R6-04 funded public Testnet smoke verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -21,6 +21,31 @@
 | Public testnet deployment | VERIFIED; economic lifecycle pending |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R6-04 — public funded economic smoke
+
+Base commit: `5d4750a`, 2026-11-04.
+
+- Contract: `nomogenesis-70e59593a3.testnet`.
+- Case creation: `HgafqAgqCPuZKM2ezUtuzDndmdHjNavHMwVR9nub81cd`.
+- Buyer funding: `31WXAMbRKJC838893AKpwYeAQfYAGYq7ixM1PphCWmnc`.
+- Worker acceptance: `GvoVxPnMwZoyMSNmZhgvfZvEuSTes6tA6yJBhnj9Ubht`.
+- Case ID: `7db84312296a1a8ce366f881bd9a399c9a60d5fb62b0534494f3356f8d6c0c63`.
+- Job ID: 0.
+- Three separately funded Testnet accounts.
+- Public escrow: 30 UNIT (0.03 testNEAR).
+- Worker reward held: 25 UNIT.
+- Rescue mandate held: 5 UNIT.
+- Case Open, job Accepted, mandate Open.
+- Two independent public RPC finality checks PASS.
+- Original case transaction preserved after an
+  initial finalized-state visibility delay.
+- Funded job and worker acceptance PASS.
+- No recovery award, provider proof, terminal
+  settlement or withdrawal on public Testnet yet.
+- Economic activity uses synthetic data only.
+
+Next: R6-05 full Testnet lifecycle feasibility.
 
 ## M3-R6-03 — public Testnet deployment
 

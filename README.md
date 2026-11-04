@@ -37,6 +37,11 @@ NEAR Testnet, with byte-for-byte verification via two RPCs.
 - Deployment transaction: `49NZ9qDKmfy42K9A7UKQDrDbQ9FWETFhijWQaUvcR5Qd`
 - WASM SHA-256: `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`
 
-Next: R6-04 public Testnet economic smoke and submission demo.
+M3-R6-04: three public Testnet transactions verified
+case creation, buyer funding and worker acceptance.
+The contract holds 30 UNIT (0.03 testNEAR) in rescue
+escrow. Full public recovery and payout are pending.
+
+Next: R6-05 public Testnet recovery and settlement.
 The full multi-role lifecycle is not yet Testnet-verified.
 Public testnet evidence is not yet available.

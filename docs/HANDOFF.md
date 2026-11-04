@@ -1,5 +1,33 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R6-04 checkpoint — 2026-11-04
+
+- Base commit: `5d4750a`.
+- Use the already verified public Testnet contract.
+- Three separately funded test accounts.
+- Create one synthetic rescue case.
+- Buyer posts a funded rescue job.
+- Distinct worker accepts the job.
+- Verify transactions and exact escrow accounting.
+- Persist transaction journal outside the repository.
+- No contract redeployment or mainnet operations.
+- Status: PUBLIC TESTNET FUNDED SMOKE PASS.
+- Three distinct funded Testnet accounts.
+- Rescue case creation: `HgafqAgqCPuZKM2ezUtuzDndmdHjNavHMwVR9nub81cd`.
+- Funded job transaction: `31WXAMbRKJC838893AKpwYeAQfYAGYq7ixM1PphCWmnc`.
+- Worker acceptance: `GvoVxPnMwZoyMSNmZhgvfZvEuSTes6tA6yJBhnj9Ubht`.
+- Rescue case ID: `7db84312296a1a8ce366f881bd9a399c9a60d5fb62b0534494f3356f8d6c0c63`.
+- Job ID: 0.
+- Finalized Open case and Accepted job verified.
+- On-chain escrow: 30 UNIT = 0.03 testNEAR.
+- Held worker reward: 25 UNIT.
+- Held rescue cap: 5 UNIT.
+- Both public RPCs independently verified final state.
+- No double case creation after RPC finality lag.
+- No provider award, settlement or worker payout yet.
+- Evidence: /workspaces/nomogenesis-r6-04-evidence.log
+- Next: R6-05 full Testnet lifecycle feasibility.
+
 ## Current M3-R6-03 checkpoint — 2026-11-04
 
 - Base commit: `c2bcc45`.
