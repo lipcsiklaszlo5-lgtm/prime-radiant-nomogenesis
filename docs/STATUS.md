@@ -1,9 +1,9 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R2-03A verified
+**Current state:** M3-R2-03B verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Current implementation base:** `f19bad9` plus verified R2-03A checkpoint
+**Current implementation base:** `a083eb2` plus verified R2-03B checkpoint
 
 | Area | Verified state |
 |---|---|
@@ -12,43 +12,48 @@
 | M3 rescue-market model | 11 focused tests PASS |
 | Atomic funded job and mandate | Verified |
 | Exact funding admission | Reward, rescue cap and storage required |
-| Job-plus-mandate storage | 307 measured bytes, 576-byte quote |
 | Worker acceptance | Authenticated and deadline-bound |
 | Buyer cancellation | Unaccepted reward and open cap released once |
-| Mandate revocation | Open cap released without cancelling worker job |
-| Independent lifecycles | Revoke-then-cancel credits each principal once |
-| Replay protection | Terminal phase prevents repeated credits |
-| Overflow atomicity | Job, mandate and escrow remain unchanged |
-| M3 liability boundary | Release decreases `rescue_escrow` exactly |
-| Withdrawal path | Released principal uses authenticated claimables |
-| Persistence | Terminal states and accounting survive reload |
-| Full Rust regression | 161 tests PASS |
+| Mandate revocation | Open cap released independently |
+| Unaccepted-job expiry | Permissionless at exact dependency deadline |
+| Open-mandate expiry | Permissionless at exact award close |
+| Accepted-job expiry | Permissionless at exact final deadline |
+| Boundary exclusivity | Active paths use `<`; expiry paths use `>=` |
+| Recipient integrity | Trigger caller cannot redirect buyer value |
+| Locked mandate protection | Award expiry cannot release locked principal |
+| Replay protection | Terminal state prevents repeated credits |
+| Overflow atomicity | Records, escrow and claimables remain unchanged |
+| M3 liability conservation | Escrow decrease equals claimable increase |
+| Persistence | Permissionless terminal state survives reload |
+| Full Rust regression | 168 tests PASS |
 | Clippy and WASM target | PASS |
-| Permissionless expiry | NOT IMPLEMENTED |
+| Local M3 Sandbox lifecycle | NOT VERIFIED |
 | Bundle award and provider bonds | NOT IMPLEMENTED |
-| M3 Sandbox/testnet evidence | NOT VERIFIED |
+| Public testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 | Hackathon submission ready | NO |
 
 ## Current gate
 
-R2-03A is verified. Buyers can unwind pre-award capital without creating a
-second economic claim. Cancellation, mandate revocation and their possible
-ordering preserve the invariant that every released yoctoNEAR leaves
-`rescue_escrow` exactly when it enters the buyer's claimable balance.
+R2-03 is complete at the native Rust level. Funded jobs and rescue mandates now
+have authenticated creation, worker acceptance, buyer-controlled release and
+permissionless deadline cleanup. Every tested path preserves principal and
+prevents duplicate credit.
 
-R2-03B must now make abandoned liabilities permissionlessly recoverable at
-their exact deadlines. This prevents inactive buyers, workers or keepers from
-leaving capital trapped indefinitely.
+The next gate must move from simulated contexts to actual NEAR receipts and
+independent accounts. R2-04 must deploy a fresh WASM locally and reproduce
+three buyers, three workers, exact deposits, acceptance and at least two
+distinct terminal-release paths.
 
 Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
 not proof of M3.
 
 ## Next task
 
-M3-R2-03B: add permissionless expiry at the dependency deadline, award close
-and final job deadline. Prove exact-boundary behavior, locked-mandate
-protection, replay rejection and full value conservation.
+M3-R2-04: local NEAR Sandbox reproduction with three independent buyers and
+workers. Verify exact attached deposits, persisted records, aggregate
+`rescue_escrow`, worker acceptance and native claimable outcomes after manual
+and permissionless release.
 
 ## Frissítési szabály
 

@@ -67,6 +67,7 @@ pub enum MandateReleaseReason {
     Revoked,
     JobCancelled,
     JobExpired,
+    AwardExpired,
     ZeroAllocation,
     Settled,
 }

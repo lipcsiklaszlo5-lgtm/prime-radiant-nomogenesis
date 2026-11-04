@@ -512,6 +512,187 @@ impl Nomogenesis {
         self.rescue_mandates.insert(job_id, mandate);
     }
 
+    pub fn expire_unaccepted_rescue_job(&mut self, job_id: u64) {
+        let now = env::block_timestamp();
+
+        let mut job = self
+            .rescue_jobs
+            .get(&job_id)
+            .cloned()
+            .expect("unknown rescue job");
+
+        assert_eq!(
+            job.phase,
+            rescue::RescueJobPhase::Funded,
+            "rescue job is not awaiting acceptance"
+        );
+
+        let case = self
+            .rescue_cases
+            .get(&job.case_id)
+            .expect("missing rescue case");
+
+        assert_eq!(
+            case.phase,
+            rescue::RescueCasePhase::Open,
+            "rescue case is not open"
+        );
+        assert!(
+            now >= case.dependency_deadline,
+            "dependency deadline not reached"
+        );
+
+        let mut mandate = self
+            .rescue_mandates
+            .get(&job_id)
+            .cloned()
+            .expect("missing rescue mandate");
+
+        let released_cap = match mandate.phase.clone() {
+            rescue::RescueMandatePhase::Open => {
+                assert!(mandate.held_principal > 0, "empty open rescue mandate");
+                assert!(
+                    mandate.locked_bundle_id.is_none() && mandate.locked_allocation.is_none(),
+                    "open rescue mandate contains a lock"
+                );
+
+                let amount = mandate.held_principal;
+                mandate.held_principal = 0;
+                mandate.phase = rescue::RescueMandatePhase::Released;
+                mandate.release_reason = Some(rescue::MandateReleaseReason::JobExpired);
+                amount
+            }
+            rescue::RescueMandatePhase::Released => {
+                let valid_reason = mandate.release_reason
+                    == Some(rescue::MandateReleaseReason::Revoked)
+                    || mandate.release_reason == Some(rescue::MandateReleaseReason::AwardExpired);
+
+                assert!(valid_reason, "invalid released mandate for job expiry");
+                assert_eq!(
+                    mandate.held_principal, 0,
+                    "released mandate still holds principal"
+                );
+                0
+            }
+            rescue::RescueMandatePhase::Locked => {
+                panic!("locked mandate on unaccepted rescue job")
+            }
+        };
+
+        assert!(
+            job.held_worker_reward > 0,
+            "rescue job has no held worker reward"
+        );
+
+        let released = job
+            .held_worker_reward
+            .checked_add(released_cap)
+            .expect("unaccepted expiry credit overflow");
+
+        let next_escrow = self
+            .rescue_escrow
+            .checked_sub(released)
+            .expect("rescue escrow underflow");
+
+        job.held_worker_reward = 0;
+        job.phase = rescue::RescueJobPhase::Expired;
+
+        self.credit_accounts(&[(job.buyer.clone(), released)]);
+        self.rescue_escrow = next_escrow;
+        self.rescue_jobs.insert(job_id, job);
+        self.rescue_mandates.insert(job_id, mandate);
+    }
+
+    pub fn release_expired_rescue_mandate(&mut self, job_id: u64) {
+        let now = env::block_timestamp();
+
+        let job = self
+            .rescue_jobs
+            .get(&job_id)
+            .cloned()
+            .expect("unknown rescue job");
+
+        let case = self
+            .rescue_cases
+            .get(&job.case_id)
+            .expect("missing rescue case");
+
+        assert_eq!(
+            case.phase,
+            rescue::RescueCasePhase::Open,
+            "rescue case is not open"
+        );
+        assert!(now >= case.award_close, "award close not reached");
+
+        let mut mandate = self
+            .rescue_mandates
+            .get(&job_id)
+            .cloned()
+            .expect("missing rescue mandate");
+
+        assert_eq!(
+            mandate.phase,
+            rescue::RescueMandatePhase::Open,
+            "rescue mandate is not open"
+        );
+        assert!(
+            mandate.held_principal > 0,
+            "open rescue mandate holds no principal"
+        );
+        assert!(
+            mandate.locked_bundle_id.is_none() && mandate.locked_allocation.is_none(),
+            "open rescue mandate contains a lock"
+        );
+
+        let released = mandate.held_principal;
+        let next_escrow = self
+            .rescue_escrow
+            .checked_sub(released)
+            .expect("rescue escrow underflow");
+
+        mandate.held_principal = 0;
+        mandate.phase = rescue::RescueMandatePhase::Released;
+        mandate.release_reason = Some(rescue::MandateReleaseReason::AwardExpired);
+
+        self.credit_accounts(&[(job.buyer, released)]);
+        self.rescue_escrow = next_escrow;
+        self.rescue_mandates.insert(job_id, mandate);
+    }
+
+    pub fn expire_rescue_job(&mut self, job_id: u64) {
+        let now = env::block_timestamp();
+
+        let mut job = self
+            .rescue_jobs
+            .get(&job_id)
+            .cloned()
+            .expect("unknown rescue job");
+
+        assert_eq!(
+            job.phase,
+            rescue::RescueJobPhase::Accepted,
+            "rescue job is not active"
+        );
+        assert!(now >= job.final_deadline, "final job deadline not reached");
+        assert!(
+            job.held_worker_reward > 0,
+            "rescue job has no held worker reward"
+        );
+
+        let released = job.held_worker_reward;
+        let next_escrow = self
+            .rescue_escrow
+            .checked_sub(released)
+            .expect("rescue escrow underflow");
+
+        job.held_worker_reward = 0;
+        job.phase = rescue::RescueJobPhase::Expired;
+
+        self.credit_accounts(&[(job.buyer.clone(), released)]);
+        self.rescue_escrow = next_escrow;
+        self.rescue_jobs.insert(job_id, job);
+    }
+
     pub fn rescue_escrow_total(&self) -> U128 {
         U128(self.rescue_escrow)
     }
@@ -1334,6 +1515,9 @@ mod rescue_funding_tests;
 
 #[cfg(test)]
 mod rescue_release_tests;
+
+#[cfg(test)]
+mod rescue_expiry_tests;
 
 #[cfg(test)]
 mod storage_admission_tests;

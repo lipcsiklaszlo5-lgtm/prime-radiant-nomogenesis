@@ -3,29 +3,31 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- R2-03A base: `f19bad9`
-- Verified implementation: replay-safe manual release of pre-award M3 principal
-- Focused release tests: 6 PASS
-- Full Rust suite: 161 PASS
+- R2-03B base: `a083eb2`
+- Verified implementation: complete pre-award M3 liability lifecycle
+- Focused permissionless-expiry tests: 7 PASS
+- Full Rust suite: 168 PASS
 - Clippy, WASM target check and diff check: PASS
-- Buyer may cancel only an unaccepted job before the dependency deadline
-- Cancellation releases the worker reward and any still-open rescue cap
-- Buyer may revoke an open mandate without cancelling the worker job
-- Every release moves equal value from `rescue_escrow` to authenticated claimables
-- Repeated, foreign, reordered and overflowing release attempts preserve state
-- Terminal release state and accounting totals survive reload
+- Unaccepted jobs expire permissionlessly at `dependency_deadline`
+- Open mandates release permissionlessly at `award_close`
+- Accepted jobs expire permissionlessly at `final_deadline`
+- Exact boundaries have no overlapping active and expiry transition
+- Expiry callers cannot redirect value away from the immutable buyer
+- Locked mandates cannot escape through the award-expiry path
+- Replays and arithmetic overflow preserve all economic state
+- Manual and permissionless releases conserve total principal
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- Permissionless deadline expiry is not implemented yet
-- Next single action: M3-R2-03B permissionless deadline expiry
+- Local NEAR Sandbox M3 execution is not verified yet
+- Next single action: M3-R2-04 multi-party Sandbox reproduction
 
-R2-03A closes the buyer-controlled side of the pre-award liability lifecycle.
-Worker reward and recovery authority are now independently reversible without
-duplicating value. Accept-versus-cancel and revoke-versus-cancel ordering has
-one economically valid result.
+R2-03B completes the native Rust liability lifecycle for funded jobs and rescue
+mandates before bundle implementation. Capital can no longer remain trapped
+because a buyer, worker or keeper stops acting. Any account may trigger an
+expired transition, but every yoctoNEAR returns only to its immutable owner.
 
-This checkpoint does not yet prove dependency-deadline expiry, award-window
-expiry, accepted-job expiry, bundle award, recovery settlement, Sandbox
-execution or public testnet operation.
+This checkpoint does not yet prove real NEAR receipts, native balance changes,
+multi-account Sandbox execution, bundle award, provider bonding, recovery
+proofs or public testnet operation.
 
 ## Munkamenetindító parancsok
 
@@ -53,6 +55,26 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R2-03B permissionless expiry
+
+- Base: `a083eb2`.
+- Added permissionless unaccepted-job expiry at the dependency deadline.
+- Added permissionless open-mandate release at award close.
+- Added permissionless accepted-job expiry at the final job deadline.
+- Pre-deadline actions use `<`; matching expiry paths use `>=`.
+- Unaccepted expiry releases reward and only a still-held cap.
+- Award expiry releases only an open, unlocked cap.
+- Accepted-job expiry releases reward independently from mandate state.
+- Locked mandates remain protected for future bundle settlement.
+- Expiry callers cannot redirect value from the immutable buyer.
+- Replays and claimable overflow preserve persistent economic state.
+- Permissionless terminal state and totals survive reload.
+- Focused expiry tests: 7 passed, 0 failed.
+- Full Rust suite: 168 passed, 0 failed.
+- Clippy, WASM target check and diff check passed.
+- Preserve: `sandbox/real_low_margin_audit.cjs`.
+- Next: M3-R2-04 multi-party local NEAR Sandbox reproduction.
 
 ### 2026-11-04 — M3-R2-03A manual liability release
 
