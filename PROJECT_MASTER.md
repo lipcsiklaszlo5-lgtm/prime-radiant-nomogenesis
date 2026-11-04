@@ -10,6 +10,24 @@ Nomogenesis creates a jointly funded recovery transaction when a shared dependen
 
 The MVP combines pre-funded rescue mandates, complementary recovery offers, objective digital proofs and fully funded settlement on NEAR.
 
+## R7 strategic direction — 2026-11-05
+
+The existing verified M3 rescue market is the first bounded
+instance of the proposed economic coordination platform.
+
+The next objective is to demonstrate economic emergence
+against fair counterfactual baselines, then independent
+agent decisions, competitive clearing and adversarial
+behavior.
+
+Target: 98/100 internal evidence-readiness, NOT a
+prediction of any official hackathon score.
+
+The R7 strategy is defined in:
+`docs/M3_R7_NORTH_STAR.md`.
+
+The M3 on-chain contract remains feature-frozen.
+
 ## Authoritative documents
 
 1. docs/M3_NORTH_STAR.md — product direction and claim boundary.

@@ -1,5 +1,23 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Active M3-R7-01 — Economic Emergence Benchmark
+
+Date: 2026-11-05
+Base commit: `9baaee9`
+Branch: `feat/r7-economic-emergence`
+
+- New strategic direction approved.
+- Platform foundation, not generic escrow.
+- Internal aspirational readiness target: 98/100.
+- Primary NEAR alignment: AI Swarms.
+- Four pillars: economic emergence, autonomous
+  decisions, competitive clearing, adversarial safety.
+- Normative objective: `docs/M3_R7_NORTH_STAR.md`.
+- Preserve the verified R6 Testnet evidence and white UI.
+- First implementation: deterministic economic comparison.
+- No unverified economic superiority claims.
+- Status: R7-01 IMPLEMENTATION PENDING.
+
 ## Current M3-R6-06A — VERIFIED GITHUB CHECKPOINT
 
 Date: 2026-11-04
