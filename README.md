@@ -1,16 +1,15 @@
 # prime-radiant-nomogenesis
-A protocol for autonomous economic coordination, capacity options, and failure-resilient workflows on NEAR.
 
-## M3 — Authoritative Strategic Goal
+Nomogenesis is a NEAR rescue market for agent economies.
 
-**[READ THE NOMOGENESIS NORTH STAR](docs/M3_NORTH_STAR.md)**
+When one failed dependency blocks several independently funded jobs, affected buyers can combine bounded rescue mandates and atomically purchase recovery work that none would fund alone.
 
-We are building The Economic Continuity Protocol:
-a new market for conditional RecoveryRights,
-dependency-aware capital and capacity clearing,
-and autonomous NEAR settlement.
+## Current product direction
 
-The objective is investor-level economic innovation,
-not a generic agent tool or additional M2 overtesting.
+- [M3 North Star](docs/M3_NORTH_STAR.md)
+- [M3 Rescue Market specification](docs/M3_RESCUE_MARKET_SPEC.md)
+- [Verified development status](docs/STATUS.md)
 
-Next: M3/01 — RecoveryRight + provable clearing.
+The M2 Rust/NEAR kernel provides funded tasks, collateral, slot locks, Merkle verification, settlement and native withdrawal recovery. The M3 rescue market is specified but not yet implemented.
+
+Next: M3-R1 — pure Rust allocation, clearing and settlement domain model.

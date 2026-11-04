@@ -1,48 +1,18 @@
-# Élő munkamenet-átadás — minden chat végén frissítendő
+# Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: feat/m2-escrow
-- HEAD: 5a1b6ff68402fcc43c500cec0c0be60969dae459
-- Tracked worktree: clean
-- Preserve: sandbox/real_low_margin_audit.cjs
-- No M3 Python scaffold exists yet.
-- Next: M3-R0 strategy/spec reconciliation.
+- M3-R0 base: aceae9b
+- Current HEAD: the commit containing this handoff after M3-R0 is committed
+- Preserve untracked: sandbox/real_low_margin_audit.cjs
+- Product: jointly funded rescue market
+- Authoritative spec: docs/M3_RESCUE_MARKET_SPEC.md
+- M3 implementation: not started
+- Recorded M2 evidence: preserved, not rerun in M3-R0
+- Next single ticket: M3-R1 pure Rust domain model
 
-
-> **M3 STRATEGIC DIRECTIVE — READ FIRST:**
-> [NOMOGENESIS NORTH STAR](M3_NORTH_STAR.md).
-> Goal: investor-level economic asymmetry,
-> RecoveryRight + dependency-aware capital AND
-> capacity clearing + real NEAR settlement.
-> M2 overtesting STOP. Continue with M3/01.
-> Do not restart strategic brainstorming.
-
-
-> **Nem chatnapló.** Ez egy 2–5 perces, ellenőrzött indítási pont a következő fejlesztőnek. Ne találj ki állapotot. A munkamenetek történetét alul add hozzá.
-
-## Aktuális ellenőrzött állapot
-
-- Dátum: **2026-11-03**
-- Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
-- Branch: `feat/m2-escrow`
-- Kiinduló checkpoint: `10db9d7` (M2/06B).
-- M2/05C: fizetős task/offer létrehozás, per-rekord
-  storage-befizető és előleg nyilvántartása.
-- Rust-tesztek: **108/108 PASS**.
-- NEAR Sandbox: **11 integrációs csomag**.
-- Clippy és kompatibilis WASM: PASS.
-- Native NEAR payout és callback recovery: PASS,
-  a sikertelen eset hibainjektált binárissal igazolt.
-- Tényleges mérés: 1930 byte tartós növekedés.
-- Provisional storage reserves: 16384 byte-equivalent.
-- Minimális tőkefedezet: két célzott Sandbox-forgatókönyv
-  PASS; általános minimális tőkeigény NEM bizonyított.
-- Nem igazolt: általános storage-refund, migráció,
-  publikus testnet, külső security audit.
-- Éles pénzes használatra: **NEM JÓVÁHAGYOTT**.
-- Következő feladat: pontos storage-felszabadítási
-  és visszatérítési életciklus tervezése és tesztje.
+Do not restart product brainstorming, resume storage research, or mutate persistent NEAR state before M3-R1 domain tests pass.
 
 ## Munkamenetindító parancsok
 
@@ -70,6 +40,25 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R0B governance alignment
+
+- M3-R0 base commit: aceae9b.
+- PROJECT_MASTER, STATUS and AGENTS aligned with the rescue-market specification.
+- Existing M2 source and historical evidence remain unchanged.
+- No Rust, Sandbox or testnet test was run.
+- Next: review and commit M3-R0, then start M3-R1.
+
+
+### 2026-11-04 — M3-R0A product and executable spec
+
+- Base commit: aceae9b.
+- Replaced the old collateral-reuse-first product direction.
+- Added bounded payload, allocation, clearing and settlement rules.
+- Added ADR-007 through ADR-009.
+- No Rust, Sandbox or testnet test was run.
+- Next: M3-R0B governance-document alignment.
+
 
 ### 2026-11-04 — M3-00 continuity workflow
 

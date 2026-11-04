@@ -1,30 +1,31 @@
-# STATUS — Prime Radiant
+# STATUS — Prime Radiant / Nomogenesis
 
-**Aktuális fejlesztési állapot:** M2/07E/2B/2A — backing stress model, 2026-11-03
+**Current state:** M3-R0 strategy and executable specification
+**Date:** 2026-11-04
+**Branch:** feat/m2-escrow
+**M3-R0 base:** aceae9b
 
-| Mező | Ellenőrzött állapot |
+| Area | Verified state |
 |---|---|
-| Projekt | Prime Radiant — Economic Commitment Protocol / Nomogenesis |
-| Repozitórium | https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis |
-| Fejlesztési ág | `feat/m2-escrow` |
-| Előző rögzített checkpoint | `5149b76` — M2/07E/2B/1 |
-| Állapotgép | Minden tervezett fő M1 életciklus implementálva |
-| Merkle-bizonyítás | Taskhoz kötött SHA-256 ellenőrzés implementálva |
-| Kapacitásfoglalás | Kizárólagos provider/slot foglalás és lezárás |
-| Natív Rust unit tesztek | **108 PASS, 0 FAIL** |
-| Mockolt NEAR storage reload | PASS — 2 célzott teszt |
-| Terminális állapotok auditja | PASS — 6 állapot, 7 új teszt |
-| `cargo check --locked --target wasm32-unknown-unknown` | PASS |
-| `cargo clippy --locked --all-targets -- -D warnings` | PASS |
-| NEAR-kompatibilis release WASM | PASS |
-| Helyi NEAR Sandbox tranzakciók | PASS — 11 integrációs csomag |
-| Native NEAR withdrawal és callback | PASS — success + fault-injected failure on local sandbox |
-| Testnet tranzakciók / receipts | NOT VERIFIED |
-| Gazdasági escrow és belső settlement | PASS — local sandbox |
-| Storage reserve és refund | Scoped unselected-offer rebate PASS locally; general refunds NOT VERIFIED |
-| Python V2 referenciateszt | 95/95 PASS korábbi független audit alapján |
-| Gazdasági optimalizációs fölény | NOT PROVEN |
-| Hackathon nevezés kész | NO |
+| Product direction | Jointly funded rescue market approved |
+| M3 executable specification | Written; implementation not started |
+| Existing M2 Rust/NEAR kernel | Preserved |
+| Recorded Rust tests | 108 PASS; not rerun in M3-R0 |
+| Recorded default Sandbox suites | 11 PASS; not rerun in M3-R0 |
+| M3 Rust domain model | NOT IMPLEMENTED |
+| M3 persistent contract state | NOT IMPLEMENTED |
+| M3 Sandbox/testnet evidence | NOT VERIFIED |
+| Public testnet receipts | NOT VERIFIED |
+| Production funds | NOT APPROVED |
+| Hackathon submission ready | NO |
+
+## Current gate
+
+Next: M3-R1 pure Rust allocation, offer-pair clearing and settlement domain model.
+
+M3-R1 may not modify persistent NEAR state. It must first pass deterministic allocation, conservation, partial-default, overflow and replay-oriented domain tests.
+
+Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints, not proof of M3.
 
 ## M1 Final Gate — PASS
 

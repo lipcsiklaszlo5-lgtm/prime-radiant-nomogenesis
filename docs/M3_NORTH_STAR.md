@@ -1,240 +1,80 @@
 # NOMOGENESIS — M3 NORTH STAR
 
-Status: APPROVED STRATEGIC DIRECTION
-Decision date: 2026-11-03
+**Status:** approved M3 product direction
+**Decision date:** 2026-11-04
+**Product:** The Rescue Market for Agent Economies
 
-## 1. NON-NEGOTIABLE GOAL
+## Product statement
 
-Build a NEAR Hackathon grand-prize-caliber economic
-innovation with immediate investor-level WOW.
+Nomogenesis lets affected agents jointly fund and settle recovery work that none of them would buy alone.
 
-NOT a generic tool.
-NOT a CI system.
-NOT another workflow optimizer.
-NOT merely escrow, insurance, or agent matchmaking.
-NOT endless research and overtesting.
+When a shared dependency fails, several independently funded jobs may stop. Each buyer authorizes only a bounded rescue contribution. Nomogenesis combines those mandates with complementary, collateralized recovery offers and accepts a complete bundle atomically.
 
-The goal is an asymmetric economic primitive
-capable of creating a new market.
+The product creates a fundable recovery transaction. It does not create money, guarantee supplier availability or prove universal economic superiority.
 
-# NOMOGENESIS
-## The Economic Continuity Protocol
+## Critical distinction
 
-"The market for guaranteed execution in an
-autonomous economy."
+A pre-funded rescue mandate is not reserved supplier capacity.
 
-The product enables autonomous economic actors
-to purchase financially backed rights to
-continued execution BEFORE counterparties fail.
+A binding RecoveryRight is created only when a complete bundle is awarded and buyer funds, provider bonds, slots and deadlines are locked.
 
-Novelty, market demand and prize prospects
-remain hypotheses until demonstrated.
+## Bounded MVP
 
-## 2. THE THREE CORE INNOVATIONS
+- at most six sponsoring jobs;
+- exactly two recovery components;
+- at most six open offers;
+- distinct selected providers;
+- deterministic capped-equal cost sharing;
+- full provider bonds;
+- no shared-collateral reuse;
+- no token, lending, mainnet funds or paid API;
+- no physical capacity attestation or general DAG optimizer.
 
-### M3/01 — RecoveryRight
+## Mandatory demo
 
-A sellable conditional execution right.
+1. Three funded jobs are blocked by a missed dependency deadline.
+2. Individual rescue attempts fail their caps.
+3. Two complementary offers form a funded bundle.
+4. Actual data bytes and Merkle proofs are delivered.
+5. Three final jobs complete.
+6. Settlement is reconstructed from chain state.
+7. Duplicate funding, overspending, occupied slots and invalid proofs are rejected.
+8. A partial-failure run settles without unfunded liability.
 
-Required fields:
+## Financial example
 
-- Buyer and provider
-- Reserved execution capacity
-- Activation trigger
-- Validity window and deadline
-- Financial collateral
-- Option premium and execution reward
-- Objective completion proof
-- Settlement and expiration rules
+- buyers: 3 × 30 = 90;
+- worker rewards: 3 × 25 = 75;
+- rescue caps: 3 × 5 = 15;
+- recovery fees: 6 + 6 = 12;
+- buyer allocations: 4 + 4 + 4 = 12;
+- unused rescue caps: 3;
+- provider bonds: 12 + 12 = 24;
+- total deposits: 114.
 
-The buyer purchases a right to replacement
-execution, not merely insurance compensation.
+Successful cycle:
 
-### M3/02 — Dependency-Aware Economic Clearing
+114 = 75 worker rewards + 12 recovery fees + 3 buyer refunds + 24 returned bonds.
 
-Create a clearing mechanism that analyzes
-which obligations can activate simultaneously.
+These are test units, not prices, revenue or saved profit.
 
-Financial collateral AND execution capacity
-must both remain sufficient.
+## Preserve the M2 kernel
 
-The engine must:
+Keep the existing task lifecycle, funded escrow, slot locking, Merkle verification, claimable ledger, withdrawals and callback recovery.
 
-- Detect conflicting obligations
-- Prevent double-selling of scarce capacity
-- Identify mutually exclusive activation rights
-- Calculate maximum concurrent liabilities
-- Safely reuse collateral only where exclusion
-  is enforceable
-- Return explicit conflict witnesses
-- Preserve storage and pending payout backing
+M2 storage research remains feature-frozen unless a reproducible defect blocks M3. M3 introduces a separate rescue liability that must be included in withdrawal backing.
 
-The target is capital efficiency without
-undercollateralization.
+## Build order
 
-No statistical probability is sufficient
-to prove hard solvency.
+1. M3-R1: pure Rust allocation, clearing and settlement model.
+2. M3-R2: funded jobs, mandates and rescue escrow.
+3. M3-R3: atomic clearing and M2/M3 cross-slot guards.
+4. M3-R4: proof submission and terminal settlement.
+5. M3-R5: signer processes and actual data workflow.
+6. M3-R6: demo, testnet receipts and clean reproduction.
 
-### M3/03 — Autonomous Recovery Market
+## Claim boundary
 
-Autonomous agents offer standby capacity.
-
-A deterministic Rust clearing engine decides
-which commitments are economically compatible.
-
-NEAR provides:
-
-- Financial commitments
-- Capacity reservations
-- Activation
-- Objective proof verification
-- Settlement and withdrawals
-
-This is intended as a market infrastructure
-primitive, not a subscription software tool.
-
-## 3. MANDATORY HACKATHON WOW DEMO
-
-A judge must be able to:
-
-1. See an autonomous economic network.
-2. Buy a real conditional RecoveryRight.
-3. Trigger a critical agent failure.
-4. Watch a reserve agent execute replacement work.
-5. Inspect real NEAR Sandbox transactions.
-6. Attempt to double-sell execution capacity.
-7. See overlapping obligations REJECTED.
-8. Change to provably exclusive obligations.
-9. See safe capital/capacity reuse ACCEPTED.
-10. Observe measurable collateral efficiency.
-
-Display a comparison:
-
-A. No continuity guarantees
-B. Naive full collateral reservation
-C. Nomogenesis dependency-aware clearing
-
-Use verifiable measurements, not invented savings.
-
-The demo must show actual economic mechanisms,
-not simply a static animation.
-
-## 4. PRESERVE EXISTING IMPLEMENTATION
-
-Repository:
-lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
-
-Branch:
-feat/m2-escrow
-
-Last verified committed checkpoint:
-3894710 — M2/07E/2B/2A
-
-Additional M2/07E/2B/2B live Sandbox evidence:
-4 deployments at 0, 0.015, 0.060 and 0.120
-NEAR margins: payout reject/reject/pass/pass.
-
-The real_low_margin_audit.cjs file was last
-observed untracked. Verify current git state.
-
-KEEP:
-
-- Existing Rust contract
-- Task and offer lifecycle
-- Economic escrow
-- Funded reserve offers
-- Exclusive slot locks
-- Backup activation
-- Merkle proof verification
-- Economic settlement
-- Native NEAR withdrawals
-- Existing security and storage tests
-
-The current contract DOES NOT yet implement
-general shared-collateral clearing.
-
-No shadow calculation is an on-chain guarantee.
-
-M2 STORAGE ACCOUNTING IS FEATURE-FROZEN.
-
-Do not resume M2 overtesting unless a specific
-reproducible defect blocks the M3 demonstration.
-
-No production funds are authorized.
-
-## 5. BUILD PRIORITY
-
-FIRST:
-M3/01 RecoveryRight and scenario-based
-capital/capacity conflict engine in Rust.
-
-SECOND:
-M3/02 enforceable conditional commitments
-and safe clearing integration with NEAR.
-
-THIRD:
-M3/03 autonomous agents, end-to-end
-settlement and one-screen investor demo.
-
-Time priority:
-Working economic innovation > more abstractions.
-
-No token launch, speculative lending,
-unbacked collateral or generic marketplace.
-
-## 6. INVESTOR TEST
-
-The demonstration must answer:
-
-"What new market becomes possible because
-this protocol exists?"
-
-Five acceptance criteria:
-
-1. New sellable economic right
-2. Enforceable simultaneous-activation safety
-3. Quantifiable capital efficiency
-4. Real execution and NEAR settlement
-5. Plausible scaling to external agent networks
+Joint funding, auctions, escrow and conditional rights have prior art. The proposed difference is their integration around already-funded jobs, bounded per-job rescue authority, complementary recovery award and funded partial-failure settlement.
 
 Grand prize is the ambition, not a guarantee.
-
-## 7. INSTRUCTIONS FOR FUTURE CHATGPT SESSIONS
-
-THIS DOCUMENT IS THE AUTHORITATIVE PRODUCT GOAL.
-
-Before doing anything:
-
-1. Read this document.
-2. Read docs/HANDOFF.md.
-3. Inspect git status and latest commit.
-4. Inspect existing Rust and NEAR implementation.
-
-DO NOT:
-
-- Ask the user to select the vision again.
-- Reopen the old strategic brainstorming.
-- Propose another generic agent tool.
-- Return to storage-accounting test loops.
-- Replace the existing repository.
-- Claim unimplemented features already work.
-
-DO:
-
-- Continue directly with M3.
-- Prefer executable Rust implementations.
-- Validate actual economic invariants.
-- Use real NEAR Sandbox transactions.
-- Keep development checkpoints small.
-- Build the investor-level WOW demonstration.
-
-NEXT DEVELOPMENT STEP:
-
-M3/01 — RecoveryRight + Provable
-Mutual-Exclusion Economic Clearing.
-
-NORTH STAR:
-
-"Most agent systems coordinate work.
-Nomogenesis clears the economic rights that
-let work continue when counterparties fail."
