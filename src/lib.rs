@@ -70,6 +70,106 @@ impl Default for Nomogenesis {
 
 #[near]
 impl Nomogenesis {
+    pub fn m3_storage_quote(&self) -> rescue::M3StorageQuoteView {
+        rescue::storage_quote()
+    }
+
+    pub fn get_rescue_case(&self, case_id: Vec<u8>) -> Option<rescue::RescueCaseView> {
+        let key = rescue::parse_case_id(case_id).ok()?;
+        self.rescue_cases
+            .get(&key)
+            .map(rescue::RescueCaseView::from)
+    }
+
+    #[payable]
+    pub fn create_rescue_case(&mut self, descriptor: rescue::RescueCaseDescriptorInput) -> Vec<u8> {
+        let rescue::RescueCaseDescriptorInput {
+            descriptor_version,
+            original_provider,
+            component_commitments,
+            dependency_deadline,
+            bid_close,
+            award_close,
+            recovery_deadline,
+        } = descriptor;
+
+        let now = env::block_timestamp();
+
+        assert_eq!(descriptor_version, 1, "unsupported descriptor version");
+        assert_ne!(
+            original_provider,
+            env::current_account_id(),
+            "contract cannot be original provider"
+        );
+        assert!(
+            now < dependency_deadline
+                && dependency_deadline < bid_close
+                && bid_close < award_close
+                && award_close < recovery_deadline,
+            "invalid rescue case deadlines"
+        );
+
+        let commitments = rescue::parse_component_commitments(component_commitments)
+            .expect("invalid component commitments");
+        assert_ne!(
+            commitments[0], commitments[1],
+            "component commitments must differ"
+        );
+
+        let deadlines = [
+            dependency_deadline,
+            bid_close,
+            award_close,
+            recovery_deadline,
+        ];
+        let descriptor_hash = rescue::derive_descriptor_hash(
+            descriptor_version,
+            &original_provider,
+            &commitments,
+            deadlines,
+        );
+        let case_id = rescue::derive_case_id(&env::current_account_id(), &descriptor_hash);
+
+        assert!(
+            self.rescue_cases.get(&case_id).is_none(),
+            "rescue case already exists"
+        );
+
+        let storage_payment = rescue::case_storage_cost();
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            storage_payment,
+            "incorrect rescue case storage deposit"
+        );
+
+        let next_storage = self
+            .storage_reserves
+            .checked_add(storage_payment)
+            .expect("storage reserve overflow");
+
+        self.rescue_cases.insert(
+            case_id,
+            rescue::RescueCase {
+                id: case_id,
+                descriptor_version,
+                descriptor_hash,
+                original_provider,
+                component_commitments: commitments,
+                dependency_deadline,
+                bid_close,
+                award_close,
+                recovery_deadline,
+                job_ids: Vec::new(),
+                phase: rescue::RescueCasePhase::Open,
+                awarded_bundle_id: None,
+                resolved_payloads: [None, None],
+            },
+        );
+        self.storage_reserves = next_storage;
+
+        case_id.to_vec()
+    }
+
     pub fn rescue_escrow_total(&self) -> U128 {
         U128(self.rescue_escrow)
     }
@@ -883,6 +983,9 @@ mod withdrawal_tests;
 
 #[cfg(test)]
 mod rescue_schema_tests;
+
+#[cfg(test)]
+mod rescue_case_tests;
 
 #[cfg(test)]
 mod storage_admission_tests;

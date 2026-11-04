@@ -1,7 +1,8 @@
 use super::*;
 use crate::rescue::{
-    COMMITMENT_BYTES, COMPONENT_COUNT, MAX_RESCUE_JOBS, RescueCase, RescueCasePhase, RescueJob,
-    RescueJobPhase, RescueMandate, RescueMandatePhase,
+    COMMITMENT_BYTES, COMPONENT_COUNT, MAX_CASE_RECORD_BYTES, MAX_COMPONENT_PAYLOAD_BYTES,
+    MAX_JOB_RECORD_BYTES, MAX_MANDATE_RECORD_BYTES, MAX_RESCUE_JOBS, RescueCase, RescueCasePhase,
+    RescueJob, RescueJobPhase, RescueMandate, RescueMandatePhase,
 };
 
 #[test]
@@ -33,6 +34,10 @@ fn maximum_record_serialization_is_bounded_and_reported() {
         job_ids: vec![u64::MAX; MAX_RESCUE_JOBS],
         phase: RescueCasePhase::BundleAwarded,
         awarded_bundle_id: Some(u64::MAX),
+        resolved_payloads: [
+            Some(vec![6; MAX_COMPONENT_PAYLOAD_BYTES]),
+            Some(vec![7; MAX_COMPONENT_PAYLOAD_BYTES]),
+        ],
     };
 
     let job = RescueJob {
@@ -71,7 +76,7 @@ fn maximum_record_serialization_is_bounded_and_reported() {
 
     assert_eq!(case.component_commitments.len(), COMPONENT_COUNT);
     assert_eq!(case.job_ids.len(), MAX_RESCUE_JOBS);
-    assert!(case_bytes.len() <= 2_048);
-    assert!(job_bytes.len() <= 1_024);
-    assert!(mandate_bytes.len() <= 512);
+    assert_eq!(case_bytes.len() as u64, MAX_CASE_RECORD_BYTES);
+    assert_eq!(job_bytes.len() as u64, MAX_JOB_RECORD_BYTES);
+    assert_eq!(mandate_bytes.len() as u64, MAX_MANDATE_RECORD_BYTES);
 }

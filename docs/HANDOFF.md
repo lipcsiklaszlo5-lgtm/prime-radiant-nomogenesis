@@ -3,20 +3,23 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- R2-01 base: `b3eb084`
-- Verified implementation: bounded empty M3 schema and complete withdrawal liability boundary
-- Rescue-market focused tests: 11 PASS
-- M3 schema tests: 2 PASS
-- Full Rust suite: 145 PASS
+- R2-02A base: `b9e53f1`
+- Verified implementation: canonical immutable rescue case and bounded storage quote
+- Focused case tests: 4 PASS
+- Full Rust suite: 149 PASS
 - Clippy, WASM target check and diff check: PASS
-- Serialized records: case 292, job 266, mandate 68 Borsh bytes
+- Maximum case record: 814 Borsh bytes
+- Initial measured case write: 256 bytes
+- Case quote: 893 bytes
+- Future job-plus-mandate quote: 576 bytes
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- No M3 funding endpoint is enabled
-- Next single action: M3-R2-02 atomic funded rescue job plus mandate
+- No M3 economic principal endpoint is enabled
+- Next single action: M3-R2-02B atomic funded rescue job plus mandate
 
-R2-01 proves that active M3 principal cannot be omitted from native-withdrawal
-backing. It does not yet prove funded-job creation, real Sandbox storage cost,
-bundle award, proof settlement or testnet operation.
+R2-02A proves deterministic, contract-bound case identity and exact
+storage-only admission against a bounded future record. It does not yet prove
+worker-reward funding, rescue-cap funding, Sandbox storage cost, bundle award,
+proof settlement or testnet operation.
 ## Munkamenetindító parancsok
 
 ```bash
@@ -43,6 +46,19 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R2-02A canonical case and quote
+
+- Base: `b9e53f1`.
+- Added typed immutable rescue-case descriptors.
+- Case IDs bind the descriptor hash to the contract account.
+- Added bounded storage quotes derived from exact record and key sizes.
+- Initial case write measured 256 bytes against a 893-byte quote.
+- Future job-plus-mandate quote is 576 bytes.
+- 149 Rust tests, Clippy, WASM target and diff checks passed.
+- No M3 economic principal was accepted.
+- Next: M3-R2-02B atomic funded job plus mandate.
+
 
 ### 2026-11-04 — M3-R2-01 zero-liability schema
 

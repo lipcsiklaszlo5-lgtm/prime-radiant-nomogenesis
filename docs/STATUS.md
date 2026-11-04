@@ -1,32 +1,33 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R2-01 verified
+**Current state:** M3-R2-02A verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Current implementation base:** `b3eb084` plus verified R2-01 checkpoint
+**Current implementation base:** `b9e53f1` plus verified R2-02A checkpoint
 
 | Area | Verified state |
 |---|---|
 | Product direction | Jointly funded rescue market approved |
 | M3 executable specification | Written; R2 storage and liability design locked |
 | M3 rescue-market model | 11 focused tests PASS |
-| M3 persistent contract state | Empty bounded case, job and mandate collections verified |
-| M3 liability boundary | Zero initial liability; withdrawal backing includes `rescue_escrow` |
-| Full Rust regression | 145 tests PASS |
-| Clippy | PASS with warnings denied |
-| WASM target check | PASS |
-| M3 funding endpoint | NOT IMPLEMENTED |
+| M3 persistent state | Empty bounded case, job and mandate collections verified |
+| Rescue-case creation | Typed canonical descriptor and contract-bound ID verified |
+| Case storage admission | Exact payment; 256 measured bytes, 893-byte bounded quote |
+| Future job storage quote | 576 bytes derived from job, mandate and claimable bounds |
+| M3 liability boundary | Withdrawal backing includes `rescue_escrow` |
+| Full Rust regression | 149 tests PASS |
+| Clippy and WASM target | PASS |
+| M3 economic funding endpoint | NOT IMPLEMENTED |
 | M3 Sandbox/testnet evidence | NOT VERIFIED |
-| Public testnet receipts | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 | Hackathon submission ready | NO |
 
 ## Current gate
 
-R2-01 is verified. The contract can represent empty bounded M3 state and its
-withdrawal guard protects `rescue_escrow`. R2-02 may now introduce the first
-M3 payable endpoint, but only with atomic job-plus-mandate creation, exact
-attached value, bounded storage admission and authenticated worker acceptance.
+R2-02A is verified. Storage-only rescue cases may be created with a canonical
+contract-bound identifier and a bounded future-capacity quote. R2-02B may now
+introduce worker reward and rescue-cap funding atomically, using the verified
+576-byte job quote and the existing complete withdrawal-liability guard.
 
 Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
 not proof of M3.
@@ -46,8 +47,8 @@ not proof of M3.
 
 ## Next task
 
-M3-R2-02: atomic funded rescue job plus mandate, worker acceptance, exact
-attached-deposit validation and authenticated read views.
+M3-R2-02B: atomic funded rescue job plus mandate, worker acceptance,
+authenticated views and exact attached-deposit validation.
 
 ## Frissítési szabály
 
