@@ -1,5 +1,15 @@
 # Élő munkamenet-átadás — minden chat végén frissítendő
 
+## Current M3 checkpoint — 2026-11-04
+
+- Branch: feat/m2-escrow
+- HEAD: 5a1b6ff68402fcc43c500cec0c0be60969dae459
+- Tracked worktree: clean
+- Preserve: sandbox/real_low_margin_audit.cjs
+- No M3 Python scaffold exists yet.
+- Next: M3-R0 strategy/spec reconciliation.
+
+
 > **M3 STRATEGIC DIRECTIVE — READ FIRST:**
 > [NOMOGENESIS NORTH STAR](M3_NORTH_STAR.md).
 > Goal: investor-level economic asymmetry,
@@ -60,6 +70,15 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-00 continuity workflow
+
+- Checkpoint: 5a1b6ff
+- Tracked worktree clean.
+- audit file preserved.
+- Worklog path established.
+- Next: M3-R0; no scaffold before reconciliation.
+
 
 ### 2026-11-03 — Context pack létrehozva
 
