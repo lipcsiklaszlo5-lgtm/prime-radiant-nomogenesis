@@ -34,6 +34,10 @@ pub struct Nomogenesis {
     pending_withdrawals: LookupMap<u64, withdrawal::PendingWithdrawal>,
     pending_total: u128,
     next_rescue_job_id: u64,
+    next_rescue_offer_id: u64,
+    next_rescue_bundle_id: u64,
+    rescue_offers: LookupMap<u64, rescue::RescueOffer>,
+    rescue_bundles: LookupMap<u64, rescue::RescueBundle>,
     rescue_cases: LookupMap<[u8; 32], rescue::RescueCase>,
     rescue_jobs: LookupMap<u64, rescue::RescueJob>,
     rescue_mandates: LookupMap<u64, rescue::RescueMandate>,
@@ -62,6 +66,10 @@ impl Default for Nomogenesis {
             pending_withdrawals: LookupMap::new(b"pending".as_slice()),
             pending_total: 0,
             next_rescue_job_id: 0,
+            next_rescue_offer_id: 0,
+            next_rescue_bundle_id: 0,
+            rescue_offers: LookupMap::new(b"m3offers".as_slice()),
+            rescue_bundles: LookupMap::new(b"m3bundles".as_slice()),
             rescue_cases: LookupMap::new(b"m3cases".as_slice()),
             rescue_jobs: LookupMap::new(b"m3jobs".as_slice()),
             rescue_mandates: LookupMap::new(b"m3mandates".as_slice()),
@@ -162,6 +170,7 @@ impl Nomogenesis {
                 award_close,
                 recovery_deadline,
                 job_ids: Vec::new(),
+                offer_ids: Vec::new(),
                 phase: rescue::RescueCasePhase::Open,
                 awarded_bundle_id: None,
                 resolved_payloads: [None, None],
@@ -701,6 +710,22 @@ impl Nomogenesis {
 
     pub fn next_rescue_job_id(&self) -> u64 {
         self.next_rescue_job_id
+    }
+
+    pub fn next_rescue_offer_id(&self) -> u64 {
+        self.next_rescue_offer_id
+    }
+
+    pub fn next_rescue_bundle_id(&self) -> u64 {
+        self.next_rescue_bundle_id
+    }
+
+    pub fn has_rescue_offer(&self, offer_id: u64) -> bool {
+        self.rescue_offers.get(&offer_id).is_some()
+    }
+
+    pub fn has_rescue_bundle(&self, bundle_id: u64) -> bool {
+        self.rescue_bundles.get(&bundle_id).is_some()
     }
 
     pub fn has_rescue_case(&self, case_id: Vec<u8>) -> bool {

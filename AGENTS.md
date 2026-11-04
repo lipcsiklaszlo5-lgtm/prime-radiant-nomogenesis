@@ -56,11 +56,11 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R3-01A. A típusos M2/M3 capacity
-registry a `c719804` design commit alapján készült. 173 Rust teszt,
-Clippy, kompatibilis WASM build, három M2 Sandbox és az M3-R2 Sandbox
-átment. Valódi M3 offer, bundle award és public testnet működés még
-nincs igazolva. A következő ticket M3-R3-01B séma.
+Jelenlegi ellenőrzött kapu: M3-R3-01B. A bounded offer/bundle
+séma és v2 storage quote nulla új liability mellett készült. 173 Rust
+teszt, Clippy, kompatibilis WASM build, három M2 és az M3-R2 Sandbox
+átment. Valódi M3 offer, bond, bundle award és public testnet működés
+még nincs igazolva. A következő ticket M3-R3-02A offer admission.
 
 ## 5. Munkamenet lezárás
 

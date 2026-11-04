@@ -59,8 +59,13 @@ fn storage_quote_is_derived_from_bounded_records() {
     let c = Nomogenesis::default();
     let quote = c.m3_storage_quote();
 
-    assert_eq!(quote.quote_version, 1);
-    assert_eq!(quote.case_storage_bytes, 893);
+    assert_eq!(quote.quote_version, 2);
+    assert_eq!(quote.case_storage_bytes, 1233);
+    assert_eq!(quote.offer_storage_bytes, 613);
+    assert_eq!(
+        quote.offer_storage_cost.0,
+        env::storage_byte_cost().as_yoctonear() * 613
+    );
     assert_eq!(quote.job_storage_bytes, 576);
     assert_eq!(quote.case_storage_bytes, CASE_STORAGE_BYTES);
     assert_eq!(quote.job_storage_bytes, JOB_STORAGE_BYTES);
@@ -128,6 +133,7 @@ fn case_creation_requires_exact_storage_and_is_canonical() {
     assert_eq!(view.original_provider, accounts(1));
     assert_eq!(view.phase, RescueCasePhase::Open);
     assert!(view.job_ids.is_empty());
+    assert!(view.offer_ids.is_empty());
     assert_eq!(view.resolved_payloads, vec![None, None]);
 
     let case_before_replay = c.get_rescue_case(case_id.clone()).unwrap();

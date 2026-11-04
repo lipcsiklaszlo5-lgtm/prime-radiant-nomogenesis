@@ -1,38 +1,35 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R3-01A typed capacity registry verified
+**Current state:** M3-R3-01B bounded offer/bundle schema verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Verified implementation base:** `c719804` plus R3-01A checkpoint
+**Verified implementation base:** `97e9178` plus R3-01B checkpoint
 
 | Area | Verified state |
 |---|---|
 | R2 funded demand and liability | COMPLETE |
 | Typed M2/M3 capacity registry | IMPLEMENTED |
-| M2 primary, backup and settlement Sandbox | PASS |
-| M3-R2 multi-party Sandbox on changed WASM | PASS |
-| Simulated M3 lock blocking M2 selection | Rust test PASS |
-| Typed lock state reload | Rust test PASS |
+| Bounded provider offer and bundle schema | IMPLEMENTED, zero new liability |
+| Case/offer storage quote | v2, 1233/613 bytes |
 | Full Rust regression | 173 tests PASS |
 | Clippy and compatible WASM | PASS |
-| Real M3 offer-created slot lock | NOT IMPLEMENTED |
-| Persistent provider offers and bundles | NOT IMPLEMENTED |
+| M2 primary, backup, settlement and M3-R2 Sandbox | PASS |
+| Provider offer admission and bond funding | NOT IMPLEMENTED |
 | Atomic RecoveryRight award | NOT IMPLEMENTED |
 | Public testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 
 ## Current gate
 
-R3-01A establishes the typed capacity registry on fresh state. The M2 and
-M3-R2 Sandbox regressions passed on the changed WASM. A Rust test injects an
-M3 owner and verifies that M2 cannot take its slot. A real M3 offer has not
-yet created a slot lock.
+R3-01B reserves bounded case, offer and future bundle storage on fresh state.
+The four Sandbox runs passed on WASM SHA-256
+`242765bb258020878b957e81507be839ed939459380230c69c85ec58a324c2bf`.
+No provider bond or bundle award transition exists yet.
 
 ## Next task
 
-M3-R3-01B: add bounded persistent RescueOffer and RescueBundle schemas with
-zero new economic liability. Measure maximum records and revise storage
-quotes before enabling provider funding.
+M3-R3-02A: payable provider offer admission with exact funding, bounded
+slot validation and separate bond liability.
 
 ## Frissítési szabály
 

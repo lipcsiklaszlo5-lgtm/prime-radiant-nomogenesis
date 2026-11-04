@@ -163,7 +163,7 @@ async function main() {
 
     assert.equal(
       BigInt(quote.case_storage_bytes),
-      893n
+      1233n
     );
     assert.equal(
       BigInt(quote.job_storage_bytes),

@@ -3,15 +3,24 @@ use sha2::{Digest, Sha256};
 
 pub const COMPONENT_COUNT: usize = 2;
 pub const MAX_RESCUE_JOBS: usize = 6;
+pub const MAX_RESCUE_OFFERS: usize = 6;
+pub const MAX_RESCUE_SLOT_BYTES: usize = 64;
 pub const COMMITMENT_BYTES: usize = 32;
 pub const MAX_COMPONENT_PAYLOAD_BYTES: usize = 256;
 
 pub const RAW_ENTRY_OVERHEAD_BYTES: u64 = 40;
-pub const MAX_CASE_RECORD_BYTES: u64 = 814;
+pub const MAX_CASE_RECORD_BYTES: u64 = 866;
+pub const MAX_OFFER_RECORD_BYTES: u64 = 237;
+pub const MAX_BUNDLE_RECORD_BYTES: u64 = 231;
 pub const MAX_JOB_RECORD_BYTES: u64 = 266;
 pub const MAX_MANDATE_RECORD_BYTES: u64 = 68;
 
 const CASE_PREFIX_BYTES: u64 = 7;
+const OFFER_PREFIX_BYTES: u64 = 8;
+const BUNDLE_PREFIX_BYTES: u64 = 9;
+const CAPACITY_PREFIX_BYTES: u64 = 8;
+const STRING_LENGTH_PREFIX_BYTES: u64 = 4;
+const CAPACITY_OWNER_BYTES: u64 = 9;
 const JOB_PREFIX_BYTES: u64 = 6;
 const MANDATE_PREFIX_BYTES: u64 = 10;
 const CLAIM_PREFIX_BYTES: u64 = 6;
@@ -20,8 +29,26 @@ const ACCOUNT_LENGTH_PREFIX_BYTES: u64 = 4;
 const MAX_ACCOUNT_BYTES: u64 = 64;
 const U128_VALUE_BYTES: u64 = 16;
 
-pub const CASE_STORAGE_BYTES: u64 =
-    RAW_ENTRY_OVERHEAD_BYTES + CASE_PREFIX_BYTES + COMMITMENT_BYTES as u64 + MAX_CASE_RECORD_BYTES;
+pub const CASE_STORAGE_BYTES: u64 = (RAW_ENTRY_OVERHEAD_BYTES
+    + CASE_PREFIX_BYTES
+    + COMMITMENT_BYTES as u64
+    + MAX_CASE_RECORD_BYTES)
+    + (RAW_ENTRY_OVERHEAD_BYTES + BUNDLE_PREFIX_BYTES + U64_KEY_BYTES + MAX_BUNDLE_RECORD_BYTES);
+
+pub const OFFER_STORAGE_BYTES: u64 =
+    (RAW_ENTRY_OVERHEAD_BYTES + OFFER_PREFIX_BYTES + U64_KEY_BYTES + MAX_OFFER_RECORD_BYTES)
+        + (RAW_ENTRY_OVERHEAD_BYTES
+            + CLAIM_PREFIX_BYTES
+            + ACCOUNT_LENGTH_PREFIX_BYTES
+            + MAX_ACCOUNT_BYTES
+            + U128_VALUE_BYTES)
+        + (RAW_ENTRY_OVERHEAD_BYTES
+            + CAPACITY_PREFIX_BYTES
+            + STRING_LENGTH_PREFIX_BYTES
+            + MAX_ACCOUNT_BYTES
+            + 1
+            + MAX_RESCUE_SLOT_BYTES as u64
+            + CAPACITY_OWNER_BYTES);
 
 pub const JOB_STORAGE_BYTES: u64 = (RAW_ENTRY_OVERHEAD_BYTES
     + JOB_PREFIX_BYTES
@@ -33,6 +60,76 @@ pub const JOB_STORAGE_BYTES: u64 = (RAW_ENTRY_OVERHEAD_BYTES
         + ACCOUNT_LENGTH_PREFIX_BYTES
         + MAX_ACCOUNT_BYTES
         + U128_VALUE_BYTES);
+
+#[near(serializers = [borsh, json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RescueOfferPhase {
+    Open,
+    Locked,
+    Released,
+    Proven,
+    Defaulted,
+}
+
+#[near(serializers = [borsh, json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RescueOfferReleaseReason {
+    Cancelled,
+    AwardExpired,
+    Unselected,
+}
+
+#[near(serializers = [borsh])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescueOffer {
+    pub id: u64,
+    pub case_id: [u8; COMMITMENT_BYTES],
+    pub component_index: u8,
+    pub provider: AccountId,
+    pub slot_id: String,
+    pub fee: u128,
+    pub bond_capacity: u128,
+    pub held_bond: u128,
+    pub phase: RescueOfferPhase,
+    pub locked_bundle_id: Option<u64>,
+    pub release_reason: Option<RescueOfferReleaseReason>,
+}
+
+#[near(serializers = [borsh, json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RescueBundlePhase {
+    Awarded,
+    SettledSuccess,
+    SettledDefault,
+}
+
+#[near(serializers = [borsh, json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RescueComponentOutcome {
+    Pending,
+    Proven,
+    Defaulted,
+}
+
+#[near(serializers = [borsh])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescueAllocation {
+    pub job_id: u64,
+    pub amount: u128,
+}
+
+#[near(serializers = [borsh])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescueBundle {
+    pub id: u64,
+    pub case_id: [u8; COMMITMENT_BYTES],
+    pub offer_ids: [u64; COMPONENT_COUNT],
+    pub total_price: u128,
+    pub allocations: Vec<RescueAllocation>,
+    pub recovery_deadline: u64,
+    pub phase: RescueBundlePhase,
+    pub component_outcomes: [RescueComponentOutcome; COMPONENT_COUNT],
+}
 
 #[near(serializers = [borsh, json])]
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -88,6 +185,7 @@ pub struct RescueCase {
     pub phase: RescueCasePhase,
     pub awarded_bundle_id: Option<u64>,
     pub resolved_payloads: [Option<Vec<u8>>; COMPONENT_COUNT],
+    pub offer_ids: Vec<u64>,
 }
 
 #[near(serializers = [borsh])]
@@ -145,6 +243,7 @@ pub struct RescueCaseView {
     pub phase: RescueCasePhase,
     pub awarded_bundle_id: Option<u64>,
     pub resolved_payloads: Vec<Option<Vec<u8>>>,
+    pub offer_ids: Vec<u64>,
 }
 
 #[near(serializers = [json])]
@@ -155,6 +254,8 @@ pub struct M3StorageQuoteView {
     pub case_storage_cost: U128,
     pub job_storage_bytes: u64,
     pub job_storage_cost: U128,
+    pub offer_storage_bytes: u64,
+    pub offer_storage_cost: U128,
 }
 
 impl From<&RescueCase> for RescueCaseView {
@@ -174,6 +275,7 @@ impl From<&RescueCase> for RescueCaseView {
             award_close: value.award_close,
             recovery_deadline: value.recovery_deadline,
             job_ids: value.job_ids.clone(),
+            offer_ids: value.offer_ids.clone(),
             phase: value.phase.clone(),
             awarded_bundle_id: value.awarded_bundle_id,
             resolved_payloads: value.resolved_payloads.to_vec(),
@@ -221,13 +323,22 @@ pub fn job_storage_cost() -> u128 {
         .expect("job storage quote overflow")
 }
 
+pub fn offer_storage_cost() -> u128 {
+    env::storage_byte_cost()
+        .as_yoctonear()
+        .checked_mul(u128::from(OFFER_STORAGE_BYTES))
+        .expect("offer storage quote overflow")
+}
+
 pub fn storage_quote() -> M3StorageQuoteView {
     M3StorageQuoteView {
-        quote_version: 1,
+        quote_version: 2,
         case_storage_bytes: CASE_STORAGE_BYTES,
         case_storage_cost: U128(case_storage_cost()),
         job_storage_bytes: JOB_STORAGE_BYTES,
         job_storage_cost: U128(job_storage_cost()),
+        offer_storage_bytes: OFFER_STORAGE_BYTES,
+        offer_storage_cost: U128(offer_storage_cost()),
     }
 }
 

@@ -2,27 +2,18 @@
 
 ## Current M3 checkpoint — 2026-11-04
 
-- Branch: `feat/m2-escrow`
-- Base: `c719804`
-- M3-R2 funded liability and multi-party Sandbox: COMPLETE
-- M3-R3-01A typed capacity registry: verified
-- Focused capacity tests: 5 PASS
-- Full Rust suite: 173 PASS
-- Clippy and compatible WASM build: PASS
-- WASM SHA-256: `c8999ddd7792eeee516c2f372303bd4632fe653909762379bb100c7ec2efc034`
-- M2 primary, backup and settlement Sandbox suites: PASS
-- M3-R2 multi-party Sandbox on this WASM: PASS
-- M2 selection writes a typed `M2Offer` lock
-- A simulated M3 lock blocks M2 selection in a Rust test
-- M2 terminal paths remove only the matching typed owner
-- Typed ownership survives state reload
-- Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- Real M3 offer and bundle endpoints: not implemented
-- Next single action: M3-R3-01B zero-liability offer and bundle schema
-
-The shared capacity registry is present on fresh contract state. Real
-cross-market M3 slot locking can be tested once the M3 offer and award
-endpoints exist.
+- Branch: `feat/m2-escrow`; base: `97e9178` (R3-01A).
+- R3-01B bounded offer/bundle schema and v2 storage quote: verified.
+- Case/offer/bundle maximum records: 866/237/231 serialized bytes.
+- Case quote: 1233 bytes, including one future bundle record.
+- Offer quote: 613 bytes; no provider bond is accepted yet.
+- Focused schema/case tests: 2 + 4 PASS; full Rust suite: 173 PASS.
+- Clippy and compatible WASM build: PASS.
+- WASM SHA-256: `242765bb258020878b957e81507be839ed939459380230c69c85ec58a324c2bf`.
+- M2 primary, backup, settlement and M3-R2 Sandbox: PASS.
+- Preserve untracked `sandbox/real_low_margin_audit.cjs`.
+- Offer funding, bond release, bundle award and public testnet: not verified.
+- Next single action: M3-R3-02A payable provider offer admission.
 
 ## Munkamenetindító parancsok
 
@@ -50,6 +41,16 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R3-01B bounded provider records
+
+- Base: `97e9178`.
+- Zero-liability offer/bundle records, six offer references and storage quote v2.
+- Focused tests: 2 schema + 4 case PASS; full Rust suite: 173 PASS.
+- Format, Clippy, compatible WASM, three M2 and one M3 Sandbox: PASS.
+- WASM SHA-256: `242765bb258020878b957e81507be839ed939459380230c69c85ec58a324c2bf`.
+- Bond funding and bundle award remain unimplemented.
+- Next: M3-R3-02A payable provider offer admission.
 
 ### 2026-11-04 — M3-R3-01A typed capacity registry
 
