@@ -2,16 +2,17 @@
 
 ## Current M3 checkpoint — 2026-11-04
 
-- Branch: `feat/m2-escrow`; base: `314d44b`.
-- M3-R3-02A funded provider offer admission: verified on fresh state.
-- Six focused offer tests and 179 full Rust tests: PASS.
-- Clippy, compatible WASM build and Node syntax: PASS.
-- WASM SHA-256: `a82f0c54d1e1d24d92d2a745a4882ac7e381c6c27b7094e4aee09f0291b367c5`.
-- M3 offer Sandbox plus M2 primary, backup, settlement and M3-R2 Sandboxes: PASS.
-- Two separate provider bonds are funded; offer posting leaves slots unreserved.
+- Branch: `feat/m2-escrow`; implementation base: `71a1350`.
+- M3-R3-02B provider offer terminal release verified locally.
+- Five focused release tests; full Rust suite: 150 + 11 + 17 + 6 = 184 passed.
+- Clippy, compatible WASM build, Node syntax and diff check: PASS.
+- WASM SHA-256: `f67b157ebba28f48b7096c43e10d3322c7b5f4f3e2e6d3bff9d84bcbfa088221`.
+- Fresh NEAR Sandbox: authenticated cancellation, permissionless expiry,
+  exact claimable/escrow accounting, replay rejection and withdrawal: PASS.
+- Earlier M2 and M3-R2 Sandboxes were not rerun in this ticket.
 - Preserve untracked `sandbox/real_low_margin_audit.cjs`.
-- Offer terminal release, bundle award and public testnet: not verified.
-- Next single action: M3-R3-02B provider offer terminal release.
+- Real bundle award, post-award unselected release and public testnet: not verified.
+- Next single action: M3-R3-03A deterministic candidate selection preflight.
 
 ## Munkamenetindító parancsok
 
@@ -39,6 +40,16 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R3-02B provider offer release
+
+- Base: `71a1350`; five focused and 184 full Rust tests passed.
+- Clippy, WASM `f67b157ebba28f48b7096c43e10d3322c7b5f4f3e2e6d3bff9d84bcbfa088221`, Node syntax and diff checks passed.
+- Local Sandbox checked two separate provider bonds, authenticated cancel,
+  keeper expiry, replay rejection and provider withdrawal.
+- Awarded-case unselected path is unit-tested with a constructed bundle;
+  production award remains R3-03.
+- Next: R3-03A deterministic candidate selection preflight.
 
 ### 2026-11-04 — M3-R3-02A funded provider admission
 

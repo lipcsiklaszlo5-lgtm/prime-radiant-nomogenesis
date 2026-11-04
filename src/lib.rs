@@ -839,6 +839,83 @@ impl Nomogenesis {
         id
     }
 
+    pub fn cancel_rescue_offer(&mut self, offer_id: u64) {
+        let offer = self
+            .rescue_offers
+            .get(&offer_id)
+            .expect("unknown rescue offer");
+        assert_eq!(
+            env::predecessor_account_id(),
+            offer.provider,
+            "not rescue offer provider"
+        );
+        let case = self
+            .rescue_cases
+            .get(&offer.case_id)
+            .expect("missing rescue case");
+        assert!(env::block_timestamp() < case.bid_close, "bid close reached");
+        self.release_rescue_offer(offer_id, rescue::RescueOfferReleaseReason::Cancelled);
+    }
+
+    pub fn release_open_rescue_offer(&mut self, offer_id: u64) {
+        let offer = self
+            .rescue_offers
+            .get(&offer_id)
+            .expect("unknown rescue offer");
+        let case = self
+            .rescue_cases
+            .get(&offer.case_id)
+            .expect("missing rescue case");
+        let reason = if case.phase == rescue::RescueCasePhase::BundleAwarded {
+            let bundle_id = case.awarded_bundle_id.expect("missing awarded bundle ID");
+            let bundle = self
+                .rescue_bundles
+                .get(&bundle_id)
+                .expect("missing awarded bundle");
+            assert_eq!(bundle.case_id, case.id, "awarded bundle case mismatch");
+            assert!(
+                !bundle.offer_ids.contains(&offer_id),
+                "selected offer cannot be released"
+            );
+            rescue::RescueOfferReleaseReason::Unselected
+        } else {
+            assert!(
+                env::block_timestamp() >= case.award_close,
+                "award close not reached"
+            );
+            rescue::RescueOfferReleaseReason::AwardExpired
+        };
+        self.release_rescue_offer(offer_id, reason);
+    }
+
+    fn release_rescue_offer(&mut self, offer_id: u64, reason: rescue::RescueOfferReleaseReason) {
+        let mut offer = self
+            .rescue_offers
+            .get(&offer_id)
+            .cloned()
+            .expect("unknown rescue offer");
+        assert_eq!(
+            offer.phase,
+            rescue::RescueOfferPhase::Open,
+            "rescue offer is not open"
+        );
+        assert!(offer.held_bond > 0, "open offer holds no bond");
+        assert!(
+            offer.locked_bundle_id.is_none() && offer.release_reason.is_none(),
+            "open offer contains terminal data"
+        );
+        let next_escrow = self
+            .rescue_escrow
+            .checked_sub(offer.held_bond)
+            .expect("rescue escrow underflow");
+        self.credit_accounts(&[(offer.provider.clone(), offer.held_bond)]);
+        self.rescue_escrow = next_escrow;
+        offer.held_bond = 0;
+        offer.phase = rescue::RescueOfferPhase::Released;
+        offer.release_reason = Some(reason);
+        self.rescue_offers.insert(offer_id, offer);
+    }
+
     pub fn has_rescue_bundle(&self, bundle_id: u64) -> bool {
         self.rescue_bundles.get(&bundle_id).is_some()
     }
@@ -1687,6 +1764,8 @@ mod withdrawal_tests;
 #[cfg(test)]
 mod rescue_schema_tests;
 
+#[cfg(test)]
+mod rescue_offer_release_tests;
 #[cfg(test)]
 mod rescue_offer_tests;
 

@@ -1,35 +1,37 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R3-02A funded provider offers verified locally
+**Current state:** M3-R3-02B provider offer release verified locally
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Verified implementation base:** `314d44b` plus R3-02A checkpoint
+**Implementation base:** `71a1350` plus R3-02B checkpoint
 
 | Area | Verified state |
 |---|---|
 | R2 funded demand and liability | COMPLETE |
 | Typed M2/M3 capacity registry | IMPLEMENTED |
-| Provider offer admission and individual bonds | SANDBOX PASS |
+| Provider offer admission and separate bonds | SANDBOX PASS |
+| Provider offer cancel and expiry | SANDBOX PASS |
 | Separate storage and M3 economic liability | SANDBOX PASS |
-| Full Rust regression | 179 tests PASS |
+| Full Rust regression | 184 tests PASS |
 | Clippy and compatible WASM | PASS |
-| M2 primary, backup, settlement and M3-R2 Sandbox | PASS |
-| Provider offer terminal release | NOT IMPLEMENTED |
+| M2 primary, backup, settlement and M3-R2 Sandbox | PRIOR CHECKPOINT PASS |
 | Atomic RecoveryRight award | NOT IMPLEMENTED |
 | Public testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 
 ## Current gate
 
-Two provider offers funded separate bonds in local Sandbox on WASM
-`a82f0c54d1e1d24d92d2a745a4882ac7e381c6c27b7094e4aee09f0291b367c5`. Underpayment and duplicate component posting were rejected;
-neither offer reserved a capacity slot. Settlement and default paths for
-provider bonds remain unimplemented.
+Two separately bonded offers were released exactly once in a fresh local
+NEAR Sandbox. Their original providers received claimable credit; storage
+reserves and capacity locks stayed unchanged. A native withdrawal completed.
+WASM SHA-256: `f67b157ebba28f48b7096c43e10d3322c7b5f4f3e2e6d3bff9d84bcbfa088221`. The negative receipts are expected rejections.
+The test did not measure the receiving account's native balance change.
+An actual awarded-case unselected release awaits R3-03 bundle award.
 
 ## Next task
 
-M3-R3-02B: authenticated cancellation and permissionless terminal release
-of open offers, with exact claimable credit and replay protection.
+M3-R3-03A: deterministic on-chain eligible-pair enumeration and preflight,
+before the atomic award state mutation.
 
 ## Frissítési szabály
 
