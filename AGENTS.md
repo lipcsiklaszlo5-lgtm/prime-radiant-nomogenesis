@@ -56,17 +56,14 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R4-04.
-242 Rust teszt, strict Clippy és kompatibilis WASM PASS.
-Négy recovery eset local Sandbox PASS.
-A dolgozói eredmények, jutalmak és lejárati
-visszatérítések teljes életciklusa Sandbox PASS.
-Két dolgozó teljesített, tíz jutalom visszatérítve.
-Az R4-03 settlement és az R4-04 worker lifecycle
-közösen megőrizte a teljes gazdasági egyenleget.
-Natív kifizetés és callback PASS.
-Public testnet, external audit, production approval NINCS.
-Következő: M3-R4-05 teljes regresszió és fresh checkout.
+Jelenlegi ellenőrzött kapu: M3-R4-05.
+242 Rust teszt, Clippy, reprodukált WASM PASS.
+26 M2/M3 Sandbox kapu, két javított offline
+storage-audit és withdrawal fault injection PASS.
+Összesen 29/29 kapu ellenőrizve.
+A két audit elavult tárhelyelvárását korrigáltuk.
+Public testnet és független audit NINCS.
+Következő: M3-R5 signer és adatmunka-demó.
 
 ## 5. Munkamenet lezárás
 

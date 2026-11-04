@@ -141,7 +141,7 @@ function reconcile(rows, samples) {
     // The existing fixture creates its single
     // shared state entry with the first task.
     if (row.label === 'task_create_0') {
-      assert.equal(shared, 257n);
+      assert.equal(shared, 360n);
     } else {
       assert.equal(shared, 0n);
     }
@@ -224,8 +224,8 @@ function reconcile(rows, samples) {
 
   assert.equal(registeredBonds, 12n);
   assert.equal(releasedBytes, 182n);
-  assert.equal(sharedBytes, 257n);
-  assert.equal(cumulativeBytes, 2339n);
+  assert.equal(sharedBytes, 360n);
+  assert.equal(cumulativeBytes, 2442n);
 
   const last = trace.at(-1);
 

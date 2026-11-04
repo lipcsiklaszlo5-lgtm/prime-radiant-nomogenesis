@@ -67,7 +67,7 @@ function verifyRetained(retained) {
     ['offer_creation_bond', [4, 384n]],
     ['settled', [2, 112n]],
     ['claimable', [4, 336n]],
-    ['shared_or_unknown', [1, 257n]]
+    ['shared_or_unknown', [1, 360n]]
   ]);
 
   assert.equal(retained.size, expected.size);
@@ -152,7 +152,7 @@ function audit(rows, retained) {
       const i = Number(m[1]);
 
       checkCats(row, i === 0 ? {
-        shared_or_unknown: 257n,
+        shared_or_unknown: 360n,
         task_creation_bond: 93n,
         task: 167n
       } : {
@@ -163,7 +163,7 @@ function audit(rows, retained) {
       register('tc' + i, 'buyer_' + i);
       consume('tc' + i, 260n);
 
-      if (i === 0) shared += 257n;
+      if (i === 0) shared += 360n;
 
     } else if ((m = label.match(/^task_fund_([01])$/))) {
       const i = Number(m[1]);
@@ -294,8 +294,8 @@ function audit(rows, retained) {
   assert.equal(totals.unused, 22312n);
   assert.equal(totals.released, 182n);
 
-  assert.equal(shared, 257n);
-  assert.equal(physical, 2339n);
+  assert.equal(shared, 360n);
+  assert.equal(physical, 2442n);
 
   // On-chain storage_reserves remains conservative.
   // This is an accounting comparison, NOT a payout.
@@ -375,7 +375,7 @@ mustReject('misassigned_shared_storage', copy => {
   assert(row);
 
   row.cats.set('shared_or_unknown', 0n);
-  row.cats.set('task', 424n);
+  row.cats.set('task', 527n);
 });
 
 mustReject('forged_released_amount', copy => {

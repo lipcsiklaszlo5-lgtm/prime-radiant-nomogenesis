@@ -1,5 +1,21 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R4-05 checkpoint — 2026-11-04
+
+- Base commit: `6edc066`.
+- Fresh checkout, 242 Rust tests, strict Clippy PASS.
+- Reproduced identical compatible WASM SHA-256.
+- 26 M2/M3 gates PASS without source changes.
+- Two legacy storage-audit expectations corrected
+  using measured 360-byte shared state and
+  2442-byte total growth.
+- Both corrected offline audits PASS.
+- Withdrawal fault injection PASS; source/WASM restored.
+- Total verified gates: 29/29 with audit corrections.
+- Unmodified base commit had stale audit assertions.
+- Public testnet and independent audit remain pending.
+- Next single action: M3-R5 independent signer/data demo.
+
 ## Current M3-R4-04 checkpoint — 2026-11-04
 
 - Base: `0f6d127`, branch `feat/m2-escrow`.

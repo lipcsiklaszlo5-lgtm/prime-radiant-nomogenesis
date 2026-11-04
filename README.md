@@ -10,6 +10,14 @@ When one failed dependency blocks several independently funded jobs, affected bu
 - [M3 Rescue Market specification](docs/M3_RESCUE_MARKET_SPEC.md)
 - [Verified development status](docs/STATUS.md)
 
-The M2 Rust/NEAR kernel provides funded tasks, collateral, slot locks, Merkle verification, settlement and native withdrawal recovery. The M3 rescue market is specified but not yet implemented.
+The M2 Rust/NEAR kernel provides funded tasks, collateral, slot locks, Merkle verification, settlement and native withdrawal recovery. The bounded M3 rescue market now implements funded mandates,
+bonded recovery offers, deterministic bundle awards, authenticated
+component proofs, terminal settlement, worker-result validation,
+reward refunds and native withdrawals.
 
-Next: M3-R1 — pure Rust allocation, clearing and settlement domain model.
+M3-R4-05: 242 Rust tests and 29 regression gates verified,
+including two corrected storage-audit expectations.
+This is a local Sandbox prototype, not an independently audited
+or public-testnet-verified production system.
+
+Next: M3-R5 — independent signers and real data-work demo.

@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R4-04 authenticated worker reward lifecycle locally verified
+**Current state:** M3-R4-05 reproducibility and full regression verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -21,6 +21,28 @@
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R4-05 — clean-checkout regression
+
+Base: `6edc066`, 2026-11-04.
+
+- Fresh GitHub checkout and locked dependency install PASS.
+- Rust regression: 242/242 PASS; format and strict Clippy PASS.
+- Rebuilt WASM SHA-256:
+  `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`.
+- 26 M2/M3 Sandbox and audit gates PASS.
+- Storage cost-policy and backing-stress offline audits PASS
+  after updating measured shared storage 257 to 360 bytes
+  and total growth 2339 to 2442 bytes.
+- M2 withdrawal failure injection PASS.
+- Total: 29/29 verified gates, including the two corrected
+  offline audit scripts.
+- Withdrawal source and original WASM restored after injection.
+- The unmodified base commit did not pass both offline audits;
+  their repairs are included in this documentation checkpoint.
+- No public testnet, independent audit or production approval.
+
+Next: M3-R5 independent signer and real data-work demo.
 
 ## M3-R4-04 — authenticated worker reward lifecycle
 
