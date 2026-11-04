@@ -2,17 +2,19 @@
 
 ## Current M3 checkpoint — 2026-11-04
 
-- Branch: `feat/m2-escrow`; implementation base: `71a1350`.
-- M3-R3-02B provider offer terminal release verified locally.
-- Five focused release tests; full Rust suite: 150 + 11 + 17 + 6 = 184 passed.
-- Clippy, compatible WASM build, Node syntax and diff check: PASS.
-- WASM SHA-256: `f67b157ebba28f48b7096c43e10d3322c7b5f4f3e2e6d3bff9d84bcbfa088221`.
-- Fresh NEAR Sandbox: authenticated cancellation, permissionless expiry,
-  exact claimable/escrow accounting, replay rejection and withdrawal: PASS.
-- Earlier M2 and M3-R2 Sandboxes were not rerun in this ticket.
+- Branch: `feat/m2-escrow`; R3-03A implementation base: `46c0080`.
+- Deterministic, read-only on-chain pair preflight: verified locally.
+- Seven focused tests; full Rust suite: 157 + 11 + 17 + 6 = 191 passed.
+- Clippy, compatible WASM build, Node syntax and diff checks: PASS.
+- WASM SHA-256: `59c1cd29cd54f1c4e5985e8ff4193d558f41985b61e26144ed08556d9d7d968c`.
+- Fresh NEAR Sandbox: three independent funded jobs, four provider offers,
+  full-bond pair selection and cap revocation: PASS.
+- The first Sandbox run overshot the award window; the bounded timing repair
+  and successful rerun are recorded in the R3-03A worklog.
 - Preserve untracked `sandbox/real_low_margin_audit.cjs`.
-- Real bundle award, post-award unselected release and public testnet: not verified.
-- Next single action: M3-R3-03A deterministic candidate selection preflight.
+- Earlier M2 and M3-R2 Sandboxes were not rerun in this ticket.
+- Bundle award, RecoveryRight, proof settlement and public testnet: not verified.
+- Next single action: M3-R3-03B capped-equal allocation and atomic award.
 
 ## Munkamenetindító parancsok
 
@@ -40,6 +42,14 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R3-03A pair preflight
+
+- Base: `46c0080`; seven focused and 191 full Rust tests passed.
+- Clippy, compatible WASM and local Sandbox pair preview passed.
+- The first Sandbox run overshot the award window; the bounded repair
+  passed on rerun. No contract mutation was needed for this timing failure.
+- Candidate preview creates no bundle or RecoveryRight. Next: R3-03B.
 
 ### 2026-11-04 — M3-R3-02B provider offer release
 

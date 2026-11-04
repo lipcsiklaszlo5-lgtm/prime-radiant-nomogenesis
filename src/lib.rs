@@ -4,6 +4,7 @@ mod escrow;
 mod ledger;
 mod offer;
 pub mod rescue;
+mod rescue_clearing;
 pub mod settlement;
 mod task;
 mod withdrawal;
@@ -728,6 +729,17 @@ impl Nomogenesis {
         self.rescue_offers
             .get(&offer_id)
             .map(rescue::RescueOfferView::from)
+    }
+
+    pub fn preview_rescue_pair(&self, case_id: Vec<u8>) -> Option<rescue::RescuePairView> {
+        let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
+        self.select_rescue_pair(key, env::block_timestamp())
+            .map(|plan| rescue::RescuePairView {
+                offer_ids: plan.offer_ids,
+                total_price: U128(plan.total_price),
+                eligible_job_ids: plan.eligible_job_ids,
+                eligible_cap_total: U128(plan.eligible_cap_total),
+            })
     }
 
     #[payable]
@@ -1764,6 +1776,8 @@ mod withdrawal_tests;
 #[cfg(test)]
 mod rescue_schema_tests;
 
+#[cfg(test)]
+mod rescue_clearing_tests;
 #[cfg(test)]
 mod rescue_offer_release_tests;
 #[cfg(test)]

@@ -121,6 +121,15 @@ pub struct RescueOfferView {
     pub release_reason: Option<RescueOfferReleaseReason>,
 }
 
+#[near(serializers = [json])]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RescuePairView {
+    pub offer_ids: [u64; COMPONENT_COUNT],
+    pub total_price: U128,
+    pub eligible_job_ids: Vec<u64>,
+    pub eligible_cap_total: U128,
+}
+
 impl From<&RescueOffer> for RescueOfferView {
     fn from(value: &RescueOffer) -> Self {
         Self {

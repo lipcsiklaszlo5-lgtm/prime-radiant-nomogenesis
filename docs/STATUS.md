@@ -1,42 +1,44 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R3-02B provider offer release verified locally
+**Current state:** M3-R3-03A deterministic on-chain preflight verified locally
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Implementation base:** `71a1350` plus R3-02B checkpoint
+**Implementation base:** `46c0080` plus R3-03A checkpoint
 
 | Area | Verified state |
 |---|---|
 | R2 funded demand and liability | COMPLETE |
 | Typed M2/M3 capacity registry | IMPLEMENTED |
-| Provider offer admission and separate bonds | SANDBOX PASS |
-| Provider offer cancel and expiry | SANDBOX PASS |
+| Provider offer funding, cancel and expiry | SANDBOX PASS |
+| Read-only deterministic pair preview | SANDBOX PASS |
 | Separate storage and M3 economic liability | SANDBOX PASS |
-| Full Rust regression | 184 tests PASS |
+| Full Rust regression | 191 tests PASS |
 | Clippy and compatible WASM | PASS |
-| M2 primary, backup, settlement and M3-R2 Sandbox | PRIOR CHECKPOINT PASS |
+| M2 and M3-R2 Sandbox | PRIOR CHECKPOINT PASS |
 | Atomic RecoveryRight award | NOT IMPLEMENTED |
 | Public testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
 
 ## Current gate
 
-Two separately bonded offers were released exactly once in a fresh local
-NEAR Sandbox. Their original providers received claimable credit; storage
-reserves and capacity locks stayed unchanged. A native withdrawal completed.
-WASM SHA-256: `f67b157ebba28f48b7096c43e10d3322c7b5f4f3e2e6d3bff9d84bcbfa088221`. The negative receipts are expected rejections.
-The test did not measure the receiving account's native balance change.
-An actual awarded-case unselected release awaits R3-03 bundle award.
+The fresh local Sandbox selected the fully bonded offers `[2, 3]` for
+three accepted jobs with a total fee of 12 units and a 15-unit aggregate cap.
+The preview left the case open, offers unlocked and bundle count zero.
+Revoking one buyer's open 5-unit mandate removed the candidate without
+creating a bundle. The first run overshot `award_close`; the bounded
+fast-forward repair passed on rerun. Successful local transactions were not
+printed with receipt IDs. WASM SHA-256: `59c1cd29cd54f1c4e5985e8ff4193d558f41985b61e26144ed08556d9d7d968c`.
+Earlier M2 and M3-R2 Sandboxes were not rerun on this WASM.
 
 ## Next task
 
-M3-R3-03A: deterministic on-chain eligible-pair enumeration and preflight,
-before the atomic award state mutation.
+M3-R3-03B: capped-equal sponsor allocations and atomic bundle award,
+with the shared M2/M3 capacity locks and complete liability transition.
 
 ## Frissítési szabály
 
-Rögzíteni kell a commitot, a tényleges PASS/FAIL eredményeket és a következő
-egyetlen lépést. A korábbi mérföldkövek bizonyítékai alább maradnak.
+Record the actual commit SHA, test outputs, open limitations and one next
+action. Historical milestones remain below.
 
 ## M1 Final Gate — PASS
 
