@@ -1,5 +1,30 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R5-03/02 checkpoint — 2026-11-04
+
+- Base commit: `3a66f57`.
+- Reuse the verified R5-02 contract and economic flow.
+- Active actors sign in separate child processes.
+- Actor keys must remain outside coordinator memory.
+- Providers verify their own CSV proof bytes.
+- Workers independently recompute from on-chain job data.
+- Receipt-backed native withdrawal remains mandatory.
+- Legacy R5-02 mode must remain available.
+- Status: full isolated-role Sandbox PASS.
+- Twelve distinct child-process signers.
+- Three funded buyers and two bonded CSV providers.
+- Three workers recomputed their local results.
+- Keeper award and settlement PASS.
+- Four expected negative contract calls rejected.
+- Economic conservation: 114 units.
+- Receipt-verified native payout: 20 units.
+- Legacy R5-02 regression: PASS.
+- Rust contract and compatible WASM unchanged.
+- Evidence: /workspaces/nomogenesis-r5-03-02-evidence.log
+- Legacy evidence: /workspaces/nomogenesis-r5-03-legacy-regression.log
+- Next: M3-R6-01 testnet feasibility and demonstration.
+- No public testnet or independent operator claim.
+
 ## Current M3-R5-03/01 checkpoint — 2026-11-04
 
 - Base: `f36fa7c`.

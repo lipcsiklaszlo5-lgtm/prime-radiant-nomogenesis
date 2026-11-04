@@ -25,5 +25,10 @@ components, three funded buyers, two providers and three
 worker completions. A native withdrawal is verified from
 its Transfer and callback receipts.
 
-Next: M3-R5-03 — independent signer processes.
+M3-R5-03: twelve local child-process signers completed
+the same economic lifecycle with role-specific signatures,
+independent CSV checks and receipt-verified withdrawal.
+The legacy single-process demo also passed regression.
+
+Next: M3-R6 — public testnet evidence and submission demo.
 Public testnet evidence is not yet available.

@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R5-03/01 isolated signer Sandbox verified
+**Current state:** M3-R5-03/02 full isolated-role Sandbox verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -21,6 +21,31 @@
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R5-03/02 — isolated-role economic lifecycle
+
+Base: `3a66f57`, 2026-11-04.
+
+- Twelve distinct Node.js child signer processes.
+- 17 successful signed role transactions.
+- Separate private keys generated inside child processes.
+- Coordinator receives actor public keys, not private keys.
+- Three buyer-funded rescue jobs.
+- Two bonded providers independently verify CSV proofs.
+- Three workers independently recompute result 632.
+- Keeper award and successful settlement.
+- Four intended negative contract operations rejected.
+- Full local economic conservation: 114 units.
+- Native 20-unit transfer and callback receipts verified.
+- Previous R5-02 execution path also regression-tested PASS.
+- Rust contract and WASM unchanged.
+- Evidence: /workspaces/nomogenesis-r5-03-02-evidence.log
+- Legacy regression: /workspaces/nomogenesis-r5-03-legacy-regression.log
+- Sandbox administrator remains trusted.
+- Local signer processes are not independent operators.
+- No public testnet or independent security audit.
+
+Next: M3-R6-01 testnet feasibility and demonstration.
 
 ## M3-R5-03/01 — isolated signer proof
 

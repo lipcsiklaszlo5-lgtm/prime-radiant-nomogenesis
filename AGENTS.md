@@ -56,7 +56,7 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R5-03/01.
+Jelenlegi ellenőrzött kapu: M3-R5-03/02.
 242 Rust teszt, Clippy, reprodukált WASM PASS.
 26 M2/M3 Sandbox kapu, két javított offline
 storage-audit és withdrawal fault injection PASS.
@@ -67,12 +67,17 @@ M3-R5-02: CSV-alapú mentési demó,
 külön NEAR-fiókokkal, 3 sikeres dolgozói eredménnyel,
 114 egység könyvelési megmaradással és ellenőrzött
 20 egységes natív Transfer + callback receipttel.
-Külön signerfolyamatok még NINCSENEK igazolva.
+Az R5-02 eredetileg egyetlen signer-harnessben futott.
 M3-R5-03/01: két külön Node.js aláírófolyamat,
 két külön privát kulcs és két sikeres helyi
 NEAR Sandbox-tranzakció ellenőrizve.
-Teljes szereplői elkülönítés még NINCS igazolva.
-Következő: M3-R5-03/02 teljes signer-integráció.
+M3-R5-03/02: 12 külön helyi signerfolyamat,
+szerepkörös aláírás, 2 szolgáltatói CSV-ellenőrzés,
+3 dolgozói újraszámítás, 114 egység megmaradás,
+20 egységes natív receipt, legacy regresszió PASS.
+A Sandbox-adminisztrátor továbbra is megbízható szereplő.
+Független üzemeltetők és nyilvános testnet NINCS igazolva.
+Következő: M3-R6-01 testnet és demó előkészítése.
 
 ## 5. Munkamenet lezárás
 

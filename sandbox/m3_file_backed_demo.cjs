@@ -3,6 +3,9 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const {Worker} = require('near-workspaces');
+const {
+  createIsolatedSigners
+} = require('../scripts/m3/r5_role_signers.cjs');
 
 const {
   componentFromCsv,
@@ -167,6 +170,7 @@ function verifyNativePayout(tx, contractId, recipientId, amount) {
 async function main() {
   assert(WASM, 'NOMOGENESIS_WASM required');
   let sandbox;
+  let isolated = null;
 
   try {
     sandbox = await Worker.init();
@@ -174,22 +178,30 @@ async function main() {
     const root = sandbox.rootAccount;
     const contract = await root.devDeploy(WASM);
 
-    const creator = await root.createSubAccount('creator');
-    const source = await root.createSubAccount('source');
-    const keeper = await root.createSubAccount('keeper');
-    const outsider = await root.createSubAccount('outsider');
+    if (process.env.NOMOGENESIS_ISOLATED_SIGNERS === '1') {
+      isolated = await createIsolatedSigners(root, sandbox);
+    }
+
+    const createActor = name => isolated
+      ? isolated.create(name)
+      : root.createSubAccount(name);
+
+    const creator = await createActor('creator');
+    const source = await createActor('source');
+    const keeper = await createActor('keeper');
+    const outsider = await createActor('outsider');
 
     const providers = [
-      await root.createSubAccount('quantities'),
-      await root.createSubAccount('prices')
+      await createActor('quantities'),
+      await createActor('prices')
     ];
 
     const buyers = [];
     const workers = [];
 
     for (let i = 0; i < 3; i++) {
-      buyers.push(await root.createSubAccount(`buyer${i}`));
-      workers.push(await root.createSubAccount(`worker${i}`));
+      buyers.push(await createActor(`buyer${i}`));
+      workers.push(await createActor(`worker${i}`));
     }
 
     const allActors = [
@@ -588,7 +600,13 @@ async function main() {
     console.log('NATIVE WORKER TRANSFER: 20 UNITS');
     console.log('=== SANDBOX/M3-R5-02 RESULT: PASS ===');
 
+    if (isolated) {
+      isolated.audit();
+      console.log('=== M3-R5-03/02 RESULT: PASS ===');
+    }
+
   } finally {
+    if (isolated) await isolated.close();
     if (sandbox) await sandbox.tearDown();
   }
 }
