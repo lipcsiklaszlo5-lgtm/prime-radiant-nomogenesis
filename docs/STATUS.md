@@ -1,52 +1,43 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R2 verified; M3-R3 design locked
+**Current state:** M3-R3-01A typed capacity registry verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
-**Verified implementation base:** `643e19c`
-**Active documentation ticket:** M3-R3-00
+**Verified implementation base:** `c719804` plus R3-01A checkpoint
 
 | Area | Verified state |
 |---|---|
 | R2 funded demand and liability | COMPLETE |
-| R2 local multi-party Sandbox | PASS |
-| Native Rust regression | 168 tests PASS at `3bfb9cb` |
-| Provider-market design | LOCKED |
-| Binding RecoveryRight boundary | SPECIFIED |
-| Provider offer schema | NOT IMPLEMENTED |
-| Provider bond admission | NOT IMPLEMENTED |
-| Unified M2/M3 capacity registry | NOT IMPLEMENTED |
-| Atomic bundle award | NOT IMPLEMENTED |
-| Recovery proof settlement | NOT IMPLEMENTED |
+| Typed M2/M3 capacity registry | IMPLEMENTED |
+| M2 primary, backup and settlement Sandbox | PASS |
+| M3-R2 multi-party Sandbox on changed WASM | PASS |
+| Simulated M3 lock blocking M2 selection | Rust test PASS |
+| Typed lock state reload | Rust test PASS |
+| Full Rust regression | 173 tests PASS |
+| Clippy and compatible WASM | PASS |
+| Real M3 offer-created slot lock | NOT IMPLEMENTED |
+| Persistent provider offers and bundles | NOT IMPLEMENTED |
+| Atomic RecoveryRight award | NOT IMPLEMENTED |
 | Public testnet evidence | NOT VERIFIED |
 | Production funds | NOT APPROVED |
-| Hackathon submission ready | NO |
 
 ## Current gate
 
-M3-R3-00 defines the supply side without claiming it exists in Rust. A funded
-offer is not yet a capacity guarantee. A binding RecoveryRight will exist only
-after atomic award locks deterministic buyer allocations, two distinct
-providers' complete `Q` bonds, two exclusive slots and one deadline.
-
-The award caller cannot choose the winning offers, sponsors, allocations or
-credit recipients.
-
-Historical M1/M2 evidence follows. It remains evidence for earlier checkpoints,
-not proof of R3 implementation.
+R3-01A establishes the typed capacity registry on fresh state. The M2 and
+M3-R2 Sandbox regressions passed on the changed WASM. A Rust test injects an
+M3 owner and verifies that M2 cannot take its slot. A real M3 offer has not
+yet created a slot lock.
 
 ## Next task
 
-M3-R3-01: add zero-liability persistent RescueOffer, RescueBundle and typed
-capacity-lock schema. Preserve all M2 behavior and prove empty-state,
-serialization-bound and cross-lock regressions before enabling provider funds.
+M3-R3-01B: add bounded persistent RescueOffer and RescueBundle schemas with
+zero new economic liability. Measure maximum records and revise storage
+quotes before enabling provider funding.
 
 ## Frissítési szabály
 
-Minden új mérföldkőnél rögzíteni kell a pontos commitot,
-lefuttatott parancsokat, bizonyított PASS/FAIL eredményeket
-és a még NEM igazolt állításokat. A dokumentációs commit
-SHA-ja eltérhet a fent megjelölt auditált Rust checkpointtól.
+Rögzíteni kell a commitot, a tényleges PASS/FAIL eredményeket és a következő
+egyetlen lépést. A korábbi mérföldkövek bizonyítékai alább maradnak.
 
 ## M1 Final Gate — PASS
 

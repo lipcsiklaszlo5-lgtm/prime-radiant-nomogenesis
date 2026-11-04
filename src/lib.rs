@@ -1,4 +1,5 @@
 use near_sdk::{AccountId, env, json_types::U128, near, store::LookupMap};
+pub mod capacity;
 mod escrow;
 mod ledger;
 mod offer;
@@ -6,6 +7,7 @@ pub mod rescue;
 pub mod settlement;
 mod task;
 mod withdrawal;
+use capacity::CapacityOwner;
 use escrow::{OfferDeposit, StorageBond, TaskDeposit, reserve_cost};
 use offer::{Offer, OfferStatus};
 use sha2::{Digest, Sha256};
@@ -17,7 +19,7 @@ pub struct Nomogenesis {
     tasks: LookupMap<u64, Task>,
     next_offer_id: u64,
     offers: LookupMap<u64, Offer>,
-    slot_locks: LookupMap<String, u64>,
+    capacity_locks: LookupMap<String, CapacityOwner>,
     task_deposits: LookupMap<u64, TaskDeposit>,
     offer_deposits: LookupMap<u64, OfferDeposit>,
     economic_escrow: u128,
@@ -45,7 +47,7 @@ impl Default for Nomogenesis {
             tasks: LookupMap::new(b"tasks".as_slice()),
             next_offer_id: 0,
             offers: LookupMap::new(b"offers".as_slice()),
-            slot_locks: LookupMap::new(b"locks".as_slice()),
+            capacity_locks: LookupMap::new(b"capacity".as_slice()),
             task_deposits: LookupMap::new(b"taskdep".as_slice()),
             offer_deposits: LookupMap::new(b"offerdep".as_slice()),
             economic_escrow: 0,
@@ -1059,10 +1061,14 @@ impl Nomogenesis {
             );
         }
 
-        let key = format!("{}|{}", offer.reserve, offer.slot_id);
-        assert!(self.slot_locks.get(&key).is_none(), "slot already reserved");
+        let key = capacity::capacity_key(&offer.reserve, &offer.slot_id);
+        assert!(
+            self.capacity_locks.get(&key).is_none(),
+            "slot already reserved"
+        );
 
-        self.slot_locks.insert(key, offer_id);
+        self.capacity_locks
+            .insert(key, CapacityOwner::M2Offer(offer_id));
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Selected;
         let task = self.tasks.get_mut(&task_id).unwrap();
         task.selected_offer = Some(offer_id);
@@ -1080,12 +1086,18 @@ impl Nomogenesis {
         let offer = self.offers.get(&id).expect("missing offer");
         assert_eq!(offer.task_id, task_id, "offer/task mismatch");
         assert!(task.backup_activator.is_none(), "backup already activated");
-        let key = format!("{}|{}", offer.reserve, offer.slot_id);
+        let key = capacity::capacity_key(&offer.reserve, &offer.slot_id);
 
-        assert_eq!(self.slot_locks.get(&key).copied(), Some(id));
+        assert_eq!(
+            self.capacity_locks.get(&key).cloned(),
+            Some(CapacityOwner::M2Offer(id))
+        );
         assert_eq!(offer.status, OfferStatus::Selected);
 
-        assert_eq!(self.slot_locks.remove(&key), Some(id));
+        assert_eq!(
+            self.capacity_locks.remove(&key),
+            Some(CapacityOwner::M2Offer(id))
+        );
         self.offers.get_mut(&id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::UnactivatedExpired;
         if self.task_deposits.get(&task_id).is_some() {
@@ -1094,8 +1106,21 @@ impl Nomogenesis {
     }
 
     pub fn slot_holder(&self, reserve: AccountId, slot_id: String) -> Option<u64> {
-        let key = format!("{reserve}|{slot_id}");
-        self.slot_locks.get(&key).copied()
+        let key = capacity::capacity_key(&reserve, &slot_id);
+
+        match self.capacity_locks.get(&key) {
+            Some(CapacityOwner::M2Offer(offer_id)) => Some(*offer_id),
+            Some(CapacityOwner::M3RescueOffer(_)) | None => None,
+        }
+    }
+
+    pub fn capacity_lock_holder(
+        &self,
+        provider: AccountId,
+        slot_id: String,
+    ) -> Option<CapacityOwner> {
+        let key = capacity::capacity_key(&provider, &slot_id);
+        self.capacity_locks.get(&key).cloned()
     }
 
     pub fn release_unaccepted_offer(&mut self, offer_id: u64) {
@@ -1208,16 +1233,22 @@ impl Nomogenesis {
             assert_eq!(offer.task_id, task_id, "offer/task mismatch");
             assert_eq!(offer.status, OfferStatus::Selected);
 
-            (offer_id, format!("{}|{}", offer.reserve, offer.slot_id))
+            (
+                offer_id,
+                capacity::capacity_key(&offer.reserve, &offer.slot_id),
+            )
         };
 
         assert_eq!(
-            self.slot_locks.get(&key).copied(),
-            Some(offer_id),
+            self.capacity_locks.get(&key).cloned(),
+            Some(CapacityOwner::M2Offer(offer_id)),
             "slot lock mismatch"
         );
 
-        self.slot_locks.remove(&key);
+        assert_eq!(
+            self.capacity_locks.remove(&key),
+            Some(CapacityOwner::M2Offer(offer_id))
+        );
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::PrimaryProofAccepted;
         if self.task_deposits.get(&task_id).is_some() {
@@ -1243,10 +1274,10 @@ impl Nomogenesis {
         assert_eq!(offer.task_id, task_id, "offer/task mismatch");
         assert_eq!(offer.status, OfferStatus::Selected);
 
-        let key = format!("{}|{}", offer.reserve, offer.slot_id);
+        let key = capacity::capacity_key(&offer.reserve, &offer.slot_id);
         assert_eq!(
-            self.slot_locks.get(&key).copied(),
-            Some(offer_id),
+            self.capacity_locks.get(&key).cloned(),
+            Some(CapacityOwner::M2Offer(offer_id)),
             "slot lock mismatch"
         );
 
@@ -1275,11 +1306,11 @@ impl Nomogenesis {
             assert_eq!(offer.task_id, task_id, "offer/task mismatch");
             assert_eq!(offer.status, OfferStatus::Selected);
 
-            let key = format!("{}|{}", offer.reserve, offer.slot_id);
+            let key = capacity::capacity_key(&offer.reserve, &offer.slot_id);
 
             assert_eq!(
-                self.slot_locks.get(&key).copied(),
-                Some(offer_id),
+                self.capacity_locks.get(&key).cloned(),
+                Some(CapacityOwner::M2Offer(offer_id)),
                 "slot lock mismatch"
             );
 
@@ -1291,7 +1322,10 @@ impl Nomogenesis {
             (offer_id, key)
         };
 
-        self.slot_locks.remove(&key);
+        assert_eq!(
+            self.capacity_locks.remove(&key),
+            Some(CapacityOwner::M2Offer(offer_id))
+        );
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::ReserveProofAccepted;
         if self.task_deposits.get(&task_id).is_some() {
@@ -1314,16 +1348,22 @@ impl Nomogenesis {
             assert_eq!(offer.task_id, task_id, "offer/task mismatch");
             assert_eq!(offer.status, OfferStatus::Selected);
 
-            (offer_id, format!("{}|{}", offer.reserve, offer.slot_id))
+            (
+                offer_id,
+                capacity::capacity_key(&offer.reserve, &offer.slot_id),
+            )
         };
 
         assert_eq!(
-            self.slot_locks.get(&key).copied(),
-            Some(offer_id),
+            self.capacity_locks.get(&key).cloned(),
+            Some(CapacityOwner::M2Offer(offer_id)),
             "slot lock mismatch"
         );
 
-        assert_eq!(self.slot_locks.remove(&key), Some(offer_id));
+        assert_eq!(
+            self.capacity_locks.remove(&key),
+            Some(CapacityOwner::M2Offer(offer_id))
+        );
         self.offers.get_mut(&offer_id).unwrap().status = OfferStatus::Released;
         self.tasks.get_mut(&task_id).unwrap().phase = TaskPhase::ReserveFailed;
         if self.task_deposits.get(&task_id).is_some() {
@@ -1518,6 +1558,9 @@ mod rescue_release_tests;
 
 #[cfg(test)]
 mod rescue_expiry_tests;
+
+#[cfg(test)]
+mod capacity_lock_tests;
 
 #[cfg(test)]
 mod storage_admission_tests;

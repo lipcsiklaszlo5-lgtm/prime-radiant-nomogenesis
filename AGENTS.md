@@ -56,7 +56,11 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R2. A funded job, mandate, külön rescue liability, replay-safe release és multi-party local Sandbox checkpoint commitja `643e19c`. A következő ticket M3-R3, elsőként a provider offer, teljes bond, típusos M2/M3 capacity lock és atomi bundle award sémájával. Bundle award, proof settlement és public testnet működés még nincs igazolva.
+Jelenlegi ellenőrzött kapu: M3-R3-01A. A típusos M2/M3 capacity
+registry a `c719804` design commit alapján készült. 173 Rust teszt,
+Clippy, kompatibilis WASM build, három M2 Sandbox és az M3-R2 Sandbox
+átment. Valódi M3 offer, bundle award és public testnet működés még
+nincs igazolva. A következő ticket M3-R3-01B séma.
 
 ## 5. Munkamenet lezárás
 

@@ -3,31 +3,26 @@
 ## Current M3 checkpoint — 2026-11-04
 
 - Branch: `feat/m2-escrow`
-- Verified implementation base: `643e19c`
-- M3-R2 funding, liability and local Sandbox milestone: COMPLETE
-- Active ticket: M3-R3-00 provider-market and atomic-award design
-- Binding product object: one atomic `RecoveryRight`
-- Award caller will supply only the case ID
-- Pair, price, sponsors and allocations are contract-derived
-- Selected providers must be distinct
-- Each selected provider locks the complete bundle price `Q`
-- Provider bond capacity is funded per offer; no collateral reuse
-- Buyer allocation uses deterministic capped-equal sharing
-- M2 and M3 will share one typed capacity-lock registry
-- R3 state uses a fresh deployment boundary
-- Case and offer storage quotes must be revised before funding
+- Base: `c719804`
+- M3-R2 funded liability and multi-party Sandbox: COMPLETE
+- M3-R3-01A typed capacity registry: verified
+- Focused capacity tests: 5 PASS
+- Full Rust suite: 173 PASS
+- Clippy and compatible WASM build: PASS
+- WASM SHA-256: `c8999ddd7792eeee516c2f372303bd4632fe653909762379bb100c7ec2efc034`
+- M2 primary, backup and settlement Sandbox suites: PASS
+- M3-R2 multi-party Sandbox on this WASM: PASS
+- M2 selection writes a typed `M2Offer` lock
+- A simulated M3 lock blocks M2 selection in a Rust test
+- M2 terminal paths remove only the matching typed owner
+- Typed ownership survives state reload
 - Preserve untracked: `sandbox/real_low_margin_audit.cjs`
-- No R3 Rust implementation or award claim exists yet
-- Next single action: M3-R3-01 zero-liability persistent schema
+- Real M3 offer and bundle endpoints: not implemented
+- Next single action: M3-R3-01B zero-liability offer and bundle schema
 
-R2 already proves multi-party funded demand and safe capital release on local
-NEAR Sandbox. R3 creates the complementary provider market. The decisive
-economic transition is not offer posting: it is the atomic conversion of
-separate buyer mandates and provider bond capacities into one fully backed,
-capacity-locked RecoveryRight.
-
-The design does not claim provider availability, successful recovery,
-settlement, public testnet operation or production safety.
+The shared capacity registry is present on fresh contract state. Real
+cross-market M3 slot locking can be tested once the M3 offer and award
+endpoints exist.
 
 ## Munkamenetindító parancsok
 
@@ -55,6 +50,24 @@ Következő egyetlen lépés:
 ```
 
 ## Session napló (append-only)
+
+### 2026-11-04 — M3-R3-01A typed capacity registry
+
+- Base: `c719804`.
+- Typed capacity owners: `M2Offer` and `M3RescueOffer`.
+- Existing M2 `slot_holder` view preserved; typed owner view added.
+- Simulated M3 ownership blocks M2 selection before mutation.
+- M2 terminal paths release the exact typed M2 owner.
+- Typed owner survives state reload.
+- Two builder-anchor failures and their repairs are in the worklog.
+- Five focused capacity tests passed.
+- Full suite: 139 unit + 11 rescue-model + 17 storage-event + 6 storage-ledger = 173 passed.
+- Format, Clippy, compatible WASM and diff checks passed.
+- M2 primary, backup and settlement Sandboxes passed.
+- M3-R2 multi-party Sandbox passed on the changed WASM.
+- WASM SHA-256: `c8999ddd7792eeee516c2f372303bd4632fe653909762379bb100c7ec2efc034`.
+- Real M3 offer, bundle and award are not implemented.
+- Next: M3-R3-01B zero-liability offer and bundle schema.
 
 ### 2026-11-04 — M3-R3-00 provider market design
 
