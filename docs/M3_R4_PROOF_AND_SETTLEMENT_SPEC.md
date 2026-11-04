@@ -1,6 +1,6 @@
 # M3-R4 — Authenticated proof and terminal settlement
 
-Status: R4-01 through R4-03 locally verified; R4-04 pending
+Status: R4-01 through R4-04 locally verified; R4-05 pending
 Date: 2026-11-04
 Base checkpoint: 2bf546d
 

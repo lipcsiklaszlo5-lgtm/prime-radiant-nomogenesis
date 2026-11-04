@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R4-03 atomic on-chain settlement locally verified
+**Current state:** M3-R4-04 authenticated worker reward lifecycle locally verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -12,14 +12,50 @@
 | Deterministic capped-equal allocation | UNIT PASS |
 | Atomic bundle award | UNIT + SANDBOX PASS |
 | Shared M2/M3 capacity locking | UNIT + SANDBOX PASS |
-| Full Rust regression | 228/228 PASS |
+| Full Rust regression | 242/242 PASS |
 | Strict Clippy and compatible WASM | PASS |
 | M2 primary, backup and settlement | SANDBOX PASS |
 | M3-R2 lifecycle and R3 release | SANDBOX PASS |
 | Component proofs / terminal settlement | UNIT + SANDBOX PASS / UNIT + SANDBOX PASS |
+| Worker result and reward lifecycle | UNIT + SANDBOX PASS |
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R4-04 — authenticated worker reward lifecycle
+
+Base commit: `0f6d127`.
+
+- Pure deterministic worker result verifier implemented.
+- Current ExactCommitment and MinimumThreshold profiles retained.
+- 8 pure validator tests PASS.
+- 6 on-chain worker completion integration tests PASS.
+- Full Rust regression: 208 + 11 + 17 + 6 = 242 PASS.
+- Strict Clippy and rustfmt PASS.
+- Fresh compatible WASM build PASS.
+- WASM SHA-256: `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`.
+- Fresh local NEAR Sandbox worker lifecycle PASS.
+- Four independent recovery cases created and settled.
+- Two authenticated worker completions credited 50 units.
+- Ten expired worker rewards refunded 250 units.
+- Wrong signer, forged result, incorrect threshold,
+  premature completion, deadline violation and replay rejected.
+- Proof commitment checks and persisted state transitions PASS.
+- After terminal bundle settlement:
+  escrow 300 + claimable 156 = 456.
+- After worker completion and expiry:
+  escrow 0 + claimable 456 = 456.
+- After native worker withdrawal:
+  escrow 0 + claimable 436 + paid 20 = 456.
+- Units above are 0.001 NEAR, excluding storage reserves
+  and network transaction fees.
+- Native withdrawal callback and claimable reduction PASS.
+- R4-03 terminal settlement remains unchanged.
+- Physical performance, public testnet and independent
+  security audit NOT established.
+- Production funds NOT approved.
+
+Next: M3-R4-05 full M2/M3 regression and clean-checkout gate.
 
 ## M3-R4-03 — atomic on-chain terminal settlement
 

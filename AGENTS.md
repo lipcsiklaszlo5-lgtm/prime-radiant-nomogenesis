@@ -56,14 +56,17 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R4-03.
-228 Rust teszt, strict Clippy, kompatibilis WASM
-és négy on-chain settlement forgatókönyv local Sandbox PASS.
-Az atomikus elszámolás 3Q invariánsa teljesült.
-Natív kifizetés és callback PASS. A dolgozói jutalmak
-továbbra is külön zároltak.
+Jelenlegi ellenőrzött kapu: M3-R4-04.
+242 Rust teszt, strict Clippy és kompatibilis WASM PASS.
+Négy recovery eset local Sandbox PASS.
+A dolgozói eredmények, jutalmak és lejárati
+visszatérítések teljes életciklusa Sandbox PASS.
+Két dolgozó teljesített, tíz jutalom visszatérítve.
+Az R4-03 settlement és az R4-04 worker lifecycle
+közösen megőrizte a teljes gazdasági egyenleget.
+Natív kifizetés és callback PASS.
 Public testnet, external audit, production approval NINCS.
-Következő: M3-R4-04 worker result and reward lifecycle.
+Következő: M3-R4-05 teljes regresszió és fresh checkout.
 
 ## 5. Munkamenet lezárás
 

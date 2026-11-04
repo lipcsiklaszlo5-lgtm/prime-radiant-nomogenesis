@@ -1,5 +1,30 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R4-04 checkpoint — 2026-11-04
+
+- Base: `0f6d127`, branch `feat/m2-escrow`.
+- Deterministic worker result calculation implemented.
+- ExactCommitment and MinimumThreshold profiles supported.
+- 8 pure result tests and 6 completion tests PASS.
+- Complete Rust regression: 242 PASS.
+- Strict Clippy and compatible WASM PASS.
+- WASM SHA-256: `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`.
+- Fresh local Sandbox: worker result lifecycle PASS.
+- Four recovery cases, two successful worker completions,
+  ten timed-out worker jobs.
+- Worker credits: 50 units.
+- Buyer reward refunds: 250 units.
+- Remaining worker escrow: zero.
+- Native worker withdrawal of 20 units PASS.
+- Final ledger: 0 escrow + 436 claimable + 20 paid = 456.
+- Units: 0.001 NEAR excluding transaction fees and storage.
+- Invalid signers, forged results, threshold failures,
+  premature/late submissions and replay rejected.
+- Existing R4-03 economic settlement remains intact.
+- No public testnet, independent audit or production approval.
+- Next single action: M3-R4-05 complete regression,
+  fresh checkout and reproducibility.
+
 ## Current M3-R4-03 checkpoint — 2026-11-04
 
 - Base `0866b77`, branch `feat/m2-escrow`.

@@ -32,7 +32,8 @@
     "sandbox:m3-r3-preview": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_pair_preview.cjs",
     "sandbox:m3-r3-award": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_atomic_award.cjs",
     "sandbox:m3-r4-proof": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_component_proof.cjs",
-    "sandbox:m3-r4-settlement": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_terminal_settlement.cjs"
+    "sandbox:m3-r4-settlement": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_terminal_settlement.cjs",
+    "sandbox:m3-r4-worker": "NOMOGENESIS_WASM=$PWD/target/nomogenesis_compatible.wasm node sandbox/m3_worker_completion.cjs"
   },
   "devDependencies": {
     "binaryen": "132.0.0",
