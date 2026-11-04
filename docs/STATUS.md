@@ -1,6 +1,6 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R4-01 authenticated component proofs locally verified
+**Current state:** M3-R4-02 deterministic settlement economics verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`
@@ -12,7 +12,7 @@
 | Deterministic capped-equal allocation | UNIT PASS |
 | Atomic bundle award | UNIT + SANDBOX PASS |
 | Shared M2/M3 capacity locking | UNIT + SANDBOX PASS |
-| Full Rust regression | 211/211 PASS |
+| Full Rust regression | 221/221 PASS |
 | Strict Clippy and compatible WASM | PASS |
 | M2 primary, backup and settlement | SANDBOX PASS |
 | M3-R2 lifecycle and R3 release | SANDBOX PASS |
@@ -20,6 +20,28 @@
 | Public testnet evidence | NOT VERIFIED |
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
+
+## M3-R4-02 — pure terminal economics
+
+Base commit: `0392d17`.
+
+- Pure Rust deterministic terminal allocation implemented.
+- 10 new settlement tests PASS.
+- Full regression: 187 library + 11 market + 17 event +
+  6 storage-ledger = 221 PASS.
+- Strict Clippy and rustfmt PASS.
+- Compatible WASM build PASS.
+- WASM SHA-256: `6d3affd31a7cf271de959d1affa112b3166321a3c7aca351445c5ce2c6d07f71`.
+- Success, both partial-default orders and full default tested.
+- Exact 3Q credit conservation for terminal combinations.
+- Checked u128 arithmetic and deterministic integer remainder.
+- Positive sponsors only; exact selected provider bonds required.
+- Legacy R1 pure model is not the R4 settlement authority.
+- No on-chain settlement transaction implemented yet.
+- No fresh Sandbox run for R4-02.
+- No public testnet or independent security audit.
+
+Next: M3-R4-03 atomic on-chain terminal settlement.
 
 ## M3-R4-01 — authenticated component proof
 

@@ -7,6 +7,7 @@ pub mod rescue;
 mod rescue_award;
 mod rescue_clearing;
 mod rescue_proof;
+pub mod rescue_settlement;
 pub mod settlement;
 mod task;
 mod withdrawal;

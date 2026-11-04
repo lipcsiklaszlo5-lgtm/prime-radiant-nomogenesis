@@ -56,14 +56,14 @@ M3-R5: külön signerfolyamatok és tényleges adatmunka.
 
 M3-R6: UI, testnet evidence, clean checkout és nevezési csomag.
 
-Jelenlegi ellenőrzött kapu: M3-R4-01.
-211 Rust teszt, strict Clippy, kompatibilis WASM és
-friss helyi NEAR Sandbox proof-flow PASS.
-A két kiválasztott szolgáltató hitelesített komponenst
-adott be, az érvénytelen tranzakciók elutasítva.
-Settlement, dolgozói eredményfeldolgozás és public
-testnet még NINCS igazolva.
-Következő: M3-R4-02 pure terminal settlement model.
+Jelenlegi ellenőrzött kapu: M3-R4-02.
+221 Rust teszt, strict Clippy és kompatibilis WASM PASS.
+A determinisztikus pure settlement motor mind a négy
+terminális eredményre 3Q conservation invariánst teljesít.
+Az R4-01 on-chain proof korábban local Sandbox PASS.
+R4-03 on-chain settlement, worker completion, public
+testnet és független audit még NINCS igazolva.
+Következő: M3-R4-03 atomic terminal settlement.
 
 ## 5. Munkamenet lezárás
 

@@ -1,5 +1,21 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Current M3-R4-02 checkpoint — 2026-11-04
+
+- Base: `0392d17`, branch `feat/m2-escrow`.
+- Deterministic pure settlement engine implemented.
+- 10 focused economic tests PASS.
+- Full Rust regression: 221 tests PASS.
+- Strict Clippy, rustfmt and compatible WASM PASS.
+- WASM SHA-256: `6d3affd31a7cf271de959d1affa112b3166321a3c7aca351445c5ce2c6d07f71`.
+- Four terminal outcome combinations conserve exactly 3Q.
+- Sponsor remainder goes to ascending positive job IDs.
+- Invalid bonds, fees, sponsor sets and overflow rejected.
+- Pure module only: no persistent state transitions.
+- No fresh Sandbox for R4-02; R4-01 Sandbox remains
+  the previous deployed-WASM evidence.
+- Next single action: M3-R4-03 atomic on-chain settlement.
+
 ## Current M3-R4-01 checkpoint — 2026-11-04
 
 - Base: `10338cf`, branch `feat/m2-escrow`.
