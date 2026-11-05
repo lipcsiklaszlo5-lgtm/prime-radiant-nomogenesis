@@ -1176,3 +1176,17 @@ Sandbox deployments, native payout checks
 and alternative lifecycle stress.
 
 Production funds remain NOT APPROVED.
+
+## M3-R7-05B/00 — Clean checkout verification
+
+- Base commit: 0020c0f.
+- Fresh public GitHub branch clone verified.
+- Python, Rust and JavaScript tests passed.
+- Genesis artifacts rebuilt deterministically.
+- Public R7 Testnet replay reproduced.
+- R6 17-transaction lifecycle rechecked through
+  one public RPC, including deployed WASM and payout.
+- No new signed Testnet operations were executed.
+- Genesis Certificate remains off-chain.
+- No independent operator or local Merkle proof.
+- Next: independent new-scenario Testnet pilot.

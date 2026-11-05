@@ -83,7 +83,17 @@ Branch: `feat/r7-genesis-certificate`
 - Rehashed forged certificate outcomes rejected.
 - Serde derive path repaired without new dependencies.
 - NEAR economic contract unchanged.
-- Next: clean-checkout reproduction and submission audit.
+- R7-05B/00 fresh public GitHub checkout PASS.
+- Deterministic HTML and evidence rebuild PASS.
+- Full Rust library and certificate tests PASS.
+- Python and JavaScript regressions PASS.
+- Live R7 transaction and archival replay PASS.
+- Live R6 full economic lifecycle rechecked.
+- Public Testnet WASM and native payout verified.
+- No new chain writes, no wallet or private keys.
+- Historical RPC evidence is not a Merkle proof.
+- Next: independent new-scenario Testnet pilot
+  and final hackathon submission audit.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
