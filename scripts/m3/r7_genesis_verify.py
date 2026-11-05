@@ -4,6 +4,16 @@ import json
 import sys
 from pathlib import Path
 from r7_genesis import hash_of
+from r7_genesis_schema import normalize_input, MAX_U128
+
+
+def same_json(left, right):
+    """Compare JSON values without Python bool/int coercion."""
+    return json.dumps(
+        left, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ) == json.dumps(
+        right, sort_keys=True, separators=(",", ":"), allow_nan=False
+    )
 
 
 def verify(cert):
@@ -21,6 +31,8 @@ def verify(cert):
             return False
 
         data = cert["input"]
+        if normalize_input(data) != data:
+            return False
 
         if cert["input_hash"] != hash_of(
             "GENESIS_INPUT", data
@@ -44,6 +56,8 @@ def verify(cert):
         for x in offers:
             for y in offers:
                 price = x["fee"] + y["fee"]
+                if price > MAX_U128:
+                    continue
 
                 if (
                     x["component"] == 0
@@ -68,7 +82,7 @@ def verify(cert):
             "offers": [best[1], best[2]],
         } if best else None
 
-        if cert["winning_pair"] != expected_pair:
+        if not same_json(cert["winning_pair"], expected_pair):
             return False
 
         buyers = data["buyers"]
@@ -155,8 +169,8 @@ def verify(cert):
         ]
 
         return (
-            cert["coalitions"] == rows
-            and cert["minimal_coalitions"] == minimal
+            same_json(cert["coalitions"], rows)
+            and same_json(cert["minimal_coalitions"], minimal)
         )
 
     except (

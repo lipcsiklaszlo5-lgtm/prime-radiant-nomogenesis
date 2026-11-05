@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+from r7_genesis_schema import normalize_input, MAX_U128
 
 
 def hash_of(label, value):
@@ -14,54 +15,10 @@ def hash_of(label, value):
 
 
 def generate(data):
-    buyers = sorted(
-        data["buyers"], key=lambda b: b["job_id"]
-    )
-    offers = sorted(
-        data["offers"], key=lambda o: o["offer_id"]
-    )
-    deadline = data["deadline"]
-
-    if not 1 <= len(buyers) <= 6 or len(offers) > 6:
-        raise ValueError("bounds")
-
-    if type(deadline) is not int or deadline < 0:
-        raise ValueError("deadline")
-
-    if len({b["job_id"] for b in buyers}) != len(buyers):
-        raise ValueError("duplicate buyer")
-
-    if len({o["offer_id"] for o in offers}) != len(offers):
-        raise ValueError("duplicate offer")
-
-    for b in buyers:
-        if (
-            type(b["job_id"]) is not int
-            or type(b["cap"]) is not int
-            or min(b["job_id"], b["cap"]) < 0
-        ):
-            raise ValueError("buyer fields")
-
-    for o in offers:
-        fields = ("offer_id", "fee", "bond", "ready_at")
-        if any(
-            type(o[k]) is not int or o[k] < 0
-            for k in fields
-        ) or o["fee"] == 0:
-            raise ValueError("offer fields")
-
-        if (
-            type(o["available"]) is not bool
-            or type(o["component"]) is not int
-            or o["component"] not in (0, 1)
-        ):
-            raise ValueError("offer flags")
-
-        if not all(
-            isinstance(o[k], str) and o[k]
-            for k in ("provider", "slot")
-        ):
-            raise ValueError("offer identity")
+    normalized = normalize_input(data)
+    buyers = normalized["buyers"]
+    offers = normalized["offers"]
+    deadline = normalized["deadline"]
 
     # Find cheapest complete bonded provider pair.
     pairs = []
@@ -72,6 +29,8 @@ def generate(data):
                 continue
 
             price = a["fee"] + b["fee"]
+            if price > MAX_U128:
+                continue
 
             if (
                 a["available"]

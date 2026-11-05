@@ -31,7 +31,14 @@ Branch: `feat/r7-genesis-certificate`
 - Input normalization and adversarial validation
   are not yet complete.
 - No live NEAR state binding.
-- Next: R7-02A hardening and adversarial tests.
+- R7-02A/02 strict input hardening complete.
+- Canonical schema, uint64/uint128 boundaries.
+- Reject duplicate IDs and unexpected input fields.
+- Pair-price overflow is filtered.
+- JSON type confusion attacks rejected.
+- 16 Python tests and 9 Node benchmark tests PASS.
+- Certificate remains OFFCHAIN and synthetic.
+- Next: R7-02B public NEAR snapshot reconciliation.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 

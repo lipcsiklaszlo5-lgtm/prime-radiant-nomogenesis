@@ -24,6 +24,18 @@
 
 ## M3-R7-02 — Genesis Certificate
 
+### R7-02A/02 — hardened Python reference
+
+- Strict canonical input schema implemented.
+- Bounded uint64 identifiers and uint128 amounts.
+- Multiple minimal coalition tests PASS.
+- Provider and capacity conflicts rejected.
+- Rehashed forged certificates rejected.
+- Strict JSON equality replaces bool/int coercion.
+- 16 Python tests; existing 9 Node tests PASS.
+- Public NEAR snapshot reconciliation PENDING.
+
+
 - Research and formal specification recorded.
 - Novelty: differentiated combination, not
   proven world-first mathematical invention.
