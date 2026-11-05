@@ -22,6 +22,15 @@
 | Independent security audit | NOT PERFORMED |
 | Production funds | NOT APPROVED |
 
+## M3-R7-02 — Genesis Certificate
+
+- Research and formal specification recorded.
+- Novelty: differentiated combination, not
+  proven world-first mathematical invention.
+- First code milestone: R7-02A pending.
+- On-chain certificate binding: not implemented.
+- M3 economic kernel remains unchanged.
+
 ## M3-R7-01 — exploratory economic emergence
 
 - Target: internal 98/100 evidence-readiness,

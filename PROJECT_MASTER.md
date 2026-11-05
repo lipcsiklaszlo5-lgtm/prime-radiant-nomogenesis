@@ -28,6 +28,18 @@ The R7 strategy is defined in:
 
 The M3 on-chain contract remains feature-frozen.
 
+## Genesis Certificate direction
+
+The exact R7-02 plan and prior-art boundaries:
+`docs/M3_R7_GENESIS_CERTIFICATE_SPEC.md`.
+
+The proposed innovation is an exhaustive,
+reproducible certificate for minimal fundable
+coalitions in a bounded NEAR recovery market.
+
+This is not a claim of worldwide novelty.
+No certificate-to-chain binding is yet proven.
+
 ## Authoritative documents
 
 1. docs/M3_NORTH_STAR.md — product direction and claim boundary.

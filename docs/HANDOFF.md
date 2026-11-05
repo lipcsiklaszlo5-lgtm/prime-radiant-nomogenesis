@@ -1,5 +1,22 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## Active M3-R7-02 — Genesis Certificate
+
+Decision: 2026-11-05
+Branch: `feat/r7-genesis-certificate`
+
+- Public novelty review completed.
+- Pooled buying and minimal winning coalitions
+  have prior art; no world-first claim.
+- Differentiating hypothesis: exhaustive bounded
+  coalition certificate + bonded recovery + NEAR
+  economic settlement evidence.
+- Full normative specification:
+  `docs/M3_R7_GENESIS_CERTIFICATE_SPEC.md`.
+- Preserve M3 contract, R6 Testnet and R7 benchmark.
+- Next single task: R7-02A implementation.
+- Status: SPECIFICATION RECORDED; CODE PENDING.
+
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
 Date: 2026-11-05
