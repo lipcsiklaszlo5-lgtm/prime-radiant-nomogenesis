@@ -1,0 +1,43 @@
+{
+  "version": "r7-02b-03-award-transition",
+  "network": "testnet",
+  "contract": "nomogenesis-70e59593a3.testnet",
+  "award_tx": "67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT",
+  "predecessor_block": "5NFQUAd8LNqwtssUuo5mzLRZkp1uTqiijmSnPacDSFDv",
+  "execution_block": "ES5fcxnZgGqUB4n9wRvzEdsy83Kk3T3q9fTX6YH5YNKg",
+  "genesis_certificate_hash": "c05c1c7656f4608575e733978c149dd5f6198c8bbf70edebd069e29833a759fb",
+  "witness_hash": "f06ab42569d09b225d3f478cc29a62af783dbdf832067d2f44b2c4d119ab9361",
+  "selected_pair": {
+    "price": 12000000000000000000000,
+    "offers": [
+      0,
+      1
+    ]
+  },
+  "allocations": [
+    {
+      "job_id": 1,
+      "amount": 4000000000000000000000
+    },
+    {
+      "job_id": 2,
+      "amount": 4000000000000000000000
+    },
+    {
+      "job_id": 3,
+      "amount": 4000000000000000000000
+    }
+  ],
+  "total_refunds": "3000000000000000000000",
+  "escrow_before": "144000000000000000000000",
+  "escrow_after": "141000000000000000000000",
+  "claimable_before": "0",
+  "claimable_after": "3000000000000000000000",
+  "limitations": [
+    "Single archival RPC provider",
+    "No locally verified Merkle state proof",
+    "Block-level view is not an isolated receipt-state proof",
+    "No independent agent operators established"
+  ],
+  "evidence_hash": "79bbd76eac1e66a46cfa567fedfa0cf03ff93ec8f5a81975bd80478ef37a528c"
+}

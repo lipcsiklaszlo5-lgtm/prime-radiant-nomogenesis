@@ -50,7 +50,15 @@ Branch: `feat/r7-genesis-certificate`
 - Genesis Certificate calculated from those inputs.
 - Ten public transaction references retained.
 - Complete pre-award market state NOT proven.
-- Next: R7-02B/02 award-state completeness audit.
+- R7-02B/02 archive market probe PASS.
+- 3 accepted jobs, 3 open funded mandates.
+- 2 registered open bonded provider offers.
+- R7-02B/03 historical award transition PASS.
+- Buyer allocations and capacity locks reconciled.
+- Escrow and claimable deltas verified.
+- No local Merkle state proof or independent actors.
+- Next: Rust/Python differential verifier and
+  independent reproduction of historical evidence.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
