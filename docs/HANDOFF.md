@@ -57,8 +57,14 @@ Branch: `feat/r7-genesis-certificate`
 - Buyer allocations and capacity locks reconciled.
 - Escrow and claimable deltas verified.
 - No local Merkle state proof or independent actors.
-- Next: Rust/Python differential verifier and
-  independent reproduction of historical evidence.
+- R7-02C/00 Python/Rust allocation parity PASS.
+- 185 deterministic differential vectors.
+- Real R6 Testnet allocation included.
+- Large u128 and saturated caps included.
+- Rust differential tests: 2 PASS.
+- Full Rust Genesis verifier NOT yet implemented.
+- Next: standalone historical evidence replay
+  and full independent Rust certificate verifier.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 

@@ -1816,6 +1816,9 @@ mod rescue_worker_completion_tests;
 
 #[cfg(test)]
 mod rescue_allocation_tests;
+
+#[cfg(test)]
+mod r7_genesis_differential_tests;
 #[cfg(test)]
 mod rescue_offer_release_tests;
 #[cfg(test)]

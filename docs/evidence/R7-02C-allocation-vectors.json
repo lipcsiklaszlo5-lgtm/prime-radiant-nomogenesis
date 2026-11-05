@@ -1,0 +1,6630 @@
+{
+  "version": "r7-02c-allocation-v1",
+  "scope": "Python/Rust capped-equal differential",
+  "cases": [
+    {
+      "id": "R6-REAL-TESTNET",
+      "price": "12000000000000000000000",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "5000000000000000000000"
+        },
+        {
+          "job_id": 2,
+          "cap": "5000000000000000000000"
+        },
+        {
+          "job_id": 3,
+          "cap": "5000000000000000000000"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4000000000000000000000"
+        },
+        {
+          "job_id": 2,
+          "amount": "4000000000000000000000"
+        },
+        {
+          "job_id": 3,
+          "amount": "4000000000000000000000"
+        }
+      ]
+    },
+    {
+      "id": "SATURATED",
+      "price": "8",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "1"
+        },
+        {
+          "job_id": 2,
+          "cap": "10"
+        },
+        {
+          "job_id": 3,
+          "cap": "10"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "REMAINDER",
+      "price": "5",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "10"
+        },
+        {
+          "job_id": 3,
+          "cap": "10"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "SINGLE-BUYER",
+      "price": "12",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "12"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "12"
+        }
+      ]
+    },
+    {
+      "id": "U128-LARGE",
+      "price": "226854911280625642308916404954512140970",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "113427455640312821154458202477256070485"
+        },
+        {
+          "job_id": 2,
+          "cap": "113427455640312821154458202477256070485"
+        },
+        {
+          "job_id": 3,
+          "cap": "113427455640312821154458202477256070485"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "75618303760208547436305468318170713657"
+        },
+        {
+          "job_id": 2,
+          "amount": "75618303760208547436305468318170713657"
+        },
+        {
+          "job_id": 3,
+          "amount": "75618303760208547436305468318170713656"
+        }
+      ]
+    },
+    {
+      "id": "N1-S1",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S2",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S3",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S4",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S5",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S6",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S7",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S8",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S9",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S10",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S11",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S12",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S13",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S14",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S15",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S16",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S17",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S18",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S19",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S20",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S21",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S22",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S23",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S24",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S25",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S26",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S27",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S28",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N1-S29",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N1-S30",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "3"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N2-S1",
+      "price": "9",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S2",
+      "price": "14",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "10"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S3",
+      "price": "6",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N2-S4",
+      "price": "11",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S5",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N2-S6",
+      "price": "8",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S7",
+      "price": "13",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "9"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S8",
+      "price": "5",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N2-S9",
+      "price": "10",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S10",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N2-S11",
+      "price": "7",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N2-S12",
+      "price": "12",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "8"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S13",
+      "price": "4",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N2-S14",
+      "price": "9",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S15",
+      "price": "14",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "10"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S16",
+      "price": "6",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N2-S17",
+      "price": "11",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S18",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N2-S19",
+      "price": "8",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S20",
+      "price": "13",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "9"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S21",
+      "price": "5",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N2-S22",
+      "price": "10",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S23",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N2-S24",
+      "price": "7",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N2-S25",
+      "price": "12",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "8"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S26",
+      "price": "4",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N2-S27",
+      "price": "9",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S28",
+      "price": "14",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "10"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N2-S29",
+      "price": "6",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N2-S30",
+      "price": "11",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "10"
+        },
+        {
+          "job_id": 2,
+          "cap": "4"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N3-S1",
+      "price": "10",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N3-S2",
+      "price": "15",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S3",
+      "price": "20",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "8"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S4",
+      "price": "25",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "11"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S5",
+      "price": "30",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "14"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S6",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N3-S7",
+      "price": "8",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N3-S8",
+      "price": "13",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N3-S9",
+      "price": "18",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S10",
+      "price": "23",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "9"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S11",
+      "price": "28",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "12"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S12",
+      "price": "33",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "17"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S13",
+      "price": "6",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N3-S14",
+      "price": "11",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N3-S15",
+      "price": "16",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S16",
+      "price": "21",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "8"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S17",
+      "price": "26",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "11"
+        },
+        {
+          "job_id": 2,
+          "amount": "10"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S18",
+      "price": "31",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "15"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S19",
+      "price": "4",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N3-S20",
+      "price": "9",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N3-S21",
+      "price": "14",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N3-S22",
+      "price": "19",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "8"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S23",
+      "price": "24",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "10"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S24",
+      "price": "29",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "13"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S25",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "0"
+        }
+      ]
+    },
+    {
+      "id": "N3-S26",
+      "price": "7",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N3-S27",
+      "price": "12",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N3-S28",
+      "price": "17",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S29",
+      "price": "22",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "9"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N3-S30",
+      "price": "27",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "17"
+        },
+        {
+          "job_id": 2,
+          "cap": "11"
+        },
+        {
+          "job_id": 3,
+          "cap": "5"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "11"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N4-S1",
+      "price": "11",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N4-S2",
+      "price": "16",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        },
+        {
+          "job_id": 4,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N4-S3",
+      "price": "21",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        },
+        {
+          "job_id": 4,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N4-S4",
+      "price": "26",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "6"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S5",
+      "price": "31",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S6",
+      "price": "36",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "12"
+        },
+        {
+          "job_id": 3,
+          "amount": "11"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S7",
+      "price": "41",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "16"
+        },
+        {
+          "job_id": 3,
+          "amount": "12"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S8",
+      "price": "4",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N4-S9",
+      "price": "9",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N4-S10",
+      "price": "14",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N4-S11",
+      "price": "19",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        },
+        {
+          "job_id": 4,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N4-S12",
+      "price": "24",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "6"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S13",
+      "price": "29",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "8"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S14",
+      "price": "34",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "10"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S15",
+      "price": "39",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "14"
+        },
+        {
+          "job_id": 3,
+          "amount": "12"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S16",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "0"
+        },
+        {
+          "job_id": 4,
+          "amount": "0"
+        }
+      ]
+    },
+    {
+      "id": "N4-S17",
+      "price": "7",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N4-S18",
+      "price": "12",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N4-S19",
+      "price": "17",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        },
+        {
+          "job_id": 4,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N4-S20",
+      "price": "22",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        },
+        {
+          "job_id": 4,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N4-S21",
+      "price": "27",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "7"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S22",
+      "price": "32",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "10"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S23",
+      "price": "37",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "12"
+        },
+        {
+          "job_id": 3,
+          "amount": "12"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S24",
+      "price": "42",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "17"
+        },
+        {
+          "job_id": 3,
+          "amount": "12"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S25",
+      "price": "5",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N4-S26",
+      "price": "10",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N4-S27",
+      "price": "15",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N4-S28",
+      "price": "20",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        },
+        {
+          "job_id": 4,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N4-S29",
+      "price": "25",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "6"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N4-S30",
+      "price": "30",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "7"
+        },
+        {
+          "job_id": 2,
+          "cap": "18"
+        },
+        {
+          "job_id": 3,
+          "cap": "12"
+        },
+        {
+          "job_id": 4,
+          "cap": "6"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "8"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N5-S1",
+      "price": "12",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N5-S2",
+      "price": "17",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N5-S3",
+      "price": "22",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "4"
+        },
+        {
+          "job_id": 5,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N5-S4",
+      "price": "27",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        },
+        {
+          "job_id": 5,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N5-S5",
+      "price": "32",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "8"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "7"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S6",
+      "price": "37",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "11"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "9"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S7",
+      "price": "42",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "13"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "12"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S8",
+      "price": "4",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        },
+        {
+          "job_id": 5,
+          "amount": "0"
+        }
+      ]
+    },
+    {
+      "id": "N5-S9",
+      "price": "9",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        },
+        {
+          "job_id": 5,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N5-S10",
+      "price": "14",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N5-S11",
+      "price": "19",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "4"
+        },
+        {
+          "job_id": 5,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N5-S12",
+      "price": "24",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        },
+        {
+          "job_id": 5,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N5-S13",
+      "price": "29",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "7"
+        },
+        {
+          "job_id": 5,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N5-S14",
+      "price": "34",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "9"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "8"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S15",
+      "price": "39",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "11"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "11"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S16",
+      "price": "44",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "14"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "13"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S17",
+      "price": "6",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        },
+        {
+          "job_id": 5,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N5-S18",
+      "price": "11",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N5-S19",
+      "price": "16",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N5-S20",
+      "price": "21",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "4"
+        },
+        {
+          "job_id": 5,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N5-S21",
+      "price": "26",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        },
+        {
+          "job_id": 5,
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "id": "N5-S22",
+      "price": "31",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "8"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "7"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S23",
+      "price": "36",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "11"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "8"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S24",
+      "price": "41",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "13"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "11"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N5-S25",
+      "price": "3",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        },
+        {
+          "job_id": 4,
+          "amount": "0"
+        },
+        {
+          "job_id": 5,
+          "amount": "0"
+        }
+      ]
+    },
+    {
+      "id": "N5-S26",
+      "price": "8",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        },
+        {
+          "job_id": 5,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N5-S27",
+      "price": "13",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N5-S28",
+      "price": "18",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "5"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N5-S29",
+      "price": "23",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "6"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "5"
+        },
+        {
+          "job_id": 5,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N5-S30",
+      "price": "28",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "14"
+        },
+        {
+          "job_id": 2,
+          "cap": "8"
+        },
+        {
+          "job_id": 3,
+          "cap": "2"
+        },
+        {
+          "job_id": 4,
+          "cap": "13"
+        },
+        {
+          "job_id": 5,
+          "cap": "7"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "7"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "6"
+        },
+        {
+          "job_id": 5,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N6-S1",
+      "price": "13",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        },
+        {
+          "job_id": 6,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N6-S2",
+      "price": "18",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "3"
+        },
+        {
+          "job_id": 6,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N6-S3",
+      "price": "23",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "4"
+        },
+        {
+          "job_id": 6,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N6-S4",
+      "price": "28",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "6"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "5"
+        },
+        {
+          "job_id": 6,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N6-S5",
+      "price": "33",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "7"
+        },
+        {
+          "job_id": 3,
+          "amount": "7"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "6"
+        },
+        {
+          "job_id": 6,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N6-S6",
+      "price": "38",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "8"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        },
+        {
+          "job_id": 6,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N6-S7",
+      "price": "43",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "10"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "9"
+        },
+        {
+          "job_id": 6,
+          "amount": "8"
+        }
+      ]
+    },
+    {
+      "id": "N6-S8",
+      "price": "48",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "12"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "12"
+        },
+        {
+          "job_id": 6,
+          "amount": "8"
+        }
+      ]
+    },
+    {
+      "id": "N6-S9",
+      "price": "53",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "15"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "14"
+        },
+        {
+          "job_id": 6,
+          "amount": "8"
+        }
+      ]
+    },
+    {
+      "id": "N6-S10",
+      "price": "6",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        },
+        {
+          "job_id": 5,
+          "amount": "1"
+        },
+        {
+          "job_id": 6,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N6-S11",
+      "price": "11",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        },
+        {
+          "job_id": 6,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N6-S12",
+      "price": "16",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        },
+        {
+          "job_id": 6,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N6-S13",
+      "price": "21",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "4"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "3"
+        },
+        {
+          "job_id": 6,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N6-S14",
+      "price": "26",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "5"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "4"
+        },
+        {
+          "job_id": 6,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N6-S15",
+      "price": "31",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "6"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "6"
+        },
+        {
+          "job_id": 6,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N6-S16",
+      "price": "36",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "7"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        },
+        {
+          "job_id": 6,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N6-S17",
+      "price": "41",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "9"
+        },
+        {
+          "job_id": 6,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N6-S18",
+      "price": "46",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "12"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "10"
+        },
+        {
+          "job_id": 6,
+          "amount": "8"
+        }
+      ]
+    },
+    {
+      "id": "N6-S19",
+      "price": "51",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "14"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "13"
+        },
+        {
+          "job_id": 6,
+          "amount": "8"
+        }
+      ]
+    },
+    {
+      "id": "N6-S20",
+      "price": "4",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "1"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        },
+        {
+          "job_id": 5,
+          "amount": "0"
+        },
+        {
+          "job_id": 6,
+          "amount": "0"
+        }
+      ]
+    },
+    {
+      "id": "N6-S21",
+      "price": "9",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "2"
+        },
+        {
+          "job_id": 2,
+          "amount": "2"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "1"
+        },
+        {
+          "job_id": 5,
+          "amount": "1"
+        },
+        {
+          "job_id": 6,
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "id": "N6-S22",
+      "price": "14",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "3"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "2"
+        },
+        {
+          "job_id": 4,
+          "amount": "2"
+        },
+        {
+          "job_id": 5,
+          "amount": "2"
+        },
+        {
+          "job_id": 6,
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "id": "N6-S23",
+      "price": "19",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "3"
+        },
+        {
+          "job_id": 3,
+          "amount": "3"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "3"
+        },
+        {
+          "job_id": 6,
+          "amount": "3"
+        }
+      ]
+    },
+    {
+      "id": "N6-S24",
+      "price": "24",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "5"
+        },
+        {
+          "job_id": 3,
+          "amount": "4"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "4"
+        },
+        {
+          "job_id": 6,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N6-S25",
+      "price": "29",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "6"
+        },
+        {
+          "job_id": 3,
+          "amount": "6"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "6"
+        },
+        {
+          "job_id": 6,
+          "amount": "4"
+        }
+      ]
+    },
+    {
+      "id": "N6-S26",
+      "price": "34",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "8"
+        },
+        {
+          "job_id": 3,
+          "amount": "7"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "6"
+        },
+        {
+          "job_id": 6,
+          "amount": "6"
+        }
+      ]
+    },
+    {
+      "id": "N6-S27",
+      "price": "39",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "9"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "7"
+        },
+        {
+          "job_id": 6,
+          "amount": "7"
+        }
+      ]
+    },
+    {
+      "id": "N6-S28",
+      "price": "44",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "11"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "9"
+        },
+        {
+          "job_id": 6,
+          "amount": "8"
+        }
+      ]
+    },
+    {
+      "id": "N6-S29",
+      "price": "49",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "4"
+        },
+        {
+          "job_id": 2,
+          "amount": "13"
+        },
+        {
+          "job_id": 3,
+          "amount": "9"
+        },
+        {
+          "job_id": 4,
+          "amount": "3"
+        },
+        {
+          "job_id": 5,
+          "amount": "12"
+        },
+        {
+          "job_id": 6,
+          "amount": "8"
+        }
+      ]
+    },
+    {
+      "id": "N6-S30",
+      "price": "2",
+      "caps": [
+        {
+          "job_id": 1,
+          "cap": "4"
+        },
+        {
+          "job_id": 2,
+          "cap": "15"
+        },
+        {
+          "job_id": 3,
+          "cap": "9"
+        },
+        {
+          "job_id": 4,
+          "cap": "3"
+        },
+        {
+          "job_id": 5,
+          "cap": "14"
+        },
+        {
+          "job_id": 6,
+          "cap": "8"
+        }
+      ],
+      "allocation": [
+        {
+          "job_id": 1,
+          "amount": "1"
+        },
+        {
+          "job_id": 2,
+          "amount": "1"
+        },
+        {
+          "job_id": 3,
+          "amount": "0"
+        },
+        {
+          "job_id": 4,
+          "amount": "0"
+        },
+        {
+          "job_id": 5,
+          "amount": "0"
+        },
+        {
+          "job_id": 6,
+          "amount": "0"
+        }
+      ]
+    }
+  ]
+}
