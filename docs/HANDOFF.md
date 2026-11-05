@@ -76,7 +76,14 @@ Branch: `feat/r7-genesis-certificate`
 - Recorded proof and award evidence linked.
 - Synthetic what-if separate from Testnet evidence.
 - Full Rust certificate verifier still pending.
-- Next: Rust verifier, clean-checkout jury review.
+- R7-02C/02 independent Rust certificate verifier PASS.
+- Complete offer-pair and coalition recomputation.
+- Python/Rust Genesis SHA-256 consistency verified.
+- Six alternative Python certificates cross-checked.
+- Rehashed forged certificate outcomes rejected.
+- Serde derive path repaired without new dependencies.
+- NEAR economic contract unchanged.
+- Next: clean-checkout reproduction and submission audit.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
