@@ -38,7 +38,13 @@ Branch: `feat/r7-genesis-certificate`
 - JSON type confusion attacks rejected.
 - 16 Python tests and 9 Node benchmark tests PASS.
 - Certificate remains OFFCHAIN and synthetic.
-- Next: R7-02B public NEAR snapshot reconciliation.
+- R7-02B/00 public transaction probe completed.
+- 10 transaction arguments reconstructed.
+- Two public endpoint responses compared.
+- dRPC returned HTTP 403; legacy NEAR endpoint used.
+- Endpoint infrastructure independence not claimed.
+- Historical complete-market snapshot not yet proven.
+- Next: R7-02B/01 historical eligibility reconstruction.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
