@@ -290,6 +290,55 @@ Jury narrative:
 The historical R6 Testnet evidence remains separate
 until R7-02B reconciliation establishes linkage.
 
+## 9A. Swarm-for-Hire alignment
+
+Context: NEAR co-founder Illia Polosukhin publicly
+proposed a Swarm-for-Hire hackathon concept.
+
+NOMOGENESIS does not aim to clone this concept.
+
+Positioning:
+The Economic Formation Layer for Agent Swarms.
+
+The Genesis Engine identifies which bounded coalition
+can make a recovery economically feasible and supplies
+independently recomputable evidence.
+
+Required demonstration:
+- Multiple buyers use separate decision policies.
+- Providers independently choose their offers.
+- Individual buyers cannot fund the complete rescue.
+- The engine identifies minimal feasible coalitions.
+- The Genesis Certificate is independently verified.
+- A bonded recovery is executed on NEAR.
+- Actual settlement is independently reconstructed.
+- At least one adverse scenario is demonstrated.
+
+Guardrails:
+- Explicit buyer spending authority.
+- Independently funded provider collateral.
+- Bounded search and resource consumption.
+- Slot exclusivity and deadline checks.
+- Authentication of actor actions.
+- Deterministic evidence and settlement.
+- No autonomous-AI claim based solely on accounts.
+- No unsupported claims of Sybil resistance.
+
+NEAR ecosystem integration:
+- AI Swarms is the primary competition alignment.
+- NEAR AI inference integration is OPTIONAL.
+- NEAR Intents integration is OPTIONAL.
+- Neither is claimed implemented.
+- The verified NEAR recovery contract is preserved.
+
+Novelty boundary:
+Joint purchasing and agent marketplaces have prior art.
+The proposed contribution is bounded proof-carrying
+coalition formation tied to verifiable recovery settlement.
+
+A co-founder's suggested project is ecosystem context,
+not an endorsement or additional judging criterion.
+
 ## 10. Competition objective
 
 Internal readiness ambition: approximately 98/100.

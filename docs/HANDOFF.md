@@ -14,6 +14,10 @@ Branch: `feat/r7-genesis-certificate`
 - Full normative specification:
   `docs/M3_R7_GENESIS_CERTIFICATE_SPEC.md`.
 - Preserve M3 contract, R6 Testnet and R7 benchmark.
+- NEAR Swarm-for-Hire alignment addendum recorded.
+- Preserve Genesis mathematics and certificate scope.
+- Demonstrate independent agent decision policies.
+- No unimplemented Intents/NEAR AI claims.
 - Next single task: R7-02A implementation.
 - Status: SPECIFICATION RECORDED; CODE PENDING.
 
