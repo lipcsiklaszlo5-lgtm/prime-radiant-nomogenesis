@@ -19,7 +19,19 @@ Branch: `feat/r7-genesis-certificate`
 - Demonstrate independent agent decision policies.
 - No unimplemented Intents/NEAR AI claims.
 - Next single task: R7-02A implementation.
-- Status: SPECIFICATION RECORDED; CODE PENDING.
+- Status: R7-02A PYTHON SCAFFOLD VERIFIED.
+- Exhaustive bounded coalition enumeration.
+- Minimal feasible coalitions identified.
+- Deterministic capped-equal allocation.
+- Complete bonded provider-pair selection.
+- Separate recomputation verifier.
+- 5 targeted Python tests PASS.
+- Existing R7 benchmark regression executed.
+- Offline synthetic reference certificate.
+- Input normalization and adversarial validation
+  are not yet complete.
+- No live NEAR state binding.
+- Next: R7-02A hardening and adversarial tests.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
