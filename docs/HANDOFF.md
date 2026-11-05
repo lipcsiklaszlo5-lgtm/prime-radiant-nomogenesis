@@ -92,8 +92,13 @@ Branch: `feat/r7-genesis-certificate`
 - Public Testnet WASM and native payout verified.
 - No new chain writes, no wallet or private keys.
 - Historical RPC evidence is not a Merkle proof.
-- Next: independent new-scenario Testnet pilot
-  and final hackathon submission audit.
+- R7-05C/00 new Testnet scenario preflight PASS.
+- 7+7+7 caps; 12 UNIT price.
+- Three minimal coalitions verified off-chain.
+- Nine funded signers and access keys checked.
+- Provider slots and existing economic baseline checked.
+- No new signed transactions yet.
+- Next: guarded R7-05C signed case and funding.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
