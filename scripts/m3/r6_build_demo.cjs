@@ -16,6 +16,47 @@ const template = fs.readFileSync(
   'utf8'
 );
 
+
+const firstWitness = JSON.parse(fs.readFileSync(
+  path.join(
+    root, 'docs/evidence/R7-02B-01-transaction-witness.json'
+  ), 'utf8'
+));
+
+const second = JSON.parse(fs.readFileSync(
+  path.join(root, 'docs/evidence/R7-05C-public.json'),
+  'utf8'
+));
+
+const secondCert = JSON.parse(fs.readFileSync(
+  path.join(
+    root, 'docs/evidence/R7-05C-genesis-certificate.json'
+  ), 'utf8'
+)).genesis_certificate;
+
+assert.deepEqual(
+  firstWitness.genesis_certificate.minimal_coalitions,
+  [[1, 2, 3]]
+);
+
+assert.equal(second.transaction_count, 17);
+assert.deepEqual(second.caps_units, [7, 7, 7]);
+
+assert.deepEqual(
+  second.minimal_coalitions,
+  [[4, 5], [4, 6], [5, 6]]
+);
+
+assert.equal(
+  second.certificate_hash,
+  secondCert.certificate_hash
+);
+
+assert.equal(
+  second.transactions.find(x => x.step === 'award').tx,
+  '8xcW4BQutqeokHGpajkSUaMy6F3tMkvFDo7U9hDg3XTG'
+);
+
 assert.equal(manifest.transactions.length, 17);
 assert.equal(
   new Set(manifest.transactions.map(x => x.tx)).size,

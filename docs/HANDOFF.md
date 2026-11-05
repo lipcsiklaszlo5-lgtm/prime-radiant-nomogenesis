@@ -116,7 +116,14 @@ Branch: `feat/r7-genesis-certificate`
 - Final contract accounting and native payout checked.
 - No private keys or new Testnet transactions required.
 - Eight SDK retry hashes remain inconclusive.
-- Next: jury demo integration and submission audit.
+- R7-05D/01 two Testnet cases integrated in jury demo.
+- 5+5+5 case: one minimal coalition.
+- 7+7+7 case: three minimal coalitions.
+- Both have 17 recorded Testnet transactions.
+- Both awarded all three eligible sponsors 4+4+4.
+- Public evidence links and read-only commands shown.
+- Eight unresolved SDK retry hashes disclosed.
+- Next: clean-checkout final UI and submission audit.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 

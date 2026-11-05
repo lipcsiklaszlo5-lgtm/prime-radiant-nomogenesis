@@ -179,6 +179,45 @@ footer{padding:45px 0 70px;color:#777;font-size:12px;line-height:1.8}
 }
 .proof-links a{font-weight:600}
 
+
+.case-comparison{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:16px;margin-top:35px
+}
+.case-card{
+ background:#fff;
+ border:1px solid #e3e3e1;
+ border-radius:14px;
+ padding:28px
+}
+.case-card h3{
+ font-size:26px;
+ letter-spacing:-.05em;
+ margin:14px 0
+}
+.case-card .case-number{
+ font-size:12px;
+ color:#777;
+ font-weight:700
+}
+.case-card .case-result{
+ font-size:42px;
+ letter-spacing:-.06em;
+ font-weight:650;
+ margin:20px 0
+}
+.case-card p{font-size:13px;line-height:1.7;color:#666}
+.case-card a{
+ display:inline-block;
+ margin:10px 14px 0 0;
+ font-size:12px;
+ font-weight:600
+}
+@media(max-width:700px){
+ .case-comparison{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -222,7 +261,8 @@ and see whether joint funding works.
 </div></div>
 <div id="buyers"></div>
 <div class="presets">
-<button class="preset" data-example="reference">Verified example</button>
+<button class="preset" data-example="reference">Testnet 01 · 5/5/5</button>
+<button class="preset" data-example="second-testnet">Testnet 02 · 7/7/7</button>
 <button class="preset" data-example="shortfall">Insufficient</button>
 <button class="preset" data-example="single">Single buyer</button>
 </div>
@@ -258,12 +298,14 @@ No wallet, gas or blockchain transaction.
 
 <section id="genesis" class="content">
 <div class="kicker">02 / Proof of market formation</div>
-<h2>Seven coalitions.<br>One viable market.</h2>
+<h2>Seven coalitions.<br>Two recorded markets.</h2>
 <p class="intro">
-In the recorded NEAR Testnet case, three buyers each
-committed 5 UNIT. Recovery cost 12 UNIT.
-No individual buyer or pair could fund it.
-Only the full coalition was feasible.
+Two completed NEAR Testnet experiments demonstrate
+different coalition structures at the same 12 UNIT
+recovery price. In the first, all three buyers are
+necessary. In the second, three different buyer pairs
+could finance the recovery. The deployed contract
+allocated across all three eligible buyers in both cases.
 </p>
 
 <div class="facts">
@@ -309,6 +351,73 @@ Historical award evidence ↗</a>
 Scope: synthetic Testnet funds, one demonstration
 operator, externally served archival state.
 Not a locally verified Merkle proof or production audit.
+</p>
+</div>
+
+<div id="testnet-comparison" style="margin-top:55px">
+<div class="kicker">Recorded experiments / Public NEAR Testnet</div>
+<h3>Same recovery price. Different markets.</h3>
+<p class="muted">
+Both experiments completed the entire signed
+funding, award, proof, settlement and payout lifecycle.
+Their coalition certificates are computed off-chain
+from the recorded economic terms.
+</p>
+
+<div class="case-comparison">
+
+<article class="case-card">
+<div class="case-number">TESTNET 01 / 5 + 5 + 5 UNIT</div>
+<h3>Cooperation is essential.</h3>
+<div class="case-result">1 minimal coalition</div>
+<p>
+Only buyers 1 + 2 + 3 can collectively cover
+the 12 UNIT recovery price.
+The atomic award allocated 4 + 4 + 4 UNIT.
+</p>
+<p>17 signed transactions. Complete lifecycle settled.</p>
+<a target="_blank" rel="noopener noreferrer"
+ href="https://testnet.nearblocks.io/txns/67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT">
+Inspect atomic award ↗</a>
+<a target="_blank" rel="noopener noreferrer"
+ href="https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis/blob/8a62989/docs/evidence/R7-02B-01-transaction-witness.json">
+Inspect Genesis witness ↗</a>
+<pre>python3 -B scripts/m3/r7_public_replay.py</pre>
+</article>
+
+<article class="case-card">
+<div class="case-number">TESTNET 02 / 7 + 7 + 7 UNIT</div>
+<h3>Alternative coalitions emerge.</h3>
+<div class="case-result">3 minimal coalitions</div>
+<p>
+Buyers 4 + 5, 4 + 6 or 5 + 6 could each cover
+the 12 UNIT recovery. The deployed contract
+instead enrolled all three at 4 + 4 + 4 UNIT.
+</p>
+<p>
+17 signed transactions. Final 20 UNIT native payout
+verified with receipt and callback.
+</p>
+<a target="_blank" rel="noopener noreferrer"
+ href="https://testnet.nearblocks.io/txns/8xcW4BQutqeokHGpajkSUaMy6F3tMkvFDo7U9hDg3XTG">
+Inspect atomic award ↗</a>
+<a target="_blank" rel="noopener noreferrer"
+ href="https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis/blob/8a62989/docs/evidence/R7-05C-public.json">
+Inspect 17 transactions ↗</a>
+<a target="_blank" rel="noopener noreferrer"
+ href="https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis/blob/8a62989/docs/evidence/R7-05C-genesis-certificate.json">
+Inspect Genesis Certificate ↗</a>
+<pre>node scripts/m3/r7_05c_public_verify.cjs</pre>
+</article>
+
+</div>
+<p class="muted" style="margin-top:20px">
+Evidence boundaries: synthetic Testnet funds, one
+demonstration operator, externally served RPC state.
+The Genesis Certificate is not an on-chain
+coalition-selection contract. Eight previous
+SDK retry hashes in the second experiment
+remain inconclusive.
 </p>
 </div>
 </section>
@@ -593,6 +702,8 @@ document.querySelectorAll('[data-example]').forEach(b=>{
  b.onclick=()=>{
   caps=b.dataset.example==='reference'
    ?[5,5,5]
+   :b.dataset.example==='second-testnet'
+   ?[7,7,7]
    :b.dataset.example==='shortfall'
    ?[2,2,2]:[5];
   price.value=12;drawBuyers();render();
