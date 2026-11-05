@@ -3,6 +3,7 @@
 import base64
 import hashlib
 import json
+import os
 import sys
 import time
 import urllib.request
@@ -167,7 +168,7 @@ def main():
     }
 
     destination = Path(
-        "/workspaces/nomogenesis-r7-chain-preflight.json"
+        os.environ.get("NMG_R7_PREFLIGHT_PATH", "/workspaces/nomogenesis-r7-chain-preflight.json")
     )
 
     destination.write_text(

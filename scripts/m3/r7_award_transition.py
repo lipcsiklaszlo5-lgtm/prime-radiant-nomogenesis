@@ -1,6 +1,7 @@
 """R7-02B/03: read-only award-state reconciliation."""
 
 import json
+import os
 from pathlib import Path
 
 from r7_genesis import hash_of
@@ -19,11 +20,11 @@ def main():
         (ROOT / "docs/evidence/R6-05-public.json").read_text()
     )
     witness = json.loads(
-        (ROOT / "docs/evidence/R7-02B-01-transaction-witness.json")
+        (ROOT / os.environ.get("NMG_R7_WITNESS_PATH", "docs/evidence/R7-02B-01-transaction-witness.json"))
         .read_text()
     )
     history = json.loads(
-        Path("/workspaces/nomogenesis-r7-historical-state.json")
+        Path(os.environ.get("NMG_R7_HISTORY_PATH", "/workspaces/nomogenesis-r7-historical-state.json"))
         .read_text()
     )
 
@@ -277,7 +278,7 @@ def main():
     )
 
     path = ROOT / (
-        "docs/evidence/R7-02B-03-award-transition.json"
+        os.environ.get("NMG_R7_AWARD_PATH", "docs/evidence/R7-02B-03-award-transition.json")
     )
     path.write_text(json.dumps(evidence, indent=2) + "\n")
 

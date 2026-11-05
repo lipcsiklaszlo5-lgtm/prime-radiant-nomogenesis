@@ -2,12 +2,59 @@
 
 import base64
 import json
+import os
 import time
 import urllib.request
+import urllib.error
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RPC = "https://archival-rpc.testnet.fastnear.com"
+
+
+def _pace_archive_rpc():
+    """Share a small request budget across replay subprocesses."""
+    marker = Path(os.environ.get(
+        "NMG_R7_ARCHIVE_PACE_FILE",
+        "/tmp/nomogenesis-r7-archive-pace",
+    ))
+
+    if marker.exists():
+        try:
+            elapsed = time.monotonic() - float(
+                marker.read_text()
+            )
+            delay = max(0.0, min(4.0, 4.0 - elapsed))
+            if delay:
+                time.sleep(delay)
+        except ValueError:
+            pass
+
+    marker.write_text(str(time.monotonic()))
+
+
+def _retry_after(headers):
+    """Handle numeric and HTTP-date Retry-After headers."""
+    value = headers.get("Retry-After", "")
+
+    if not value:
+        return 0.0
+
+    try:
+        return max(0.0, float(value))
+    except ValueError:
+        try:
+            date = parsedate_to_datetime(value)
+            return max(
+                0.0,
+                (
+                    date - datetime.now(timezone.utc)
+                ).total_seconds(),
+            )
+        except (ValueError, TypeError, OverflowError):
+            return 0.0
 
 
 def rpc(method, params):
@@ -18,36 +65,64 @@ def rpc(method, params):
         "params": params,
     }).encode()
 
-    last_error = None
+    request = urllib.request.Request(
+        RPC,
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
 
-    for attempt in range(3):
+    for attempt in range(5):
+        _pace_archive_rpc()
+
         try:
-            request = urllib.request.Request(
-                RPC,
-                data=payload,
-                headers={
-                    "Content-Type": "application/json"
-                },
-                method="POST",
-            )
-
             with urllib.request.urlopen(
                 request, timeout=30
             ) as response:
                 result = json.load(response)
 
             if "error" in result:
-                raise ValueError(str(result["error"]))
+                raise RuntimeError(
+                    f"Archival RPC rejected query: "
+                    f"{result['error']}"
+                )
 
             return result["result"]
 
-        except (OSError, ValueError) as error:
-            last_error = error
-            if attempt < 2:
-                time.sleep(attempt + 1)
+        except urllib.error.HTTPError as error:
+            if error.code != 429:
+                raise RuntimeError(
+                    f"Archival RPC HTTP {error.code}"
+                ) from error
 
-    raise RuntimeError(f"Archival RPC failed: {last_error}")
+            if attempt == 4:
+                raise RuntimeError(
+                    "Archival RPC rate limit persisted "
+                    "after bounded retries"
+                ) from error
 
+            delay = max(
+                15 * (2 ** attempt),
+                _retry_after(error.headers),
+            )
+
+            print(
+                f"ARCHIVE RATE LIMIT 429: "
+                f"backoff {delay:.0f}s "
+                f"(retry {attempt + 1}/4)",
+                flush=True,
+            )
+            time.sleep(delay)
+
+        except (TimeoutError, ConnectionError) as error:
+            if attempt == 4:
+                raise RuntimeError(
+                    "Archival RPC connectivity exhausted"
+                ) from error
+
+            time.sleep(5 * (attempt + 1))
+
+    raise RuntimeError("Archival RPC exhausted")
 
 def historical_view(block_hash, contract, method, args):
     encoded = base64.b64encode(
@@ -81,7 +156,7 @@ def main():
     witness = json.loads(
         (
             ROOT /
-            "docs/evidence/R7-02B-01-transaction-witness.json"
+            os.environ.get("NMG_R7_WITNESS_PATH", "docs/evidence/R7-02B-01-transaction-witness.json")
         ).read_text()
     )
 
@@ -296,7 +371,7 @@ def main():
     }
 
     destination = Path(
-        "/workspaces/nomogenesis-r7-historical-state.json"
+        os.environ.get("NMG_R7_HISTORY_PATH", "/workspaces/nomogenesis-r7-historical-state.json")
     )
 
     destination.write_text(

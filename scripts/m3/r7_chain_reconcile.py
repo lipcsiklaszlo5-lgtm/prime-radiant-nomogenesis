@@ -4,6 +4,7 @@ Not an authenticated pre-award market snapshot.
 """
 
 import json
+import os
 from pathlib import Path
 
 from r7_genesis import generate, hash_of
@@ -283,15 +284,14 @@ def main():
 
     preflight = json.loads(
         Path(
-            "/workspaces/nomogenesis-r7-chain-preflight.json"
+            os.environ.get("NMG_R7_PREFLIGHT_PATH", "/workspaces/nomogenesis-r7-chain-preflight.json")
         ).read_text()
     )
 
     witness = derive(manifest, preflight)
 
     destination = ROOT / (
-        "docs/evidence/"
-        "R7-02B-01-transaction-witness.json"
+        os.environ.get("NMG_R7_WITNESS_PATH", "docs/evidence/R7-02B-01-transaction-witness.json")
     )
 
     destination.write_text(

@@ -63,8 +63,13 @@ Branch: `feat/r7-genesis-certificate`
 - Large u128 and saturated caps included.
 - Rust differential tests: 2 PASS.
 - Full Rust Genesis verifier NOT yet implemented.
-- Next: standalone historical evidence replay
-  and full independent Rust certificate verifier.
+- R7-02C/01 public Genesis replay PASS.
+- Fresh public transaction and archive state replay.
+- Committed witness and award evidence matched.
+- Archive RPC 429 recovery and pacing enabled.
+- Replay runs in a temporary evidence workspace.
+- Full Rust certificate verifier still pending.
+- Next: Rust certificate verifier and jury demo.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
