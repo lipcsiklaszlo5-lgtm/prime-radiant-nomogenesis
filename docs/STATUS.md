@@ -1190,3 +1190,14 @@ Production funds remain NOT APPROVED.
 - Genesis Certificate remains off-chain.
 - No independent operator or local Merkle proof.
 - Next: independent new-scenario Testnet pilot.
+
+## R7-05C/01 — Second real Testnet lifecycle
+
+- 17 signed public Testnet transactions: PASS.
+- 3 buyers with 7 UNIT caps, 2 bonded offers at 6 UNIT.
+- Full 4+4+4 UNIT on-chain allocation.
+- 2 verified CSV proofs, terminal settlement, 3 worker results.
+- 20 UNIT native payment with Transfer/callback receipts.
+- 3 inclusion-minimal coalitions calculated OFFCHAIN.
+- Testnet demonstrator accounts share one operator.
+- Independent external audit and new certificate on-chain execution NOT claimed.

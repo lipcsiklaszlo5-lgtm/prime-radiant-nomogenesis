@@ -1,0 +1,157 @@
+{
+  "case_id_hex": "d271fb3d8d9cd1d9559e229efdd1c02cdf053698e9efa9a05e7fa5e1c7619a98",
+  "genesis_certificate": {
+    "version": "genesis-v1-offchain",
+    "input": {
+      "deadline": 1793918276452340200,
+      "buyers": [
+        {
+          "job_id": 4,
+          "cap": 7000000000000000000000
+        },
+        {
+          "job_id": 5,
+          "cap": 7000000000000000000000
+        },
+        {
+          "job_id": 6,
+          "cap": 7000000000000000000000
+        }
+      ],
+      "offers": [
+        {
+          "offer_id": 2,
+          "component": 0,
+          "provider": "nmg-quantities-36cbb96203.testnet",
+          "slot": "r7_05c_quantities_v1",
+          "fee": 6000000000000000000000,
+          "bond": 12000000000000000000000,
+          "ready_at": 1793915516452340200,
+          "available": true
+        },
+        {
+          "offer_id": 3,
+          "component": 1,
+          "provider": "nmg-prices-bdcfb35f28.testnet",
+          "slot": "r7_05c_prices_v1",
+          "fee": 6000000000000000000000,
+          "bond": 12000000000000000000000,
+          "ready_at": 1793915516452340200,
+          "available": true
+        }
+      ]
+    },
+    "input_hash": "90ecb6d53b25fa61fed1f7e5a2b6a52e02f493e1212ae0a2fbc6e5f163163a25",
+    "winning_pair": {
+      "price": 12000000000000000000000,
+      "offers": [
+        2,
+        3
+      ]
+    },
+    "coalitions": [
+      {
+        "mask": 1,
+        "job_ids": [
+          4
+        ],
+        "capacity": 7000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 2,
+        "job_ids": [
+          5
+        ],
+        "capacity": 7000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 3,
+        "job_ids": [
+          4,
+          5
+        ],
+        "capacity": 14000000000000000000000,
+        "feasible": true,
+        "allocation": [
+          6000000000000000000000,
+          6000000000000000000000
+        ]
+      },
+      {
+        "mask": 4,
+        "job_ids": [
+          6
+        ],
+        "capacity": 7000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 5,
+        "job_ids": [
+          4,
+          6
+        ],
+        "capacity": 14000000000000000000000,
+        "feasible": true,
+        "allocation": [
+          6000000000000000000000,
+          6000000000000000000000
+        ]
+      },
+      {
+        "mask": 6,
+        "job_ids": [
+          5,
+          6
+        ],
+        "capacity": 14000000000000000000000,
+        "feasible": true,
+        "allocation": [
+          6000000000000000000000,
+          6000000000000000000000
+        ]
+      },
+      {
+        "mask": 7,
+        "job_ids": [
+          4,
+          5,
+          6
+        ],
+        "capacity": 21000000000000000000000,
+        "feasible": true,
+        "allocation": [
+          4000000000000000000000,
+          4000000000000000000000,
+          4000000000000000000000
+        ]
+      }
+    ],
+    "minimal_coalitions": [
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "certificate_hash": "bedbdab514ff49e11be8a5585e38ac20a94d9ac74f4b6a4cbe165fcb794e864c"
+  },
+  "limitations": [
+    "Off-chain coalition enumeration, not an on-chain subset selection",
+    "ready_at is a bid-close surrogate, not an observed timestamp",
+    "Historical market view is supplied by public RPC",
+    "All Testnet agents belong to one demonstration operator"
+  ]
+}

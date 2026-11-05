@@ -98,7 +98,16 @@ Branch: `feat/r7-genesis-certificate`
 - Nine funded signers and access keys checked.
 - Provider slots and existing economic baseline checked.
 - No new signed transactions yet.
-- Next: guarded R7-05C signed case and funding.
+- R7-05C/01 second full signed Testnet lifecycle PASS.
+- New case, 3 buyer jobs, 3 worker acceptances, 2 bonded offers.
+- Award, two CSV proofs, settlement, 3 worker completions.
+- Native 20 UNIT transfer and callback verified.
+- 17 public transaction hashes retained.
+- 3 minimal coalitions certified OFFCHAIN.
+- On-chain full 3-buyer allocation: 4+4+4 UNIT.
+- Baseline 30 escrow / 94 claimable preserved.
+- Final 30 escrow / 194 claimable after 20 payout.
+- Next: independent public R7-05C verifier and final submission review.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 

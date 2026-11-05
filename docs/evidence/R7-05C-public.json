@@ -1,0 +1,192 @@
+{
+  "version": "r7-05c-live-testnet-v1",
+  "network": "testnet",
+  "contract": "nomogenesis-70e59593a3.testnet",
+  "case_id_hex": "d271fb3d8d9cd1d9559e229efdd1c02cdf053698e9efa9a05e7fa5e1c7619a98",
+  "jobs": [
+    4,
+    5,
+    6
+  ],
+  "offers": [
+    2,
+    3
+  ],
+  "bundle_id": 1,
+  "caps_units": [
+    7,
+    7,
+    7
+  ],
+  "price_units": 12,
+  "onchain_allocation_units": [
+    4,
+    4,
+    4
+  ],
+  "minimal_coalitions": [
+    [
+      4,
+      5
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      5,
+      6
+    ]
+  ],
+  "certificate_hash": "bedbdab514ff49e11be8a5585e38ac20a94d9ac74f4b6a4cbe165fcb794e864c",
+  "transaction_count": 17,
+  "transactions": [
+    {
+      "step": "case",
+      "signer": "nmg-creator-be81fe60a5.testnet",
+      "method": "create_rescue_case",
+      "tx": "4RDKBA9ZwQcM2exEuar7hMqxBYDVyqCAu7aE95g8HyvZ",
+      "deposit": "12330000000000000000000",
+      "args_sha256": "7c9c1a405643d8099e8ae7f5e9b7b52e0fa2800a1916cbbf6e9bac41efc47b79"
+    },
+    {
+      "step": "buyer0-fund",
+      "signer": "nmg-buyer-fdf715605c.testnet",
+      "method": "create_funded_rescue_job",
+      "tx": "DD267oHUWq1wyvj5NXbDDYY9Yrci1GxTstazqxxxMmvY",
+      "deposit": "37760000000000000000000",
+      "args_sha256": "13608d09f77800654071d0901004926b629d5766d645e0c9e3abb83de7a57f22"
+    },
+    {
+      "step": "worker0-accept",
+      "signer": "nmg-worker-cab03ebf2d.testnet",
+      "method": "accept_rescue_job",
+      "tx": "6WSFXcvX8JXBTW5j7McFTL9HP2QDtkwQ9rQdXjWJ1Zok",
+      "deposit": "0",
+      "args_sha256": "b5f69cd251730772fd313c7240fb028e8be8fd43015a74d0ac0156f07f529653"
+    },
+    {
+      "step": "buyer1-fund",
+      "signer": "nmg-buyer1-d840182ae4.testnet",
+      "method": "create_funded_rescue_job",
+      "tx": "HCEB7Kj1GK2wax2DWXhw9ZNhCv7B3Z2ZmnAPPJP2fayz",
+      "deposit": "37760000000000000000000",
+      "args_sha256": "5cee615c86a0750bb32fbfa1f9c21e209f1852582beb07205c9fe18e9c757ddc"
+    },
+    {
+      "step": "worker1-accept",
+      "signer": "nmg-worker1-9b86f5cc3a.testnet",
+      "method": "accept_rescue_job",
+      "tx": "5ku1u2mnYF5gmZJdGt7Vjey4dcFR9ix4cxvi2zAYVYGB",
+      "deposit": "0",
+      "args_sha256": "fc95382b9e99f2fd16fa44c2d5e7bdb3adc3f2068283254f9167191d8b7eee0a"
+    },
+    {
+      "step": "buyer2-fund",
+      "signer": "nmg-buyer2-688b49db79.testnet",
+      "method": "create_funded_rescue_job",
+      "tx": "3HxvctQYyrAsh8tsbh8v3FKa9QNFCWajyLoLx5SXVavJ",
+      "deposit": "37760000000000000000000",
+      "args_sha256": "9ad46ff5ada55c0a304f6e0ea69401bf5db4d9843ece6ec20930de94b3ed5773"
+    },
+    {
+      "step": "worker2-accept",
+      "signer": "nmg-worker2-ae194846e1.testnet",
+      "method": "accept_rescue_job",
+      "tx": "G87xWp8NqehZ3qZ7ktatY1cGftYKuH19aGaAaMnQiDfS",
+      "deposit": "0",
+      "args_sha256": "6a80a7e2a903c1c337315a02fb23e868187211f2ad789091ec0ca94fca5b00be"
+    },
+    {
+      "step": "provider0-offer",
+      "signer": "nmg-quantities-36cbb96203.testnet",
+      "method": "post_rescue_offer",
+      "tx": "FunThdDECeRbtv6DJEbCTvuR2VsaqnN8bBAgZW7ZUrLy",
+      "deposit": "18130000000000000000000",
+      "args_sha256": "5724f2a6354a9870a11d1173c32bf4372e57b2f37a515bc9d023e9ad613d628d"
+    },
+    {
+      "step": "provider1-offer",
+      "signer": "nmg-prices-bdcfb35f28.testnet",
+      "method": "post_rescue_offer",
+      "tx": "HFk3tSjNRBWDkGtU4trnEy2122PYsBDaMMxmH8xYeGYj",
+      "deposit": "18130000000000000000000",
+      "args_sha256": "7545707341c40a8310441ac0097520a536972be843bf812c60ff9f7af1728127"
+    },
+    {
+      "step": "award",
+      "signer": "nmg-creator-be81fe60a5.testnet",
+      "method": "award_rescue_bundle",
+      "tx": "8xcW4BQutqeokHGpajkSUaMy6F3tMkvFDo7U9hDg3XTG",
+      "deposit": "0",
+      "args_sha256": "2220021996b51645ffde296da3dbecc465ed58cece3a4356e07f79cc4fb8b061"
+    },
+    {
+      "step": "proof0",
+      "signer": "nmg-quantities-36cbb96203.testnet",
+      "method": "submit_rescue_component",
+      "tx": "4FEY6R9F7DRYkJvScMf7qTUXDBqWpdySUE463KuAA8jc",
+      "deposit": "0",
+      "args_sha256": "f89b0e0351c3c3a068c705e2b93de28d43d346ee947b30597fa9a0b97e71fc1d"
+    },
+    {
+      "step": "proof1",
+      "signer": "nmg-prices-bdcfb35f28.testnet",
+      "method": "submit_rescue_component",
+      "tx": "5b3HJyEQgPXiCHX2Ek1Lgiu2FEihjX7WKbzxwcKLPrPS",
+      "deposit": "0",
+      "args_sha256": "b570eda862e8872eb72749869f748982b30381d69542a987fc4f3805a21079a1"
+    },
+    {
+      "step": "settlement",
+      "signer": "nmg-creator-be81fe60a5.testnet",
+      "method": "settle_rescue_bundle",
+      "tx": "24mY7RhzYYZHGtZbRAFDoh2j6EUVMuEggiLnpH5GuK9V",
+      "deposit": "0",
+      "args_sha256": "2745a06f05898039610f860fe65077945aecbf318488ef50cdbeeaf69f893fac"
+    },
+    {
+      "step": "worker0-complete",
+      "signer": "nmg-worker-cab03ebf2d.testnet",
+      "method": "complete_rescue_job",
+      "tx": "9sGfRxFcx3i5tqcucfEhfg2qTSvCZqCa5GXsL5i7BdoV",
+      "deposit": "0",
+      "args_sha256": "a88faad9dbd2793300247500465955cc46e4d41d3b7b6527c3dd7f92e7c3da84"
+    },
+    {
+      "step": "worker1-complete",
+      "signer": "nmg-worker1-9b86f5cc3a.testnet",
+      "method": "complete_rescue_job",
+      "tx": "37mxW17ovy19CK6VVeuyvs4TZusgeea6n5Jqc5RvcUFb",
+      "deposit": "0",
+      "args_sha256": "211554b528440d2d2fbca716ed2373acaae997fe7c138a9d4288559dc944cab9"
+    },
+    {
+      "step": "worker2-complete",
+      "signer": "nmg-worker2-ae194846e1.testnet",
+      "method": "complete_rescue_job",
+      "tx": "BGZNbG53j941oCqSPMBx3wHzdqYpNv5Ur4NZByYzS8VF",
+      "deposit": "0",
+      "args_sha256": "28bcf6f7c046f8593ab2b986a510c7b5d8f9ad7565e30fc34542c3c3915c342e"
+    },
+    {
+      "step": "withdraw",
+      "signer": "nmg-worker-cab03ebf2d.testnet",
+      "method": "withdraw",
+      "tx": "AgiakiFWNrg4cA4bB8Zt1Qa4MSUCZeJdG3a6SK4whMdr",
+      "deposit": "0",
+      "args_sha256": "d36b19b1b0817c7a9bc574d671afe73381f84d665bcac264e30cd49592afd804"
+    }
+  ],
+  "baseline_escrow": "30000000000000000000000",
+  "baseline_claimable": "94000000000000000000000",
+  "final_escrow": "30000000000000000000000",
+  "final_claimable": "194000000000000000000000",
+  "native_payout_units": 20,
+  "limitations": [
+    "All demonstration accounts operated by one controller",
+    "Genesis Certificate computed off-chain, not executed by deployed contract",
+    "No independent historical Merkle proof",
+    "Synthetic data and Testnet funds only"
+  ]
+}
