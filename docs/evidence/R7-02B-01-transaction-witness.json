@@ -1,0 +1,213 @@
+{
+  "version": "r7-02b-01-transaction-derived",
+  "network": "testnet",
+  "contract": "nomogenesis-70e59593a3.testnet",
+  "case_id_hex": "446f769d1ed037f5916709c888ade5886a5b195c25acbc4728364fbdcc96f8a5",
+  "contract_wasm_sha256": "f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7",
+  "award_tx": "67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT",
+  "observations": [
+    {
+      "step": "case",
+      "tx": "FTgpTeickEKF8n6Xre87RL6cxKZKWwyhgRmj8k6CXbm",
+      "block_hash": "FUfh3gnSLqN8oQuPz5juqvdxZuTMukS447yrPcbALvg5",
+      "args_sha256": "a1943d339ed2b5ee076a4567094c7d691fd525d12b7bd3958ecf5343619b5c19"
+    },
+    {
+      "step": "buyer0-fund",
+      "tx": "Af6ZyEE8Xhuhi3BP2BhPtsaVc5ERcuMxJG3phS63UCC5",
+      "block_hash": "6wUjoPNiZjmx9Kg57MzJdE6Ux5f9azN1f8zkz3Wk8myN",
+      "args_sha256": "b90087a797494bbcc87a22505c193e49012dd317122c35aa35808edf24161fc1"
+    },
+    {
+      "step": "worker0-accept",
+      "tx": "Gi73b8opLfWMqSJRgto3Zyf458XyPQS81uVuGSDPjxdW",
+      "block_hash": "FjJN3TKQ1uCLYT63iHyxSkWhX6zuao3N2bcdJk4zHtd6",
+      "args_sha256": "1e7c8c91d4148d2abcc23b63eb788982cc653d5b64ecb9ca1149488be6dcc22a"
+    },
+    {
+      "step": "buyer1-fund",
+      "tx": "2NfWKUdyQcmvgRLwq4eWEwMDHZtgEHTEdbKvAaitv1FM",
+      "block_hash": "XiducxCAwzfCt6vo26d7pjHd66YpaJRCuFR3AkMRnLp",
+      "args_sha256": "1411a9c68ee94119d0379ce267fcd9cebb8d7d47c9ff493521c326363a23ba09"
+    },
+    {
+      "step": "worker1-accept",
+      "tx": "CdQR1WkRmYCHzdyUcZXJDNuYksu32wwSWieCsrBQe7qY",
+      "block_hash": "7kVTWebwvsQGSUN6LbeL3kZe2QbBrtE6z28YsKBGtd3Y",
+      "args_sha256": "6f32f96ba9cbf1a6847c688d59e243020ae67580a84afdbfc60d764820875151"
+    },
+    {
+      "step": "buyer2-fund",
+      "tx": "FfMXxrrGKoqTr7BXcZC7UQ3MofikzzR5Fwz56uHdBqBZ",
+      "block_hash": "Am75bEGNvM6R6i9ZQeiLt2WvMRd1JwGEC5QWKq9rcrVx",
+      "args_sha256": "9c712ef138e8f39ac1213d5e9ae46fd8120c54103e8f9867992490441b3ce45e"
+    },
+    {
+      "step": "worker2-accept",
+      "tx": "HNV9kmLMN4ZufK1K89UfVvzYCUhJJ1QiEPGUuw3vTbe7",
+      "block_hash": "CW8UxaMvnxdr7VyJRpGLaum8SXRiJ7xtjuSYoZ1Hr4vR",
+      "args_sha256": "ac7c7f5028b731bba1d4a3c5e95f29dc25f07d07960ab309888c168106ff0794"
+    },
+    {
+      "step": "provider0-offer",
+      "tx": "9gfVHmHdPwdcvqKghGY1Ju69KrrJv76fQ13PGgmrPsHZ",
+      "block_hash": "Dq51GjcqmVJPKuCFzdYhTW357EoHKgwNNZwVGbVmiCmY",
+      "args_sha256": "b013d7c1a421931b9a897be1541e6d05704b673d40185c9e2853f0d416f59067"
+    },
+    {
+      "step": "provider1-offer",
+      "tx": "4WEs5MJLCjc27NPpzk2TLd5qRe932J52vE4SKcXZeC1Z",
+      "block_hash": "J1dGhhTwTtkAqArPGmPAcLDu25hAguRmNVwngfpdK9P2",
+      "args_sha256": "d4946f10b97d2994f0fe67c47213f45f0857cc3b5348b4d339a5fd6e3b679ca6"
+    },
+    {
+      "step": "award",
+      "tx": "67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT",
+      "block_hash": "5NFQUAd8LNqwtssUuo5mzLRZkp1uTqiijmSnPacDSFDv",
+      "args_sha256": "43618ea234f511fd56f0c5edc04571cbaec0fe1ad6d57e6e251a57b5d081fa11"
+    }
+  ],
+  "genesis_certificate": {
+    "version": "genesis-v1-offchain",
+    "input": {
+      "deadline": 1793831348567419100,
+      "buyers": [
+        {
+          "job_id": 1,
+          "cap": 5000000000000000000000
+        },
+        {
+          "job_id": 2,
+          "cap": 5000000000000000000000
+        },
+        {
+          "job_id": 3,
+          "cap": 5000000000000000000000
+        }
+      ],
+      "offers": [
+        {
+          "offer_id": 0,
+          "component": 0,
+          "provider": "nmg-quantities-36cbb96203.testnet",
+          "slot": "r6_csv_component_0",
+          "fee": 6000000000000000000000,
+          "bond": 12000000000000000000000,
+          "ready_at": 1793831348567419100,
+          "available": true
+        },
+        {
+          "offer_id": 1,
+          "component": 1,
+          "provider": "nmg-prices-bdcfb35f28.testnet",
+          "slot": "r6_csv_component_1",
+          "fee": 6000000000000000000000,
+          "bond": 12000000000000000000000,
+          "ready_at": 1793831348567419100,
+          "available": true
+        }
+      ]
+    },
+    "input_hash": "ac976b17a3c9b4520cd410709b86d90903af47d84cea1bd993eb72d082af0da7",
+    "winning_pair": {
+      "price": 12000000000000000000000,
+      "offers": [
+        0,
+        1
+      ]
+    },
+    "coalitions": [
+      {
+        "mask": 1,
+        "job_ids": [
+          1
+        ],
+        "capacity": 5000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 2,
+        "job_ids": [
+          2
+        ],
+        "capacity": 5000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 3,
+        "job_ids": [
+          1,
+          2
+        ],
+        "capacity": 10000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 4,
+        "job_ids": [
+          3
+        ],
+        "capacity": 5000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 5,
+        "job_ids": [
+          1,
+          3
+        ],
+        "capacity": 10000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 6,
+        "job_ids": [
+          2,
+          3
+        ],
+        "capacity": 10000000000000000000000,
+        "feasible": false,
+        "allocation": null
+      },
+      {
+        "mask": 7,
+        "job_ids": [
+          1,
+          2,
+          3
+        ],
+        "capacity": 15000000000000000000000,
+        "feasible": true,
+        "allocation": [
+          4000000000000000000000,
+          4000000000000000000000,
+          4000000000000000000000
+        ]
+      }
+    ],
+    "minimal_coalitions": [
+      [
+        1,
+        2,
+        3
+      ]
+    ],
+    "certificate_hash": "c05c1c7656f4608575e733978c149dd5f6198c8bbf70edebd069e29833a759fb"
+  },
+  "provenance": "10 cross-RPC-checked historical transaction arguments",
+  "limitations": [
+    "Not an authenticated pre-award snapshot",
+    "Full historical eligibility unverified",
+    "Historical slot occupancy unverified",
+    "Offer availability inferred from award",
+    "Ready-at is a deadline surrogate",
+    "Unobserved market alternatives excluded",
+    "Actor independence not established"
+  ],
+  "witness_hash": "f06ab42569d09b225d3f478cc29a62af783dbdf832067d2f44b2c4d119ab9361"
+}

@@ -44,7 +44,13 @@ Branch: `feat/r7-genesis-certificate`
 - dRPC returned HTTP 403; legacy NEAR endpoint used.
 - Endpoint infrastructure independence not claimed.
 - Historical complete-market snapshot not yet proven.
-- Next: R7-02B/01 historical eligibility reconstruction.
+- R7-02B/01 transaction-derived witness generated.
+- Buyer caps reconstructed from signed funding calls.
+- Fees and bonds reconstructed from signed offers.
+- Genesis Certificate calculated from those inputs.
+- Ten public transaction references retained.
+- Complete pre-award market state NOT proven.
+- Next: R7-02B/02 award-state completeness audit.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
