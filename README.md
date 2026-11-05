@@ -1,5 +1,69 @@
 # prime-radiant-nomogenesis
 
+## NOMOGENESIS — An economic recovery primitive on NEAR
+
+**One dependency fails. Several funded jobs are blocked.
+No individual buyer wants to pay for the entire recovery.**
+
+NOMOGENESIS lets buyers pool bounded commitments,
+purchase recovery from bonded providers, verify delivery,
+and settle the resulting obligations on NEAR.
+
+### The demonstrated innovation
+
+The Genesis Certificate exhaustively enumerates feasible
+buyer coalitions (up to six buyers), identifies
+inclusion-minimal coalitions, and independently verifies
+provider pairing and capped-equal allocations.
+
+The deployed NEAR contract implements the bonded
+recovery and economic settlement lifecycle.
+Genesis coalition enumeration is currently **off-chain**;
+the contract does not select a minimal coalition on-chain.
+
+### Two complete public Testnet experiments
+
+| | Testnet 01 | Testnet 02 |
+|---|---|---|
+| Buyer caps | 5 + 5 + 5 UNIT | 7 + 7 + 7 UNIT |
+| Recovery price | 12 UNIT | 12 UNIT |
+| Minimal feasible coalitions | 1 | 3 |
+| On-chain allocation | 4 + 4 + 4 | 4 + 4 + 4 |
+| Signed transactions | 17 | 17 |
+| Native payout verified | Yes | Yes |
+
+**Try the interactive jury demo:**
+
+`demo/nomogenesis_jury_demo.html`
+
+**Reproduce the public evidence without a wallet:**
+
+```bash
+python3 -B scripts/m3/r7_public_replay.py
+node scripts/m3/r7_05c_public_verify.cjs
+```
+
+The first command reconstructs historical Genesis evidence.
+The second verifies the full second Testnet lifecycle,
+including 17 signed transactions, CSV proofs, worker results,
+contract accounting and native payout receipts.
+
+**Public contract:** `nomogenesis-70e59593a3.testnet`
+
+**Hackathon contribution:** the bounded Genesis Certificate,
+independent Python/Rust verification, public Testnet replay,
+second market experiment and interactive coalition explorer
+were developed as part of the November 2026 work.
+The underlying rescue contract has earlier development history.
+
+**Limitations:** synthetic Testnet funds; one operator
+controlled the demonstration accounts; no local Merkle
+state proof or independent security audit; eight earlier
+SDK retry hashes remain inconclusive. No production
+readiness or world-first claim is made.
+
+---
+
 Nomogenesis is a NEAR rescue market for agent economies.
 
 When one failed dependency blocks several independently funded jobs, affected buyers can combine bounded rescue mandates and atomically purchase recovery work that none would fund alone.
@@ -41,7 +105,8 @@ NEAR Testnet, with byte-for-byte verification via two RPCs.
 M3-R6-04: three public Testnet transactions verified
 case creation, buyer funding and worker acceptance.
 The contract holds 30 UNIT (0.03 testNEAR) in rescue
-escrow. Full public recovery and payout are pending.
+escrow. This historical checkpoint was subsequently
+superseded by the completed R6-05B and R7-05C lifecycles.
 
 M3-R6-05B: full public Testnet rescue lifecycle PASS.
 
@@ -70,7 +135,7 @@ Limitations: synthetic data, Testnet only, one demonstration
 operator controlling the participating accounts; no independent
 security audit, mainnet deployment or proven market advantage.
 
-Next: M3-R6-06 submission demo and review.
+Current submission work: R7-05E jury readiness.
 
 
 ## Genesis Proof — reproducible public evidence

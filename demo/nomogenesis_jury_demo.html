@@ -309,10 +309,10 @@ allocated across all three eligible buyers in both cases.
 </p>
 
 <div class="facts">
-<div class="fact"><strong>7</strong><small>Nonempty coalitions</small></div>
-<div class="fact"><strong>6</strong><small>Insufficient coalitions</small></div>
-<div class="fact"><strong>1</strong><small>Minimal viable coalition</small></div>
-<div class="fact"><strong>4+4+4</strong><small>Recorded allocation</small></div>
+<div class="fact"><strong id="genesis-count">7</strong><small>Nonempty coalitions</small></div>
+<div class="fact"><strong id="genesis-insufficient">6</strong><small>Insufficient coalitions</small></div>
+<div class="fact"><strong id="genesis-minimal">1</strong><small>Minimal viable coalitions</small></div>
+<div class="fact"><strong>4+4+4</strong><small>Both recorded Testnet awards</small></div>
 </div>
 
 <h3 style="margin-top:42px">Explore every coalition</h3>
@@ -583,6 +583,13 @@ function drawCoalitions(){
  const sets=formation(caps,cost);
  const viable=sets.filter(row=>row.viable);
  const minimal=sets.filter(row=>row.minimal);
+
+ document.getElementById('genesis-count').textContent=
+  String(sets.length);
+ document.getElementById('genesis-insufficient').textContent=
+  String(sets.length-viable.length);
+ document.getElementById('genesis-minimal').textContent=
+  String(minimal.length);
 
  document.getElementById('coalition-summary').textContent=
   sets.length+' coalitions examined · '+

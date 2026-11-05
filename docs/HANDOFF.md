@@ -123,7 +123,13 @@ Branch: `feat/r7-genesis-certificate`
 - Both awarded all three eligible sponsors 4+4+4.
 - Public evidence links and read-only commands shown.
 - Eight unresolved SDK retry hashes disclosed.
-- Next: clean-checkout final UI and submission audit.
+- R7-05E/00 jury-first README completed.
+- Earlier R6 status corrected as historical.
+- November 2026 Genesis contribution distinguished.
+- Dynamic minimal coalition counters repaired.
+- Both recorded Testnet cases preserved.
+- No deployed contract or economic evidence modified.
+- Next: final clean checkout and submission preparation.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 
