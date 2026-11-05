@@ -107,7 +107,16 @@ Branch: `feat/r7-genesis-certificate`
 - On-chain full 3-buyer allocation: 4+4+4 UNIT.
 - Baseline 30 escrow / 94 claimable preserved.
 - Final 30 escrow / 194 claimable after 20 payout.
-- Next: independent public R7-05C verifier and final submission review.
+- R7-05C/03 independent public keyless verifier PASS.
+- All 17 signed Testnet transactions rechecked.
+- Signed arguments and SHA-256 hashes validated.
+- CSV and worker computations independently repeated.
+- Full Genesis Certificate reconstructed in Python.
+- Direct JSON loading preserves u128 monetary integers.
+- Final contract accounting and native payout checked.
+- No private keys or new Testnet transactions required.
+- Eight SDK retry hashes remain inconclusive.
+- Next: jury demo integration and submission audit.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 

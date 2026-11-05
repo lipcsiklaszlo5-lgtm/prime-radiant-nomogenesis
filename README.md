@@ -100,6 +100,37 @@ The archived historical state comes from an RPC
 provider, not a locally validated Merkle proof.
 Demonstration actors were controlled by one operator.
 
+## Second public Testnet lifecycle
+
+The second full NEAR Testnet experiment includes
+17 signed transactions, three buyers with 7 UNIT
+caps, and a 12 UNIT recovery price.
+
+The Genesis Certificate identifies three alternative
+minimal feasible two-buyer coalitions.
+
+The deployed contract uses all three eligible
+buyers, allocating 4+4+4 UNIT on-chain.
+
+Public verification:
+
+```bash
+node scripts/m3/r7_05c_public_verify.cjs
+```
+
+The verifier checks signed transaction arguments,
+recomputes the Genesis Certificate, validates
+the two CSV components and worker results, and
+rechecks final contract state and native payout.
+
+Evidence:
+- `docs/evidence/R7-05C-public.json`
+- `docs/evidence/R7-05C-genesis-certificate.json`
+
+No private keys or Testnet funds are needed.
+Historical RPC data is externally supplied.
+Eight previous SDK retry hashes remain inconclusive.
+
 ## Interactive jury demo
 
 Open `demo/nomogenesis_jury_demo.html` in a browser.
