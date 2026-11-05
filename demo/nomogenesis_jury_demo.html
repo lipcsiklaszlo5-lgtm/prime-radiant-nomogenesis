@@ -153,6 +153,32 @@ footer{padding:45px 0 70px;color:#777;font-size:12px;line-height:1.8}
  .steps,.accounting{grid-template-columns:1fr}
  .facts{grid-template-columns:repeat(2,1fr)}
 }
+
+.genesis-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+ gap:12px;margin-top:28px
+}
+.coalition-card{
+ text-align:left;background:#fff;
+ border:1px solid #e3e3e1;border-radius:12px;
+ padding:20px;min-height:122px
+}
+.coalition-card:hover{border-color:#777}
+.coalition-card.viable{border-color:#588568}
+.coalition-card.minimal{
+ background:#edf4ee;border-color:#37664b
+}
+.coalition-card strong{
+ display:block;font-size:17px;margin:8px 0
+}
+.coalition-card small{color:#777;font-size:12px}
+.proof-links{
+ display:flex;gap:15px;flex-wrap:wrap;
+ margin-top:20px;font-size:13px
+}
+.proof-links a{font-weight:600}
+
 </style>
 </head>
 <body>
@@ -229,8 +255,66 @@ No wallet, gas or blockchain transaction.
 </div>
 </section>
 
+
+<section id="genesis" class="content">
+<div class="kicker">02 / Proof of market formation</div>
+<h2>Seven coalitions.<br>One viable market.</h2>
+<p class="intro">
+In the recorded NEAR Testnet case, three buyers each
+committed 5 UNIT. Recovery cost 12 UNIT.
+No individual buyer or pair could fund it.
+Only the full coalition was feasible.
+</p>
+
+<div class="facts">
+<div class="fact"><strong>7</strong><small>Nonempty coalitions</small></div>
+<div class="fact"><strong>6</strong><small>Insufficient coalitions</small></div>
+<div class="fact"><strong>1</strong><small>Minimal viable coalition</small></div>
+<div class="fact"><strong>4+4+4</strong><small>Recorded allocation</small></div>
+</div>
+
+<h3 style="margin-top:42px">Explore every coalition</h3>
+<p class="muted">
+This interactive matrix follows the sliders above.
+Changing inputs creates a local what-if simulation,
+not a new blockchain transaction.
+Select any coalition to inspect its funding gap.
+</p>
+<p id="coalition-summary" class="muted"></p>
+<div id="coalition-grid" class="genesis-grid"></div>
+<p id="coalition-insight" class="muted"
+   style="margin-top:20px" aria-live="polite"></p>
+
+<div class="proof" style="margin-top:40px">
+<div class="kicker">Recorded Testnet evidence</div>
+<h3>Verify the actual award</h3>
+<p class="muted">
+The recorded Genesis Certificate enumerates every
+coalition. Archival NEAR queries independently
+reconstruct the registered jobs and offers, the
+atomic award, capacity locks and liability changes.
+</p>
+<pre>python3 -B scripts/m3/r7_public_replay.py</pre>
+<p class="muted">
+Read-only public replay. No wallet or private keys.
+Requires accessible NEAR Testnet RPC endpoints.
+</p>
+<div class="proof-links">
+<a href="../docs/evidence/R7-02B-01-transaction-witness.json">
+Genesis Certificate JSON ↗</a>
+<a href="../docs/evidence/R7-02B-03-award-transition.json">
+Historical award evidence ↗</a>
+</div>
+<p class="muted" style="margin-top:22px">
+Scope: synthetic Testnet funds, one demonstration
+operator, externally served archival state.
+Not a locally verified Merkle proof or production audit.
+</p>
+</div>
+</section>
+
 <section class="content">
-<div class="kicker">02 / Execution</div>
+<div class="kicker">03 / Execution</div>
 <h2>From financing<br>to actual payout.</h2>
 <div class="steps">
 <article class="step">
@@ -261,7 +345,7 @@ No wallet, gas or blockchain transaction.
 </section>
 
 <section class="content">
-<div class="kicker">03 / Conservation</div>
+<div class="kicker">04 / Conservation</div>
 <h2>Every UNIT accounted for.</h2>
 <div class="accounting">
 <article>
@@ -276,7 +360,7 @@ No wallet, gas or blockchain transaction.
 </section>
 
 <section class="content">
-<div class="kicker">04 / Public evidence</div>
+<div class="kicker">05 / Public evidence</div>
 <h2>Verify the chain.<br>Not the presentation.</h2>
 <div class="proof">
 <pre>node scripts/m3/r6_verify_public.cjs</pre>
@@ -360,6 +444,83 @@ function allocate(limits,cost){
  return {ok:true,total,values};
 }
 
+
+function formation(limits,cost){
+ const sets=[];
+ for(let mask=1;mask<(1<<limits.length);mask++){
+  const members=[];
+  let funding=0;
+  limits.forEach((cap,i)=>{
+   if(mask&(1<<i)){
+    members.push(i+1);
+    funding+=cap;
+   }
+  });
+  sets.push({
+   mask,members,funding,viable:funding>=cost
+  });
+ }
+ sets.forEach(row=>{
+  row.minimal=row.viable&&!sets.some(other=>
+   other.viable&&other.mask!==row.mask&&
+   (other.mask&row.mask)===other.mask
+  );
+ });
+ return sets;
+}
+
+function drawCoalitions(){
+ const cost=Number(price.value);
+ const sets=formation(caps,cost);
+ const viable=sets.filter(row=>row.viable);
+ const minimal=sets.filter(row=>row.minimal);
+
+ document.getElementById('coalition-summary').textContent=
+  sets.length+' coalitions examined · '+
+  viable.length+' feasible · '+
+  minimal.length+' inclusion-minimal';
+
+ const root=document.getElementById('coalition-grid');
+ root.replaceChildren();
+
+ sets.forEach(row=>{
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='coalition-card '+
+   (row.minimal?'minimal':row.viable?'viable':'');
+
+  const label=document.createElement('small');
+  label.textContent='COALITION';
+
+  const heading=document.createElement('strong');
+  heading.textContent='Buyers '+row.members.join(' + ');
+
+  const info=document.createElement('small');
+  info.textContent=row.funding+' UNIT · '+
+   (row.minimal?'MINIMAL VIABLE':
+    row.viable?'VIABLE':'INSUFFICIENT');
+
+  button.append(label,heading,info);
+
+  button.onclick=()=>{
+   const insight=document.getElementById(
+    'coalition-insight'
+   );
+   insight.textContent=row.viable
+    ?'Buyers '+row.members.join(' + ')+
+     ' can finance the '+cost+
+     ' UNIT recovery. '+
+     (row.minimal
+      ?'Every proper subcoalition is insufficient.'
+      :'A smaller coalition also works.')
+    :'Buyers '+row.members.join(' + ')+
+     ' are short by '+(cost-row.funding)+' UNIT.';
+  };
+
+  root.append(button);
+ });
+}
+
 function drawBuyers(){
  const root=document.getElementById('buyers');
  root.replaceChildren();
@@ -418,6 +579,7 @@ function render(){
   track.append(fill);row.append(title,track);
   root.append(row);
  });
+ drawCoalitions();
 }
 
 price.addEventListener('input',render);

@@ -69,7 +69,14 @@ Branch: `feat/r7-genesis-certificate`
 - Archive RPC 429 recovery and pacing enabled.
 - Replay runs in a temporary evidence workspace.
 - Full Rust certificate verifier still pending.
-- Next: Rust certificate verifier and jury demo.
+- R7-05A Genesis coalition explorer integrated.
+- Existing white jury demo preserved.
+- All 7 reference coalitions visible.
+- Interactive 1..6 buyer coalition enumeration.
+- Recorded proof and award evidence linked.
+- Synthetic what-if separate from Testnet evidence.
+- Full Rust certificate verifier still pending.
+- Next: Rust verifier, clean-checkout jury review.
 
 ## Active M3-R7-01 — Economic Emergence Benchmark
 

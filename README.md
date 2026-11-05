@@ -73,6 +73,33 @@ security audit, mainnet deployment or proven market advantage.
 Next: M3-R6-06 submission demo and review.
 
 
+## Genesis Proof — reproducible public evidence
+
+Run the complete read-only Genesis reconstruction:
+
+```bash
+python3 -B scripts/m3/r7_public_replay.py
+```
+
+Offline artifact integrity only:
+
+```bash
+python3 -B scripts/m3/r7_public_replay.py --offline
+```
+
+The Genesis Certificate reconstructs the recorded
+three-buyer minimal coalition and the 4+4+4 UNIT
+award. Python/Rust allocation parity is checked
+against 185 deterministic vectors.
+
+The jury demo below also displays every coalition
+and its funding gap. Adjustable inputs are a local
+simulation, not new blockchain transactions.
+
+The archived historical state comes from an RPC
+provider, not a locally validated Merkle proof.
+Demonstration actors were controlled by one operator.
+
 ## Interactive jury demo
 
 Open `demo/nomogenesis_jury_demo.html` in a browser.
