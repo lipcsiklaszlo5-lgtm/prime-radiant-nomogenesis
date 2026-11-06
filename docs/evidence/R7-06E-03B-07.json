@@ -1,0 +1,121 @@
+{
+  "ticket": "R7-06E/03B-07C",
+  "checkpoint_base": "ee53dce",
+  "network": "local NEAR Sandbox",
+  "compatible_wasm_sha256": "2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e",
+  "per_registration_bond_yoctonear": "40960000000000000000000",
+  "registration_storage_growth_bytes": 524,
+  "additional_nonce_lifecycle_growth_bytes": 74,
+  "registrations": 3,
+  "active_consents": 2,
+  "total_consent_bonds_yoctonear": "122880000000000000000000",
+  "refund_implemented": false,
+  "refund_amount_approved": false,
+  "source_reports": {
+    "storage_audit_sha256": "0c1e583694776179fc90d22b0c4191f2f8edb314ab5f470157ce8bf5c7efaeb0",
+    "consent_lifecycle_sha256": "019111da1136f65991815abd5baf3d98645fa3d174658862f524e72a389420ad"
+  },
+  "storage_audit": {
+    "ticket": "R7-06E/03B-07A",
+    "network": "local NEAR Sandbox",
+    "feature": "r7-v2",
+    "storage_byte_cost": "10000000000000000000",
+    "consent_bond_bytes": "4096",
+    "measured_registration_growth_bytes": "524",
+    "consent_reserve_growth": "81920000000000000000000",
+    "refund_policy": "NOT_IMPLEMENTED",
+    "note": "Headroom is not an authorized refund.",
+    "snapshots": [
+      {
+        "label": "before-consent",
+        "usage": "599392",
+        "balance": "100090333880671139800000000",
+        "reserves": "41870000000000000000000",
+        "escrow": "48000000000000000000000",
+        "claims": "0",
+        "stake": "5993920000000000000000000",
+        "guardedStake": "6014400000000000000000000",
+        "liabilities": "89870000000000000000000",
+        "conservativeRequirement": "6104270000000000000000000",
+        "headroom": "93986063880671139800000000"
+      },
+      {
+        "label": "after-first-consent",
+        "usage": "599654",
+        "balance": "100131341532406990800000000",
+        "reserves": "82830000000000000000000",
+        "escrow": "48000000000000000000000",
+        "claims": "0",
+        "stake": "5996540000000000000000000",
+        "guardedStake": "6017020000000000000000000",
+        "liabilities": "130830000000000000000000",
+        "conservativeRequirement": "6147850000000000000000000",
+        "headroom": "93983491532406990800000000"
+      },
+      {
+        "label": "after-second-consent",
+        "usage": "599916",
+        "balance": "100172405685059247100000000",
+        "reserves": "123790000000000000000000",
+        "escrow": "48000000000000000000000",
+        "claims": "0",
+        "stake": "5999160000000000000000000",
+        "guardedStake": "6019640000000000000000000",
+        "liabilities": "171790000000000000000000",
+        "conservativeRequirement": "6191430000000000000000000",
+        "headroom": "93980975685059247100000000"
+      },
+      {
+        "label": "after-award",
+        "usage": "600607",
+        "balance": "100172650897509800500000000",
+        "reserves": "123790000000000000000000",
+        "escrow": "39000000000000000000000",
+        "claims": "9000000000000000000000",
+        "stake": "6006070000000000000000000",
+        "guardedStake": "6026550000000000000000000",
+        "liabilities": "171790000000000000000000",
+        "conservativeRequirement": "6198340000000000000000000",
+        "headroom": "93974310897509800500000000"
+      },
+      {
+        "label": "after-worker-expiry",
+        "usage": "600607",
+        "balance": "100172751343048787100000000",
+        "reserves": "123790000000000000000000",
+        "escrow": "38000000000000000000000",
+        "claims": "10000000000000000000000",
+        "stake": "6006070000000000000000000",
+        "guardedStake": "6026550000000000000000000",
+        "liabilities": "171790000000000000000000",
+        "conservativeRequirement": "6198340000000000000000000",
+        "headroom": "93974411343048787100000000"
+      }
+    ]
+  },
+  "consent_lifecycle": {
+    "ticket": "R7-06E/03B-07B",
+    "network": "local NEAR Sandbox",
+    "result": "PASS",
+    "original_consent_nonce": 102,
+    "replacement_consent_nonce": 103,
+    "successful_registrations": 3,
+    "active_consents": 2,
+    "per_registration_bond": "40960000000000000000000",
+    "first_bond_refunded": false,
+    "nonce_reuse_rejected": true,
+    "storage_bytes": {
+      "before_revocation": "599916",
+      "after_revocation": "599728",
+      "after_reregistration": "599990"
+    },
+    "storage_reserves": {
+      "before_revocation": "123790000000000000000000",
+      "after_revocation": "123790000000000000000000",
+      "after_reregistration": "164750000000000000000000"
+    },
+    "additional_storage_bytes": "74",
+    "additional_reserved_bond": "40960000000000000000000",
+    "limitation": "No storage refund entitlement or payout implemented"
+  }
+}

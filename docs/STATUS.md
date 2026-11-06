@@ -1240,3 +1240,21 @@ independent security review, public V2 Testnet,
 and free-rider incentives remain unresolved.
 
 Next: R7-06E/03B-07 storage bond accounting audit.
+
+## R7-06E/03B-07C storage policy gate
+
+Local NEAR Sandbox storage audit and consent
+revocation/re-registration lifecycle: PASS.
+
+Three registrations, two active consents,
+three retained storage bonds (0.12288 NEAR).
+Observed additional persistent growth: 74 bytes.
+
+No refund rights or fixed refund amount have
+been approved. Source code and WASM unchanged.
+
+Evidence: docs/evidence/R7-06E-03B-07.json
+Policy: docs/worklog/R7-06E-03B-07C-storage-policy.md
+
+Next: R7-06E/03B-07D persistent nonce
+storage bound and minimum retained reserve.
