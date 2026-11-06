@@ -1,4 +1,14 @@
-## CURRENT ENTRY POINT — 2026-11-06 / R7-REPO-01
+## CURRENT ENTRY POINT — R7-DEMO-03/02
+
+Branch: `feat/r7-demo-03-process-outage`.
+Read `docs/CURRENT_STATE.md`, latest HANDOFF entry,
+and `docs/worklog/R7-DEMO-03-process-outage.md`.
+
+Real source-process termination and local V2 recovery
+are verified. Backup provider data independence is not.
+Next: R7-DEMO-03/04 separate backup data providers.
+
+## HISTORICAL ENTRY POINT — 2026-11-06 / R7-REPO-01
 
 Latest verified local branch: `chore/r7-repo-01-entrypoint`.
 Clean-checkout V2 gate: `scripts/m3/r7_v2_clean_checkout_gate.sh`.

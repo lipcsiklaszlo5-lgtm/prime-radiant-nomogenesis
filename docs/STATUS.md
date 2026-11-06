@@ -1,6 +1,24 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-## CURRENT — R7-REPO-01 clean-checkout verified
+## CURRENT — R7-DEMO-03/02 real process outage VERIFIED
+
+Date: 2026-11-06.
+Branch: `feat/r7-demo-03-process-outage`.
+The CSV source ran as a separate process, exited via
+SIGTERM, and a separate HTTP observer saw ECONNREFUSED.
+The full consent-bound V2 Sandbox lifecycle then passed:
+two approvals, one refusal, two provider proofs, two
+completed jobs and 48 UNIT financial conservation.
+
+Evidence: `docs/worklog/R7-DEMO-03-process-outage.md`.
+
+Recovery payloads are still precomputed local fixtures;
+backup provider independence is not yet demonstrated.
+No V2 public Testnet deployment is claimed.
+
+Next: R7-DEMO-03/04 independent backup data providers.
+
+## HISTORICAL — R7-REPO-01 clean-checkout verified
 
 Date: 2026-11-06.
 Branch: `chore/r7-repo-01-entrypoint`, implementation `6604fb3`.
