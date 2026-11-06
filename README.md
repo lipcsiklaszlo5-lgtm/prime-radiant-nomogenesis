@@ -1,5 +1,44 @@
 # prime-radiant-nomogenesis
 
+## Current V2 — consent-bound autonomous recovery
+
+A shared CSV dependency becomes unavailable. Three isolated
+buyer-agent processes decide independently under configured
+policies: two approve a precisely funded rescue, one declines.
+
+The NEAR V2 contract validates the selected coalition and
+buyer consents, atomically awards two bonded provider offers,
+verifies delivered data, and settles worker and provider
+obligations.
+
+### Reproduce the complete local Sandbox lifecycle
+
+From a clean checkout of the current V2 branch:
+
+```bash
+bash scripts/m3/r7_v2_clean_checkout_gate.sh
+```
+
+The gate clones the tracked source to a separate temporary
+directory, installs locked dependencies, runs Rust and CSV
+regressions, builds the `r7-v2` WASM, checks its recorded
+SHA-256, and executes the full recovery lifecycle.
+
+Expected outcome:
+`R7 V2 CLEAN-CHECKOUT GATE: PASS`
+
+**Evidence limits:** local controlled HTTP 503, accelerated
+Sandbox chain time, synthetic funded accounts and claimable
+credits. The current V2 lifecycle is not yet proven on
+public NEAR Testnet, does not prove native withdrawals, and
+does not constitute an independent security audit.
+
+The earlier public Testnet lifecycles documented below used
+a previous contract version. They are historical evidence,
+not a V2 public deployment.
+
+---
+
 **Aktuális belépő:** [állapot és következő ticket](docs/CURRENT_STATE.md) · [review](docs/REVIEW_2026-11-06.md) · [handoff](docs/HANDOFF.md). Ellenőrizd a Git HEAD-et.
 
 ## NOMOGENESIS — An economic recovery primitive on NEAR
