@@ -359,6 +359,32 @@ Worklog:
 Next: R7-06E/02 versioned contract authorization
 and Sandbox atomicity design.
 
+## R7-06E/02 — Authorization State-Machine Model
+
+Starting checkpoint: `ca9e354`.
+
+- Separate pure Rust registration/revocation/award model.
+- Modelled caller identity, not actual NEAR authentication.
+- Domain-separated plan hash binds selected jobs,
+  provider pair, contract, case and recovery price.
+- Consent nonces cannot be reused after revocation.
+- Failed awards preserve modelled state unchanged.
+- Exact buyer approvals and refund conservation
+  reuse R7-06E/01 and original M3 allocator.
+- Existing deployed contract and ABI untouched.
+- Real NEAR state persistence and Sandbox atomicity
+  have NOT been tested.
+
+Sources:
+`src/r7_06e_auth_state.rs`
+`tests/r7_06e_auth_state.rs`
+
+Design:
+`docs/M3_R7_06E_ONCHAIN_DESIGN.md`
+
+Next: R7-06E/03 versioned NEAR adapter and
+actual Sandbox authorization/rollback tests.
+
 ## What Is Still Missing
 
 1. Independently deciding buyer/provider agents.

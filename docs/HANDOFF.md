@@ -51,7 +51,14 @@
 - Existing NEAR contract/ABI unchanged.
 - Approval records still lack real NEAR signature verification.
 - Excluded workers and non-excludable benefits remain open.
-- Next: R7-06E/02 contract authorization + Sandbox design.
+- R7-06E/02 model-only Rust authorization state machine.
+- Plan-bound buyer consent, revocation and replay rejection.
+- Staged failure-before-commit economic transitions.
+- Caller identity still supplied by test harness.
+- NO persistent NEAR authorization or Sandbox PASS yet.
+- Design: docs/M3_R7_06E_ONCHAIN_DESIGN.md.
+- Next: R7-06E/03 real NEAR authorization adapter
+  and Sandbox atomic rollback verification.
 
 
 ## Active M3-R7-02 — Genesis Certificate
