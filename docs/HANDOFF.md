@@ -45,7 +45,13 @@
 - Non-excludable free-riding cannot be fixed by ledger alone.
 - Evidence: docs/evidence/R7-06E-authorization-boundary.json.
 - Design: docs/M3_R7_06E_AUTHORIZATION_SPEC.md.
-- Next: R7-06E/01 pure Rust authorization preflight.
+- R7-06E/01 isolated Rust sponsor-subset preflight.
+- Reuses original M3 capped-equal allocation logic.
+- Checks model approvals, refund and bond conservation.
+- Existing NEAR contract/ABI unchanged.
+- Approval records still lack real NEAR signature verification.
+- Excluded workers and non-excludable benefits remain open.
+- Next: R7-06E/02 contract authorization + Sandbox design.
 
 
 ## Active M3-R7-02 — Genesis Certificate

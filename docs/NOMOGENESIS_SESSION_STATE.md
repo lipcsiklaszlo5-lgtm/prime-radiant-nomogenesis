@@ -335,6 +335,30 @@ Normative next design:
 Next: R7-06E/01 pure Rust subset-aware authorization
 and settlement preflight with negative tests.
 
+## R7-06E/01 — Rust Subset Authorization Preflight
+
+Starting checkpoint: `a4551a6`.
+
+- New isolated pure Rust model:
+  `src/r7_06e_subset_model.rs`.
+- Tests:
+  `tests/r7_06e_subset_preflight.rs`.
+- Reuses M3 pure Rust capped-equal allocation.
+- Enforces exact modeled buyer payment approvals.
+- Checks case/chain/contract scope and nonce reuse.
+- Checks provider bonds and modelled liability conservation.
+- Handles excluded sponsor and excess bond refunds.
+- Keeps existing contract ABI and deployment unchanged.
+- No cryptographic NEAR authorization yet.
+- No proof of complete chain state or worker exclusion.
+- No proof of coalition stability or incentive compatibility.
+
+Worklog:
+`docs/worklog/M3-R7-06E-01-rust-preflight.md`
+
+Next: R7-06E/02 versioned contract authorization
+and Sandbox atomicity design.
+
 ## What Is Still Missing
 
 1. Independently deciding buyer/provider agents.
