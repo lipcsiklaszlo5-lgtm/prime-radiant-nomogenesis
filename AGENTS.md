@@ -1,4 +1,14 @@
-## CURRENT ENTRY POINT — R7-DEMO-03/02
+## CURRENT ENTRY POINT — R7-DEMO-03/04B
+
+Branch: `feat/r7-demo-03-process-outage`.
+Read `docs/CURRENT_STATE.md`, latest HANDOFF,
+and `docs/worklog/R7-DEMO-03-backup-driven-recovery.md`.
+
+Separate source termination and backup-driven local
+V2 settlement passed. Do not claim public V2 Testnet.
+Next: R7-TESTNET-01 public V2 transaction evidence.
+
+## HISTORICAL ENTRY POINT — R7-DEMO-03/02
 
 Branch: `feat/r7-demo-03-process-outage`.
 Read `docs/CURRENT_STATE.md`, latest HANDOFF entry,

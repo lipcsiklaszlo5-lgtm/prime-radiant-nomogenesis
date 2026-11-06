@@ -3,6 +3,7 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const {componentFromCsv} = require('./r5_data_envelope.cjs');
 
 if (!process.send) {
   throw Error('source requires isolated IPC process');
@@ -14,6 +15,13 @@ const routes = new Map([
   ['/quantities', path.join(data, 'quantities.csv')],
   ['/prices', path.join(data, 'prices.csv')]
 ]);
+
+const componentRoots = [
+  '/quantities',
+  '/prices'
+].map((route, index) =>
+  Array.from(componentFromCsv(routes.get(route), index).root)
+);
 
 const server = http.createServer((request, response) => {
   const filename = routes.get(request.url);
@@ -45,6 +53,7 @@ server.listen(0, '127.0.0.1', () => {
   process.send({
     kind: 'source-ready',
     pid: process.pid,
-    endpoint: `http://127.0.0.1:${server.address().port}`
+    endpoint: `http://127.0.0.1:${server.address().port}`,
+    componentRoots
   });
 });

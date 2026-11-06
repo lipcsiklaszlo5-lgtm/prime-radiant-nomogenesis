@@ -1,6 +1,25 @@
 # Nomogenesis — aktuális állapot és folytatás
 
-## CURRENT — R7-DEMO-03/02 real process outage VERIFIED
+## CURRENT — R7-DEMO-03/04B backup-driven recovery VERIFIED
+
+Date: 2026-11-06.
+Branch: `feat/r7-demo-03-process-outage`.
+Full local V2 Sandbox recovery passed with a genuinely
+terminated source process and two separate backup
+provider processes. Backup bytes were requested only
+after the atomic award. Two buyer consents, one refusal,
+two Merkle-verified components, two completed jobs and
+48 UNIT financial conservation passed.
+
+Wall time to both accepted proofs: 26.122 seconds.
+Evidence: `docs/worklog/R7-DEMO-03-backup-driven-recovery.md`.
+
+Limits: same-host synthetic backups, request-driven
+observer, no public V2 Testnet or native withdrawal.
+
+Next single ticket: R7-TESTNET-01.
+
+## HISTORICAL — R7-DEMO-03/02 real process outage VERIFIED
 
 Date: 2026-11-06.
 Branch: `feat/r7-demo-03-process-outage`.

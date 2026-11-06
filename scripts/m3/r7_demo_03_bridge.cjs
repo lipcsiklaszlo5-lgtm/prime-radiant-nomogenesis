@@ -109,11 +109,16 @@ async function startServices() {
     assert.equal(origin.pid, source.pid);
     assert.equal(watcher.pid, observer.pid);
     assert.notEqual(source.pid, observer.pid);
+    assert.equal(origin.componentRoots.length, 2);
+    for (const root of origin.componentRoots) {
+      assert.equal(root.length, 32);
+    }
 
     let sequence = 0;
 
     return {
       endpoint: origin.endpoint,
+      sourceCommitments: origin.componentRoots,
       sourcePid: source.pid,
       observerPid: observer.pid,
 

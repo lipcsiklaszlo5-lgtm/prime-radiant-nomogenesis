@@ -1,32 +1,36 @@
 # Nomogenesis — folytatás
 
-Repo: https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
+Repo:
+https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis
 
-Aktuális fejlesztési ág:
+Aktuális ellenőrzött ág:
 `feat/r7-demo-03-process-outage`.
 
-Olvasd el:
-- AGENTS.md
-- docs/CURRENT_STATE.md
-- docs/HANDOFF.md legfelső bejegyzése
-- docs/worklog/R7-DEMO-03-process-outage.md
+Olvasási sorrend:
+AGENTS.md -> docs/CURRENT_STATE.md ->
+docs/HANDOFF.md -> docs/worklog/
+R7-DEMO-03-backup-driven-recovery.md
 
-A main már az ellenőrzött R7-REPO-01 V2 állapotot tartalmazza.
-A teljes helyi V2 Sandbox-demó valóban leállított,
-külön futó HTTP forrásszerver után sikeresen lefutott.
+R7-DEMO-03/04B PASS:
+A forrásszerver valóban leállt.
+Külön megfigyelő ECONNREFUSED hibát észlelt.
+Két külön backup-folyamat az atomi award után
+olvasta és adta át a saját CSV-adatát.
+A V2 Sandbox ellenőrizte mindkét proofot.
+Két buyer beleegyezett, egy elutasított.
+Két worker completion sikeres.
+A pénzügyi kötelezettség 48 UNIT maradt.
 
-Két buyer pontosan 6-6 UNIT mentést engedélyezett,
-egy elutasított. Két proof és két worker completion
-sikerült. A kötelezettségek összege 48 UNIT maradt.
+26.122 másodperces helyi wall-clock mérés
+a két provider-proof elfogadásáig.
 
-Korlát: a backup payloadok még a demo-controller
-előre kiszámított helyi CSV-adataiból származnak.
-A megfigyelő csak kérésre vizsgál, nem folyamatosan.
+Korlát: szintetikus, azonos gépen futó backupok.
+Még nincs V2 public NEAR Testnet végrehajtás.
+Nincs igazolt natív withdrawal vagy külső audit.
 
-Következő egyetlen lépés: R7-DEMO-03/04.
-Két különálló backup adatszolgáltató saját fájlokkal,
-és outage utáni, valódi adatlekérés.
+Következő egyetlen ticket: R7-TESTNET-01.
+Valódi nyilvános V2 Testnet-tranzakciók,
+ellenőrizhető transaction ID-k és elszámolás.
 
-Nincs V2 public Testnet vagy mainnet bizonyíték.
-Az eredeti munkakönyvtár nem commitált fájljait
-ne töröld. Nincs force push vagy reset --hard.
+A main és a többi worktree védendő.
+Nincs reset --hard vagy force push.
