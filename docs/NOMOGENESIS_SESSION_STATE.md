@@ -1,0 +1,290 @@
+# NOMOGENESIS — Project State and New-Chat Handoff
+
+Date: 2026-11-06
+Last previously verified commit: `3237164`
+Repository: `lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis`
+Working branch: `feat/r7-genesis-certificate`
+
+Git HEAD and actual tests are authoritative.
+This document preserves the development history,
+not an immutable representation of future progress.
+
+## Mission
+
+NOMOGENESIS aims to create an autonomous,
+proof-carrying economic formation mechanism.
+
+Independent, self-interested agents should discover
+mutually beneficial transactions that individual
+participants could not finance independently.
+
+The system must explain:
+- Who voluntarily joined or refused.
+- Which providers offered viable services.
+- Which coalitions were economically feasible.
+- What each participant pays and receives.
+- Why alternatives succeeded or failed.
+- Whether the authorized transaction was actually executed.
+
+The missing innovation is economic FORMATION,
+not generic escrow or a static coalition list.
+
+## M2 — Preserved Economic Kernel
+
+Existing Rust/NEAR functionality includes:
+- Funded tasks and escrow.
+- Claimable liability accounting.
+- Provider capacity exclusivity.
+- Merkle verification.
+- Native payout with callback recovery.
+- Storage and capital auditing.
+- Adversarial financial invariants.
+
+Do not rewrite or delete this kernel.
+
+## M3 — Preserved Rescue Market
+
+Implemented:
+- Funded buyer mandates and worker rewards.
+- Two complementary recovery components.
+- Bonded provider offers.
+- Deterministic provider-pair selection.
+- Atomic award and shared capacity locks.
+- Capped-equal sponsor allocation.
+- Authenticated component payloads.
+- Worker result validation.
+- Terminal settlement and refunds.
+- Native withdrawal and failure handling.
+
+M3 supports at most six sponsoring jobs
+and six offers in the bounded reference model.
+
+Primary specification:
+`docs/M3_RESCUE_MARKET_SPEC.md`
+
+## R6 — First Complete Public Testnet Lifecycle
+
+Deployed NEAR Testnet contract:
+`nomogenesis-70e59593a3.testnet`
+
+Deployment transaction:
+`49NZ9qDKmfy42K9A7UKQDrDbQ9FWETFhijWQaUvcR5Qd`
+
+Recorded result:
+- 17 confirmed signed public transactions.
+- Three funded buyers.
+- Two bonded providers.
+- Three completed workers.
+- Two authenticated CSV components.
+- Atomic award and settlement.
+- 114 UNIT economic principal.
+- 20 UNIT native withdrawal.
+- Transfer and callback verified.
+
+Public manifest:
+`docs/evidence/R6-05-public.json`
+
+Read-only verifier:
+`node scripts/m3/r6_verify_public.cjs`
+
+## R7 — Genesis Certificate V1
+
+Implemented:
+- Bounded coalition enumeration.
+- Maximum six buyers, up to 63 subsets.
+- Cheapest eligible complete provider pair.
+- Inclusion-minimal feasible coalitions.
+- Deterministic capped-equal allocation.
+- Canonical SHA-256 certificate.
+- Independent Python recomputation.
+- Independent Rust certificate verification.
+- Cross-language allocation tests.
+- Historical public Testnet replay.
+
+Important sources:
+- `scripts/m3/r7_genesis.py`
+- `scripts/m3/r7_genesis_verify.py`
+- `scripts/m3/r7_genesis_schema.py`
+- `tests/r7_genesis_certificate.rs`
+- `scripts/m3/r7_public_replay.py`
+- `docs/M3_R7_GENESIS_CERTIFICATE_SPEC.md`
+
+The Genesis Certificate is OFF-CHAIN.
+It is not a SNARK or an authenticated complete-market
+Merkle state proof.
+
+## R7-05C — Second Complete Testnet Lifecycle
+
+Recorded result:
+- 17 confirmed signed transactions.
+- Buyer caps: 7 + 7 + 7 UNIT.
+- Two provider fees: 6 + 6 UNIT.
+- Recovery price: 12 UNIT.
+- Minimal coalitions: [4,5], [4,6], [5,6].
+- Actual on-chain allocation: 4 + 4 + 4 UNIT.
+- Two authenticated component proofs.
+- Three completed workers.
+- Native 20 UNIT payout and callback verified.
+
+New economic principal: 120 UNIT.
+
+Final contract accounting:
+- Rescue escrow: 30 UNIT.
+- Claimables: 194 UNIT.
+- Pending payout: zero.
+
+Evidence:
+`docs/evidence/R7-05C-public.json`
+
+Certificate:
+`docs/evidence/R7-05C-genesis-certificate.json`
+
+Independent keyless verifier:
+`node scripts/m3/r7_05c_public_verify.cjs`
+
+Eight earlier SDK nonce-retry hashes are INCONCLUSIVE.
+This does not invalidate the 17 confirmed transactions,
+but does not prove the earlier attempts never executed.
+
+The deployed contract enrolled ALL eligible accepted
+buyers. It did not select a two-buyer minimal coalition.
+
+## R7-01 — Economic Benchmark
+
+Existing deterministic benchmark:
+`scripts/m3/r7_emergence_benchmark.cjs`
+
+It compares:
+- Joint rescue.
+- Individual funding.
+- Full standby reservation.
+- Reactive spot procurement.
+
+The benchmark contains positive and negative examples.
+Standby and spot can outperform NOMOGENESIS.
+
+These are synthetic comparisons, not empirical ROI.
+
+## R7-05D/E — Jury Interface
+
+Existing standalone interface:
+`demo/nomogenesis_jury_demo.html`
+
+Preserved functionality:
+- White interactive interface.
+- Editable buyer limits and recovery price.
+- Capped-equal allocation.
+- Coalition enumeration.
+- 5+5+5 historical scenario.
+- 7+7+7 historical scenario.
+- Dynamic coalition metrics.
+- Links to real Testnet transactions.
+
+The sliders are local simulations.
+They do not submit blockchain transactions.
+
+Previous observed checks include:
+- 12/12 UI regression tests.
+- 28 Python Genesis tests.
+- 5/5 Rust Genesis certificate tests.
+- 17/17 R7-05C public transaction verification.
+- Offline Genesis artifact integrity PASS.
+
+These are historical observations,
+not new test results for the current checkpoint.
+
+## What Is Still Missing
+
+1. Independently deciding buyer/provider agents.
+2. Authenticated autonomous decision provenance.
+3. Genuine multi-offer competitive market formation.
+4. Agent refusal and voluntary outside-option choices.
+5. Economic utility and fair counterfactual evaluation.
+6. Coalition stability and adversarial incentive analysis.
+7. On-chain execution of a selected strict subset.
+8. Real independent operators or customers.
+9. Demonstrated real-world economic advantage.
+10. Production security review and mainnet readiness.
+
+Do not claim these as already implemented.
+
+## New R7-06 Development Program
+
+Full specification:
+`docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md`
+
+Stages:
+- R7-06A: Offline deterministic policy formation.
+- R7-06B: Separate autonomous decision processes.
+- R7-06C: Competitive clearing and adversarial bids.
+- R7-06D: Economic advantage and deviation research.
+- R7-06E: Contract-compatible authorization.
+- R7-06F: Optional new Testnet demonstration.
+- R7-06G: Independent jury evidence and submission.
+
+Current ticket: R7-06A.
+
+After successful R7-06A tests, next ticket:
+R7-06B — authenticated, role-separated decision processes.
+
+## Engineering Constraints
+
+- CPU-only reference implementation.
+- No paid APIs or required LLM inference.
+- Preserve Rust, NEAR and existing evidence.
+- No mainnet spending or token issuance.
+- No unapproved Testnet redeployment.
+- No private keys or signer journals in Git.
+- No automatic retransmission of uncertain TX.
+- No unsupported economic superiority claim.
+- No fake decentralization or agent independence.
+- One bounded checkpoint at a time.
+- Tests before commit.
+- Always preserve negative cases.
+
+## Resume Commands
+
+```bash
+git branch --show-current
+git log -1 --oneline
+git status -sb
+python3 -B -m unittest discover -s scripts/m3 -p 'test_r7_*.py' -q
+node --test scripts/m3/r7_emergence_benchmark.test.cjs
+cargo test --locked --test r7_genesis_certificate
+python3 -B scripts/m3/r7_public_replay.py --offline
+```
+
+Network-dependent Testnet verifiers should be run
+separately from offline development.
+
+Before modifying files, read:
+- `AGENTS.md`
+- This document.
+- `docs/HANDOFF.md`
+- `docs/M3_NORTH_STAR.md`
+- `docs/M3_R7_NORTH_STAR.md`
+- `docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md`
+- Latest `docs/worklog/M3-R7-*.md`
+
+Existing untracked local files must not be
+blindly deleted or overwritten.
+
+## New-Chat Bootstrap Message
+
+Continue NOMOGENESIS from the current GitHub HEAD
+on branch `feat/r7-genesis-certificate`.
+
+Read `AGENTS.md`,
+`docs/NOMOGENESIS_SESSION_STATE.md`,
+`docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md`
+and `docs/HANDOFF.md` directly from the repository.
+
+Preserve existing M2/M3/R6/R7 code,
+both complete Testnet experiments and all evidence.
+
+Do not confuse offline coalition formation
+with actual on-chain subset selection.
+
+Follow the next unverified bounded ticket.
+Use one guarded Codespaces command at a time.
+Verify the actual test log before claiming PASS.

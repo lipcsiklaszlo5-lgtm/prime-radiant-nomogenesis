@@ -1,5 +1,23 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
+## CURRENT — R7-06 AUTONOMOUS FORMATION
+
+- Base: `3237164`, branch `feat/r7-genesis-certificate`.
+- Preserve M2/M3/R6/R7 and both complete Testnet cases.
+- R6: 17 verified signed transactions.
+- R7-05C: 17 verified signed transactions.
+- Genesis Certificate V1: independently verified OFFCHAIN.
+- Current M3 contract: all eligible accepted sponsors enrolled.
+- Eight prior SDK retry hashes remain inconclusive.
+- Full cross-chat history:
+  `docs/NOMOGENESIS_SESSION_STATE.md`.
+- Full engineering plan:
+  `docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md`.
+- R7-06A: offline policy-driven formation and negative tests.
+- No new NEAR transactions or autonomous owner claims.
+- Next: R7-06B separate authenticated agent decision processes.
+
+
 ## Active M3-R7-02 — Genesis Certificate
 
 Decision: 2026-11-05

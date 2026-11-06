@@ -70,6 +70,14 @@ When one failed dependency blocks several independently funded jobs, affected bu
 
 ## Current product direction
 
+**Next R7-06 development phase:**
+[Project state and new-chat handoff](docs/NOMOGENESIS_SESSION_STATE.md) ·
+[Autonomous formation plan](docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md).
+
+The formation policy engine is an experimental offline layer.
+It is not part of the deployed NEAR Testnet contract.
+
+
 - [M3 North Star](docs/M3_NORTH_STAR.md)
 - [M3 Rescue Market specification](docs/M3_RESCUE_MARKET_SPEC.md)
 - [Verified development status](docs/STATUS.md)

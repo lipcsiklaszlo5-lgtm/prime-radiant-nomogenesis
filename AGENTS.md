@@ -1,3 +1,23 @@
+## CURRENT ENTRY POINT (2026-11-06 / R7-06)
+
+Read first:
+- `docs/NOMOGENESIS_SESSION_STATE.md`
+- `docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md`
+
+These preserve the complete M2/M3/R6/R7 history
+and define the missing economic formation layer.
+
+Check current Git HEAD before acting.
+Older status paragraphs are historical checkpoints.
+
+Never claim autonomous independent operators,
+incentive compatibility or on-chain subset selection
+based only on the offline Genesis engine.
+
+Next after R7-06A: R7-06B.
+
+---
+
 # AGENTS.md — Prime Radiant / Nomogenesis
 
 > **KÖTELEZŐ első olvasmány minden új ChatGPT-, Claude-, Codex- vagy más fejlesztői munkamenetben.**
