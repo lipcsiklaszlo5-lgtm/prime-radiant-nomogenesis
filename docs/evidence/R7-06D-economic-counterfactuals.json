@@ -1,0 +1,537 @@
+{
+  "counterfactuals": {
+    "joint_reference": {
+      "assumed_incremental_benefit": 20,
+      "beneficiaries": [
+        1,
+        2
+      ],
+      "best_declared_surplus": 13,
+      "best_strategies": [
+        "nomogenesis"
+      ],
+      "limitations": [
+        "Synthetic declared values and supplier costs",
+        "Same beneficiary coverage is assumed",
+        "Standby and spot services are hypothetical",
+        "Delivery quality equivalence is assumed",
+        "Alternative counterparty risks are not priced",
+        "Locked capital is reported, not fully priced",
+        "No measured economic surplus or real revenue"
+      ],
+      "market_hash": "73cfe778bbe89947e2c8053e9e19c1c64a9449ca810f35021186766713359783",
+      "strategies": {
+        "individual": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": false,
+          "reason": "no_individual_buyer_can_pay",
+          "service_delivered": false,
+          "strategy": "individual",
+          "supplier_margin": 0
+        },
+        "no_recovery": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": true,
+          "reason": "outside_option_only",
+          "service_delivered": false,
+          "strategy": "no_recovery",
+          "supplier_margin": 0
+        },
+        "nomogenesis": {
+          "assumed_locked_capital": 33,
+          "beneficiaries": [
+            1,
+            2
+          ],
+          "buyer_cash_outlay": 11,
+          "buyer_net": 9,
+          "buyer_payments": [
+            6,
+            5
+          ],
+          "declared_social_surplus": 13,
+          "feasible": true,
+          "reason": "feasible_under_declared_assumptions",
+          "service_delivered": true,
+          "strategy": "nomogenesis",
+          "supplier_margin": 4
+        },
+        "spot": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": false,
+          "reason": "missed_recovery_deadline",
+          "service_delivered": false,
+          "strategy": "spot",
+          "supplier_margin": 0
+        },
+        "standby": {
+          "assumed_locked_capital": 14,
+          "beneficiaries": [
+            1,
+            2
+          ],
+          "buyer_cash_outlay": 14,
+          "buyer_net": 6,
+          "buyer_payments": [
+            7,
+            7
+          ],
+          "declared_social_surplus": 11,
+          "feasible": true,
+          "reason": "feasible_under_declared_assumptions",
+          "service_delivered": true,
+          "strategy": "standby",
+          "supplier_margin": 5
+        }
+      }
+    },
+    "spot_wins": {
+      "assumed_incremental_benefit": 20,
+      "beneficiaries": [
+        1,
+        2
+      ],
+      "best_declared_surplus": 15,
+      "best_strategies": [
+        "spot"
+      ],
+      "limitations": [
+        "Synthetic declared values and supplier costs",
+        "Same beneficiary coverage is assumed",
+        "Standby and spot services are hypothetical",
+        "Delivery quality equivalence is assumed",
+        "Alternative counterparty risks are not priced",
+        "Locked capital is reported, not fully priced",
+        "No measured economic surplus or real revenue"
+      ],
+      "market_hash": "73cfe778bbe89947e2c8053e9e19c1c64a9449ca810f35021186766713359783",
+      "strategies": {
+        "individual": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": false,
+          "reason": "no_individual_buyer_can_pay",
+          "service_delivered": false,
+          "strategy": "individual",
+          "supplier_margin": 0
+        },
+        "no_recovery": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": true,
+          "reason": "outside_option_only",
+          "service_delivered": false,
+          "strategy": "no_recovery",
+          "supplier_margin": 0
+        },
+        "nomogenesis": {
+          "assumed_locked_capital": 33,
+          "beneficiaries": [
+            1,
+            2
+          ],
+          "buyer_cash_outlay": 11,
+          "buyer_net": 9,
+          "buyer_payments": [
+            6,
+            5
+          ],
+          "declared_social_surplus": 13,
+          "feasible": true,
+          "reason": "feasible_under_declared_assumptions",
+          "service_delivered": true,
+          "strategy": "nomogenesis",
+          "supplier_margin": 4
+        },
+        "spot": {
+          "assumed_locked_capital": 8,
+          "beneficiaries": [
+            1,
+            2
+          ],
+          "buyer_cash_outlay": 8,
+          "buyer_net": 12,
+          "buyer_payments": [
+            4,
+            4
+          ],
+          "declared_social_surplus": 15,
+          "feasible": true,
+          "reason": "feasible_under_declared_assumptions",
+          "service_delivered": true,
+          "strategy": "spot",
+          "supplier_margin": 3
+        },
+        "standby": {
+          "assumed_locked_capital": 14,
+          "beneficiaries": [
+            1,
+            2
+          ],
+          "buyer_cash_outlay": 14,
+          "buyer_net": 6,
+          "buyer_payments": [
+            7,
+            7
+          ],
+          "declared_social_surplus": 11,
+          "feasible": true,
+          "reason": "feasible_under_declared_assumptions",
+          "service_delivered": true,
+          "strategy": "standby",
+          "supplier_margin": 5
+        }
+      }
+    },
+    "standby_wins": {
+      "assumed_incremental_benefit": 20,
+      "beneficiaries": [
+        1,
+        2
+      ],
+      "best_declared_surplus": 14,
+      "best_strategies": [
+        "standby"
+      ],
+      "limitations": [
+        "Synthetic declared values and supplier costs",
+        "Same beneficiary coverage is assumed",
+        "Standby and spot services are hypothetical",
+        "Delivery quality equivalence is assumed",
+        "Alternative counterparty risks are not priced",
+        "Locked capital is reported, not fully priced",
+        "No measured economic surplus or real revenue"
+      ],
+      "market_hash": "73cfe778bbe89947e2c8053e9e19c1c64a9449ca810f35021186766713359783",
+      "strategies": {
+        "individual": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": false,
+          "reason": "no_individual_buyer_can_pay",
+          "service_delivered": false,
+          "strategy": "individual",
+          "supplier_margin": 0
+        },
+        "no_recovery": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": true,
+          "reason": "outside_option_only",
+          "service_delivered": false,
+          "strategy": "no_recovery",
+          "supplier_margin": 0
+        },
+        "nomogenesis": {
+          "assumed_locked_capital": 33,
+          "beneficiaries": [
+            1,
+            2
+          ],
+          "buyer_cash_outlay": 11,
+          "buyer_net": 9,
+          "buyer_payments": [
+            6,
+            5
+          ],
+          "declared_social_surplus": 13,
+          "feasible": true,
+          "reason": "feasible_under_declared_assumptions",
+          "service_delivered": true,
+          "strategy": "nomogenesis",
+          "supplier_margin": 4
+        },
+        "spot": {
+          "assumed_locked_capital": 0,
+          "beneficiaries": [],
+          "buyer_cash_outlay": 0,
+          "buyer_net": 0,
+          "buyer_payments": [],
+          "declared_social_surplus": 0,
+          "feasible": false,
+          "reason": "missed_recovery_deadline",
+          "service_delivered": false,
+          "strategy": "spot",
+          "supplier_margin": 0
+        },
+        "standby": {
+          "assumed_locked_capital": 9,
+          "beneficiaries": [
+            1,
+            2
+          ],
+          "buyer_cash_outlay": 9,
+          "buyer_net": 11,
+          "buyer_payments": [
+            5,
+            4
+          ],
+          "declared_social_surplus": 14,
+          "feasible": true,
+          "reason": "feasible_under_declared_assumptions",
+          "service_delivered": true,
+          "strategy": "standby",
+          "supplier_margin": 3
+        }
+      }
+    }
+  },
+  "evidence_hash": "1ed5284bfd70af0724f8e4e886668306ca24bcaa15f55b6a4d7835b76819e8a1",
+  "limitations": [
+    "All alternative prices and resource costs are assumed",
+    "Source market signed; counterfactual changes unsigned",
+    "Shared-dependency spillover is a model assumption",
+    "Only unilateral exits examined, not coalition-proofness",
+    "Opportunity cost of locked capital is not calibrated",
+    "No real-world production, market demand or ROI evidence",
+    "No NEAR transactions or on-chain coalition selection"
+  ],
+  "model_assumptions": {
+    "spot": {
+      "available": true,
+      "capital_charge": 0,
+      "locked_capital": 8,
+      "price": 8,
+      "ready_at": 3,
+      "resource_cost": 5
+    },
+    "standby": {
+      "available": true,
+      "capital_charge": 0,
+      "locked_capital": 14,
+      "price": 14,
+      "ready_at": 0,
+      "resource_cost": 9
+    }
+  },
+  "reference_market_hash": "73cfe778bbe89947e2c8053e9e19c1c64a9449ca810f35021186766713359783",
+  "signed_market_exit_analysis": [
+    {
+      "current_incremental_utility": 4,
+      "current_payment": 6,
+      "exit_payoff_if_excludable": 0,
+      "exit_payoff_if_nonexcludable": 0,
+      "exiting_job": 1,
+      "profitable_free_ride_if_nonexcludable": false,
+      "residual_coalition": null,
+      "residual_recovery_feasible": false
+    },
+    {
+      "current_incremental_utility": 5,
+      "current_payment": 5,
+      "exit_payoff_if_excludable": 0,
+      "exit_payoff_if_nonexcludable": 0,
+      "exiting_job": 2,
+      "profitable_free_ride_if_nonexcludable": false,
+      "residual_coalition": null,
+      "residual_recovery_feasible": false
+    }
+  ],
+  "source_competition_hash": "6a6b022f8a9d15f64357a543b424e0099f968496a62bfe59c899828ecc133bcb",
+  "source_signed_report_hash": "2ec281c4d212255fcfa7e080bb5b0b2c942124bb34fa8871f2452dc504266bab",
+  "standby_sensitivity": [
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 6,
+      "standby_resource_cost": 4,
+      "standby_surplus": 16,
+      "winners": [
+        "standby"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 7,
+      "standby_resource_cost": 5,
+      "standby_surplus": 15,
+      "winners": [
+        "standby"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 8,
+      "standby_resource_cost": 6,
+      "standby_surplus": 14,
+      "winners": [
+        "standby"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 9,
+      "standby_resource_cost": 7,
+      "standby_surplus": 13,
+      "winners": [
+        "nomogenesis",
+        "standby"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 10,
+      "standby_resource_cost": 8,
+      "standby_surplus": 12,
+      "winners": [
+        "nomogenesis"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 11,
+      "standby_resource_cost": 9,
+      "standby_surplus": 11,
+      "winners": [
+        "nomogenesis"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 12,
+      "standby_resource_cost": 10,
+      "standby_surplus": 10,
+      "winners": [
+        "nomogenesis"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 13,
+      "standby_resource_cost": 11,
+      "standby_surplus": 9,
+      "winners": [
+        "nomogenesis"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 14,
+      "standby_resource_cost": 12,
+      "standby_surplus": 8,
+      "winners": [
+        "nomogenesis"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 15,
+      "standby_resource_cost": 13,
+      "standby_surplus": null,
+      "winners": [
+        "nomogenesis"
+      ]
+    },
+    {
+      "nomogenesis_surplus": 13,
+      "standby_price": 16,
+      "standby_resource_cost": 14,
+      "standby_surplus": null,
+      "winners": [
+        "nomogenesis"
+      ]
+    }
+  ],
+  "three_buyer_free_rider_stress": {
+    "exits": [
+      {
+        "current_incremental_utility": 6,
+        "current_payment": 4,
+        "exit_payoff_if_excludable": 0,
+        "exit_payoff_if_nonexcludable": 10,
+        "exiting_job": 1,
+        "profitable_free_ride_if_nonexcludable": true,
+        "residual_coalition": [
+          2,
+          3
+        ],
+        "residual_recovery_feasible": true
+      },
+      {
+        "current_incremental_utility": 6,
+        "current_payment": 4,
+        "exit_payoff_if_excludable": 0,
+        "exit_payoff_if_nonexcludable": 10,
+        "exiting_job": 2,
+        "profitable_free_ride_if_nonexcludable": true,
+        "residual_coalition": [
+          1,
+          3
+        ],
+        "residual_recovery_feasible": true
+      },
+      {
+        "current_incremental_utility": 7,
+        "current_payment": 3,
+        "exit_payoff_if_excludable": 0,
+        "exit_payoff_if_nonexcludable": 10,
+        "exiting_job": 3,
+        "profitable_free_ride_if_nonexcludable": true,
+        "residual_coalition": [
+          1,
+          2
+        ],
+        "residual_recovery_feasible": true
+      }
+    ],
+    "formation": {
+      "buyer_utility_margins": [
+        6,
+        6,
+        7
+      ],
+      "job_ids": [
+        1,
+        2,
+        3
+      ],
+      "pair": [
+        3,
+        2
+      ],
+      "payments": [
+        4,
+        4,
+        3
+      ],
+      "price": 11,
+      "stated_incremental_surplus": 23,
+      "supplier_margins": [
+        2,
+        2
+      ]
+    },
+    "source": "synthetic_modification_not_signed"
+  },
+  "version": "r7-06d-economic-model-v1"
+}

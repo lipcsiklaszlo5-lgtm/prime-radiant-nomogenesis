@@ -265,6 +265,48 @@ is proven.
 Next: R7-06D economic counterfactuals, deviations,
 and conditions where NOMOGENESIS loses.
 
+## R7-06D/00 — Economic Counterfactuals and Exits
+
+Base: `0179cbe`.
+
+- Reused verified R7-06B signed decision source.
+- Independently checked R7-06C supplier competition.
+- Same beneficiary set and declared recovery benefits.
+- NOMOGENESIS, individual, standby and spot comparisons.
+- Separate supplier fee, real-resource-cost assumption
+  and hypothetical capital charge.
+- Positive and negative synthetic market scenarios.
+- Eleven-point standby price/cost sensitivity.
+- Buyer exit and residual funding examination.
+- Explicit non-excludable shared-recovery assumption.
+- Three-buyer synthetic free-riding counterexample.
+- Evidence independently reconstructed and hashed.
+
+Evidence:
+`docs/evidence/R7-06D-economic-counterfactuals.json`
+
+Verify:
+`python3 -B scripts/m3/r7_06d_economics.py --verify`
+
+CRITICAL FINDING:
+A three-buyer shared-dependency recovery may
+create an incentive to exit if the nonpaying
+buyer still benefits while the other two fund
+recovery. Individual rationality does NOT imply
+free-rider resistance or coalition stability.
+
+This depends on an explicit non-excludability
+assumption and is NOT proven contract behavior.
+
+No market demand, empirical welfare or real
+revenue has been established. Standby and spot
+counterparty risks remain incompletely priced.
+No additional NEAR transaction occurred.
+
+Next bounded gate:
+R7-06E — contract compatibility, explicit sponsor
+authorization and protection against free-riding.
+
 ## What Is Still Missing
 
 1. Independently deciding buyer/provider agents.

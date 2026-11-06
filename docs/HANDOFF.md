@@ -29,7 +29,15 @@
 - Independent clearing witness reconstructed.
 - Evidence: docs/evidence/R7-06C-competition-audit.json.
 - No new Testnet activity or deployed contract change.
-- Next: R7-06D economic counterfactual and deviation research.
+- R7-06D/00 economic counterfactual evidence completed.
+- Joint rescue wins one synthetic scenario.
+- Standby and spot win distinct negative scenarios.
+- Buyer/supplier surplus and capital requirements separated.
+- Three-buyer free-rider counterexample demonstrated
+  under non-excludable shared-dependency assumption.
+- No real market advantage or coalition stability claim.
+- Evidence: docs/evidence/R7-06D-economic-counterfactuals.json.
+- Next: R7-06E contract feasibility and sponsor authorization.
 
 
 ## Active M3-R7-02 — Genesis Certificate
