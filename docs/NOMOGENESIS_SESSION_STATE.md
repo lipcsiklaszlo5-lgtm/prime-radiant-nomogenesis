@@ -229,6 +229,42 @@ Next bounded ticket:
 **R7-06C — adversarial competitive clearing and
 independently verified seller selection.**
 
+## R7-06C/00 — Competitive Clearing Audit
+
+Base: `712e4ad`.
+
+- Existing R7-06B signed market independently verified.
+- Four complete supplier pairs evaluated.
+- Two economically and technically admissible.
+- Cheapest nominal 9 UNIT pair rejected:
+  supplier Delta refuses below declared cost floor.
+- Valid 11 UNIT Gamma+Beta pair wins over 12 UNIT.
+- Exact pair eligibility and rejection reasons retained.
+- Buyer coalition [1,2] with 6+5 UNIT allocation.
+- Provider bond, deadline, same-provider and
+  capacity-slot adversarial tests.
+- Six-offer bounded search, price ties and overflow.
+- Falsifiable negative cases and deterministic sweep.
+- Result independently reproduced from source report.
+
+Evidence:
+`docs/evidence/R7-06C-competition-audit.json`
+
+Source:
+`docs/evidence/R7-06B-synthetic-signed-decisions.json`
+
+Verify:
+`python3 -B scripts/m3/r7_06c_competition.py --verify`
+
+No new on-chain award occurred.
+This is synthetic, declared-cost competitive clearing.
+No trusted real-world agent identity is established.
+No private-market truthfulness or coalition stability
+is proven.
+
+Next: R7-06D economic counterfactuals, deviations,
+and conditions where NOMOGENESIS loses.
+
 ## What Is Still Missing
 
 1. Independently deciding buyer/provider agents.

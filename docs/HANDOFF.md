@@ -21,7 +21,15 @@
 - Ed25519, session nonce, expiry and replay tests completed.
 - No independent real-world ownership or NEAR authorization.
 - Report: docs/evidence/R7-06B-synthetic-signed-decisions.json.
-- Next: R7-06C competitive and adversarial clearing.
+- R7-06C/00 pair-by-pair competition audit recorded.
+- Signed market: 4 complete pairs, 2 eligible.
+- Rejected 9/10 UNIT pairs due to seller cost floor.
+- Valid 11 UNIT pair defeats valid 12 UNIT pair.
+- Negative supplier, slot, deadline and bond scenarios.
+- Independent clearing witness reconstructed.
+- Evidence: docs/evidence/R7-06C-competition-audit.json.
+- No new Testnet activity or deployed contract change.
+- Next: R7-06D economic counterfactual and deviation research.
 
 
 ## Active M3-R7-02 — Genesis Certificate

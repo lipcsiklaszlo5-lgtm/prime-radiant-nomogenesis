@@ -1,0 +1,102 @@
+{
+  "admissible_pair_count": 2,
+  "clearing_order": [
+    [
+      3,
+      2
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "examined_pair_count": 4,
+  "genesis_certificate_hash": "1fc0376ddac5294b17904eaee83350f836d24caae9f3405135c778c41b637b06",
+  "limitations": [
+    "Declared synthetic provider costs",
+    "No independent owner identities",
+    "Pair enumeration is bounded to six offers",
+    "No incentive compatibility proof",
+    "No physical capacity attestation",
+    "No on-chain subset selection",
+    "No new NEAR settlement executed"
+  ],
+  "market_hash": "73cfe778bbe89947e2c8053e9e19c1c64a9449ca810f35021186766713359783",
+  "market_reason": "voluntary_coalition_formed",
+  "origin_report_hash": "2ec281c4d212255fcfa7e080bb5b0b2c942124bb34fa8871f2452dc504266bab",
+  "pair_evidence": [
+    {
+      "eligible": true,
+      "offers": [
+        1,
+        2
+      ],
+      "price": 12,
+      "reasons": []
+    },
+    {
+      "eligible": false,
+      "offers": [
+        1,
+        4
+      ],
+      "price": 10,
+      "reasons": [
+        "supplier_policy_refusal"
+      ]
+    },
+    {
+      "eligible": true,
+      "offers": [
+        3,
+        2
+      ],
+      "price": 11,
+      "reasons": []
+    },
+    {
+      "eligible": false,
+      "offers": [
+        3,
+        4
+      ],
+      "price": 9,
+      "reasons": [
+        "supplier_policy_refusal"
+      ]
+    }
+  ],
+  "selected_formation": {
+    "buyer_utility_margins": [
+      4,
+      5
+    ],
+    "job_ids": [
+      1,
+      2
+    ],
+    "pair": [
+      3,
+      2
+    ],
+    "payments": [
+      6,
+      5
+    ],
+    "price": 11,
+    "stated_incremental_surplus": 13,
+    "supplier_margins": [
+      2,
+      2
+    ]
+  },
+  "version": "r7-06c-offline-competition-v1",
+  "winning_pair": {
+    "offers": [
+      3,
+      2
+    ],
+    "price": 11
+  },
+  "witness_hash": "6a6b022f8a9d15f64357a543b424e0099f968496a62bfe59c899828ecc133bcb"
+}
