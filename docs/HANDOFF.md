@@ -1,6 +1,17 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## CURRENT — R7-DEMO-02 recovery lifecycle (VERIFIED)
+## CURRENT — R7-REPO-01 clean-checkout (VERIFIED)
+
+Date: 2026-11-06.
+Branch: `chore/r7-repo-01-entrypoint`, implementation `6604fb3`.
+Clean tracked-source clone: PASS; 210 base Rust + 21 V2 Rust
++ 5 CSV tests PASS; identical V2 WASM; local complete rescue
+Sandbox PASS; financial ledger 48 UNIT conserved.
+Evidence: `docs/worklog/R7-REPO-01-clean-checkout.md`.
+V2 public Testnet and separate-process source failure remain open.
+Next single action: reviewed `main` fast-forward.
+
+## HISTORICAL — R7-DEMO-02 recovery lifecycle (VERIFIED)
 
 Date: 2026-11-06. Branch: `feat/r7-demo-02-recovery`.
 Base: `1103b7c56db4c83afcce2416be2ca9004b3c45e0`.

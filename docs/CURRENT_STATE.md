@@ -1,6 +1,22 @@
 # Nomogenesis — aktuális állapot és folytatás
 
-## Legújabb ellenőrzött lépés
+## CURRENT — R7-REPO-01 clean-checkout PASS
+
+Branch: `chore/r7-repo-01-entrypoint`.
+Implementation commit: `6604fb3`.
+A committed one-command V2 gate has passed from a separate
+clean checkout in Codespaces: 210 base Rust tests, 21 V2 Rust
+tests, 5 CSV tests, identical V2 WASM, and complete local
+failure-to-recovery Sandbox execution.
+
+Evidence:
+`docs/worklog/R7-REPO-01-clean-checkout.md`.
+
+The `main` branch has not yet been updated.
+Next single action: review and fast-forward `main`.
+Afterward: `R7-DEMO-03` real process failure and live events.
+
+## HISTORICAL — R7-DEMO-02 állapot
 
 Ág: `feat/r7-demo-02-recovery`, alap `1103b7c`; a pontos aktuális
 commitot `git rev-parse HEAD` adja. Külön buyer-folyamatokkal a helyi
@@ -71,7 +87,8 @@ beemelés nem bizonyított eredmény.
 
 Az `R7-DEMO-02` eredménye:
 `docs/worklog/R7-DEMO-02-recovery-lifecycle.md`.
-A **következő egyetlen ticket** `R7-REPO-01`: ág- és belépési pont
-rendezés, tiszta checkoutból futtatható ellenőrzés és review-olt
-`main` felzárkóztatás. A forráság többi nem commitált fájlját
-őrizd meg. Nyilvános V2 Testnet és gazdasági baseline későbbi kapu.
+A `R7-REPO-01` clean-checkout gate sikeres és commitált.
+Következő egyetlen lépés: review-olt `main` fast-forward.
+Ezután `R7-DEMO-03` külön processzben futó forrás és
+eseményvezérelt mentési demonstráció. Az eredeti munkakönyvtár
+nem commitált fájljai megőrzendők.

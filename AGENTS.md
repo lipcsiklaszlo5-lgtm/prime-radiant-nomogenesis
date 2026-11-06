@@ -1,4 +1,13 @@
-## CURRENT ENTRY POINT — 2026-11-06 / R7-DEMO-02
+## CURRENT ENTRY POINT — 2026-11-06 / R7-REPO-01
+
+Latest verified local branch: `chore/r7-repo-01-entrypoint`.
+Clean-checkout V2 gate: `scripts/m3/r7_v2_clean_checkout_gate.sh`.
+Worklog: `docs/worklog/R7-REPO-01-clean-checkout.md`.
+Read `docs/CURRENT_STATE.md` and the newest HANDOFF entry.
+Next single action: reviewed `main` fast-forward, not direct
+feature development on the old default branch.
+
+## HISTORICAL ENTRY POINT — 2026-11-06 / R7-DEMO-02
 
 Read `docs/CURRENT_STATE.md`, then the first entry of
 `docs/HANDOFF.md` and `docs/worklog/R7-DEMO-02-recovery-lifecycle.md`.
