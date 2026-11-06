@@ -1,6 +1,16 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-## CURRENT — R7-FIX-01 (provider-scoped slot parity)
+## CURRENT — R7-DEMO-01 (buyer agents verified)
+
+Branch `feat/r7-demo-01-buyers`, base `b980682`. Three separate
+buyer processes completed a local V2 Sandbox run: two approved,
+one declined, atomic award and excluded-buyer refund verified.
+48 UNIT liabilities conserved. Log SHA-256 `4b83b674...c0649`.
+No actual outage/recovery, terminal provider settlement or new V2
+public Testnet evidence. Details: `docs/worklog/R7-DEMO-01-buyer-agents.md`.
+Next single ticket: `R7-DEMO-02` full failure-to-recovery loop.
+
+## HISTORICAL — R7-FIX-01 (provider-scoped slot parity)
 
 Branch `fix/r7-fix-01-provider-slot`, base `2778cdd`.
 The offline Genesis, Python/Rust certificate verification, JS benchmark

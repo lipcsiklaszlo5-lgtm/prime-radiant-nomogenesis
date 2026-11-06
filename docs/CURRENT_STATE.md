@@ -1,5 +1,15 @@
 # Nomogenesis — aktuális állapot és folytatás
 
+## Legújabb ellenőrzött lépés
+
+`feat/r7-demo-01-buyers` a `b980682` javító commitra épül.
+Három külön buyer-folyamat, két jóváhagyás, egy elutasítás és
+az atomi V2 award helyi Sandboxban sikeres; 48 UNIT megmaradt.
+Bizonyíték: `docs/worklog/R7-DEMO-01-buyer-agents.md`.
+A tényleges kiesés → helyreállítás → settlement és az új V2
+public Testnet futás továbbra is nyitott.
+Következő egyetlen ticket: `R7-DEMO-02`.
+
 Dátum: 2026-11-06. Integrációs kódalap: `5455ee779aa2c66d98f0f93175176034e969a4ec`.
 Dokumentációs ág: `docs/r7-continuity-5455ee7`.
 Jelenlegi javítóág: `fix/r7-fix-01-provider-slot`, alap `2778cdd`.

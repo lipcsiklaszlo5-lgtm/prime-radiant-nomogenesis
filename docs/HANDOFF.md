@@ -1,6 +1,20 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## CURRENT — R7-FIX-01 provider-scoped slot parity (VERIFIED)
+## CURRENT — R7-DEMO-01 isolated V2 buyer agents (VERIFIED)
+
+Date: 2026-11-06. Branch: `feat/r7-demo-01-buyers`.
+Base: `b98068287ebb2b4e6308294c91d6b41b8d457444`.
+Three buyer processes, distinct local keys, policy-bound consent and
+atomic V2 award are being reproduced on this branch. The source
+feature worktree is preserved. Codespaces local Sandbox exit 0 with three distinct buyer processes,
+two accepted 6 UNIT payments, one refusal, V2 atomic award,
+rejected-buyer refund and checked negative cases. Liabilities:
+`48 = 39 + 9 = 38 + 10` UNIT. V2 WASM SHA-256 `2730e3d0...b9e`;
+log SHA-256 `4b83b674...c0649`. No failure-to-recovery loop or
+public V2 Testnet run. Worklog: `docs/worklog/R7-DEMO-01-buyer-agents.md`.
+Next single ticket: `R7-DEMO-02` complete measurable recovery loop.
+
+## HISTORICAL — R7-FIX-01 provider-scoped slot parity (VERIFIED)
 
 Date: 2026-11-06. Branch: `fix/r7-fix-01-provider-slot`.
 Base: `2778cdd202f549e93740567b994b0b137644794e`.
