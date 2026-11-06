@@ -193,6 +193,42 @@ Previous observed checks include:
 These are historical observations,
 not new test results for the current checkpoint.
 
+## R7-06B — Local Signed Agent Decisions
+
+Checkpoint based on `4573883`.
+
+- Seven separately executed Node.js agent processes.
+- Three buyers and four competing supplier policies.
+- One buyer voluntarily refused on outside-option grounds.
+- One supplier refused a fee below its cost floor.
+- Fresh ephemeral Ed25519 signing key per process.
+- Signed declarations and recomputed economic verdicts.
+- Domain-separated signatures, session expiry, nonces.
+- Duplicate actor and in-session replay rejection.
+- Reconstructed market fed to existing R7-06A Python engine.
+- Buyer coalition [1,2], providers [3,2], price 11 UNIT.
+- Buyer cost allocation [6,5], synthetic declared values.
+- Archived signed report independently recomputed.
+- No NEAR transactions or contract changes.
+- All processes remain controlled by one operator.
+- Public keys are NOT bound to independent NEAR identities.
+- Historical timestamps are operator-recorded.
+- No persistent cross-session replay ledger.
+- No deployed M3 subset selection.
+
+Evidence:
+`docs/evidence/R7-06B-synthetic-signed-decisions.json`
+
+Reproduction:
+`node scripts/m3/r7_06_swarm.test.cjs`
+
+Archived signature and formation verification:
+`node scripts/m3/r7_06_swarm.cjs --verify docs/evidence/R7-06B-synthetic-signed-decisions.json`
+
+Next bounded ticket:
+**R7-06C — adversarial competitive clearing and
+independently verified seller selection.**
+
 ## What Is Still Missing
 
 1. Independently deciding buyer/provider agents.

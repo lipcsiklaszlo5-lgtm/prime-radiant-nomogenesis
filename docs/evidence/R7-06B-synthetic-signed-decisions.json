@@ -1,0 +1,526 @@
+{
+  "version": "r7-06b-local-synthetic-v1",
+  "session": {
+    "id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+    "created_at": 1793962519896,
+    "expires_at": 1793962639896,
+    "market_deadline": 2
+  },
+  "verified_at": 1793962520229,
+  "packets": [
+    {
+      "event": {
+        "domain": "NOMOGENESIS/R7-06B/DECISION/V1",
+        "session_id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+        "actor_id": "buyer-1",
+        "role": "buyer",
+        "nonce": "1692e698412e0a35473b3225f3b51a36",
+        "issued_at": 1793962519931,
+        "expires_at": 1793962639896,
+        "declaration": {
+          "job_id": 1,
+          "cap": 7,
+          "value": 10,
+          "outside_option": 0,
+          "active": true
+        },
+        "verdict": {
+          "willing": true,
+          "reason": "accept"
+        }
+      },
+      "public_key": "MCowBQYDK2VwAyEAKSX/A5iKHRor6fkh/vxvAAcJZyvaIVTrN7eQ+QVsopQ=",
+      "signature": "vBHjf4oQggA4WW1pgpdvLmtmhavRmysHPtwcAZYeAjR5/3/bYEtyb236WIrwAVojuVrkQWofONmF1XN5hUxQDQ=="
+    },
+    {
+      "event": {
+        "domain": "NOMOGENESIS/R7-06B/DECISION/V1",
+        "session_id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+        "actor_id": "buyer-2",
+        "role": "buyer",
+        "nonce": "8410ef64b85d83e3799bb6d5ea7d3151",
+        "issued_at": 1793962519984,
+        "expires_at": 1793962639896,
+        "declaration": {
+          "job_id": 2,
+          "cap": 7,
+          "value": 10,
+          "outside_option": 0,
+          "active": true
+        },
+        "verdict": {
+          "willing": true,
+          "reason": "accept"
+        }
+      },
+      "public_key": "MCowBQYDK2VwAyEANpddNg56aseVV6WZJzEVxYLdMT2s7VHyOhDun9N/Et4=",
+      "signature": "V0SHN1kPpg+KtWV4XnLWVLEtywuMU/0MRN/ojX4p9sQ5z9g87bMAM08v80z/Hm11nPkWoV5ba0d1dYLrmPo6AQ=="
+    },
+    {
+      "event": {
+        "domain": "NOMOGENESIS/R7-06B/DECISION/V1",
+        "session_id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+        "actor_id": "buyer-3",
+        "role": "buyer",
+        "nonce": "0cee935848f7985203c0a38d285d2120",
+        "issued_at": 1793962520035,
+        "expires_at": 1793962639896,
+        "declaration": {
+          "job_id": 3,
+          "cap": 7,
+          "value": 10,
+          "outside_option": 10,
+          "active": true
+        },
+        "verdict": {
+          "willing": false,
+          "reason": "reject_policy"
+        }
+      },
+      "public_key": "MCowBQYDK2VwAyEAzgSdL0qnfQzPhCSsQGzFYoX602y6LQKA7YpBzW5TvTA=",
+      "signature": "aAYH8ZVWoaqJ1A1eyYsPNpwGO30C7G/mBMMIO8ZuEQWprfIE78uIz5DZfdaJhTJrSjmex1gvCyKShg0fbihvDQ=="
+    },
+    {
+      "event": {
+        "domain": "NOMOGENESIS/R7-06B/DECISION/V1",
+        "session_id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+        "actor_id": "provider-alpha",
+        "role": "provider",
+        "nonce": "bec43e4ad23f1a7481048ed89f309e66",
+        "issued_at": 1793962520082,
+        "expires_at": 1793962639896,
+        "declaration": {
+          "offer_id": 1,
+          "component": 0,
+          "provider": "provider-alpha",
+          "slot": "slot-alpha",
+          "fee": 6,
+          "bond": 12,
+          "ready_at": 1,
+          "available": true,
+          "cost_floor": 4
+        },
+        "verdict": {
+          "willing": true,
+          "reason": "accept"
+        }
+      },
+      "public_key": "MCowBQYDK2VwAyEATkEQ5YrBehEUaOWBMbwaBhO9F/qgfCiPovHgAKE0GMw=",
+      "signature": "L6JgnnxxZmjnKoWBepPJI8x5q31xjLW5/6dBZhuDMVkwbkOKQfXiyA2s1EhBpSWZwNfaaOOuS1PWeXbf9RDBBA=="
+    },
+    {
+      "event": {
+        "domain": "NOMOGENESIS/R7-06B/DECISION/V1",
+        "session_id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+        "actor_id": "provider-beta",
+        "role": "provider",
+        "nonce": "5342ccc7f8d5333185d4067684fa4adf",
+        "issued_at": 1793962520136,
+        "expires_at": 1793962639896,
+        "declaration": {
+          "offer_id": 2,
+          "component": 1,
+          "provider": "provider-beta",
+          "slot": "slot-beta",
+          "fee": 6,
+          "bond": 12,
+          "ready_at": 1,
+          "available": true,
+          "cost_floor": 4
+        },
+        "verdict": {
+          "willing": true,
+          "reason": "accept"
+        }
+      },
+      "public_key": "MCowBQYDK2VwAyEAkV8ZivFaK29ydHQsGhEjNqJzIvkFRhed5NCGzl5CCg4=",
+      "signature": "T6zKYADzEESTbwgyx1t8cIGBuf9llyqOY+BytVlbnfTUiO9UfxmFGg5FD1D1r3LtNmTDdq9GgmCX2ICt+dSJBQ=="
+    },
+    {
+      "event": {
+        "domain": "NOMOGENESIS/R7-06B/DECISION/V1",
+        "session_id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+        "actor_id": "provider-gamma",
+        "role": "provider",
+        "nonce": "a921b0475e1db289ca01d4cfd1c24d81",
+        "issued_at": 1793962520178,
+        "expires_at": 1793962639896,
+        "declaration": {
+          "offer_id": 3,
+          "component": 0,
+          "provider": "provider-gamma",
+          "slot": "slot-gamma",
+          "fee": 5,
+          "bond": 12,
+          "ready_at": 1,
+          "available": true,
+          "cost_floor": 3
+        },
+        "verdict": {
+          "willing": true,
+          "reason": "accept"
+        }
+      },
+      "public_key": "MCowBQYDK2VwAyEAwmVDeb1afqRgxJJ676QStTtAi0lrLoFbi9Jv8jAv4JM=",
+      "signature": "2c1692P/ijeumx5X+HUH/AOg/shFm5PdZMZKv2q/4V8pJyfHd1wo+CjozG7c8xrTQynVY8ldWUzf17jHWYL7BA=="
+    },
+    {
+      "event": {
+        "domain": "NOMOGENESIS/R7-06B/DECISION/V1",
+        "session_id": "r7-06b-f1d6b2929631ef5462f8e7e7850fd40e",
+        "actor_id": "provider-delta",
+        "role": "provider",
+        "nonce": "968f214018438fb29ec1421ce9e187a8",
+        "issued_at": 1793962520222,
+        "expires_at": 1793962639896,
+        "declaration": {
+          "offer_id": 4,
+          "component": 1,
+          "provider": "provider-delta",
+          "slot": "slot-delta",
+          "fee": 4,
+          "bond": 12,
+          "ready_at": 1,
+          "available": true,
+          "cost_floor": 5
+        },
+        "verdict": {
+          "willing": false,
+          "reason": "reject_policy"
+        }
+      },
+      "public_key": "MCowBQYDK2VwAyEATDdNBiVfM4jf/YGIMmaZrxbCvh2dZZSm6eD9z2DTjlc=",
+      "signature": "SLM08bYLG/DMdhimcp2/i1sUntgthJIS0w0W+CgUuU6BL0yqZpIFU3G3uMKRFHmsYfhfJKxvsqNEyv2DhkegAg=="
+    }
+  ],
+  "market": {
+    "deadline": 2,
+    "buyers": [
+      {
+        "job_id": 1,
+        "cap": 7,
+        "value": 10,
+        "outside_option": 0,
+        "active": true
+      },
+      {
+        "job_id": 2,
+        "cap": 7,
+        "value": 10,
+        "outside_option": 0,
+        "active": true
+      },
+      {
+        "job_id": 3,
+        "cap": 7,
+        "value": 10,
+        "outside_option": 10,
+        "active": true
+      }
+    ],
+    "offers": [
+      {
+        "offer_id": 1,
+        "component": 0,
+        "provider": "provider-alpha",
+        "slot": "slot-alpha",
+        "fee": 6,
+        "bond": 12,
+        "ready_at": 1,
+        "available": true,
+        "cost_floor": 4
+      },
+      {
+        "offer_id": 2,
+        "component": 1,
+        "provider": "provider-beta",
+        "slot": "slot-beta",
+        "fee": 6,
+        "bond": 12,
+        "ready_at": 1,
+        "available": true,
+        "cost_floor": 4
+      },
+      {
+        "offer_id": 3,
+        "component": 0,
+        "provider": "provider-gamma",
+        "slot": "slot-gamma",
+        "fee": 5,
+        "bond": 12,
+        "ready_at": 1,
+        "available": true,
+        "cost_floor": 3
+      },
+      {
+        "offer_id": 4,
+        "component": 1,
+        "provider": "provider-delta",
+        "slot": "slot-delta",
+        "fee": 4,
+        "bond": 12,
+        "ready_at": 1,
+        "available": true,
+        "cost_floor": 5
+      }
+    ]
+  },
+  "formation": {
+    "buyer_decisions": [
+      {
+        "effective_cap": 7,
+        "incremental_value": 10,
+        "job_id": 1,
+        "reason": "accept",
+        "willing": true
+      },
+      {
+        "effective_cap": 7,
+        "incremental_value": 10,
+        "job_id": 2,
+        "reason": "accept",
+        "willing": true
+      },
+      {
+        "effective_cap": 0,
+        "incremental_value": 0,
+        "job_id": 3,
+        "reason": "reject_policy",
+        "willing": false
+      }
+    ],
+    "candidate_count": 1,
+    "genesis_certificate": {
+      "certificate_hash": "1fc0376ddac5294b17904eaee83350f836d24caae9f3405135c778c41b637b06",
+      "coalitions": [
+        {
+          "allocation": null,
+          "capacity": 7,
+          "feasible": false,
+          "job_ids": [
+            1
+          ],
+          "mask": 1
+        },
+        {
+          "allocation": null,
+          "capacity": 7,
+          "feasible": false,
+          "job_ids": [
+            2
+          ],
+          "mask": 2
+        },
+        {
+          "allocation": [
+            6,
+            5
+          ],
+          "capacity": 14,
+          "feasible": true,
+          "job_ids": [
+            1,
+            2
+          ],
+          "mask": 3
+        },
+        {
+          "allocation": null,
+          "capacity": 0,
+          "feasible": false,
+          "job_ids": [
+            3
+          ],
+          "mask": 4
+        },
+        {
+          "allocation": null,
+          "capacity": 7,
+          "feasible": false,
+          "job_ids": [
+            1,
+            3
+          ],
+          "mask": 5
+        },
+        {
+          "allocation": null,
+          "capacity": 7,
+          "feasible": false,
+          "job_ids": [
+            2,
+            3
+          ],
+          "mask": 6
+        },
+        {
+          "allocation": [
+            6,
+            5,
+            0
+          ],
+          "capacity": 14,
+          "feasible": true,
+          "job_ids": [
+            1,
+            2,
+            3
+          ],
+          "mask": 7
+        }
+      ],
+      "input": {
+        "buyers": [
+          {
+            "cap": 7,
+            "job_id": 1
+          },
+          {
+            "cap": 7,
+            "job_id": 2
+          },
+          {
+            "cap": 0,
+            "job_id": 3
+          }
+        ],
+        "deadline": 2,
+        "offers": [
+          {
+            "available": true,
+            "bond": 12,
+            "component": 0,
+            "fee": 6,
+            "offer_id": 1,
+            "provider": "provider-alpha",
+            "ready_at": 1,
+            "slot": "slot-alpha"
+          },
+          {
+            "available": true,
+            "bond": 12,
+            "component": 1,
+            "fee": 6,
+            "offer_id": 2,
+            "provider": "provider-beta",
+            "ready_at": 1,
+            "slot": "slot-beta"
+          },
+          {
+            "available": true,
+            "bond": 12,
+            "component": 0,
+            "fee": 5,
+            "offer_id": 3,
+            "provider": "provider-gamma",
+            "ready_at": 1,
+            "slot": "slot-gamma"
+          },
+          {
+            "available": false,
+            "bond": 12,
+            "component": 1,
+            "fee": 4,
+            "offer_id": 4,
+            "provider": "provider-delta",
+            "ready_at": 1,
+            "slot": "slot-delta"
+          }
+        ]
+      },
+      "input_hash": "5b027dc0c44d972e5823fa4c1bad417c7b57ceb1c23a9760a0c8894b231a62e5",
+      "minimal_coalitions": [
+        [
+          1,
+          2
+        ]
+      ],
+      "version": "genesis-v1-offchain",
+      "winning_pair": {
+        "offers": [
+          3,
+          2
+        ],
+        "price": 11
+      }
+    },
+    "limitations": [
+      "Synthetic declared preferences",
+      "No independent agent owners",
+      "No signed participant authorizations",
+      "No on-chain subset selection",
+      "Unmodelled risk and capital costs",
+      "No incentive compatibility proof",
+      "No coalition-stability proof"
+    ],
+    "minimal_coalitions": [
+      [
+        1,
+        2
+      ]
+    ],
+    "newly_fundable_under_declared_limits": true,
+    "onchain_execution_ready": false,
+    "selected": {
+      "buyer_utility_margins": [
+        4,
+        5
+      ],
+      "job_ids": [
+        1,
+        2
+      ],
+      "pair": [
+        3,
+        2
+      ],
+      "payments": [
+        6,
+        5
+      ],
+      "price": 11,
+      "stated_incremental_surplus": 13,
+      "supplier_margins": [
+        2,
+        2
+      ]
+    },
+    "source_hash": "73cfe778bbe89947e2c8053e9e19c1c64a9449ca810f35021186766713359783",
+    "supplier_decisions": [
+      {
+        "offer_id": 1,
+        "reason": "accept",
+        "stated_margin": 2,
+        "willing": true
+      },
+      {
+        "offer_id": 2,
+        "reason": "accept",
+        "stated_margin": 2,
+        "willing": true
+      },
+      {
+        "offer_id": 3,
+        "reason": "accept",
+        "stated_margin": 2,
+        "willing": true
+      },
+      {
+        "offer_id": 4,
+        "reason": "reject_policy",
+        "stated_margin": null,
+        "willing": false
+      }
+    ],
+    "version": "formation-v0-synthetic"
+  },
+  "limitations": [
+    "All child processes run under one operator",
+    "Ephemeral public keys are not bound to independent legal owners or NEAR accounts",
+    "Session-scoped nonce replay detection, not a durable global authorization log",
+    "Archive expiry is evaluated at the operator-recorded verification time",
+    "Synthetic public declared preferences, not private real-world valuations",
+    "Genesis formation is off-chain and not selected by deployed M3 contract"
+  ],
+  "report_hash": "2ec281c4d212255fcfa7e080bb5b0b2c942124bb34fa8871f2452dc504266bab"
+}

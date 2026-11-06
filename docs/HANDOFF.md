@@ -15,7 +15,13 @@
   `docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md`.
 - R7-06A: offline policy-driven formation and negative tests.
 - No new NEAR transactions or autonomous owner claims.
-- Next: R7-06B separate authenticated agent decision processes.
+- R7-06B/00 seven separate signed policy processes completed.
+- Signed decision transcript and economic proposal archived.
+- Buyer refusal and provider cost-floor refusal demonstrated.
+- Ed25519, session nonce, expiry and replay tests completed.
+- No independent real-world ownership or NEAR authorization.
+- Report: docs/evidence/R7-06B-synthetic-signed-decisions.json.
+- Next: R7-06C competitive and adversarial clearing.
 
 
 ## Active M3-R7-02 — Genesis Certificate
