@@ -1,5 +1,7 @@
 # PRIME RADIANT — PROJECT MASTER
 
+> Történeti M3-termékterv. A jelenlegi kódállapot, korlátok és következő ticket: `docs/CURRENT_STATE.md`.
+
 **Product:** Nomogenesis — The Rescue Market for Agent Economies
 **Version:** M3-R0, 2026-11-04
 **Status:** GO for bounded M3 implementation; NO-GO for submission or production funds

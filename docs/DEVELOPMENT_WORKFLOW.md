@@ -1,5 +1,7 @@
 # Development workflow
 
+New-chat entry: `docs/CURRENT_STATE.md`. Check the current Git HEAD and the top `docs/HANDOFF.md` entry before following historical plans.
+
 M3 and later work uses small, committed checkpoints.
 
 ## Layout

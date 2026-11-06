@@ -1,5 +1,7 @@
 # Audit hibajegyzék — 2026-11-03
 
+> Történeti hibajegyzék. A 2026-11-06-i nyitott tételek és az integrált V2 állapota: `docs/CURRENT_STATE.md`. Az alábbi régi OPEN jelöléseket ne értelmezd jelenlegi release-kapuként.
+
 **Forrás:** `Prime_Radiant_Independent_GO_NO_GO_Audit_2026-11-03.zip` / `AUDIT_REPORT_HU.md`. A lista **nem azt jelenti, hogy a Rust kód létezik**. Státusz csak tényleges regressziós teszttel és commit SHA-val zárható.
 
 | ID | Pri | Hiba | Elfogadási teszt / lezárási kritérium | Állapot |

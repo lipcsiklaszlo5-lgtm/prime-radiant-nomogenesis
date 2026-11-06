@@ -1,6 +1,25 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## CURRENT — R7-06E/03A SANDBOX VERIFIED
+## CURRENT — R7-DOC-02 documentation reconciliation (VERIFIED)
+
+Date: 2026-11-06.
+Branch: `docs/r7-continuity-5455ee7`.
+Base: `5455ee779aa2c66d98f0f93175176034e969a4ec`.
+
+Scope: reconcile the new-chat entry points with the integrated V2
+funded-consent and atomic coalition checkpoint. Preserve the original
+feature branch and its untracked files. The earlier R7-DOC-01 patch was
+based on `3901662` and must not be applied unchanged here.
+
+The integrated V2 result is reported in
+`docs/worklog/R7-06E-03B-06-checkpoint.md`; verify its actual code and
+tests before claiming a new PASS. No V2 public Testnet deployment or
+consent-bond refund is claimed. Documentation checks: 90 Python tests PASS; 47 Node tests PASS; Markdown references and diff check PASS. Rust/Sandbox were not rerun for this documentation ticket. No code or Testnet change.
+Worklog: `docs/worklog/R7-DOC-02-continuity.md`.
+Next single code ticket: `R7-FIX-01` provider-scoped slot parity.
+
+
+## HISTORICAL — R7-06E/03A SANDBOX VERIFIED
 
 Date: 2026-11-06.
 Branch: `feat/r7-06e-03-auth`.

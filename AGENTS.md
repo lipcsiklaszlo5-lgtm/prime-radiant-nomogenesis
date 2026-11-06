@@ -1,20 +1,10 @@
-## CURRENT ENTRY POINT (2026-11-06 / R7-06)
+## CURRENT ENTRY POINT — 2026-11-06 / R7-DOC-02
 
-Read first:
-- `docs/NOMOGENESIS_SESSION_STATE.md`
-- `docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md`
-
-These preserve the complete M2/M3/R6/R7 history
-and define the missing economic formation layer.
-
-Check current Git HEAD before acting.
-Older status paragraphs are historical checkpoints.
-
-Never claim autonomous independent operators,
-incentive compatibility or on-chain subset selection
-based only on the offline Genesis engine.
-
-Next after R7-06A: R7-06B.
+Read `docs/CURRENT_STATE.md` first, then the top of `docs/HANDOFF.md`
+and the affected source/worklog. Check Git HEAD and untracked files.
+The V2 funded-consent integration is in the local `5455ee7` codebase;
+older R7-06A/06B and R7-06E/03A „Next” labels are historical.
+No V2 public Testnet or independent audit is claimed.
 
 ---
 
@@ -26,7 +16,7 @@ Next after R7-06A: R7-06B.
 ## 0. A repó és a munkamenet igazságforrásai
 
 1. **A Git aktuális tartalma és commitjai az igazságforrások a kód állapotáról.** A chatmemória, egy korábbi beszélgetés és egy statikus ZIP nem írhatja ezt felül.
-2. Olvasási sorrend: `AGENTS.md` → `PROJECT_MASTER.md` → `docs/M3_NORTH_STAR.md` → `docs/M3_RESCUE_MARKET_SPEC.md` → `docs/STATUS.md` → `docs/DECISIONS.md` → `docs/BUGS.md` → `docs/HANDOFF.md` → `docs/DEVELOPMENT_WORKFLOW.md` → legújabb `docs/worklog/M3-*.md` → Git és tesztek.
+2. Olvasási sorrend: `AGENTS.md` → `docs/CURRENT_STATE.md` → a `docs/HANDOFF.md` legelső aktuális bejegyzése → érintett forrás, specifikáció és worklog. A korábbi „Next” jelölések történetiek; Git HEAD és tényleges tesztek az igazságforrások.
 3. Ha a fenti fájlok közül valamelyik hiányzik, hibás vagy ellentmond a kódnak, **állj meg**, és írd le az eltérést. Ne találj ki hiányzó implementációt.
 4. Új chatben a felhasználó megadja a repó URL-jét (vagy csatolja a friss exportot); az asszisztens köteles az aktuális forrást elolvasni. **Nem szabad feltételezni, hogy az új chat automatikusan látja a repót.**
 

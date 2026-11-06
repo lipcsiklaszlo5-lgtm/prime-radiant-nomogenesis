@@ -1,6 +1,19 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-## CURRENT — R7-06E/03A
+## CURRENT — R7-DOC-02 (documentation verified)
+
+Code baseline `5455ee7`; documentation branch
+`docs/r7-continuity-5455ee7`. Current entry:
+`docs/CURRENT_STATE.md`. The R7 V2 funded-consent integration is
+recorded in `docs/worklog/R7-06E-03B-06-checkpoint.md`.
+Its Sandbox/test results are historical checkpoint evidence,
+not rerun by this documentation ticket. No new V2 public Testnet,
+consent refund or low-margin solvency result is claimed.
+Next code ticket: `R7-FIX-01` slot parity.
+Documentation checks: 90 Python and 47 Node tests PASS; Rust/Sandbox not rerun. See `docs/worklog/R7-DOC-02-continuity.md`.
+
+
+## HISTORICAL — R7-06E/03A
 
 Date: 2026-11-06.
 Branch: `feat/r7-06e-03-auth`.

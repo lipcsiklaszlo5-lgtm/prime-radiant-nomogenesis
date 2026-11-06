@@ -1,5 +1,7 @@
 # prime-radiant-nomogenesis
 
+**Aktuális belépő:** [állapot és következő ticket](docs/CURRENT_STATE.md) · [review](docs/REVIEW_2026-11-06.md) · [handoff](docs/HANDOFF.md). Ellenőrizd a Git HEAD-et.
+
 ## NOMOGENESIS — An economic recovery primitive on NEAR
 
 **One dependency fails. Several funded jobs are blocked.
@@ -70,7 +72,7 @@ When one failed dependency blocks several independently funded jobs, affected bu
 
 ## Current product direction
 
-**Next R7-06 development phase:**
+**Historical R7-06 development plan:**
 [Project state and new-chat handoff](docs/NOMOGENESIS_SESSION_STATE.md) ·
 [Autonomous formation plan](docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md).
 
@@ -143,7 +145,7 @@ Limitations: synthetic data, Testnet only, one demonstration
 operator controlling the participating accounts; no independent
 security audit, mainnet deployment or proven market advantage.
 
-Current submission work: R7-05E jury readiness.
+Current continuation: [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md).
 
 
 ## Genesis Proof — reproducible public evidence
