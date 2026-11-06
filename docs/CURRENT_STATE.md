@@ -2,20 +2,18 @@
 
 ## Legújabb ellenőrzött lépés
 
-`feat/r7-demo-01-buyers` a `b980682` javító commitra épül.
-Három külön buyer-folyamat, két jóváhagyás, egy elutasítás és
-az atomi V2 award helyi Sandboxban sikeres; 48 UNIT megmaradt.
-Bizonyíték: `docs/worklog/R7-DEMO-01-buyer-agents.md`.
-A tényleges kiesés → helyreállítás → settlement és az új V2
-public Testnet futás továbbra is nyitott.
-Következő egyetlen ticket: `R7-DEMO-02`.
+Ág: `feat/r7-demo-02-recovery`, alap `1103b7c`; a pontos aktuális
+commitot `git rev-parse HEAD` adja. Külön buyer-folyamatokkal a helyi
+HTTP 503 kiesés -> jóváhagyott V2 mentés -> két láncon igazolt CSV
+komponens -> két befejezett munka -> elszámolás Sandboxban sikeres.
+A harmadik buyer elutasított és visszakapta a principalját; a végső
+liability 48 UNIT. A 286 másodperc gyorsított Sandbox-láncidő.
+Bizonyíték és korlátok: `docs/worklog/R7-DEMO-02-recovery-lifecycle.md`.
+Public V2 Testnet, natív kifizetés és valós külső szolgáltatás-kiesés
+nincs igazolva. A `main` még régi M0 állapotú.
 
-Dátum: 2026-11-06. Integrációs kódalap: `5455ee779aa2c66d98f0f93175176034e969a4ec`.
-Dokumentációs ág: `docs/r7-continuity-5455ee7`.
-Jelenlegi javítóág: `fix/r7-fix-01-provider-slot`, alap `2778cdd`.
-A dokumentációs checkpoint a GitHubon `2778cdd`. Új chatben előbb
-ellenőrizd a javítóág távoli HEAD-jét, az összes ágat és a nem
-commitált fájlokat.
+Következő egyetlen ticket: `R7-REPO-01` ágak és belépési pontok
+rendezése, clean-checkout ellenőrzés, majd review-olt `main` frissítés.
 
 ## Azonnali belépés
 
@@ -53,7 +51,7 @@ commitált fájlokat.
 | F1 | A korábbi „nincs on-chain subset award” megállapítást az integrált V2 checkpoint meghaladta; a teljes kód- és tesztreview még szükséges. |
 | F2 | A providerhez kötött slotparitás javítva a Genesis, Python/Rust verifier, JS benchmark és verseny-audit útján. Codespaces: 93 Python, 48 Node és célzott Rust certificate teszt sikeres. |
 | F3 | A szintetikus nem kizárható haszon esetén 3/3 vevő potyautasként kilépne; az ösztönző megoldás nincs bizonyítva. |
-| F4 | A tényleges szolgáltatás-kieséstől a mentésig tartó teljes, mérhető folyamat még nincs igazolva. |
+| F4 | Helyi HTTP 503 -> V2 mentés -> két munka -> settlement Sandboxban igazolt; valós külső kiesés és public V2 Testnet még nincs. |
 | F5 | A korábbi offline agentek saját friss kulcsai nem bizonyítanak tartós, független NEAR-azonosságot. |
 | F6 | A V2 integrált kódnak nincs igazolt új public Testnet életciklusa, független auditja vagy mainnet futása. |
 | F7 | Tárolási refund és kis tartalékú natív fedezet ellenőrzése nincs lezárva a commitált bizonyítékban. |
@@ -71,10 +69,9 @@ Mérjük a helyreállítás idejét, kész jobokat, vevői költséget,
 szolgáltatói díjat és lekötött tőkét. A fődíj vagy a NEAR-be történő
 beemelés nem bizonyított eredmény.
 
-Az `R7-FIX-01` eredménye: `docs/worklog/R7-FIX-01-provider-slot.md`.
-A **következő egyetlen ticket** `R7-REPO-01`: az összes ág és a
-nem commitált buyer/audit fájlok leltára, majd a `main` ág
-felzárkóztatásának ellenőrizhető terve. Ágat nem törlünk és
-`main`-t nem mozgatunk az összevetés előtt.
-Utána a kiesés → agentes döntés → atomi NEAR mentés → settlement
-demó és az új V2 public Testnet bizonyítása következhet.
+Az `R7-DEMO-02` eredménye:
+`docs/worklog/R7-DEMO-02-recovery-lifecycle.md`.
+A **következő egyetlen ticket** `R7-REPO-01`: ág- és belépési pont
+rendezés, tiszta checkoutból futtatható ellenőrzés és review-olt
+`main` felzárkóztatás. A forráság többi nem commitált fájlját
+őrizd meg. Nyilvános V2 Testnet és gazdasági baseline későbbi kapu.

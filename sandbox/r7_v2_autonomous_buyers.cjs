@@ -7,13 +7,54 @@ const {
 
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const http = require('node:http');
+const path = require('node:path');
 const {Worker} = require('near-workspaces');
+const {
+  componentFromCsv,
+  minimumCommitment,
+  makeWorkerResult
+} = require('../scripts/m3/r5_data_envelope.cjs');
 
 const WASM = process.env.NOMOGENESIS_V2_WASM;
 const UNIT = 10n ** 21n;
 const SECOND = 1000000000n;
 const GAS = '200000000000000';
 const DOMAIN = 'NOMOGENESIS/R7-06E/SUBSET/V1';
+const dataDir = path.join(__dirname, '..', 'demo', 'data');
+const dataFiles = [
+  path.join(dataDir, 'quantities.csv'),
+  path.join(dataDir, 'prices.csv')
+];
+
+function totalFromRecovered(payloads) {
+  const rows = payloads.map((bytes, kind) => {
+    const payload = Buffer.from(bytes);
+    assert.equal(payload[0], 1);
+    assert.equal(payload[1], kind + 1);
+    const count = payload[2];
+    assert(count >= 1 && count <= 16);
+    assert.equal(payload.length, 3 + 10 * count);
+
+    let previous = -1;
+    return Array.from({length: count}, (_, i) => {
+      const offset = 3 + 10 * i;
+      const id = payload.readUInt16BE(offset);
+      assert(id > previous);
+      previous = id;
+      return [id, payload.readBigUInt64BE(offset + 2)];
+    });
+  });
+
+  assert.equal(rows.length, 2);
+  assert.equal(rows[0].length, rows[1].length);
+  let total = 0n;
+  for (let i = 0; i < rows[0].length; i++) {
+    assert.equal(rows[0][i][0], rows[1][i][0]);
+    total += rows[0][i][1] * rows[1][i][1];
+  }
+  return total;
+}
 
 async function rpc(worker, method, params) {
   const url = worker.config?.rpcAddr;
@@ -93,6 +134,7 @@ async function main() {
   assert(WASM && fs.statSync(WASM).size > 0);
 
   let worker;
+  let service;
   const isolatedBuyerChildren = [];
 
   try {
@@ -152,6 +194,30 @@ async function main() {
 
     const started = await timestamp(worker);
 
+    const components = dataFiles.map((file, index) =>
+      componentFromCsv(file, index)
+    );
+    const thresholds = [500n, 600n, 632n];
+
+    let serviceAvailable = true;
+    service = http.createServer((request, response) => {
+      const index = ['/quantities', '/prices'].indexOf(request.url);
+      if (!serviceAvailable || index < 0) {
+        response.writeHead(503).end('dependency unavailable');
+        return;
+      }
+      response.writeHead(200, {'content-type': 'text/csv'});
+      response.end(fs.readFileSync(dataFiles[index]));
+    });
+    await new Promise(resolve => service.listen(0, '127.0.0.1', resolve));
+    const endpoint = `http://127.0.0.1:${service.address().port}`;
+    for (const name of ['/quantities', '/prices']) {
+      const response = await fetch(endpoint + name);
+      assert.equal(response.status, 200);
+      assert.match(await response.text(), /^item_id,/);
+    }
+    console.log('SHARED CSV DEPENDENCY HEALTHY: PASS');
+
     const dependency = started + 180n * SECOND;
     const bidClose = started + 240n * SECOND;
     const awardClose = started + 600n * SECOND;
@@ -175,10 +241,7 @@ async function main() {
         descriptor: {
           descriptor_version: 1,
           original_provider: source.accountId,
-          component_commitments: [
-            Array(32).fill(1),
-            Array(32).fill(2)
-          ],
+          component_commitments: components.map(item => Array.from(item.root)),
           dependency_deadline: Number(dependency),
           bid_close: Number(bidClose),
           award_close: Number(awardClose),
@@ -202,9 +265,11 @@ async function main() {
             worker: workers[i].accountId,
             worker_reward: UNIT.toString(),
             rescue_cap: (7n * UNIT).toString(),
-            result_profile: 'ExactCommitment',
-            result_commitment: Array(32).fill(9),
-            threshold: null,
+            result_profile: 'MinimumThreshold',
+            result_commitment: Array.from(
+              minimumCommitment(caseId, thresholds[i])
+            ),
+            threshold: thresholds[i].toString(),
             final_deadline: Number(finalDeadline)
           }
         },
@@ -269,9 +334,18 @@ async function main() {
     console.log('FUNDED ESCROW: 48 UNIT');
     console.log('INITIAL LEDGER: PASS');
 
+    serviceAvailable = false;
+    const failureObservedAt = await timestamp(worker);
+    for (const name of ['/quantities', '/prices']) {
+      const response = await fetch(endpoint + name);
+      assert.equal(response.status, 503);
+    }
+    console.log('SHARED CSV DEPENDENCY FAILED: PASS');
+
     console.log('=== ADVANCE TO AWARD WINDOW ===');
 
     await advanceTo(worker, bidClose);
+    assert((await timestamp(worker)) >= dependency);
 
     const legacy = await view(
       'preview_rescue_pair',
@@ -766,6 +840,90 @@ async function main() {
 
     console.log('AWARD REPLAY ROLLBACK: PASS');
 
+    const proofArgs = index => ({
+      bundle_id: bundleId,
+      component_index: index,
+      payload: Array.from(components[index].payload),
+      sibling: Array.from(components[index].sibling)
+    });
+
+    console.log('=== REPLACEMENT PROVIDERS DELIVER CSV COMPONENTS ===');
+    const beforeProof = await snapshot();
+    await assert.rejects(() =>
+      keeper.call(contract, 'submit_rescue_component', proofArgs(0),
+        {gas: GAS})
+    );
+    assert.deepEqual(await snapshot(), beforeProof);
+
+    const invalid = proofArgs(0);
+    invalid.payload[12] ^= 1;
+    await assert.rejects(
+      () => providers[0].call(contract, 'submit_rescue_component', invalid,
+        {gas: GAS}),
+      /invalid component Merkle proof/
+    );
+    assert.deepEqual(await snapshot(), beforeProof);
+    console.log('FORGED PROVIDER AND ALTERED VALID PAYLOAD: REJECTED');
+
+    for (let i = 0; i < 2; i++) {
+      await providers[i].call(contract, 'submit_rescue_component',
+        proofArgs(i), {gas: GAS});
+    }
+
+    const proven = await view('get_rescue_case', {case_id: caseId});
+    for (let i = 0; i < 2; i++) {
+      assert.deepEqual(proven.resolved_payloads[i],
+        Array.from(components[i].payload));
+      assert.equal((await offer(i)).phase, 'Proven');
+    }
+    const restoredAt = await timestamp(worker);
+    console.log('TWO CSV COMPONENTS VERIFIED ON CHAIN: PASS');
+    console.log('SIMULATED CHAIN RECOVERY SECONDS:',
+      ((restoredAt - failureObservedAt) / SECOND).toString());
+
+    console.log('=== SETTLE PROVIDERS AND CONTINUE SELECTED JOBS ===');
+    await keeper.call(contract, 'settle_rescue_bundle',
+      {bundle_id: bundleId}, {gas: GAS});
+    for (const provider of providers) {
+      assert.equal(BigInt(await view('get_claimable',
+        {account: provider.accountId})), 18n * UNIT);
+    }
+    assert.equal(BigInt((await totals()).rescue_escrow), 3n * UNIT);
+    assert.equal(BigInt(await view('claimable_total')), 45n * UNIT);
+
+    const recoveredData = {
+      total: totalFromRecovered(proven.resolved_payloads)
+    };
+    assert.equal(recoveredData.total, 632n);
+    console.log('WORKER INPUT FROM VERIFIED CHAIN PAYLOADS: PASS');
+
+    for (const i of [0, 1]) {
+      const result = makeWorkerResult(
+        recoveredData, caseId, i, thresholds[i]
+      );
+      assert.deepEqual(result.commitment,
+        minimumCommitment(caseId, thresholds[i]));
+      if (i === 0) {
+        const badResult = Array.from(result.payload);
+        badResult[25] ^= 1;
+        await assert.rejects(() => workers[i].call(
+          contract, 'complete_rescue_job',
+          {job_id: i, result_payload: badResult}, {gas: GAS}
+        ));
+        assert.equal((await job(i)).phase, 'Accepted');
+      }
+      await workers[i].call(contract, 'complete_rescue_job',
+        {job_id: i, result_payload: Array.from(result.payload)},
+        {gas: GAS});
+      assert.equal((await job(i)).phase, 'Completed');
+      assert.equal(BigInt(await view('get_claimable',
+        {account: workers[i].accountId})), UNIT);
+    }
+    assert.equal(BigInt((await totals()).rescue_escrow), UNIT);
+    assert.equal(BigInt(await view('claimable_total')), 47n * UNIT);
+    console.log('TWO SELECTED WORKER RESULTS COMPLETED: PASS');
+    console.log('PROVIDERS CREDITED: 18 + 18 UNIT');
+
     console.log('=== EXCLUDED WORKER REWARD EXPIRY ===');
 
     await advanceTo(worker, finalDeadline);
@@ -789,12 +947,12 @@ async function main() {
 
     assert.equal(
       BigInt((await totals()).rescue_escrow),
-      38n * UNIT
+      0n
     );
 
     assert.equal(
       BigInt(await view('claimable_total')),
-      10n * UNIT
+      48n * UNIT
     );
 
     assert.equal(
@@ -823,14 +981,12 @@ async function main() {
     console.log('EXPIRY REPLAY ROLLBACK: PASS');
 
     console.log(
-      '=== R7-06E/03B-05C ECONOMIC SANDBOX: PASS ==='
+      '=== R7-DEMO-02 RECOVERY LIFECYCLE: PASS ==='
     );
     console.log(
-      'ECONOMIC EVIDENCE: 48 = 39 + 9 = 38 + 10'
+      'ECONOMIC EVIDENCE: 48 = 39 + 9 = 3 + 45 = 1 + 47 = 0 + 48'
     );
-    console.log(
-      'LIMIT: full provider settlement not tested here'
-    );
+    console.log('LIMIT: source outage is local HTTP 503 simulation');
     console.log(
       'LIMIT: consent storage refund not implemented'
     );
@@ -839,6 +995,10 @@ async function main() {
     );
 
   } finally {
+    if (service) {
+      service.closeAllConnections?.();
+      await new Promise(resolve => service.close(resolve));
+    }
     for (const child of isolatedBuyerChildren) {
       if (!child.killed) child.kill();
     }

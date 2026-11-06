@@ -1,4 +1,12 @@
-## CURRENT ENTRY POINT — 2026-11-06 / R7-DOC-02
+## CURRENT ENTRY POINT — 2026-11-06 / R7-DEMO-02
+
+Read `docs/CURRENT_STATE.md`, then the first entry of
+`docs/HANDOFF.md` and `docs/worklog/R7-DEMO-02-recovery-lifecycle.md`.
+Latest verified branch: `feat/r7-demo-02-recovery`. Check its
+actual HEAD and working tree. The demo is local Sandbox only.
+Next ticket: `R7-REPO-01` repository entry point and clean checkout.
+
+## HISTORICAL ENTRY POINT — 2026-11-06 / R7-DOC-02
 
 Read `docs/CURRENT_STATE.md` first, then the top of `docs/HANDOFF.md`
 and the affected source/worklog. Check Git HEAD and untracked files.

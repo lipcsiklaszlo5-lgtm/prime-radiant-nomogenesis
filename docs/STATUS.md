@@ -1,6 +1,17 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-## CURRENT — R7-DEMO-01 (buyer agents verified)
+## CURRENT — R7-DEMO-02 (local recovery verified)
+
+Branch `feat/r7-demo-02-recovery`, base `1103b7c`.
+HTTP 200 -> 503, two buyer consents, one refusal, atomic V2 award,
+two verified CSV components, two completed jobs and provider
+settlement passed in local Sandbox. Simulated chain recovery:
+286 seconds; final liability ledger: 48 UNIT.
+Log SHA-256 `db6b29dd...aaa89e34`.
+Limits and commands: `docs/worklog/R7-DEMO-02-recovery-lifecycle.md`.
+Next: `R7-REPO-01` public entry point and clean-checkout gate.
+
+## HISTORICAL — R7-DEMO-01 (buyer agents verified)
 
 Branch `feat/r7-demo-01-buyers`, base `b980682`. Three separate
 buyer processes completed a local V2 Sandbox run: two approved,

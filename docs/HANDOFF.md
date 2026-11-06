@@ -1,6 +1,21 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## CURRENT — R7-DEMO-01 isolated V2 buyer agents (VERIFIED)
+## CURRENT — R7-DEMO-02 recovery lifecycle (VERIFIED)
+
+Date: 2026-11-06. Branch: `feat/r7-demo-02-recovery`.
+Base: `1103b7c56db4c83afcce2416be2ca9004b3c45e0`.
+Codespaces: local HTTP 200 -> 503; three buyer processes; two exact
+consents, one refusal; atomic V2 award; two Merkle-verified provider
+payloads; two completed jobs; terminal settlement and excluded-job
+expiry. Sandbox exit 0. Simulated chain recovery: 286 seconds.
+Final liability ledger: `0 + 48 = 48` UNIT.
+Log SHA-256: `db6b29dd...aaa89e34`.
+Worklog: `docs/worklog/R7-DEMO-02-recovery-lifecycle.md`.
+No real external failure, native withdrawal or V2 public Testnet
+execution is claimed. Next single ticket: `R7-REPO-01` entry point,
+clean-checkout gate and reviewed `main` update.
+
+## HISTORICAL — R7-DEMO-01 isolated V2 buyer agents (VERIFIED)
 
 Date: 2026-11-06. Branch: `feat/r7-demo-01-buyers`.
 Base: `b98068287ebb2b4e6308294c91d6b41b8d457444`.
