@@ -307,6 +307,34 @@ Next bounded gate:
 R7-06E — contract compatibility, explicit sponsor
 authorization and protection against free-riding.
 
+## R7-06E/00 — Contract Authorization Boundary
+
+Base: `96e96dc`.
+
+- Read-only Rust contract inspection.
+- M3 V1 awards all eligible Accepted/Open mandates.
+- Existing API has no caller-supplied sponsor subset.
+- Buyer mandate revocation exists, but is a separate
+  authorized on-chain action.
+- Three-funded-buyer outcome differs from the
+  offline two-buyer formation.
+- Conditional two-buyer compatibility demonstrated.
+- Open refused supplier offer can change winner.
+- On-chain cap may exceed economic willingness.
+- Worker completion does not check sponsor allocation.
+- Non-excludable real-world spillovers remain unsolved.
+- All modeled on-chain snapshots are hypothetical.
+- No new Testnet transactions or deployed code changes.
+
+Evidence:
+`docs/evidence/R7-06E-authorization-boundary.json`
+
+Normative next design:
+`docs/M3_R7_06E_AUTHORIZATION_SPEC.md`
+
+Next: R7-06E/01 pure Rust subset-aware authorization
+and settlement preflight with negative tests.
+
 ## What Is Still Missing
 
 1. Independently deciding buyer/provider agents.

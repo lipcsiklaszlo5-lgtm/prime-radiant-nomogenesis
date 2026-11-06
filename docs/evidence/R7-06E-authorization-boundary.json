@@ -1,0 +1,274 @@
+{
+  "competition_hash": "6a6b022f8a9d15f64357a543b424e0099f968496a62bfe59c899828ecc133bcb",
+  "economics_hash": "1ed5284bfd70af0724f8e4e886668306ca24bcaa15f55b6a4d7835b76819e8a1",
+  "evidence_hash": "dc50fe461e9a796467e5fb43f43257ce4a4c7d48f9270cc0d90cba418db5c075",
+  "findings": [
+    "M3 V1 derives all eligible accepted/open funded jobs at award",
+    "M3 V1 receives no caller-specified approved coalition",
+    "Buyer mandate revocation is a separate signed on-chain action",
+    "Permissionless award can race proposed off-chain coordination",
+    "Current M3 funding cap is not the private economic willingness cap",
+    "On-chain posted bids override off-chain supplier cost-floor refusal",
+    "Worker completion has no allocation membership check",
+    "Access to a non-excludable physical or shared benefit cannot be guaranteed by a ledger alone",
+    "None of these hypothetical states is a verified NEAR execution"
+  ],
+  "required_next_design": [
+    "Bind actors to NEAR buyer/provider identities and real funded records",
+    "Bind explicit authorized job IDs, caps, expiry and exact allocations to case",
+    "Verify signer authority and prevent replay before atomic award",
+    "Make sponsor opt-in and withdrawal ordering unambiguous",
+    "Decide worker eligibility and refunds for excluded jobs",
+    "Do not claim that generic shared benefits can always be excluded",
+    "Preserve M2/M3 escrow, bonds, storage and native payout invariants"
+  ],
+  "rust_source_inspection": {
+    "checks": {
+      "all_open_accepted_jobs_eligible": true,
+      "award_uses_eligible_job_set": true,
+      "buyer_owned_mandate_revocation": true,
+      "case_id_only_award": true,
+      "worker_completion_uses_case_not_allocation": true
+    },
+    "source_sha256": {
+      "award": "d608eeac947cc6311a50f08abff90eae354f3cc173c271fbc26917b1326183de",
+      "clearing": "ab369d08036c2065d1da0b51479dfdb526c2c153318c9b745c7774b790734db5",
+      "lib": "c5c6909be6e6c41b52ebda22d705877ab0300cffa0ff73668130059ca14c55f7",
+      "worker": "49e654770da41ebaae6bc8f1a0f67b89c38c084900fc8d50fd3198a16449934f"
+    }
+  },
+  "scenarios": {
+    "all_three_enrolled": {
+      "hypothetical_m3_prediction": {
+        "allocations": [
+          {
+            "amount": 4,
+            "job_id": 1
+          },
+          {
+            "amount": 4,
+            "job_id": 2
+          },
+          {
+            "amount": 3,
+            "job_id": 3
+          }
+        ],
+        "eligible_jobs": [
+          1,
+          2,
+          3
+        ],
+        "posted_offers": [
+          1,
+          2,
+          3
+        ],
+        "revoked_jobs": [],
+        "winning_pair": {
+          "offers": [
+            3,
+            2
+          ],
+          "price": 11
+        }
+      },
+      "matches_offchain_formation": false,
+      "over_willingness_jobs": [
+        3
+      ],
+      "proven_near_authorization": false,
+      "proven_onchain_execution": false,
+      "requires_actual_onchain_revocations": false,
+      "selected_refusing_offers": [],
+      "unwilling_funded_jobs": [
+        3
+      ]
+    },
+    "last_minute_buyer_withdrawal": {
+      "hypothetical_m3_prediction": {
+        "allocations": [],
+        "eligible_jobs": [
+          1
+        ],
+        "posted_offers": [
+          1,
+          2,
+          3
+        ],
+        "revoked_jobs": [
+          2
+        ],
+        "winning_pair": null
+      },
+      "matches_offchain_formation": false,
+      "over_willingness_jobs": [],
+      "proven_near_authorization": false,
+      "proven_onchain_execution": false,
+      "requires_actual_onchain_revocations": true,
+      "selected_refusing_offers": [],
+      "unwilling_funded_jobs": []
+    },
+    "onchain_cap_exceeds_economic_willingness": {
+      "hypothetical_m3_prediction": {
+        "allocations": [
+          {
+            "amount": 6,
+            "job_id": 1
+          },
+          {
+            "amount": 5,
+            "job_id": 2
+          }
+        ],
+        "eligible_jobs": [
+          1,
+          2
+        ],
+        "posted_offers": [
+          1,
+          2,
+          3
+        ],
+        "revoked_jobs": [],
+        "winning_pair": {
+          "offers": [
+            3,
+            2
+          ],
+          "price": 11
+        }
+      },
+      "matches_offchain_formation": false,
+      "over_willingness_jobs": [
+        1
+      ],
+      "proven_near_authorization": false,
+      "proven_onchain_execution": false,
+      "requires_actual_onchain_revocations": false,
+      "selected_refusing_offers": [],
+      "unwilling_funded_jobs": []
+    },
+    "only_selected_enrolled": {
+      "hypothetical_m3_prediction": {
+        "allocations": [
+          {
+            "amount": 6,
+            "job_id": 1
+          },
+          {
+            "amount": 5,
+            "job_id": 2
+          }
+        ],
+        "eligible_jobs": [
+          1,
+          2
+        ],
+        "posted_offers": [
+          1,
+          2,
+          3
+        ],
+        "revoked_jobs": [],
+        "winning_pair": {
+          "offers": [
+            3,
+            2
+          ],
+          "price": 11
+        }
+      },
+      "matches_offchain_formation": true,
+      "over_willingness_jobs": [],
+      "proven_near_authorization": false,
+      "proven_onchain_execution": false,
+      "requires_actual_onchain_revocations": false,
+      "selected_refusing_offers": [],
+      "unwilling_funded_jobs": []
+    },
+    "seller_refusal_ignored_if_offer_posted": {
+      "hypothetical_m3_prediction": {
+        "allocations": [
+          {
+            "amount": 5,
+            "job_id": 1
+          },
+          {
+            "amount": 4,
+            "job_id": 2
+          }
+        ],
+        "eligible_jobs": [
+          1,
+          2
+        ],
+        "posted_offers": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "revoked_jobs": [],
+        "winning_pair": {
+          "offers": [
+            3,
+            4
+          ],
+          "price": 9
+        }
+      },
+      "matches_offchain_formation": false,
+      "over_willingness_jobs": [],
+      "proven_near_authorization": false,
+      "proven_onchain_execution": false,
+      "requires_actual_onchain_revocations": false,
+      "selected_refusing_offers": [
+        4
+      ],
+      "unwilling_funded_jobs": []
+    },
+    "third_buyer_revoked_before_award": {
+      "hypothetical_m3_prediction": {
+        "allocations": [
+          {
+            "amount": 6,
+            "job_id": 1
+          },
+          {
+            "amount": 5,
+            "job_id": 2
+          }
+        ],
+        "eligible_jobs": [
+          1,
+          2
+        ],
+        "posted_offers": [
+          1,
+          2,
+          3
+        ],
+        "revoked_jobs": [
+          3
+        ],
+        "winning_pair": {
+          "offers": [
+            3,
+            2
+          ],
+          "price": 11
+        }
+      },
+      "matches_offchain_formation": true,
+      "over_willingness_jobs": [],
+      "proven_near_authorization": false,
+      "proven_onchain_execution": false,
+      "requires_actual_onchain_revocations": true,
+      "selected_refusing_offers": [],
+      "unwilling_funded_jobs": []
+    }
+  },
+  "signed_decisions_hash": "2ec281c4d212255fcfa7e080bb5b0b2c942124bb34fa8871f2452dc504266bab",
+  "version": "r7-06e-contract-boundary-v1"
+}

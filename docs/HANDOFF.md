@@ -37,7 +37,15 @@
   under non-excludable shared-dependency assumption.
 - No real market advantage or coalition stability claim.
 - Evidence: docs/evidence/R7-06D-economic-counterfactuals.json.
-- Next: R7-06E contract feasibility and sponsor authorization.
+- R7-06E/00 contract authorization audit PASS.
+- Current M3 award includes all eligible accepted mandates.
+- Offline selected subset can diverge from on-chain result.
+- Existing buyer mandate revocation requires real NEAR action.
+- Worker completion does not check sponsor allocation.
+- Non-excludable free-riding cannot be fixed by ledger alone.
+- Evidence: docs/evidence/R7-06E-authorization-boundary.json.
+- Design: docs/M3_R7_06E_AUTHORIZATION_SPEC.md.
+- Next: R7-06E/01 pure Rust authorization preflight.
 
 
 ## Active M3-R7-02 — Genesis Certificate
