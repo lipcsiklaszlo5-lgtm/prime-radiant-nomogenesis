@@ -1,6 +1,32 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## CURRENT — R7-06 AUTONOMOUS FORMATION
+## CURRENT — R7-06E/03A SANDBOX VERIFIED
+
+Date: 2026-11-06.
+Branch: `feat/r7-06e-03-auth`.
+Base: `fdb7098`.
+
+- Isolated NEAR V2 authorization registry implemented.
+- Eight Rust tests PASS; strict Clippy PASS.
+- Original M3 Rust library: 210 tests PASS.
+- WASM build and optimization PASS.
+- Local NEAR Sandbox authenticated caller checks PASS.
+- Two distinct buyer accounts registered consent.
+- Forgery, insufficient deposit, unauthorized revoke
+  and consumed nonce replay rejected without observed
+  persistent state change.
+- Measured net storage growth: 689 bytes.
+- Retained registration bonds: 0.12288 NEAR.
+- Old M3 contract and public Testnet unchanged.
+- V2 does NOT yet bind funded M3 jobs or execute
+  a selected-coalition economic award.
+- No new Testnet transaction or independent audit.
+- Evidence and reproduction:
+  `docs/worklog/M3-R7-06E-03A-auth-sandbox.md`.
+- Next: R7-06E/03B atomic funded-M3 integration.
+
+
+## HISTORICAL — R7-06 AUTONOMOUS FORMATION
 
 - Base: `3237164`, branch `feat/r7-genesis-certificate`.
 - Preserve M2/M3/R6/R7 and both complete Testnet cases.

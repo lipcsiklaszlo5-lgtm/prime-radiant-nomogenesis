@@ -1,6 +1,23 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-**Current state:** M3-R6-05B public Testnet lifecycle verified
+## CURRENT — R7-06E/03A
+
+Date: 2026-11-06.
+Branch: `feat/r7-06e-03-auth`.
+
+- V2 unit tests 8/8 PASS.
+- M3 library regression 210/210 PASS.
+- WASM SHA-256:
+  `1384f645cfbde3801d9af11e8b8c9b20c41463374421e90aeab315f189d6fd46`
+- Local NEAR Sandbox authorization audit PASS.
+- Registered and revoked buyer consents persist.
+- Negative authorization, deposit and nonce tests PASS.
+- No funded M3 linkage, atomic subset award, Testnet
+  deployment or independent security audit.
+- Next: R7-06E/03B funded-M3 atomic integration.
+
+
+**Historical state (2026-11-04):** M3-R6-05B public Testnet lifecycle verified
 **Date:** 2026-11-04
 **Branch:** `feat/m2-escrow`
 **Implementation starting commit:** `af9c518`

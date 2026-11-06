@@ -1,13 +1,28 @@
 # NOMOGENESIS — Project State and New-Chat Handoff
 
 Date: 2026-11-06
-Last previously verified commit: `3237164`
+Current checkpoint base: `fdb7098`
 Repository: `lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis`
-Working branch: `feat/r7-genesis-certificate`
+Working branch: `feat/r7-06e-03-auth`
 
 Git HEAD and actual tests are authoritative.
 This document preserves the development history,
 not an immutable representation of future progress.
+
+## Latest verified milestone — R7-06E/03A
+
+- Versioned NEAR consent-registry prototype.
+- Actual local Sandbox transactions PASS.
+- Eight focused Rust tests and 210 M3 library
+  regression tests PASS.
+- Deployed V2 only inside local Sandbox.
+- Original public M3 contract remains unchanged.
+- Actual M3 job ownership, economic settlement,
+  exact coalition award and legacy bypass protections
+  remain unimplemented in V2.
+- Next: R7-06E/03B funded-M3 integration.
+- Full record:
+  `docs/worklog/M3-R7-06E-03A-auth-sandbox.md`.
 
 ## Mission
 
