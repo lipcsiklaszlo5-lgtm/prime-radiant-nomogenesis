@@ -1,0 +1,67 @@
+{
+  "ticket": "R7-06E/03B-07D",
+  "base_commit": "97a0a40",
+  "date": "2026-11-06",
+  "network": "local NEAR Sandbox",
+  "result": "PASS",
+  "contract_source_modified": false,
+  "wasm_modified": false,
+  "refund_approved": false,
+  "report_sha256": {
+    "static": "a93a586c8c16b43c1e9ef5aaa9a843464b2a0525d6b44da34c15c6c81c6768a2",
+    "dynamic": "8631330c403af80cddb5bc32afa27a1734a6d7a38f1ec7c24106bcaa63cfa20d"
+  },
+  "static_analysis": {
+    "ticket": "R7-06E/03B-07D",
+    "base_commit": "97a0a40",
+    "basis": "Current contract Borsh layout and project storage overhead assumption",
+    "nonce_map_type": "String, bool",
+    "consent_map_type": "u64, r7_v2_consent::StoredConsent",
+    "nonce_prefix": "r7v2nonce",
+    "consent_prefix": "r7v2cons",
+    "max_account_id_bytes": 64,
+    "max_u64_decimal_digits": 20,
+    "max_nonce_key_text_bytes": 85,
+    "max_nonce_borsh_key_bytes": 89,
+    "stored_consent_borsh_bytes": 180,
+    "project_entry_overhead_bytes": 40,
+    "modeled_persistent_nonce_entry_bytes": 139,
+    "modeled_active_consent_entry_bytes": 236,
+    "modeled_combined_registration_bytes": 375,
+    "registration_quote_bytes": 4096,
+    "modeled_unallocated_bytes": 3721,
+    "refund_approved": false,
+    "limitations": [
+      "This is a source-level bound, not a NEAR protocol proof",
+      "The 40-byte overhead is a project assumption",
+      "Additional refund records and callbacks are excluded",
+      "No native backing or refund entitlement is established"
+    ]
+  },
+  "dynamic_sandbox": {
+    "ticket": "R7-06E/03B-07D",
+    "network": "local NEAR Sandbox",
+    "result": "PASS",
+    "original_consent_nonce": 9007199254740990,
+    "replacement_consent_nonce": 9007199254740991,
+    "successful_registrations": 3,
+    "active_consents": 2,
+    "per_registration_bond": "40960000000000000000000",
+    "first_bond_refunded": false,
+    "nonce_reuse_rejected": true,
+    "storage_bytes": {
+      "before_revocation": "600073",
+      "after_revocation": "599837",
+      "after_reregistration": "600208"
+    },
+    "storage_reserves": {
+      "before_revocation": "123790000000000000000000",
+      "after_revocation": "123790000000000000000000",
+      "after_reregistration": "164750000000000000000000"
+    },
+    "additional_storage_bytes": "135",
+    "additional_reserved_bond": "40960000000000000000000",
+    "limitation": "No storage refund entitlement or payout implemented"
+  },
+  "decision": "Preserve current contract for hackathon. No consent storage refunds authorized."
+}

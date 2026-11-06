@@ -1678,3 +1678,25 @@ Policy: docs/worklog/R7-06E-03B-07C-storage-policy.md
 
 Next: R7-06E/03B-07D persistent nonce
 storage bound and minimum retained reserve.
+
+## R7-06E/03B-07D storage bound checkpoint
+
+Date: 2026-11-06.
+
+Maximum-length buyer and large-nonce local
+NEAR Sandbox lifecycle verified: PASS.
+
+Current Borsh source-level model: 375 bytes.
+Quoted consent capacity: 4096 bytes.
+Measured net lifecycle storage: 135 bytes.
+
+These are not a formal protocol storage proof.
+No refundable amount has been approved.
+
+Evidence: docs/evidence/R7-06E-03B-07D.json
+Worklog: docs/worklog/R7-06E-03B-07D-storage-bound.md
+
+Decision: freeze consent refund development
+for the hackathon checkpoint.
+
+Next: V2 public deployment/demo readiness review.
