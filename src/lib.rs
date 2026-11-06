@@ -3,6 +3,10 @@ pub mod capacity;
 mod escrow;
 mod ledger;
 mod offer;
+#[cfg(feature = "r7-v2")]
+pub mod r7_v2_consent;
+#[cfg(feature = "r7-v2")]
+pub mod r7_v2_plan;
 pub mod rescue;
 mod rescue_award;
 mod rescue_clearing;
@@ -49,6 +53,10 @@ pub struct Nomogenesis {
     rescue_jobs: LookupMap<u64, rescue::RescueJob>,
     rescue_mandates: LookupMap<u64, rescue::RescueMandate>,
     rescue_escrow: u128,
+    #[cfg(feature = "r7-v2")]
+    r7_v2_consents: LookupMap<u64, r7_v2_consent::StoredConsent>,
+    #[cfg(feature = "r7-v2")]
+    r7_v2_nonces: LookupMap<String, bool>,
 }
 
 impl Default for Nomogenesis {
@@ -81,6 +89,10 @@ impl Default for Nomogenesis {
             rescue_jobs: LookupMap::new(b"m3jobs".as_slice()),
             rescue_mandates: LookupMap::new(b"m3mandates".as_slice()),
             rescue_escrow: 0,
+            #[cfg(feature = "r7-v2")]
+            r7_v2_consents: LookupMap::new(b"r7v2cons".as_slice()),
+            #[cfg(feature = "r7-v2")]
+            r7_v2_nonces: LookupMap::new(b"r7v2nonce".as_slice()),
         }
     }
 }
@@ -748,7 +760,223 @@ impl Nomogenesis {
             })
     }
 
+    #[cfg(feature = "r7-v2")]
+    pub fn preview_r7_v2_coalition(
+        &self,
+        case_id: Vec<u8>,
+        selected_job_ids: Vec<u64>,
+    ) -> r7_v2_plan::CoalitionPlanView {
+        let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
+
+        self.r7_v2_plan_for_jobs(key, selected_job_ids)
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub fn award_r7_v2_bundle(
+        &mut self,
+        case_id: Vec<u8>,
+        selected_job_ids: Vec<u64>,
+        expected_plan_hash: Vec<u8>,
+    ) -> u64 {
+        let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
+
+        self.award_r7_v2_bundle_inner(key, selected_job_ids, expected_plan_hash)
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub fn preflight_r7_v2_award(
+        &self,
+        case_id: Vec<u8>,
+        selected_job_ids: Vec<u64>,
+        expected_plan_hash: Vec<u8>,
+    ) -> r7_v2_plan::CoalitionPlanView {
+        let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
+
+        self.r7_v2_verified_plan(key, selected_job_ids, expected_plan_hash)
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub fn quote_r7_v2_consent_storage(&self) -> U128 {
+        U128(
+            env::storage_byte_cost()
+                .as_yoctonear()
+                .checked_mul(r7_v2_consent::STORAGE_BYTES)
+                .expect("consent storage quote overflow"),
+        )
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub fn get_r7_v2_consent(&self, job_id: u64) -> Option<r7_v2_consent::ConsentView> {
+        self.r7_v2_consents
+            .get(&job_id)
+            .map(r7_v2_consent::StoredConsent::view)
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub fn is_r7_v2_nonce_used(&self, buyer: AccountId, nonce: u64) -> bool {
+        self.r7_v2_nonces
+            .get(&r7_v2_consent::nonce_key(&buyer, nonce))
+            .copied()
+            .unwrap_or(false)
+    }
+
+    #[cfg(feature = "r7-v2")]
+    #[payable]
+    pub fn register_r7_v2_consent(&mut self, input: r7_v2_consent::ConsentInput) {
+        let caller = env::predecessor_account_id();
+        let now = env::block_timestamp();
+
+        let case_id = rescue::parse_case_id(input.case_id).expect("invalid rescue case ID");
+
+        let case = self
+            .rescue_cases
+            .get(&case_id)
+            .expect("unknown rescue case");
+
+        assert_eq!(
+            case.phase,
+            rescue::RescueCasePhase::Open,
+            "case is not open"
+        );
+        assert!(case.awarded_bundle_id.is_none(), "case already awarded");
+        assert!(
+            now >= case.bid_close && now < case.award_close,
+            "outside authorization window"
+        );
+        assert!(
+            case.job_ids.contains(&input.job_id),
+            "job does not belong to case"
+        );
+
+        let job = self
+            .rescue_jobs
+            .get(&input.job_id)
+            .expect("unknown funded job");
+
+        assert_eq!(job.case_id, case_id, "wrong job case");
+        assert_eq!(job.buyer, caller, "caller is not buyer");
+        assert_eq!(input.buyer, caller, "forged buyer");
+        assert_eq!(
+            job.phase,
+            rescue::RescueJobPhase::Accepted,
+            "job not accepted"
+        );
+
+        let mandate = self
+            .rescue_mandates
+            .get(&input.job_id)
+            .expect("missing funded mandate");
+
+        assert_eq!(mandate.job_id, input.job_id);
+        assert_eq!(
+            mandate.phase,
+            rescue::RescueMandatePhase::Open,
+            "mandate not open"
+        );
+        assert!(mandate.held_principal > 0);
+        assert!(mandate.locked_bundle_id.is_none());
+        assert!(mandate.locked_allocation.is_none());
+        assert!(mandate.release_reason.is_none());
+
+        assert_eq!(input.contract, env::current_account_id(), "wrong contract");
+        assert_eq!(input.domain, r7_v2_consent::DOMAIN, "wrong domain");
+
+        assert!(
+            input.expires_at > now && input.expires_at <= case.award_close,
+            "invalid consent expiry"
+        );
+
+        let plan_hash: [u8; 32] = input
+            .plan_hash
+            .try_into()
+            .expect("invalid plan hash length");
+
+        assert_ne!(plan_hash, [0; 32], "empty plan hash");
+
+        assert!(
+            input.exact_payment.0 > 0
+                && input.max_payment.0 > 0
+                && input.exact_payment.0 <= input.max_payment.0
+                && input.max_payment.0 <= mandate.held_principal,
+            "payment exceeds funded authority"
+        );
+
+        assert!(
+            self.r7_v2_consents.get(&input.job_id).is_none(),
+            "job already has consent"
+        );
+
+        let nonce_key = r7_v2_consent::nonce_key(&caller, input.nonce);
+
+        assert!(
+            self.r7_v2_nonces.get(&nonce_key).is_none(),
+            "nonce already consumed"
+        );
+
+        let required = self.quote_r7_v2_consent_storage().0;
+
+        assert_eq!(
+            env::attached_deposit().as_yoctonear(),
+            required,
+            "incorrect consent storage bond"
+        );
+
+        let next_storage = self
+            .storage_reserves
+            .checked_add(required)
+            .expect("storage reserve overflow");
+
+        let record = r7_v2_consent::StoredConsent {
+            case_id,
+            buyer: caller,
+            nonce: input.nonce,
+            plan_hash,
+            max_payment: input.max_payment.0,
+            exact_payment: input.exact_payment.0,
+            expires_at: input.expires_at,
+        };
+
+        self.r7_v2_nonces.insert(nonce_key, true);
+        self.r7_v2_consents.insert(input.job_id, record);
+        self.storage_reserves = next_storage;
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub fn revoke_r7_v2_consent(&mut self, job_id: u64) {
+        let caller = env::predecessor_account_id();
+        let now = env::block_timestamp();
+
+        let consent = self
+            .r7_v2_consents
+            .get(&job_id)
+            .cloned()
+            .expect("no active consent");
+
+        assert_eq!(consent.buyer, caller, "wrong buyer");
+
+        let case = self
+            .rescue_cases
+            .get(&consent.case_id)
+            .expect("missing rescue case");
+
+        assert_eq!(case.phase, rescue::RescueCasePhase::Open, "case not open");
+        assert!(
+            now >= case.bid_close && now < case.award_close,
+            "outside revocation window"
+        );
+
+        self.r7_v2_consents.remove(&job_id);
+
+        // Nonce remains consumed.
+        // Storage reserve remains held pending a separately
+        // specified refund lifecycle.
+    }
+
     pub fn award_rescue_bundle(&mut self, case_id: Vec<u8>) -> u64 {
+        if cfg!(feature = "r7-v2") {
+            panic!("R7 V2: legacy award disabled");
+        }
+
         let key = rescue::parse_case_id(case_id).expect("invalid rescue case ID");
         self.award_rescue_bundle_inner(key)
     }

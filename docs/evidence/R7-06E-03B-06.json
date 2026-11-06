@@ -1,0 +1,56 @@
+{
+  "ticket": "R7-06E/03B-06",
+  "date": "2026-11-06",
+  "base_commit": "3901662",
+  "build_feature": "r7-v2",
+  "compatible_wasm_sha256": "2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e",
+  "network": "local NEAR Sandbox",
+  "scenarios": {
+    "first-default": {
+      "result": "PASS",
+      "log_sha256": "292ca14852fb6df18e731c39ffacde50b6ad11209b7aa1b3506fb2cef732bca4",
+      "verified_markers": [
+        "=== R7-06E/03B-05E DEFAULT MATRIX: PASS ===",
+        "FINAL ECONOMIC LEDGER: 0 + 48 = 48 UNIT",
+        "EXCLUDED BUYER ISOLATION: PASS",
+        "DEFAULT SETTLEMENT: 3 + 45 = 48",
+        "SETTLEMENT REPLAY ROLLBACK: PASS"
+      ]
+    },
+    "second-default": {
+      "result": "PASS",
+      "log_sha256": "9462706805fa7e5db7011124e84d03473f7b4b7f5e0857a9ecb8222b1ff699df",
+      "verified_markers": [
+        "=== R7-06E/03B-05E DEFAULT MATRIX: PASS ===",
+        "FINAL ECONOMIC LEDGER: 0 + 48 = 48 UNIT",
+        "EXCLUDED BUYER ISOLATION: PASS",
+        "DEFAULT SETTLEMENT: 3 + 45 = 48",
+        "SETTLEMENT REPLAY ROLLBACK: PASS"
+      ]
+    },
+    "both-default": {
+      "result": "PASS",
+      "log_sha256": "1e3757e54bc47b983756deb744b03d80f6d6e47de1731e5ab7fe44aff3b411d9",
+      "verified_markers": [
+        "=== R7-06E/03B-05E DEFAULT MATRIX: PASS ===",
+        "FINAL ECONOMIC LEDGER: 0 + 48 = 48 UNIT",
+        "EXCLUDED BUYER ISOLATION: PASS",
+        "DEFAULT SETTLEMENT: 3 + 45 = 48",
+        "SETTLEMENT REPLAY ROLLBACK: PASS"
+      ]
+    }
+  },
+  "economic_units": {
+    "initial": 48,
+    "post_award_escrow": 39,
+    "post_award_claimable": 9,
+    "terminal_escrow": 0,
+    "terminal_claimable": 48
+  },
+  "limits": [
+    "No public Testnet V2 transaction",
+    "Consent storage refund lifecycle not implemented",
+    "No independent security audit",
+    "Free-rider economic incentives unresolved"
+  ]
+}

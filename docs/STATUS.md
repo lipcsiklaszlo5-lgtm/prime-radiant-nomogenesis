@@ -1218,3 +1218,25 @@ Production funds remain NOT APPROVED.
 - 3 inclusion-minimal coalitions calculated OFFCHAIN.
 - Testnet demonstrator accounts share one operator.
 - Independent external audit and new certificate on-chain execution NOT claimed.
+
+## R7-06E/03B-06 verified checkpoint
+
+Date: 2026-11-06.
+
+Integrated consent-bound M3/V2 subset award:
+231 Rust tests PASS, strict Clippy PASS,
+compatible WASM and local NEAR Sandbox PASS.
+
+Four provider outcomes verified across the
+successful terminal case and three default cases.
+
+Economic conservation: 48 UNIT.
+
+Evidence: docs/evidence/R7-06E-03B-06.json
+Worklog: docs/worklog/R7-06E-03B-06-checkpoint.md
+
+Limitations: consent storage bond release,
+independent security review, public V2 Testnet,
+and free-rider incentives remain unresolved.
+
+Next: R7-06E/03B-07 storage bond accounting audit.

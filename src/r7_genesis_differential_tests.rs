@@ -2,22 +2,22 @@ use crate::rescue_clearing::allocate_rescue_cost;
 use near_sdk::serde_json::Value;
 
 fn vectors() -> Vec<Value> {
-    let data: Value = near_sdk::serde_json::from_str(
-        include_str!("../docs/evidence/R7-02C-allocation-vectors.json"),
-    )
+    let data: Value = near_sdk::serde_json::from_str(include_str!(
+        "../docs/evidence/R7-02C-allocation-vectors.json"
+    ))
     .expect("invalid differential fixture");
 
     assert_eq!(data["version"], "r7-02c-allocation-v1");
 
-    let cases = data["cases"]
-        .as_array()
-        .expect("missing cases");
+    let cases = data["cases"].as_array().expect("missing cases");
 
     assert_eq!(cases.len(), 185);
     cases.clone()
 }
 
-fn parse_case(row: &Value) -> (Vec<(u64, u128)>, u128, Vec<(u64, u128)>) {
+type JobAmounts = Vec<(u64, u128)>;
+
+fn parse_case(row: &Value) -> (JobAmounts, u128, JobAmounts) {
     let price = row["price"]
         .as_str()
         .expect("price string")
@@ -64,19 +64,13 @@ fn rust_matches_python_on_all_185_cases() {
     for row in vectors() {
         let (caps, price, expected) = parse_case(&row);
 
-        let actual: Vec<(u64, u128)> =
-            allocate_rescue_cost(&caps, price)
-                .expect("Rust allocation failed")
-                .into_iter()
-                .map(|a| (a.job_id, a.amount))
-                .collect();
+        let actual: Vec<(u64, u128)> = allocate_rescue_cost(&caps, price)
+            .expect("Rust allocation failed")
+            .into_iter()
+            .map(|a| (a.job_id, a.amount))
+            .collect();
 
-        assert_eq!(
-            actual,
-            expected,
-            "Python/Rust mismatch in {}",
-            row["id"]
-        );
+        assert_eq!(actual, expected, "Python/Rust mismatch in {}", row["id"]);
     }
 }
 
@@ -86,18 +80,12 @@ fn input_order_does_not_change_rust_results() {
         let (mut caps, price, expected) = parse_case(&row);
         caps.reverse();
 
-        let actual: Vec<(u64, u128)> =
-            allocate_rescue_cost(&caps, price)
-                .expect("Rust reversed allocation failed")
-                .into_iter()
-                .map(|a| (a.job_id, a.amount))
-                .collect();
+        let actual: Vec<(u64, u128)> = allocate_rescue_cost(&caps, price)
+            .expect("Rust reversed allocation failed")
+            .into_iter()
+            .map(|a| (a.job_id, a.amount))
+            .collect();
 
-        assert_eq!(
-            actual,
-            expected,
-            "Order-dependent result in {}",
-            row["id"]
-        );
+        assert_eq!(actual, expected, "Order-dependent result in {}", row["id"]);
     }
 }

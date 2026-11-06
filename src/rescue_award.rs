@@ -7,7 +7,7 @@ use crate::{
         MandateReleaseReason, RescueBundle, RescueBundlePhase, RescueCasePhase,
         RescueComponentOutcome, RescueJobPhase, RescueMandatePhase, RescueOfferPhase,
     },
-    rescue_clearing::allocate_rescue_cost,
+    rescue_clearing::{RescuePairPlan, allocate_rescue_cost},
 };
 
 impl Nomogenesis {
@@ -15,6 +15,48 @@ impl Nomogenesis {
         let pair = self
             .select_rescue_pair(case_id, env::block_timestamp())
             .expect("no fully funded rescue pair");
+
+        self.award_rescue_bundle_for_pair(case_id, pair, None)
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub(crate) fn award_r7_v2_bundle_inner(
+        &mut self,
+        case_id: [u8; 32],
+        selected: Vec<u64>,
+        expected_hash: Vec<u8>,
+    ) -> u64 {
+        // Recompute the economic plan and verify
+        // every selected buyer's stored consent.
+        let verified = self.r7_v2_verified_plan(case_id, selected.clone(), expected_hash);
+
+        // No asynchronous promise is involved.
+        // These reads and the award occur within
+        // the same NEAR function call.
+        let pair = self
+            .select_r7_v2_pair(case_id, env::block_timestamp(), &selected)
+            .expect("approved provider pair is no longer eligible");
+
+        assert_eq!(verified.offer_ids, pair.offer_ids, "provider pair drift");
+        assert_eq!(
+            verified.total_price.0, pair.total_price,
+            "approved recovery price drift"
+        );
+        assert_eq!(
+            verified.selected_job_ids.as_slice(),
+            pair.eligible_job_ids.as_slice(),
+            "approved coalition drift"
+        );
+
+        self.award_rescue_bundle_for_pair(case_id, pair, Some(&selected))
+    }
+
+    fn award_rescue_bundle_for_pair(
+        &mut self,
+        case_id: [u8; 32],
+        pair: RescuePairPlan,
+        selected: Option<&[u64]>,
+    ) -> u64 {
         let mut case = self
             .rescue_cases
             .get(&case_id)
@@ -92,6 +134,75 @@ impl Nomogenesis {
             mandates.push((allocation.job_id, mandate));
         }
         assert_eq!(allocated_total, pair.total_price, "allocation imbalance");
+
+        if let Some(chosen) = selected {
+            assert_eq!(
+                pair.eligible_job_ids.as_slice(),
+                chosen,
+                "selected sponsor list mismatch"
+            );
+
+            // Excluded jobs retain their separately
+            // financed worker reward. Their open
+            // rescue-buying mandates are returned
+            // immediately, not stranded in a closed case.
+            for job_id in &case.job_ids {
+                if chosen.binary_search(job_id).is_ok() {
+                    continue;
+                }
+
+                let job = self.rescue_jobs.get(job_id).expect("excluded job missing");
+
+                assert_eq!(job.id, *job_id);
+                assert_eq!(job.case_id, case_id);
+
+                let mut mandate = self
+                    .rescue_mandates
+                    .get(job_id)
+                    .cloned()
+                    .expect("excluded mandate missing");
+
+                assert_eq!(mandate.job_id, *job_id);
+
+                match mandate.phase {
+                    RescueMandatePhase::Open => {
+                        assert!(mandate.held_principal > 0, "empty excluded mandate");
+                        assert!(
+                            mandate.locked_bundle_id.is_none()
+                                && mandate.locked_allocation.is_none()
+                                && mandate.release_reason.is_none(),
+                            "excluded mandate has stale lock"
+                        );
+
+                        let amount = mandate.held_principal;
+                        credits.push((job.buyer.clone(), amount));
+
+                        mandate.held_principal = 0;
+                        mandate.phase = RescueMandatePhase::Released;
+                        mandate.locked_bundle_id = None;
+                        mandate.locked_allocation = None;
+                        mandate.release_reason = Some(MandateReleaseReason::ZeroAllocation);
+
+                        mandates.push((*job_id, mandate));
+                    }
+                    RescueMandatePhase::Released => {
+                        assert_eq!(
+                            mandate.held_principal, 0,
+                            "released mandate retains principal"
+                        );
+                        assert!(
+                            mandate.locked_bundle_id.is_none()
+                                && mandate.locked_allocation.is_none()
+                                && mandate.release_reason.is_some(),
+                            "released mandate inconsistent"
+                        );
+                    }
+                    RescueMandatePhase::Locked => {
+                        panic!("excluded mandate already locked");
+                    }
+                }
+            }
+        }
 
         let mut offers = Vec::new();
         let mut slots = Vec::new();

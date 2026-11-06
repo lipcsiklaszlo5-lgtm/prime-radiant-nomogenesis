@@ -80,6 +80,25 @@ pub(crate) fn allocate_rescue_cost(
 
 impl Nomogenesis {
     pub(crate) fn select_rescue_pair(&self, case_id: [u8; 32], now: u64) -> Option<RescuePairPlan> {
+        self.select_rescue_pair_with_jobs(case_id, now, None)
+    }
+
+    #[cfg(feature = "r7-v2")]
+    pub(crate) fn select_r7_v2_pair(
+        &self,
+        case_id: [u8; 32],
+        now: u64,
+        jobs: &[u64],
+    ) -> Option<RescuePairPlan> {
+        self.select_rescue_pair_with_jobs(case_id, now, Some(jobs))
+    }
+
+    fn select_rescue_pair_with_jobs(
+        &self,
+        case_id: [u8; 32],
+        now: u64,
+        selected: Option<&[u64]>,
+    ) -> Option<RescuePairPlan> {
         let case = self
             .rescue_cases
             .get(&case_id)
@@ -109,6 +128,9 @@ impl Nomogenesis {
         let mut job_ids = BTreeSet::new();
         for id in &case.job_ids {
             assert!(job_ids.insert(*id), "duplicate case job ID");
+            if selected.is_some_and(|ids| !ids.contains(id)) {
+                continue;
+            }
             let job = self.rescue_jobs.get(id).expect("missing rescue job");
             let mandate = self
                 .rescue_mandates
