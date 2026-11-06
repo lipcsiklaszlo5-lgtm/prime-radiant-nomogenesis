@@ -63,7 +63,8 @@ def verify(cert):
                     x["component"] == 0
                     and y["component"] == 1
                     and x["provider"] != y["provider"]
-                    and x["slot"] != y["slot"]
+                    and (x["provider"], x["slot"])
+                    != (y["provider"], y["slot"])
                     and x["available"]
                     and y["available"]
                     and x["ready_at"] <= data["deadline"]

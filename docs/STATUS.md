@@ -1,6 +1,16 @@
 # STATUS — Prime Radiant / Nomogenesis
 
-## CURRENT — R7-DOC-02 (documentation verified)
+## CURRENT — R7-FIX-01 (provider-scoped slot parity)
+
+Branch `fix/r7-fix-01-provider-slot`, base `2778cdd`.
+The offline Genesis, Python/Rust certificate verification, JS benchmark
+and Python competition witness now use provider-scoped slot identity.
+Distinct providers sharing a slot name pass; same-provider pairs fail.
+Codespaces: 93 Python and 48 Node tests PASS; targeted Rust certificate
+test exit 0. No contract, WASM, Sandbox or Testnet change.
+Next single ticket: `R7-REPO-01`. Current entry: `docs/CURRENT_STATE.md`.
+
+## HISTORICAL — R7-DOC-02 (documentation verified)
 
 Code baseline `5455ee7`; documentation branch
 `docs/r7-continuity-5455ee7`. Current entry:

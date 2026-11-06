@@ -152,7 +152,7 @@ class CompetitionTests(unittest.TestCase):
             [1, 2],
         )
 
-    def test_capacity_slot_conflict_rejected(self):
+    def test_distinct_providers_can_share_slot_name(self):
         m = reference()
 
         m["offers"][1]["slot"] = (
@@ -161,15 +161,20 @@ class CompetitionTests(unittest.TestCase):
 
         r = audit(m)
 
-        self.assertIn(
-            "capacity_slot_conflict",
-            pair(r, [3, 2])["reasons"],
-        )
-
+        self.assertTrue(pair(r, [3, 2])["eligible"])
         self.assertEqual(
             r["winning_pair"]["offers"],
-            [1, 2],
+            [3, 2],
         )
+
+    def test_same_provider_and_slot_conflict_rejected(self):
+        m = reference()
+        m["offers"][1]["provider"] = m["offers"][2]["provider"]
+        m["offers"][1]["slot"] = m["offers"][2]["slot"]
+
+        r = audit(m)
+        self.assertIn("same_provider", pair(r, [3, 2])["reasons"])
+        self.assertIn("capacity_slot_conflict", pair(r, [3, 2])["reasons"])
 
     def test_equal_price_tie_uses_offer_ids(self):
         m = reference()

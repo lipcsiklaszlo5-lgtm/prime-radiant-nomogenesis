@@ -235,17 +235,17 @@ class FormationTests(unittest.TestCase):
 
         self.assertIsNone(x["selected"])
 
-    def test_same_provider_or_slot_rejected(self):
-        for key in ("provider", "slot"):
-            s = example()
+    def test_same_provider_rejected(self):
+        s = example()
+        s["offers"][1]["provider"] = s["offers"][0]["provider"]
 
-            s["offers"][1][key] = (
-                s["offers"][0][key]
-            )
+        self.assertIsNone(form(s)["selected"])
 
-            self.assertIsNone(
-                form(s)["selected"]
-            )
+    def test_distinct_providers_can_share_slot_name(self):
+        s = example()
+        s["offers"][1]["slot"] = s["offers"][0]["slot"]
+
+        self.assertEqual(form(s)["selected"]["pair"], [1, 2])
 
     def test_late_component_rejected(self):
         s = example()

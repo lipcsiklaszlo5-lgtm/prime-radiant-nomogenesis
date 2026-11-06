@@ -90,6 +90,16 @@ test('underbonded and same-provider offers fail', () => {
   );
 });
 
+test('distinct providers may reuse a slot name', () => {
+  const s = structuredClone(byId['joint-only']);
+  s.offers[1].slot = s.offers[0].slot;
+
+  assert.deepEqual(
+    selectPair(s.offers, s.deadline),
+    { price: 12, offers: [s.offers[0].id, s.offers[1].id] }
+  );
+});
+
 test('individual buyer can fund when cap allows', () => {
   const s = structuredClone(byId['joint-only']);
 

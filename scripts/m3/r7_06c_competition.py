@@ -74,7 +74,9 @@ def audit(market, origin_hash="synthetic-test"):
             if a["provider"] == b["provider"]:
                 reasons.append("same_provider")
 
-            if a["slot"] == b["slot"]:
+            if (a["provider"], a["slot"]) == (
+                b["provider"], b["slot"]
+            ):
                 reasons.append("capacity_slot_conflict")
 
             if price > MAX_U128:

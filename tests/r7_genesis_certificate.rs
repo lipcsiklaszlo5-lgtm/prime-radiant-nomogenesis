@@ -260,7 +260,7 @@ fn verify(c: &Certificate) -> Result<(), &'static str> {
             if a.available
                 && b.available
                 && a.provider != b.provider
-                && a.slot != b.slot
+                && (a.provider != b.provider || a.slot != b.slot)
                 && a.ready_at <= c.input.deadline
                 && b.ready_at <= c.input.deadline
                 && a.bond >= price
@@ -364,6 +364,27 @@ fn verifies_actual_testnet_genesis_certificate() {
     );
 
     println!("REAL TESTNET GENESIS: RUST VERIFIED");
+}
+
+#[test]
+fn accepts_distinct_providers_sharing_a_slot_name() {
+    let mut c = reference();
+    c.input.offers[1].slot = c.input.offers[0].slot.clone();
+    c.input_hash = digest("GENESIS_INPUT", &canonical_input(&c.input));
+    c.certificate_hash = digest("GENESIS_CERT", &canonical_body(&c));
+
+    verify(&c).expect("different providers have independent capacity slots");
+}
+
+#[test]
+fn rejects_same_provider_sharing_a_slot_name() {
+    let mut c = reference();
+    c.input.offers[1].provider = c.input.offers[0].provider.clone();
+    c.input.offers[1].slot = c.input.offers[0].slot.clone();
+    c.input_hash = digest("GENESIS_INPUT", &canonical_input(&c.input));
+    c.certificate_hash = digest("GENESIS_CERT", &canonical_body(&c));
+
+    assert_eq!(verify(&c), Err("winning pair"));
 }
 
 #[test]

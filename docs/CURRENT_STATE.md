@@ -1,9 +1,11 @@
 # Nomogenesis — aktuális állapot és folytatás
 
-Dátum: 2026-11-06. Kódalap: `5455ee779aa2c66d98f0f93175176034e969a4ec`.
+Dátum: 2026-11-06. Integrációs kódalap: `5455ee779aa2c66d98f0f93175176034e969a4ec`.
 Dokumentációs ág: `docs/r7-continuity-5455ee7`.
-Ez az ág a vizsgálatkor csak helyben létezett. Új chatben előbb ellenőrizd
-a Git HEAD-et, az összes ágat és a nem commitált fájlokat.
+Jelenlegi javítóág: `fix/r7-fix-01-provider-slot`, alap `2778cdd`.
+A dokumentációs checkpoint a GitHubon `2778cdd`. Új chatben előbb
+ellenőrizd a javítóág távoli HEAD-jét, az összes ágat és a nem
+commitált fájlokat.
 
 ## Azonnali belépés
 
@@ -39,7 +41,7 @@ a Git HEAD-et, az összes ágat és a nem commitált fájlokat.
 | ID | Állapot |
 |---|---|
 | F1 | A korábbi „nincs on-chain subset award” megállapítást az integrált V2 checkpoint meghaladta; a teljes kód- és tesztreview még szükséges. |
-| F2 | A Python Genesis, Rust certificate verifier és JS benchmark nyers slotneveket hasonlít; a szerződés providerhez kötött kulcsot használ. A két-provider/azonos-slot regresszió hiányzik. |
+| F2 | A providerhez kötött slotparitás javítva a Genesis, Python/Rust verifier, JS benchmark és verseny-audit útján. Codespaces: 93 Python, 48 Node és célzott Rust certificate teszt sikeres. |
 | F3 | A szintetikus nem kizárható haszon esetén 3/3 vevő potyautasként kilépne; az ösztönző megoldás nincs bizonyítva. |
 | F4 | A tényleges szolgáltatás-kieséstől a mentésig tartó teljes, mérhető folyamat még nincs igazolva. |
 | F5 | A korábbi offline agentek saját friss kulcsai nem bizonyítanak tartós, független NEAR-azonosságot. |
@@ -59,8 +61,10 @@ Mérjük a helyreállítás idejét, kész jobokat, vevői költséget,
 szolgáltatói díjat és lekötött tőkét. A fődíj vagy a NEAR-be történő
 beemelés nem bizonyított eredmény.
 
-A dokumentáció lezárása után az **egyetlen következő kódticket**
-`R7-FIX-01`: a providerhez kötött slotazonosság paritása a Python
-Genesis, Rust certificate verifier és JS benchmark között.
-Előbb pozitív és negatív regressziós eset; utána a legkisebb javítás,
-teljes offline és valódi Rust teszt. A szerződés módosítása külön ticket.
+Az `R7-FIX-01` eredménye: `docs/worklog/R7-FIX-01-provider-slot.md`.
+A **következő egyetlen ticket** `R7-REPO-01`: az összes ág és a
+nem commitált buyer/audit fájlok leltára, majd a `main` ág
+felzárkóztatásának ellenőrizhető terve. Ágat nem törlünk és
+`main`-t nem mozgatunk az összevetés előtt.
+Utána a kiesés → agentes döntés → atomi NEAR mentés → settlement
+demó és az új V2 public Testnet bizonyítása következhet.

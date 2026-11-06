@@ -72,7 +72,6 @@ class HardeningTests(unittest.TestCase):
     def test_provider_rejections(self):
         cases = [
             ("provider", "a"),
-            ("slot", "s1"),
             ("ready_at", 11),
             ("available", False),
             ("component", 0),
@@ -86,6 +85,17 @@ class HardeningTests(unittest.TestCase):
                 cert = generate(data)
                 self.assertIsNone(cert["winning_pair"])
                 self.assertTrue(verify(cert))
+
+    def test_distinct_providers_can_share_slot_name(self):
+        data = scenario()
+        data["offers"][1]["slot"] = data["offers"][0]["slot"]
+
+        cert = generate(data)
+        self.assertEqual(
+            cert["winning_pair"],
+            {"price": 12, "offers": [1, 2]},
+        )
+        self.assertTrue(verify(cert))
 
     def test_duplicate_ids_rejected(self):
         for kind, key in [

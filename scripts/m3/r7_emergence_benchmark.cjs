@@ -77,7 +77,7 @@ function selectPair(offers, deadline) {
 
       if (
         a.provider === b.provider ||
-        a.slot === b.slot ||
+        (a.provider === b.provider && a.slot === b.slot) ||
         a.bond < price ||
         b.bond < price ||
         a.readyAt > deadline ||

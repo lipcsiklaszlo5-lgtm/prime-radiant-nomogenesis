@@ -1,6 +1,23 @@
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
-## CURRENT — R7-DOC-02 documentation reconciliation (VERIFIED)
+## CURRENT — R7-FIX-01 provider-scoped slot parity (VERIFIED)
+
+Date: 2026-11-06. Branch: `fix/r7-fix-01-provider-slot`.
+Base: `2778cdd202f549e93740567b994b0b137644794e`.
+Scope: align offline Python Genesis and its independent verifier, Rust
+certificate recomputation, JS benchmark, and Python competition witness
+with the existing on-chain `provider|slot_id` capacity key. Add explicit
+same-name/different-provider positive cases and same-provider negative
+cases. Do not modify the contract or historical evidence fixtures.
+The source feature worktree's untracked files are not included.
+Codespaces checks: 93 Python tests PASS; 48 Node tests PASS;
+`cargo test --locked --test r7_genesis_certificate` exit 0.
+Full Rust suite, Sandbox, WASM and public Testnet were not rerun.
+Worklog: `docs/worklog/R7-FIX-01-provider-slot.md`.
+Next single ticket: `R7-REPO-01` branch and untracked-file inventory,
+then a reviewable plan for updating the default branch.
+
+## HISTORICAL — R7-DOC-02 documentation reconciliation (VERIFIED)
 
 Date: 2026-11-06.
 Branch: `docs/r7-continuity-5455ee7`.

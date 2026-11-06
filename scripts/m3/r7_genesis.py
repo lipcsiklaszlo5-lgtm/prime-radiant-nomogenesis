@@ -36,7 +36,8 @@ def generate(data):
                 a["available"]
                 and b["available"]
                 and a["provider"] != b["provider"]
-                and a["slot"] != b["slot"]
+                and (a["provider"], a["slot"])
+                != (b["provider"], b["slot"])
                 and max(a["ready_at"], b["ready_at"]) <= deadline
                 and min(a["bond"], b["bond"]) >= price
             ):
