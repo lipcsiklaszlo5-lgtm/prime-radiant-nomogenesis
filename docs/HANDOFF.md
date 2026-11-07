@@ -1,3 +1,9 @@
+## CURRENT — R7-AUTO-04 provider-default matrix
+
+AWS local Sandbox: three provider-default scenarios PASS, if verified by the R7-AUTO-04 gate. Provider forfeiture, sponsor compensation, replay rejection and 48 UNIT accounting conservation.
+Evidence: `docs/worklog/R7-AUTO-04-provider-defaults.md`.
+No new Testnet transactions. WASM historical byte parity unresolved.
+
 # Élő munkamenet-átadás — minden fejlesztési session végén frissítendő
 
 ## CURRENT — R7-DEMO-03/04B backup-driven recovery VERIFIED
