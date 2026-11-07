@@ -1,3 +1,15 @@
+## CURRENT — R7-AUTO-05B/03 full settlement
+
+Ten local agent signers completed the lifecycle:
+funding, competitive bids, worker acceptance,
+buyer consents, atomic award, provider proofs,
+bond release, settlement and worker completion.
+Final liabilities: 52 = 0 + 52 UNIT.
+16 unique Sandbox transaction IDs verified.
+Evidence: `docs/worklog/R7-AUTO-05B-03-settlement.md`.
+Next: adversarial/default benchmark.
+Public Testnet unchanged.
+
 ## CURRENT — R7-AUTO-05B/02 autonomous award
 
 Ten separately signing local agent processes
