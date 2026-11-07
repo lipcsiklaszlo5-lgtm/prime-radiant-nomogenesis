@@ -1,3 +1,9 @@
+## CURRENT — R7-SDK-01 Recovery Intent adapter
+
+Initial CommonJS adapter for a third-party buyer to fund an existing Nomogenesis rescue case. Unit tests cover input safety, commitment ABI, deposit calculation and signing delegation. Independent Sandbox integration not yet run.
+Evidence: `docs/worklog/R7-SDK-01-recovery-intent.md`.
+No new Testnet transactions. Historical WASM byte parity unresolved.
+
 ## CURRENT — R7-AUTO-04 provider-default matrix
 
 AWS local Sandbox: three provider-default scenarios PASS, if verified by the R7-AUTO-04 gate. Provider forfeiture, sponsor compensation, replay rejection and 48 UNIT accounting conservation.
