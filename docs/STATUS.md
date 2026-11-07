@@ -1,3 +1,13 @@
+## CURRENT — R7-ADV-01B dual-provider default
+
+Both selected providers withheld proofs.
+Premature settlement rejected. Keeper closed
+the default after the recovery deadline;
+both worker rewards expired. Terminal economic
+conservation: 52 = 0 + 52 UNIT.
+Evidence: `docs/worklog/R7-ADV-01B-dual-default.md`.
+Next: forged-proof and agent restart benchmarks.
+
 ## CURRENT — R7-ADV-01A provider default
 
 One selected provider withheld proof. The
