@@ -1,3 +1,12 @@
+## CURRENT — R7-AUTO-05B/01 on-chain agent market
+
+Seven separate actors autonomously decided after
+a local outage event. Two NEAR Sandbox buyer funds,
+three bonded provider bids, two refusals. Cheapest
+eligible provider pair costs 11 UNIT, independently
+checked from contract state. No award yet.
+Evidence: `docs/worklog/R7-AUTO-05B-01-onchain-market.md`.
+
 ## CURRENT — R7-VERIFY-02 exact public-bytecode replay
 
 Two public Testnet RPCs confirmed the deployed V2 bytecode. The exact code passed the complete reactive recovery lifecycle in local Sandbox.
