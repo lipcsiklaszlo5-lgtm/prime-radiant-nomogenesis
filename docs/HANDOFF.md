@@ -1,3 +1,13 @@
+## CURRENT — R7-SDK-02 external Sandbox consumer
+
+Separate Node.js buyer with process-local signing
+key successfully funded a rescue job via the
+RecoveryIntent SDK on local NEAR Sandbox.
+Over-cap and invalid inputs rejected before signing.
+Evidence: `docs/worklog/R7-SDK-02-external-consumer.md`.
+Public Testnet unchanged; historical WASM byte
+parity unresolved.
+
 ## CURRENT — R7-SDK-01 Recovery Intent adapter
 
 Initial CommonJS adapter for a third-party buyer to fund an existing Nomogenesis rescue case. Unit tests cover input safety, commitment ABI, deposit calculation and signing delegation. Independent Sandbox integration not yet run.
