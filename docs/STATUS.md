@@ -1,3 +1,13 @@
+## CURRENT — R7-ADV-01C Merkle attack controls
+
+Two selected providers independently attempted
+tampered payloads, noncanonical metadata siblings
+and replays. All rejected, valid submissions
+accepted, successful settlement conserved
+52 UNIT. Evidence: `docs/worklog/R7-ADV-01C-merkle.md`.
+Next: public Testnet reproduction and restart
+durability of agent signing identities.
+
 ## CURRENT — R7-ADV-01B dual-provider default
 
 Both selected providers withheld proofs.

@@ -1,0 +1,83 @@
+Retrying transaction buyer-2.test.near:Dm44QC5yX4sjimBqxDkKQKtzy2NT24BxMhX3abJGyPsd with new nonce.
+Retrying transaction buyer-3.test.near:Cus91sZ54F8DRUv7okWy6hxwrPxuoVhk9428JeJznLSu with new nonce.
+Retrying transaction provider-alpha.test.near:72sfzy2Ekc9bqnKYvXvWgUCE8eoaMednmWVJWFNbfRzi with new nonce.
+Retrying transaction provider-beta.test.near:Bv41KKFDJUoz2QfSk1SA96nt3hMwhuptpGXqoK9jMVNp with new nonce.
+Retrying transaction provider-gamma.test.near:DqPpfR9M5i4XZDJeZ2jLJH7rCMXy5SJ1rQAqyiaxMZ4f with new nonce.
+Retrying transaction provider-delta.test.near:4CKtveBhU3uU5Ee2Miq5YZqmQVwQVitH7291h6mYmFiV with new nonce.
+Retrying transaction worker0.test.near:2ZjAXJXAwcUp1mQpW9ZRtjptFrx2hMgSbwLuGFUpL8cT with new nonce.
+Retrying transaction worker1.test.near:3uoHgMRTCR4qLm2a2fgBrR1Xc2VTybXkAuEYHFnizU6Q with new nonce.
+Retrying transaction keeper.test.near:A26hfyYMv2L5ShQwP8XvcqBQudMpcPQC6s1nSEdstMRH with new nonce.
+SEVEN_ONCHAIN_SIGNERS_ISOLATED: PASS
+NO_PRE_OUTAGE_FUNDING_OR_OFFERS: PASS
+OUTAGE_EVENT_RELEASED_TO_AGENTS: PASS
+AUTONOMOUS_POLICY_REFUSAL: provider-delta
+AUTONOMOUS_POLICY_REFUSAL: buyer-3
+AUTONOMOUS_PROVIDER_OFFER: provider-alpha OFFER=0 TX=3zQagtf5xJFeGgyPBh2quFzbvHnbEbKkW5R7yYAwAiTP
+AUTONOMOUS_PROVIDER_OFFER: provider-gamma OFFER=1 TX=7Rm4XHjfTaptvciGtQzdjt2KmsM5xaSPGQ3Qyw4ztfRF
+AUTONOMOUS_BUYER_FUNDED: buyer-1 JOB=1 TX=2veHF8gFg5XQbfHdP9RQKYACjh69zb2JbpdHZJjFRNq7
+AUTONOMOUS_PROVIDER_OFFER: provider-beta OFFER=2 TX=5p7FrGAnaBCEst73bCWq4XSnVcBK95G6uLVz1EgG4Hyf
+AUTONOMOUS_BUYER_FUNDED: buyer-2 JOB=0 TX=CLyg5z3FcPy5yKyGCkYm6dUaPamyCH4drjUPP6RFSNyH
+AUTONOMOUS_WORKERS_READY_FOR_CLEARING: PASS
+AUTONOMOUS_TWO_BUYER_FUNDS: PASS
+AUTONOMOUS_THREE_PROVIDER_BIDS: PASS
+AUTONOMOUS_TWO_POLICY_REFUSALS: PASS
+ONCHAIN_OFFERS_COMPETITIVE_PRICE: PASS
+ONCHAIN_FUNDS_AND_BONDS_CONSERVED: PASS
+R7-AUTO-05B/01 MARKET_FORMATION_VERIFIED: PASS
+AUTONOMOUS_WORKER_ACCEPTED: worker1 JOB=0 TX=4iSLDG7v6ntzLdNp2ucfLLch1oF3gwKtkeHZSmyD2baC
+AUTONOMOUS_WORKER_ACCEPTED: worker0 JOB=1 TX=62BXzzvAZTzG3bvtbcM7mVXEisHfr1o39v1N14bA832H
+Retrying transaction dev-77290-61696.test.near:4SkZ8fnQNmBw4b99YXN5gmHf9mP8vft3gUD5qgHRPzvU due to expired block hash
+Retrying transaction dev-77290-61696.test.near:GnSXsG67YAnbRYYTSiGLgGvUkDhkkFE1bbhWukyLJasc due to expired block hash
+BID_CLOSE_REACHED: PASS
+Retrying transaction dev-77290-61696.test.near:4SkZ8fnQNmBw4b99YXN5gmHf9mP8vft3gUD5qgHRPzvU due to expired block hash
+Retrying transaction dev-77290-61696.test.near:GnSXsG67YAnbRYYTSiGLgGvUkDhkkFE1bbhWukyLJasc due to expired block hash
+Retrying transaction dev-77290-61696.test.near:D1Tq9XFUMekjyzd8CDYT62TEbxJgBf43ap4RyR6RYDht with new nonce.
+Retrying transaction dev-77290-61696.test.near:2dJxKbmFDcKUZnRcTtiXezjBNJZJCDbEern2ZpTTKvju with new nonce.
+AUTONOMOUS_BUYER_V2_CONSENT: buyer-2 JOB=0 PAYMENT=5500000000000000000000 TX=7RPJfohjAqb3NtzLQbgrnrwsr36miEjhc2UYm7VsR73u
+AUTONOMOUS_BUYER_V2_CONSENT: buyer-1 JOB=1 PAYMENT=5500000000000000000000 TX=D9BcAnpds7Fq2eF9Nnt7YcSzQSzr5gDJbQPNZLM6NQEJ
+Retrying transaction dev-77290-61696.test.near:GmLapE9T3APfbcicZPnhQEevh9kncxEGMaYFHsLRnbR7 with new nonce.
+Retrying transaction dev-77290-61696.test.near:2X4UzP8aitN5xz6J6oFSnBYjWV33y1gmhv71P6WcRHcM with new nonce.
+AUTONOMOUS_UNSELECTED_PROVIDER: provider-alpha
+AUTONOMOUS_KEEPER_ATOMIC_AWARD: BUNDLE=0 PRICE=11000000000000000000000 TX=21qMkiKMs36af4Pmj7ADNQVd1YqMiu1oeu7EBfc1NN5F
+Retrying transaction dev-77290-61696.test.near:6u7Gm364wMjmuV7FXrYa2w3wdYMUMPxJFP2SgHSThaYX with new nonce.
+Receipt: DF2GY9bgSZKk61mtFvtLDYgtKrKAypgEVDyU9aXvaV55
+	Failure [dev-77290-61696.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:127:9:\ninvalid component Merkle proof"}}}}
+TAMPERED_COMPONENT_REJECTED: provider-gamma
+Retrying transaction dev-77290-61696.test.near:JAw6FMjFyaGJsnW3vt8CsAQjxjsMjC98CVGWnJJFXGwt with new nonce.
+Receipt: BtRNZLPYHLB9nHnLSUgx6P9g7vY3AqdVkoe3mLQjWvWo
+	Failure [dev-77290-61696.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:127:9:\ninvalid component Merkle proof"}}}}
+TAMPERED_COMPONENT_REJECTED: provider-beta
+Retrying transaction dev-77290-61696.test.near:26uJJRHM3ZTKDe2tTsVAidKcDna59VofiuGHuqZqWCEq with new nonce.
+AUTONOMOUS_KEEPER_RELEASED_LOSER: OFFER=0 TX=415kaCMUcowR31qahkDL5RH7Q7e28cQ7EhYaRF6RnPEZ
+Receipt: 5Xt7cAGGf8DexX8YCCcs3eGasNeWUReu6b6coduGSuBX
+	Failure [dev-77290-61696.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:122:9:\nassertion `left == right` failed: noncanonical metadata sibling\n  left: [158, 13, 102, 198, 115, 224, 51, 144, 226, 69, 138, 85, 32, 191, 170, 118, 56, 74, 247, 151, 205, 9, 209, 10, 78, 140, 67, 254, 254, 232, 83, 9]\n right: [159, 13, 102, 198, 115, 224, 51, 144, 226, 69, 138, 85, 32, 191, 170, 118, 56, 74, 247, 151, 205, 9, 209, 10, 78, 140, 67, 254, 254, 232, 83, 9]"}}}}
+NONCANONICAL_SIBLING_REJECTED: provider-gamma
+Retrying transaction dev-77290-61696.test.near:HV4wFPH3fB7sDbPeJ2MMwDEUrhuPcBav6nDQm8JdQir5 with new nonce.
+Receipt: GG4ECK3Z9qc3aCrFfYkAUfK2RswajAchyA5zGmfK4i8w
+	Failure [dev-77290-61696.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:122:9:\nassertion `left == right` failed: noncanonical metadata sibling\n  left: [21, 27, 40, 111, 81, 28, 138, 20, 215, 98, 102, 35, 57, 72, 155, 44, 75, 78, 226, 248, 220, 216, 72, 190, 0, 103, 248, 59, 93, 39, 181, 21]\n right: [20, 27, 40, 111, 81, 28, 138, 20, 215, 98, 102, 35, 57, 72, 155, 44, 75, 78, 226, 248, 220, 216, 72, 190, 0, 103, 248, 59, 93, 39, 181, 21]"}}}}
+NONCANONICAL_SIBLING_REJECTED: provider-beta
+Retrying transaction dev-77290-61696.test.near:28qQJkhkdmeUnLYBQfCDg2Sn5qpfhaX2PG5dEBkngzmG with new nonce.
+AUTONOMOUS_PROVIDER_PROOF: provider-beta COMPONENT=1 TX=baBZPHNv5x1zNygGuFCdrAAYrN3Y9cxtdA9Bmvbgf5z
+Retrying transaction dev-77290-61696.test.near:9PZTQadFNJRUHpH8azu7hBeDhu9qXvh7vfamNnr3HJbD with new nonce.
+Retrying transaction dev-77290-61696.test.near:8QNT3opZ1VZU2QPgY2uPNSTRwxtr5SWnDnT5yPm2M1Ya with new nonce.
+AUTONOMOUS_PROVIDER_PROOF: provider-gamma COMPONENT=0 TX=8RGWosLNMzAoAGfQDkdNQqqGNf91XWxBbs2ZpA8oTSUf
+Retrying transaction dev-77290-61696.test.near:EhTu9Ejqsnxy9jbJB6hUuJB3iHz7XB1EvFoH6DPVyuZq with new nonce.
+Retrying transaction dev-77290-61696.test.near:3Rna5sn2PwHP5N6RJfD1SJizopYo7CGWuieDCGqjsyCJ with new nonce.
+Retrying transaction dev-77290-61696.test.near:GD4Crx3WxXpqTwcwgE9hPLwQRU3rpXkE34hu1XSfVnRa with new nonce.
+Receipt: DE5k3dXqzGT7RFjSDGag6qVb9g3U6o8ReMzoLYu4wbDC
+	Failure [dev-77290-61696.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:69:9:\nassertion `left == right` failed\n  left: SettledSuccess\n right: Awarded"}}}}
+PROOF_REPLAY_REJECTED: provider-beta
+AUTONOMOUS_KEEPER_SETTLED: BUNDLE=0 TX=HhSJwFhChKK4Wt6rwmZa6jnW5WsSqkSdMPNoZLzpsv2M
+Receipt: tJE3WHUk5rbKNTiDEPMpvN94h1MPQu5UCxa6Uq6wSAb
+	Failure [dev-77290-61696.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:69:9:\nassertion `left == right` failed\n  left: SettledSuccess\n right: Awarded"}}}}
+PROOF_REPLAY_REJECTED: provider-gamma
+AUTONOMOUS_WORKER_COMPLETED: worker1.test.near JOB=0 TOTAL=632 TX=6VKsjJKJeaogqBpKFTuB19QiFWvPvss2GhkUsBZwq1e1
+AUTONOMOUS_WORKER_COMPLETED: worker0.test.near JOB=1 TOTAL=632 TX=HxCV8atbK29pdUuLPHUNJMyeNoRCodUKi4vvpv5rKfAZ
+TWO_PROVIDER_MERKLE_PROOFS: PASS
+UNSELECTED_PROVIDER_BOND_RELEASED: PASS
+AUTONOMOUS_TERMINAL_SETTLEMENT: PASS
+TWO_AUTHENTICATED_WORKER_COMPLETIONS: PASS
+TERMINAL_FINANCIAL_CONSERVATION: 52=0+52
+R7-AUTO-05B/03 FULL_AGENT_RECOVERY: PASS
+LIMIT: local synthetic sources and injected outage
+LIMIT: local event relay and same-host agent processes
