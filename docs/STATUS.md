@@ -1,3 +1,14 @@
+## CURRENT — R7-AUTO-05B/02 autonomous award
+
+Ten separately signing local agent processes
+completed market funding, bonded offers,
+worker acceptance, two buyer consents and
+the permissionless atomic award in NEAR Sandbox.
+Financial conservation: 52 = 47 + 5 UNIT.
+Evidence: `docs/worklog/R7-AUTO-05B-02-atomic-award.md`.
+Next: autonomous proofs and settlement.
+Public Testnet unchanged.
+
 ## CURRENT — R7-AUTO-05B/01 on-chain agent market
 
 Seven separate actors autonomously decided after
