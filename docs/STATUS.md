@@ -1,3 +1,11 @@
+## CURRENT — R7-ADV-01A provider default
+
+One selected provider withheld proof. The
+other proved delivery. Keeper default settlement
+and two worker expiries preserved 52 UNIT.
+Evidence: `docs/worklog/R7-ADV-01A-single-default.md`.
+Next: two-provider default and forged proofs.
+
 ## CURRENT — R7-AUTO-05B/03 full settlement
 
 Ten local agent signers completed the lifecycle:
