@@ -1,0 +1,104 @@
+ISOLATED V2 BUYER AGENT: buyer0.test.near PID=65164
+ISOLATED V2 BUYER AGENT: buyer1.test.near PID=65187
+ISOLATED V2 BUYER AGENT: buyer2.test.near PID=65211
+AUTONOMOUS_WATCHDOG_ARMED: 65310
+BACKUP ROOT PARITY: PASS
+R7_EVENT {"kind":"BACKUP_PROVIDERS_READY","providerPids":[65318,65319],"onlyCommitmentsReleased":true}
+R7_EVENT {"kind":"SOURCE_STARTED","sourcePid":65296,"observerPid":65297}
+SHARED CSV DEPENDENCY HEALTHY: PASS
+=== CREATE FUNDED M3 MARKET ===
+R7_EVENT {"kind":"SOURCE_PROCESS_EXITED","sourcePid":65296,"signal":"SIGTERM"}
+R7_EVENT {"kind":"AUTONOMOUS_OUTAGE_DETECTED","watchdogPid":65310,"consecutiveFailures":2,"sinceLastHealthyMs":503,"controllerProbeRequired":false}
+AUTONOMOUS_RECOVERY_TRIGGER: PASS
+R7_EVENT {"kind":"SOURCE_FAILURE_OBSERVED","observerPid":65297,"networkError":"ECONNREFUSED","elapsedWallMs":334}
+SHARED CSV PROCESS FAILED: PASS
+R7_EVENT {"kind":"RECOVERY_FUNDING_TRIGGERED","cause":"autonomous-watchdog-outage","postOutage":true}
+=== THREE INDEPENDENT BUYER FUNDS ===
+BUYER_AGENT_FUNDING_AUTHORIZED: buyer0.test.near
+BUYER_AGENT_FUNDING_AUTHORIZED: buyer1.test.near
+BUYER_AGENT_FUNDING_AUTHORIZED: buyer2.test.near
+THREE FUNDED AND ACCEPTED JOBS: PASS
+=== TWO FULLY BONDED PROVIDERS ===
+FUNDED ESCROW: 48 UNIT
+INITIAL LEDGER: PASS
+=== ADVANCE TO AWARD WINDOW ===
+ON-CHAIN DETERMINISTIC PLAN: PASS
+=== FORGED BUYER MUST FAIL ===
+FORGED CALLER ROLLBACK: PASS
+=== UNDERFUNDED CONSENT MUST FAIL ===
+UNDERFUNDED WRITE ROLLBACK: PASS
+=== THREE INDEPENDENT BUYER DECISIONS ===
+BUYER_AGENT_DECISION: buyer0.test.near ACCEPT
+VERIFIED BUYER DECISION: buyer0.test.near ACCEPT
+BUYER_AGENT_DECISION: buyer1.test.near ACCEPT
+VERIFIED BUYER DECISION: buyer1.test.near ACCEPT
+BUYER_AGENT_DECISION: buyer2.test.near REJECT
+VERIFIED BUYER DECISION: buyer2.test.near REJECT
+THREE DISTINCT AGENT SIGNATURES: PASS
+VOLUNTARY BUYER REFUSAL: PASS
+=== FIRST REAL BUYER CONSENT ===
+BUYER_AGENT_ONCHAIN_CONSENT_APPROVED: buyer0.test.near PAYMENT=6000000000000000000000
+Retrying transaction dev-24105-32992.test.near:DhgphDST55Cvfoumm81BaWVPmbfVtdN8Bgk23221rEDB due to expired block hash
+Retrying transaction dev-24105-32992.test.near:DhgphDST55Cvfoumm81BaWVPmbfVtdN8Bgk23221rEDB due to expired block hash
+Retrying transaction dev-24105-32992.test.near:HN5nyZzG2hkeKK8uzVEPvj6h3rj2kPwGY3duTX9Nk78Z with new nonce.
+BUYER_AGENT_SIGNED_V2_CONSENT: buyer0.test.near 2HeHgbtRoQAQ5fw3xRYujYkxUXFDGhK4aZP1UH1DEg56
+=== INCOMPLETE COALITION MUST FAIL ===
+Receipt: 8v1PZfJXmpMwR18q5y2CD5jjgjQdjP1RyAv8ddm5iWWV
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/r7_v2_plan.rs:185:18:\nselected buyer has no active consent"}}}}
+MISSING BUYER CONSENT ROLLBACK: PASS
+=== SECOND REAL BUYER CONSENT ===
+BUYER_AGENT_ONCHAIN_CONSENT_APPROVED: buyer1.test.near PAYMENT=6000000000000000000000
+Retrying transaction dev-24105-32992.test.near:9jac4QhyB1eh7bU23k37yzvwTGzDSJhk1FDC3zgA24Nd with new nonce.
+BUYER_AGENT_SIGNED_V2_CONSENT: buyer1.test.near GZvAiegdP4sGKpuhDCimJU6p95tyankyDMNT1jUnaaUX
+CONSENT STORAGE GROWTH: 524 BYTES
+TWO REAL BUYER CONSENTS: PASS
+=== VERIFIED ON-CHAIN PREFLIGHT ===
+AUTHORIZED PREFLIGHT: PASS
+=== TAMPERED PLAN MUST FAIL ===
+Receipt: 2uTRc756Jbxm5mMFXt31ijrBkh2P5dVA1hUXapaDnfyb
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/r7_v2_plan.rs:169:9:\nassertion `left == right` failed: canonical plan hash mismatch\n  left: [102, 209, 166, 79, 75, 116, 3, 110, 55, 67, 96, 199, 25, 249, 216, 75, 121, 248, 253, 34, 62, 142, 136, 157, 64, 141, 19, 209, 115, 189, 106, 218]\n right: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]"}}}}
+Receipt: 9fWzKALcvDJiqiKbn2xoxj6QyXxABqyFdsc4eH1p61KQ
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/r7_v2_plan.rs:169:9:\nassertion `left == right` failed: canonical plan hash mismatch\n  left: [5, 45, 24, 201, 29, 94, 34, 55, 69, 60, 202, 68, 216, 145, 173, 193, 215, 100, 251, 93, 27, 127, 161, 142, 183, 200, 161, 28, 99, 211, 0, 221]\n right: [102, 209, 166, 79, 75, 116, 3, 110, 55, 67, 96, 199, 25, 249, 216, 75, 121, 248, 253, 34, 62, 142, 136, 157, 64, 141, 19, 209, 115, 189, 106, 218]"}}}}
+PLAN TAMPERING ROLLBACK: PASS
+=== LEGACY AWARD CANNOT BYPASS ===
+Receipt: 6mEZSDHMuhRvJusnKBUucoqqbdHwp3XUYGnojRCbWQFv
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/lib.rs:977:13:\nR7 V2: legacy award disabled"}}}}
+LEGACY BYPASS REJECTED: PASS
+=== ATOMIC AUTHORIZED AWARD ===
+SELECTED BUYERS: 6 + 6 UNIT
+EXCLUDED BUYER REFUND: 7 UNIT
+ESCROW: 39 UNIT
+CLAIMABLE: 9 UNIT
+ATOMIC FINANCIAL CONSERVATION: PASS
+=== AWARD REPLAY MUST FAIL ===
+Receipt: CLcyFpikk3Fu3upt6EP77UejgV65VKfeZJVGNtPZUHDg
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_clearing.rs:106:9:\nassertion `left == right` failed: case is not open\n  left: BundleAwarded\n right: Open"}}}}
+AWARD REPLAY ROLLBACK: PASS
+R7_EVENT {"kind":"BACKUP_COMPONENT_DELIVERED","providerIndex":0,"providerPid":65318,"afterSourceExit":true,"afterAtomicAward":true,"payloadBytes":33,"commitmentHex":"c7984c32d4a363564f4f0a0813973f7f520f1a528aa06f9760d388ae14a612ea","elapsedWallMs":33996}
+R7_EVENT {"kind":"BACKUP_COMPONENT_DELIVERED","providerIndex":1,"providerPid":65319,"afterSourceExit":true,"afterAtomicAward":true,"payloadBytes":33,"commitmentHex":"9b217eae2e4eb4d24305d8ed448ef5acc18d604f2116bf8d5186e559eee3f9ed","elapsedWallMs":33999}
+POST-OUTAGE BACKUP DELIVERIES: PASS
+=== REPLACEMENT PROVIDERS DELIVER CSV COMPONENTS ===
+Receipt: G8PQpWDjLJ8XjL7QntcDCmjzNDvU7yqqdiH9pAt6mFZH
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:108:9:\nassertion `left == right` failed: not selected rescue provider\n  left: AccountId(\"keeper.test.near\")\n right: AccountId(\"provider0.test.near\")"}}}}
+Receipt: 5GpHv7zHAdZDgwHW7jL25BQ7DPCjhQgALyQz4Cm7QEoZ
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:127:9:\ninvalid component Merkle proof"}}}}
+FORGED PROVIDER AND ALTERED VALID PAYLOAD: REJECTED
+TWO CSV COMPONENTS VERIFIED ON CHAIN: PASS
+SIMULATED CHAIN RECOVERY SECONDS: 301
+R7_EVENT {"kind":"RECOVERY_PROOFS_ACCEPTED","elapsedWallMs":41227,"clock":"monotonic local wall time","environment":"local NEAR Sandbox"}
+=== SETTLE PROVIDERS AND CONTINUE SELECTED JOBS ===
+WORKER INPUT FROM VERIFIED CHAIN PAYLOADS: PASS
+Receipt: 4bA7ocjHPcRHoYpykhDeXsUnS7qfibj4f7M9f9iRYrqx
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_worker_completion.rs:126:10:\ninvalid authenticated worker result: \"worker result computation mismatch\""}}}}
+TWO SELECTED WORKER RESULTS COMPLETED: PASS
+PROVIDERS CREDITED: 18 + 18 UNIT
+=== EXCLUDED WORKER REWARD EXPIRY ===
+Receipt: Dq3cz3E2tLKvYKa49gvqQGVTrDJgYcn9UdhtjCsTKfjk
+	Failure [dev-24105-32992.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/lib.rs:701:9:\nassertion `left == right` failed: rescue job is not active\n  left: Expired\n right: Accepted"}}}}
+EXCLUDED WORKER EXPIRY: PASS
+EXPIRY REPLAY ROLLBACK: PASS
+=== R7-AUTO-03 REACTIVE-FUNDING V2 RECOVERY: PASS ===
+ECONOMIC EVIDENCE: 48 = 39 + 9 = 3 + 45 = 1 + 47 = 0 + 48
+LIMIT: synthetic backup replicas on the same host; roots precommitted
+LIMIT: consent storage refund not implemented
+LIMIT: this execution uses local Sandbox, not public Testnet

@@ -1,3 +1,9 @@
+## CURRENT — R7-VERIFY-02 exact public-bytecode replay
+
+Two public Testnet RPCs confirmed the deployed V2 bytecode. The exact code passed the complete reactive recovery lifecycle in local Sandbox.
+Evidence: `docs/worklog/R7-VERIFY-02-public-bytecode.md`.
+Next: fresh public Testnet lifecycle with verified signers. No new public transactions yet.
+
 ## CURRENT — R7-SDK-02 external Sandbox consumer
 
 Separate Node.js buyer with process-local signing
