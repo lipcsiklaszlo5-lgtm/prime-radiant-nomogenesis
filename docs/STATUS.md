@@ -1,3 +1,18 @@
+## CURRENT — R7-09 Python Shield SDK alpha VERIFIED
+
+Installable `nomogenesis-shield` (Python 3.10+) package created
+with zero external dependencies. Features robust NEAR JSON-RPC
+adapter with fallback, deployed code-hash check, independent
+Merkle root authentication matching Rust, deterministic product-sum
+reconstruction (632), reusable buyer policy evaluator, and canonical
+unsigned call builders.
+33 offline unit tests PASS (0.004s).
+Public NEAR Testnet audit PASS against `nmg-r7v2-0b9a0eff20.testnet`
+(case `b8c0d0ed...` Closed, both Merkle proofs match, result=632,
+workers completed, 34 UNIT claimable, 0 pending, 0 escrow).
+Evidence: `docs/worklog/R7-09-python-shield-sdk.md`.
+Next: integrate Shield SDK into autonomous agent monitoring daemon.
+
 ## CURRENT — R7-ADV-01C Merkle attack controls
 
 Two selected providers independently attempted

@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nomogenesis-shield"
+version = "0.1.0"
+description = "Nomogenesis Shield SDK: verifiable rescue market auditing, Merkle authentication, and economic policy evaluation on NEAR Protocol"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Nomogenesis Core Team"}
+]
+keywords = [
+    "near",
+    "blockchain",
+    "merkle",
+    "shield",
+    "nomogenesis",
+    "rescue-market",
+    "audit",
+    "smart-contracts"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+    "Topic :: Security :: Cryptography",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
