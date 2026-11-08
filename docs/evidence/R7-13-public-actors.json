@@ -1,0 +1,90 @@
+{
+  "schema": "nomogenesis.r7-13.public-actors.v1",
+  "network": "near-testnet",
+  "controller": "nmg-r713-8d99c17cced1.testnet",
+  "initial_balance_each_yocto": "300000000000000000000000",
+  "actors": [
+    {
+      "role": "buyer-1",
+      "account_id": "buyer-1.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:GfDRpPQGGb194YBvrvePnrJEzU3ZMbT4qL7WtV8Nvm4v",
+      "creation_tx": "FQaXJsVeaPkFf6cDvhywUBEXw5F6GGSERPQH3N6BDdYt",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "buyer-2",
+      "account_id": "buyer-2.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:A3WB58133Zh8HvoooQRUCSBm7cqsR5zug36CY5vGvZPi",
+      "creation_tx": "J6RezbR64x56nspgK8x9CXK6h7SpfAhM3qDMicJXzs1Y",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "buyer-3",
+      "account_id": "buyer-3.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:8cK2BS6Cph92GYDM2dzvtJCXArUQzUMaw4xMX1WZ7EcJ",
+      "creation_tx": "DoM4m7qXvD8Ci3L5sBELWLGWLJXazFujSVmaz5MFfajC",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "provider-alpha",
+      "account_id": "provider-alpha.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:6ozqKeBxLM4spJaQ3B1ByK4FLnDMETmMjvD2yPh3atRB",
+      "creation_tx": "GkvarG5d5p3umiV1x84u11XPkyHFEzpFHMEbjUhKHUFM",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "provider-beta",
+      "account_id": "provider-beta.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:BkCE2iK8seX2ydV6CxAfx9CSBdhhtnTDVGKDyiGadFT7",
+      "creation_tx": "2TYAR8WEoLf4e5C1xZXxFm96EoB8uWjhQeJcLJ7qZdrd",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "provider-gamma",
+      "account_id": "provider-gamma.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:6WYEgobU9KQUoEVsjJhrNnZT5of6vSZTcGZAFFqDBCKj",
+      "creation_tx": "5Nv7Tyct5hHq1QMi7cP68tVLEHAcRq9YKVDtkyCj3jZV",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "provider-delta",
+      "account_id": "provider-delta.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:6tj3o5Xmm1hC6TDkcRgkoXjTLdxwXK5wdC8Wockk2EZv",
+      "creation_tx": "3GmaSa83RaLvJJKAFte74jniKd5rhbnwLbdTMpYNLJc6",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "worker0",
+      "account_id": "worker0.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:DfF7adkLNJ9hDcKy9KLDiSArw87EJ6iBSxWrYxzvhvV9",
+      "creation_tx": "Ea6vL4c7zB72vWUK66DZzGqBqxEhXBo9zQcfmyY9PHT6",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "worker1",
+      "account_id": "worker1.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:4puqvuk5MeK73B56cyo3zmTaCUk7bSyUGocq5oMhNGVv",
+      "creation_tx": "78Gah2eyv9j1FXp79HsYE2ERRbSpAqekZqgbWeSJzD7z",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    },
+    {
+      "role": "keeper",
+      "account_id": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "public_key": "ed25519:Bbgc74FSAtKzGTs77379gEcTd3qQL5iBQq8gfSPbapEM",
+      "creation_tx": "7ecrbFqQ46fw1nJ9oUUsj1vm2dtycyYcgQqFvNxLmWPm",
+      "full_access_verified": true,
+      "balance_yocto": "300000000000000000000000"
+    }
+  ],
+  "operator_independence_claimed": false,
+  "production_security_audit_claimed": false
+}
