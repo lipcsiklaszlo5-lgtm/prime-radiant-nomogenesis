@@ -10,7 +10,7 @@ const path = require('node:path');
 const os = require('node:os');
 const {spawnSync} = require('node:child_process');
 const near = require('near-api-js');
-const {callOnce} = require('./r7_13_tx_guard.cjs');
+const {callSignedOnce} = require('./r7_13_tx_guard.cjs');
 
 const {
   RecoveryIntent
@@ -118,7 +118,7 @@ async function view(account, contractId, method, args = {}) {
 async function signedCall(
   account, contractId, method, args, attachedDeposit
 ) {
-  const result = await callOnce({
+  const result = await callSignedOnce({
     dir: process.env.NMG_R7_13_RUN_DIR,
     role: policy.actor_id,
     step: method,

@@ -10,7 +10,7 @@ const near = require('near-api-js');
 const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
-const {callOnce} = require('./r7_13_tx_guard.cjs');
+const {callSignedOnce} = require('./r7_13_tx_guard.cjs');
 
 const name = process.argv[2];
 const eventUrl = process.argv[3];
@@ -87,7 +87,7 @@ async function view(account, contractId, method, args = {}) {
 async function call(
   account, contractId, method, args
 ) {
-  const result = await callOnce({
+  const result = await callSignedOnce({
     dir: process.env.NMG_R7_13_RUN_DIR,
     role: name,
     step: method,
