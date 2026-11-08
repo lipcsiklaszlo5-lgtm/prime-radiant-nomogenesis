@@ -27,6 +27,7 @@ from nomogenesis import (
     DEFAULT_EXPECTED_CODE_HASH,
     DEFAULT_HISTORICAL_CASE_ID,
     DEFAULT_TESTNET_CONTRACT,
+    UNIT,
     Shield,
 )
 
@@ -48,6 +49,9 @@ def main() -> int:
             case_id=case_id,
             expected_code_hash=DEFAULT_EXPECTED_CODE_HASH,
             expected_result=632,
+            expected_claimable_yocto=34 * UNIT,
+            expected_pending_yocto=0,
+            expected_escrow_yocto=0,
         )
     except Exception as exc:
         print(f"[!] Audit failed with unexpected exception: {exc}")

@@ -68,8 +68,8 @@ class NearRpcClient:
         self.timeout_seconds = float(timeout_seconds)
         self.retries_per_endpoint = max(1, int(retries_per_endpoint))
 
-    def rpc_call(self, method: str, params: dict[str, Any]) -> Any:
-        """Execute a JSON-RPC 2.0 query across configured endpoints with fallback."""
+    def rpc_call(self, method: str, params: Any) -> Any:
+        """Execute a JSON-RPC 2.0 query across configured endpoints with fallback. Fails closed on malformed data."""
         payload = json.dumps(
             {
                 "jsonrpc": "2.0",
@@ -99,9 +99,17 @@ class NearRpcClient:
                         raw_data = resp.read()
                         data = json.loads(raw_data.decode("utf-8"))
 
+                    if not isinstance(data, dict):
+                        raise RpcError(
+                            f"Malformed JSON-RPC response from {endpoint}: expected JSON object, got {type(data).__name__}"
+                        )
+
                     if "error" in data:
                         err_obj = data["error"]
                         raise RpcError(f"RPC error from {endpoint}: {err_obj}")
+
+                    if "result" not in data:
+                        raise RpcError(f"Malformed JSON-RPC response from {endpoint}: missing 'result' field in response")
 
                     return data.get("result")
 
@@ -109,6 +117,13 @@ class NearRpcClient:
                     errors.append(f"{endpoint} (attempt {attempt + 1}): {exc}")
 
         raise RpcError(f"All RPC endpoints failed: {'; '.join(errors)}")
+
+    def get_status(self) -> dict[str, Any]:
+        """Query node status and return status information containing chain_id."""
+        result = self.rpc_call("status", {})
+        if not isinstance(result, dict) or "chain_id" not in result:
+            raise RpcError(f"Malformed status response from RPC: {result}")
+        return result
 
     def view_function(
         self,
@@ -174,7 +189,10 @@ class NearRpcClient:
         result = self.rpc_call("query", params)
         if not isinstance(result, dict) or "hash" not in result:
             raise RpcError(f"view_code failed for '{contract_id}': {result}")
-        return str(result["hash"])
+        code_hash = str(result["hash"]).strip()
+        if not code_hash:
+            raise RpcError(f"view_code returned empty hash for '{contract_id}'")
+        return code_hash
 
 
 @dataclass(frozen=True)
@@ -529,6 +547,7 @@ class AuditReport:
     """Comprehensive verified audit of a Nomogenesis recovery case."""
 
     network: str
+    network_verified: bool
     contract_id: str
     code_hash: str
     code_hash_verified: bool
@@ -538,24 +557,35 @@ class AuditReport:
     merkle_proofs_verified: bool
     component_roots: list[str]
     reconstructed_result: int
+    expected_result: int | None
     result_verified: bool
     jobs_completed: bool
     job_statuses: dict[int, str]
+    global_claimable_yocto: int
+    global_pending_yocto: int
+    global_rescue_escrow_yocto: int
     claimable_total_units: float
     pending_total_units: float
-    payout_totals_verified: bool
     rescue_escrow_units: float
+    financial_expectations_verified: bool
+    payout_totals_verified: bool
     rescue_escrow_verified: bool
     passed: bool
     errors: list[str] = field(default_factory=list)
 
     def __str__(self) -> str:
         verdict = "PASSED (VERIFIED ON-CHAIN)" if self.passed else "FAILED"
+        res_label = f"{self.reconstructed_result}"
+        if self.expected_result is not None:
+            res_label += f" [{'MATCH' if self.result_verified else 'MISMATCH (expected ' + str(self.expected_result) + ')'}]"
+        else:
+            res_label += " [AUTHENTICATED FROM ON-CHAIN PAYLOADS]"
+
         lines = [
             "================================================================================",
             f"  NOMOGENESIS SHIELD AUDIT REPORT — {verdict}",
             "================================================================================",
-            f"Network:                   {self.network}",
+            f"Network:                   {self.network} [{'VERIFIED' if self.network_verified else 'FAILED'}]",
             f"Contract ID:               {self.contract_id}",
             f"Deployed Code Hash:        {self.code_hash} [{'MATCH' if self.code_hash_verified else 'MISMATCH'}]",
             f"Case ID:                   {self.case_id}",
@@ -563,11 +593,14 @@ class AuditReport:
             f"Merkle Proofs Accepted:    {self.merkle_proofs_verified}",
             f"  Component 0 Root:        {self.component_roots[0] if len(self.component_roots) > 0 else 'N/A'}",
             f"  Component 1 Root:        {self.component_roots[1] if len(self.component_roots) > 1 else 'N/A'}",
-            f"Reconstructed Result:      {self.reconstructed_result} [{'632 MATCH' if self.result_verified else 'MISMATCH'}]",
+            f"Reconstructed Result:      {res_label}",
             f"Worker Jobs Completed:     {self.jobs_completed} {self.job_statuses}",
-            f"Claimable Total:           {self.claimable_total_units:.4f} UNIT [{'34 UNIT MATCH' if self.payout_totals_verified else 'MISMATCH'}]",
-            f"Pending Withdrawals:       {self.pending_total_units:.4f} UNIT [0 UNIT MATCH]",
-            f"Rescue Escrow:             {self.rescue_escrow_units:.4f} UNIT [{'0 UNIT MATCH' if self.rescue_escrow_verified else 'MISMATCH'}]",
+            "--------------------------------------------------------------------------------",
+            "Global Contract Liabilities (Contract-wide metrics, not exclusive to this case):",
+            f"  Claimable Total:         {self.claimable_total_units:.4f} UNIT ({self.global_claimable_yocto} yocto)",
+            f"  Pending Withdrawals:     {self.pending_total_units:.4f} UNIT ({self.global_pending_yocto} yocto)",
+            f"  Rescue Escrow:           {self.rescue_escrow_units:.4f} UNIT ({self.global_rescue_escrow_yocto} yocto)",
+            f"  Financial Expectations:  {'VERIFIED' if self.financial_expectations_verified else 'FAILED'}",
             "--------------------------------------------------------------------------------",
         ]
         if self.errors:
@@ -576,6 +609,8 @@ class AuditReport:
                 lines.append(f"  - {err}")
             lines.append("--------------------------------------------------------------------------------")
         lines.append(f"Overall Audit Status:      {verdict}")
+        lines.append("Note: Querying a JSON-RPC endpoint verifies state against the queried node(s),")
+        lines.append("      but does not replace running an independent validating PoS node.")
         lines.append("================================================================================")
         return "\n".join(lines)
 
@@ -586,15 +621,25 @@ class Shield:
     def __init__(
         self,
         network: str = "testnet",
-        contract_id: str = DEFAULT_TESTNET_CONTRACT,
+        contract_id: str | None = None,
         rpc_endpoints: Sequence[str] | str | None = None,
         timeout_seconds: float = 15.0,
-        expected_code_hash: str = DEFAULT_EXPECTED_CODE_HASH,
+        expected_code_hash: str | None = None,
     ) -> None:
         if network == "testnet":
             endpoints = rpc_endpoints or DEFAULT_TESTNET_RPCS
+            contract_id = contract_id or DEFAULT_TESTNET_CONTRACT
+            expected_code_hash = expected_code_hash or DEFAULT_EXPECTED_CODE_HASH
         elif network == "mainnet":
             endpoints = rpc_endpoints or DEFAULT_MAINNET_RPCS
+            if contract_id is None:
+                raise ValidationError(
+                    "contract_id must be explicitly configured for mainnet (no default contract exists)"
+                )
+            if expected_code_hash is None:
+                raise ValidationError(
+                    "expected_code_hash must be explicitly configured for mainnet (no default code hash exists)"
+                )
         else:
             raise ValidationError(
                 f"Unsupported network: '{network}'. Only 'testnet' and 'mainnet' are supported."
@@ -606,6 +651,19 @@ class Shield:
         self.contract_id = contract_id
         self.expected_code_hash = expected_code_hash
         self.rpc = NearRpcClient(endpoints=endpoints, timeout_seconds=timeout_seconds)
+
+    def verify_network(self, expected_network: str | None = None) -> bool:
+        """
+        Verify that the RPC transport connects to the declared network/chain_id.
+        """
+        target = expected_network or self.network
+        status = self.rpc.get_status()
+        chain_id = status.get("chain_id")
+        if chain_id != target:
+            raise VerificationError(
+                f"Network mismatch: client configured for '{target}', but RPC reported chain_id '{chain_id}'"
+            )
+        return True
 
     def verify_deployed_code(self, expected_code_hash: str | None = None) -> bool:
         """
@@ -901,27 +959,40 @@ class Shield:
 
     def audit_case(
         self,
-        case_id: str | bytes | Sequence[int] = DEFAULT_HISTORICAL_CASE_ID,
+        case_id: str | bytes | Sequence[int],
         expected_code_hash: str | None = None,
-        expected_result: int = 632,
+        expected_result: int | str | None = None,
+        expected_claimable_yocto: int | str | None = None,
+        expected_pending_yocto: int | str | None = None,
+        expected_escrow_yocto: int | str | None = None,
     ) -> AuditReport:
         """
         Perform an independent, read-only on-chain audit of a completed Nomogenesis rescue case.
 
-        Verifies:
-          1. Network is testnet or mainnet.
-          2. Deployed contract code hash matches expected hash.
-          3. Historical case exists and is in 'Closed' terminal phase.
-          4. Both resolved component payloads match on-chain Merkle commitments.
-          5. Reconstructed result from authenticated components matches expected value (632).
-          6. Both historical worker jobs are Completed with zero held worker rewards.
-          7. Payout totals match financial liabilities (34 UNIT claimable, 0 UNIT pending).
-          8. Rescue escrow is 0 UNIT.
+        This method verifies:
+          1. Network identity matches configured network via RPC node status query.
+          2. Deployed contract bytecode matches expected SHA-256 hash.
+          3. Rescue case exists and is in 'Closed' terminal phase with an awarded bundle.
+          4. Both resolved component payloads authenticate against on-chain Merkle commitments.
+          5. Dynamically reconstructs Quantity x Price total from authenticated components.
+             If expected_result is provided, verifies exact match.
+          6. All jobs designated in case.job_ids are in 'Completed' phase with 0 held reward.
+          7. Records contract-wide global financial metrics (claimable, pending, rescue escrow).
+             If explicit expectations are provided (e.g. for historical regression), verifies them.
         """
         errors: list[str] = []
         cid = to_case_id_bytes(case_id)
         cid_hex = cid.hex()
 
+        # 1. Network / chain identity verification
+        network_verified = False
+        try:
+            self.verify_network()
+            network_verified = True
+        except Exception as exc:
+            errors.append(f"Network verification failed: {exc}")
+
+        # 2. Deployed code hash verification
         target_code_hash = expected_code_hash or self.expected_code_hash
         code_hash = ""
         code_hash_verified = False
@@ -936,11 +1007,13 @@ class Shield:
         except Exception as exc:
             errors.append(f"Failed to query contract code hash: {exc}")
 
+        # 3. Case lookup
         case = self.get_rescue_case(cid)
         if case is None:
             errors.append(f"Rescue case '{cid_hex}' does not exist on contract {self.contract_id}")
             return AuditReport(
                 network=self.network,
+                network_verified=network_verified,
                 contract_id=self.contract_id,
                 code_hash=code_hash,
                 code_hash_verified=code_hash_verified,
@@ -950,13 +1023,18 @@ class Shield:
                 merkle_proofs_verified=False,
                 component_roots=[],
                 reconstructed_result=0,
+                expected_result=int(expected_result) if expected_result is not None else None,
                 result_verified=False,
                 jobs_completed=False,
                 job_statuses={},
+                global_claimable_yocto=0,
+                global_pending_yocto=0,
+                global_rescue_escrow_yocto=0,
                 claimable_total_units=0.0,
                 pending_total_units=0.0,
-                payout_totals_verified=False,
                 rescue_escrow_units=0.0,
+                financial_expectations_verified=False,
+                payout_totals_verified=False,
                 rescue_escrow_verified=False,
                 passed=False,
                 errors=errors,
@@ -966,12 +1044,19 @@ class Shield:
         if not case_phase_verified:
             errors.append(f"Case phase is '{case.phase}', expected 'Closed'")
 
+        if case.awarded_bundle_id is None:
+            errors.append("Case has no awarded recovery bundle recorded")
+
+        # 4. Merkle proof verification of both component payloads
         merkle_proofs_verified = True
         component_roots: list[str] = []
 
         if len(case.resolved_payloads) < 2 or any(p is None for p in case.resolved_payloads[:2]):
             merkle_proofs_verified = False
             errors.append("Case has incomplete resolved component payloads")
+        elif len(case.component_commitments) < 2:
+            merkle_proofs_verified = False
+            errors.append("Case has incomplete component commitments")
         else:
             for kind in (0, 1):
                 payload = case.resolved_payloads[kind]
@@ -982,6 +1067,7 @@ class Shield:
                     merkle_proofs_verified = False
                     errors.append(f"Component {kind} failed independent Merkle verification against on-chain root")
 
+        # 5. Dynamic result reconstruction
         reconstructed_result = 0
         result_verified = False
         if merkle_proofs_verified and case.resolved_payloads[0] and case.resolved_payloads[1]:
@@ -989,75 +1075,104 @@ class Shield:
                 reconstructed_result = reconstruct_total(
                     case.resolved_payloads[0], case.resolved_payloads[1]
                 )
-                if reconstructed_result == expected_result:
-                    result_verified = True
+                if expected_result is not None:
+                    exp_val = validate_u128(expected_result, "expected_result")
+                    if reconstructed_result == exp_val:
+                        result_verified = True
+                    else:
+                        errors.append(
+                            f"Reconstructed result {reconstructed_result} does not match expected {exp_val}"
+                        )
                 else:
-                    errors.append(
-                        f"Reconstructed result {reconstructed_result} does not match expected {expected_result}"
-                    )
+                    # Dynamic result successfully authenticated
+                    result_verified = True
             except VerificationError as exc:
                 errors.append(f"Result reconstruction failed: {exc}")
         else:
             errors.append("Skipped result reconstruction due to unverified component payloads")
 
+        # 6. Worker jobs completion checks
         job_statuses: dict[int, str] = {}
         jobs_completed = True
-        for jid in case.job_ids:
-            job = self.get_rescue_job(jid)
-            if job is None:
-                job_statuses[jid] = "Missing"
-                jobs_completed = False
-                errors.append(f"Job {jid} listed in case but missing from contract state")
-            else:
-                job_statuses[jid] = job.phase
-                if job.phase != "Completed" or job.held_worker_reward != 0:
+        if not case.job_ids:
+            jobs_completed = False
+            errors.append("Rescue case has no associated job IDs recorded")
+        else:
+            for jid in case.job_ids:
+                job = self.get_rescue_job(jid)
+                if job is None:
+                    job_statuses[jid] = "Missing"
                     jobs_completed = False
-                    errors.append(
-                        f"Job {jid} phase '{job.phase}' with held_reward {job.held_worker_reward} (expected Completed, 0)"
-                    )
+                    errors.append(f"Job {jid} listed in case but missing from contract state")
+                else:
+                    job_statuses[jid] = job.phase
+                    if job.phase != "Completed" or job.held_worker_reward != 0:
+                        jobs_completed = False
+                        errors.append(
+                            f"Job {jid} phase is '{job.phase}' with held_reward {job.held_worker_reward} (expected Completed with 0 held reward)"
+                        )
+                    if job.case_id != cid:
+                        jobs_completed = False
+                        errors.append(
+                            f"Job {jid} references case {job.case_id.hex()}, expected {cid_hex}"
+                        )
 
-        payout_totals_verified = False
-        claimable_units = 0.0
-        pending_units = 0.0
+        # 7. Global financial queries and optional expectations
+        financial_expectations_verified = True
+        global_claimable_yocto = 0
+        global_pending_yocto = 0
         try:
             payouts = self.payout_totals()
-            claimable_units = payouts.claimable_units
-            pending_units = payouts.pending_units
-            if payouts.claimable_yocto == 34 * UNIT and payouts.pending_yocto == 0:
-                payout_totals_verified = True
-            else:
-                errors.append(
-                    f"Payout totals mismatch: claimable={claimable_units} UNIT (expected 34), "
-                    f"pending={pending_units} UNIT (expected 0)"
-                )
+            global_claimable_yocto = payouts.claimable_yocto
+            global_pending_yocto = payouts.pending_yocto
+
+            if expected_claimable_yocto is not None:
+                exp_claim = validate_u128(expected_claimable_yocto, "expected_claimable_yocto")
+                if payouts.claimable_yocto != exp_claim:
+                    financial_expectations_verified = False
+                    errors.append(
+                        f"Global claimable total mismatch: expected {exp_claim} yocto, found {payouts.claimable_yocto} yocto"
+                    )
+
+            if expected_pending_yocto is not None:
+                exp_pend = validate_u128(expected_pending_yocto, "expected_pending_yocto")
+                if payouts.pending_yocto != exp_pend:
+                    financial_expectations_verified = False
+                    errors.append(
+                        f"Global pending total mismatch: expected {exp_pend} yocto, found {payouts.pending_yocto} yocto"
+                    )
         except Exception as exc:
+            financial_expectations_verified = False
             errors.append(f"Failed to query payout_totals: {exc}")
 
-        rescue_escrow_units = 0.0
-        rescue_escrow_verified = False
+        global_rescue_escrow_yocto = 0
         try:
-            escrow_yocto = self.rescue_escrow_total()
-            rescue_escrow_units = escrow_yocto / UNIT
-            if escrow_yocto == 0:
-                rescue_escrow_verified = True
-            else:
-                errors.append(f"Active rescue escrow is {rescue_escrow_units} UNIT, expected 0 UNIT")
+            global_rescue_escrow_yocto = self.rescue_escrow_total()
+            if expected_escrow_yocto is not None:
+                exp_escrow = validate_u128(expected_escrow_yocto, "expected_escrow_yocto")
+                if global_rescue_escrow_yocto != exp_escrow:
+                    financial_expectations_verified = False
+                    errors.append(
+                        f"Global rescue escrow mismatch: expected {exp_escrow} yocto, found {global_rescue_escrow_yocto} yocto"
+                    )
         except Exception as exc:
+            financial_expectations_verified = False
             errors.append(f"Failed to query rescue_escrow_total: {exc}")
 
         passed = (
-            code_hash_verified
+            network_verified
+            and code_hash_verified
             and case_phase_verified
             and merkle_proofs_verified
             and result_verified
             and jobs_completed
-            and payout_totals_verified
-            and rescue_escrow_verified
+            and financial_expectations_verified
             and len(errors) == 0
         )
 
         return AuditReport(
             network=self.network,
+            network_verified=network_verified,
             contract_id=self.contract_id,
             code_hash=code_hash,
             code_hash_verified=code_hash_verified,
@@ -1067,14 +1182,19 @@ class Shield:
             merkle_proofs_verified=merkle_proofs_verified,
             component_roots=component_roots,
             reconstructed_result=reconstructed_result,
+            expected_result=int(expected_result) if expected_result is not None else None,
             result_verified=result_verified,
             jobs_completed=jobs_completed,
             job_statuses=job_statuses,
-            claimable_total_units=claimable_units,
-            pending_total_units=pending_units,
-            payout_totals_verified=payout_totals_verified,
-            rescue_escrow_units=rescue_escrow_units,
-            rescue_escrow_verified=rescue_escrow_verified,
+            global_claimable_yocto=global_claimable_yocto,
+            global_pending_yocto=global_pending_yocto,
+            global_rescue_escrow_yocto=global_rescue_escrow_yocto,
+            claimable_total_units=global_claimable_yocto / UNIT,
+            pending_total_units=global_pending_yocto / UNIT,
+            rescue_escrow_units=global_rescue_escrow_yocto / UNIT,
+            financial_expectations_verified=financial_expectations_verified,
+            payout_totals_verified=financial_expectations_verified,
+            rescue_escrow_verified=financial_expectations_verified,
             passed=passed,
             errors=errors,
         )

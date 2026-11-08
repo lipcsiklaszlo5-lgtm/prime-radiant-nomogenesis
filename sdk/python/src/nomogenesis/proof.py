@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import re
-from typing import Sequence
+from decimal import Decimal
+from typing import Any, Sequence
 
 from .exceptions import ValidationError, VerificationError
 
@@ -67,16 +68,29 @@ def validate_account_id(account_id: str, field_name: str = "account_id") -> str:
     return account_id
 
 
-def validate_u128(value: int | str, field_name: str = "value", allow_zero: bool = True) -> int:
-    """Validate and convert unsigned 128-bit integer."""
-    if isinstance(value, str):
+def validate_u128(value: Any, field_name: str = "value", allow_zero: bool = True) -> int:
+    """Validate and convert unsigned 128-bit integer. Rejects booleans, floats, NaN, Inf, and fractional yocto."""
+    if isinstance(value, bool):
+        raise ValidationError(f"{field_name} cannot be a boolean, got {value}")
+    if isinstance(value, float):
+        raise ValidationError(
+            f"{field_name} cannot be a float (ambiguous precision). Use int, Decimal, or canonical decimal string."
+        )
+
+    if isinstance(value, Decimal):
+        if not value.is_finite():
+            raise ValidationError(f"{field_name} must be a finite Decimal, got {value}")
+        if value.to_integral_value() != value:
+            raise ValidationError(f"{field_name} cannot have fractional yoctoNEAR, got {value}")
+        num = int(value)
+    elif isinstance(value, str):
         if not _CANONICAL_DECIMAL_RE.match(value):
             raise ValidationError(f"{field_name} must be a canonical decimal string, got '{value}'")
         num = int(value)
     elif isinstance(value, int):
         num = value
     else:
-        raise ValidationError(f"{field_name} must be int or decimal string, got {type(value).__name__}")
+        raise ValidationError(f"{field_name} must be int, Decimal, or decimal string, got {type(value).__name__}")
 
     if num < 0 or num > U128_MAX:
         raise ValidationError(f"{field_name} out of u128 bounds [0, 2^128-1]: {num}")
@@ -85,22 +99,83 @@ def validate_u128(value: int | str, field_name: str = "value", allow_zero: bool 
     return num
 
 
-def validate_u64(value: int | str, field_name: str = "value", allow_zero: bool = True) -> int:
-    """Validate and convert unsigned 64-bit integer."""
-    if isinstance(value, str):
+def validate_u64(value: Any, field_name: str = "value", allow_zero: bool = True) -> int:
+    """Validate and convert unsigned 64-bit integer. Rejects booleans, floats, NaN, Inf, and non-integers."""
+    if isinstance(value, bool):
+        raise ValidationError(f"{field_name} cannot be a boolean, got {value}")
+    if isinstance(value, float):
+        raise ValidationError(
+            f"{field_name} cannot be a float (ambiguous precision). Use int, Decimal, or canonical decimal string."
+        )
+
+    if isinstance(value, Decimal):
+        if not value.is_finite():
+            raise ValidationError(f"{field_name} must be a finite Decimal, got {value}")
+        if value.to_integral_value() != value:
+            raise ValidationError(f"{field_name} cannot have fractional part, got {value}")
+        num = int(value)
+    elif isinstance(value, str):
         if not _CANONICAL_DECIMAL_RE.match(value):
             raise ValidationError(f"{field_name} must be a canonical decimal string, got '{value}'")
         num = int(value)
     elif isinstance(value, int):
         num = value
     else:
-        raise ValidationError(f"{field_name} must be int or decimal string, got {type(value).__name__}")
+        raise ValidationError(f"{field_name} must be int, Decimal, or decimal string, got {type(value).__name__}")
 
     if num < 0 or num > U64_MAX:
         raise ValidationError(f"{field_name} out of u64 bounds [0, 2^64-1]: {num}")
     if not allow_zero and num == 0:
         raise ValidationError(f"{field_name} must be strictly positive")
     return num
+
+
+def unit_to_yocto(amount_in_units: Any, field_name: str = "amount") -> int:
+    """
+    Convert an amount in UNIT (1 UNIT = 10^21 yoctoNEAR) to exact integer yoctoNEAR.
+    Rejects booleans, floats, non-finite Decimals, fractional yoctoNEAR, and out-of-bound values.
+    """
+    if isinstance(amount_in_units, bool):
+        raise ValidationError(f"{field_name} cannot be a boolean")
+    if isinstance(amount_in_units, float):
+        raise ValidationError(
+            f"{field_name} cannot be a float (ambiguous precision). Use int, Decimal, or canonical decimal string."
+        )
+
+    if isinstance(amount_in_units, Decimal):
+        d = amount_in_units
+    elif isinstance(amount_in_units, int):
+        d = Decimal(amount_in_units)
+    elif isinstance(amount_in_units, str):
+        try:
+            d = Decimal(amount_in_units)
+        except Exception as exc:
+            raise ValidationError(f"Invalid decimal string for {field_name}: '{amount_in_units}'") from exc
+    else:
+        raise ValidationError(
+            f"{field_name} must be int, Decimal, or decimal string, got {type(amount_in_units).__name__}"
+        )
+
+    if not d.is_finite():
+        raise ValidationError(f"{field_name} cannot be NaN or Infinity")
+    if d < 0:
+        raise ValidationError(f"{field_name} cannot be negative: {d}")
+
+    yocto_dec = d * Decimal(UNIT)
+    if yocto_dec != yocto_dec.to_integral_value():
+        raise ValidationError(
+            f"{field_name} specifies fractional yoctoNEAR ({d} UNIT = {yocto_dec} yoctoNEAR); sub-yocto precision is invalid"
+        )
+
+    yocto = int(yocto_dec)
+    if yocto > U128_MAX:
+        raise ValidationError(f"{field_name} in yoctoNEAR exceeds U128 bounds: {yocto}")
+    return yocto
+
+
+def yocto_to_unit_decimal(yocto: int) -> Decimal:
+    """Convert integer yoctoNEAR to exact Decimal in UNIT."""
+    return Decimal(yocto) / Decimal(UNIT)
 
 
 def to_bytes32(data: str | bytes | Sequence[int], field_name: str = "hash") -> bytes:

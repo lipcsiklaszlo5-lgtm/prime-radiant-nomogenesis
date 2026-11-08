@@ -52,11 +52,13 @@ from .proof import (
     sha256,
     to_bytes32,
     to_case_id_bytes,
+    unit_to_yocto,
     validate_account_id,
     validate_component_payload,
     validate_u64,
     validate_u128,
     verify_component_merkle,
+    yocto_to_unit_decimal,
 )
 
 __version__ = "0.1.0"
@@ -108,4 +110,6 @@ __all__ = [
     "reconstruct_total",
     "minimum_commitment",
     "compute_worker_result_commitment",
+    "unit_to_yocto",
+    "yocto_to_unit_decimal",
 ]
