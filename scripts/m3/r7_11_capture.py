@@ -193,9 +193,26 @@ def validate(raw):
         "settlement bundle mismatch"
     )
 
+    offer_ids = {
+        row["actor"]: int(row["offer"])
+        for row in groups["offer"]
+    }
+
+    released_id = int(
+        groups["bond_release"][0]["offer"]
+    )
+
     require(
-        int(groups["bond_release"][0]["offer"]) == 0,
-        "incorrect losing provider release"
+        released_id == offer_ids["provider-alpha"],
+        "released offer does not belong to losing provider"
+    )
+
+    require(
+        released_id not in {
+            offer_ids["provider-beta"],
+            offer_ids["provider-gamma"],
+        },
+        "winning provider bond was released"
     )
 
     require(
