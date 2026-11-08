@@ -244,6 +244,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--log", required=True, type=Path)
     parser.add_argument("--wasm", type=Path)
+    parser.add_argument("--provenance", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--reference-check", action="store_true")
     args = parser.parse_args()
@@ -260,7 +261,8 @@ def main():
         return
 
     require(
-        args.wasm is not None and args.output is not None,
+        args.wasm is not None and args.output is not None
+        and args.provenance is not None,
         "WASM and output required"
     )
 
@@ -273,6 +275,28 @@ def main():
         "deployed V2 WASM byte parity failed"
     )
 
+    provenance = json.loads(
+        args.provenance.read_text(encoding="utf-8")
+    )
+
+    require(
+        provenance.get("sha256") == wasm_hash,
+        "WASM provenance hash mismatch"
+    )
+
+    require(
+        provenance.get("code_hash") ==
+        "3dz93Y6r2ZxupsYrJokcD6PqubygQA9XYV5qbzCpd7AD",
+        "Unexpected Testnet code hash"
+    )
+
+    require(
+        provenance.get("contract") ==
+        "nmg-r7v2-0b9a0eff20.testnet"
+        and provenance.get("network") == "near-testnet",
+        "Unexpected contract identity"
+    )
+
     head = subprocess.check_output(
         ["git", "rev-parse", "HEAD"],
         text=True
@@ -282,6 +306,7 @@ def main():
         "schema": "nomogenesis.r7-11.evidence.v1",
         "network": "local-near-sandbox",
         "source_commit": head,
+        "contract_provenance": provenance,
         "wasm_sha256": wasm_hash,
         "execution_log_sha256": hashlib.sha256(
             log_bytes

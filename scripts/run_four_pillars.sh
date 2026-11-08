@@ -71,10 +71,30 @@ node_modules/.bin/wasm-opt \
 
 WASM="$ROOT/target/nomogenesis_compatible.wasm"
 
-echo "$EXPECTED  $WASM" | sha256sum -c - ||
-  fail "WASM hash mismatch"
+SOURCE_WASM="$WASM"
 
-echo "V2 WASM BYTE PARITY: PASS"
+SOURCE_EXPECTED="ece3c580cf84788116c103652a26a9165a7f9f10e813d8e9d5ff2be867c2ec59"
+
+echo "$SOURCE_EXPECTED  $SOURCE_WASM" | sha256sum -c - ||
+  fail "source build mismatch"
+
+echo "SOURCE_WASM_REPRODUCIBILITY: PASS"
+
+DEPLOYED="$ROOT/target/r7-11-evidence/onchain-v2.wasm"
+PROVENANCE="$ROOT/target/r7-11-evidence/onchain-v2-provenance.json"
+
+python3 -B scripts/m3/r7_11_fetch_v2.py \
+  --local "$SOURCE_WASM" \
+  --output "$DEPLOYED" \
+  --provenance "$PROVENANCE" ||
+  fail "public deployed contract verification failed"
+
+echo "$EXPECTED  $DEPLOYED" | sha256sum -c - ||
+  fail "deployed WASM mismatch"
+
+echo "V2 DEPLOYED WASM BYTE PARITY: PASS"
+
+WASM="$DEPLOYED"
 
 echo "=== PYTHON AGENTSHIELD ==="
 
@@ -139,10 +159,14 @@ echo "=== STRUCTURED EVIDENCE ==="
 python3 -B scripts/m3/r7_11_capture.py \
   --log "$LOG" \
   --wasm "$WASM" \
+  --provenance "$PROVENANCE" \
   --output "$ROOT/target/r7-11-evidence/evidence.json"
 
 sha256sum \
   "$LOG" \
+  "$SOURCE_WASM" \
+  "$DEPLOYED" \
+  "$PROVENANCE" \
   "$ROOT/target/r7-11-evidence/evidence.json" \
   > "$ROOT/target/r7-11-evidence/checksums.sha256"
 
