@@ -40,7 +40,7 @@ const KEYROOT = path.join(
 );
 
 const RUNROOT = path.join(
-  KEYROOT, 'live-v2-once'
+  KEYROOT, 'live-v2-once-02'
 );
 
 const RPC = 'https://rpc.testnet.fastnear.com';

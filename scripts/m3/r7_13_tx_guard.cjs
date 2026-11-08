@@ -54,7 +54,7 @@ function readSecure(filename) {
 
 function journalPath(dir, role, step) {
   assert.match(role, /^[a-z0-9-]{2,48}$/);
-  assert.match(step, /^[a-z0-9-]{2,64}$/);
+  assert.match(step, /^[a-z0-9_-]{2,64}$/);
 
   return path.join(dir, `${role}__${step}.json`);
 }
