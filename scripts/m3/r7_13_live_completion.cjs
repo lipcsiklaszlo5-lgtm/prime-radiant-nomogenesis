@@ -119,7 +119,7 @@ async function providerDeliver({
 
     const response = await fetch(
       url + '/backup/' + policy.component,
-      {signal: AbortSignal.timeout(30000)}
+      {signal: AbortSignal.timeout(60000)}
     );
     assert.equal(response.status, 200);
 

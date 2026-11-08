@@ -12,6 +12,11 @@ const near = require('near-api-js');
 const {ROSTER} = require('./r7_06_swarm.cjs');
 
 const {
+  waitForFinalizedCase,
+  waitForFinalizedAward
+} = require('./r7_13_finality_gate.cjs');
+
+const {
   startServices
 } = require('./r7_demo_03_bridge.cjs');
 
@@ -40,7 +45,7 @@ const KEYROOT = path.join(
 );
 
 const RUNROOT = path.join(
-  KEYROOT, 'live-v2-once-02'
+  KEYROOT, 'live-v2-once-03'
 );
 
 const RPC = 'https://rpc.testnet.fastnear.com';
@@ -407,10 +412,13 @@ async function openServer(
           assert.equal(state.outage, true);
           assert(Array.isArray(state.caseId));
 
-          const rescue = await view(
-            'get_rescue_case',
-            {case_id: state.caseId}
-          );
+          const rescue = await waitForFinalizedAward({
+            caseId: state.caseId,
+            lookup: id => view(
+              'get_rescue_case',
+              {case_id: id}
+            )
+          });
 
           assert.equal(
             rescue.phase,
@@ -991,6 +999,29 @@ async function main() {
     assert.deepEqual(
       result.value,
       caseId
+    );
+
+    const finalized = await waitForFinalizedCase({
+      caseId,
+      expected: {
+        original_provider: PARENT,
+        component_commitments: roots,
+        dependency_deadline: Number(deadlines[0]),
+        bid_close: Number(deadlines[1]),
+        award_close: Number(deadlines[2]),
+        recovery_deadline: Number(deadlines[3])
+      },
+      lookup: id => view(
+        'get_rescue_case',
+        {case_id: id}
+      ),
+      chainTime
+    });
+
+    assert.deepEqual(finalized.id, caseId);
+
+    console.log(
+      'LIVE_CASE_FINALIZED_ON_CHAIN: PASS'
     );
 
     state.caseId = caseId;
