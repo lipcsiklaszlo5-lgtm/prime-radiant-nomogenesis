@@ -1,0 +1,87 @@
+SCENARIO: both-default
+=== CREATE FUNDED M3 MARKET ===
+=== THREE INDEPENDENT BUYER FUNDS ===
+THREE FUNDED AND ACCEPTED JOBS: PASS
+=== TWO FULLY BONDED PROVIDERS ===
+FUNDED ESCROW: 48 UNIT
+INITIAL LEDGER: PASS
+=== ADVANCE TO AWARD WINDOW ===
+ON-CHAIN DETERMINISTIC PLAN: PASS
+=== FORGED BUYER MUST FAIL ===
+Retrying transaction dev-70396-30688.test.near:FeHuA3CxTHws5LPTFTmeam5mXRNBkWjo761JZsh2rifs due to expired block hash
+Retrying transaction dev-70396-30688.test.near:FeHuA3CxTHws5LPTFTmeam5mXRNBkWjo761JZsh2rifs due to expired block hash
+Receipts: 8zPQrPAxV9NV3nwv6orPigf3wfrAjGhqcx1sHaFfjK2D, C5o7fA9bLbQ9Xp8cMKx5LiWvmUN2g8vfvsJMM2J6mwwj
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/lib.rs:857:9:\nassertion `left == right` failed: caller is not buyer\n  left: AccountId(\"buyer0.test.near\")\n right: AccountId(\"buyer2.test.near\")"}}}}
+FORGED CALLER ROLLBACK: PASS
+=== UNDERFUNDED CONSENT MUST FAIL ===
+Receipts: CbRwePLot8pttshZCUFGSGkbEPiWiLswYnaiwsXPJJKr, 9R6fNsGS3UEcjNg5cueWDU31BopciBhGsxxyusoGHBXX
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/lib.rs:918:9:\nassertion `left == right` failed: incorrect consent storage bond\n  left: 40959999999999999999999\n right: 40960000000000000000000"}}}}
+UNDERFUNDED WRITE ROLLBACK: PASS
+=== FIRST REAL BUYER CONSENT ===
+=== INCOMPLETE COALITION MUST FAIL ===
+Receipt: 7m1d8FAmHdZbUXCzjKUWppVFy4r6kHPirGN9crpixBdz
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/r7_v2_plan.rs:185:18:\nselected buyer has no active consent"}}}}
+MISSING BUYER CONSENT ROLLBACK: PASS
+=== SECOND REAL BUYER CONSENT ===
+CONSENT STORAGE GROWTH: 524 BYTES
+TWO REAL BUYER CONSENTS: PASS
+=== VERIFIED ON-CHAIN PREFLIGHT ===
+AUTHORIZED PREFLIGHT: PASS
+=== TAMPERED PLAN MUST FAIL ===
+Receipt: BrAatZDspoikUq8qYWC2yWQvG9vKYAtgEKcsmyqSS6j8
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/r7_v2_plan.rs:169:9:\nassertion `left == right` failed: canonical plan hash mismatch\n  left: [205, 103, 87, 59, 41, 176, 30, 162, 164, 23, 158, 104, 50, 20, 234, 167, 121, 199, 70, 39, 124, 57, 98, 132, 134, 100, 45, 18, 186, 184, 190, 22]\n right: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]"}}}}
+Receipt: 6LUnv5ypD3gD4pG1gbQF4au9dmxTAvDgYRHAygTwK7Du
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/r7_v2_plan.rs:169:9:\nassertion `left == right` failed: canonical plan hash mismatch\n  left: [160, 170, 203, 0, 109, 61, 13, 55, 19, 0, 186, 137, 28, 177, 82, 141, 101, 29, 138, 86, 126, 207, 145, 218, 253, 247, 17, 100, 56, 29, 211, 54]\n right: [205, 103, 87, 59, 41, 176, 30, 162, 164, 23, 158, 104, 50, 20, 234, 167, 121, 199, 70, 39, 124, 57, 98, 132, 134, 100, 45, 18, 186, 184, 190, 22]"}}}}
+PLAN TAMPERING ROLLBACK: PASS
+=== LEGACY AWARD CANNOT BYPASS ===
+Receipt: 7iGWikCDTj6uNjvkrZeTZPnytLSsroPZavQMRZoP66jK
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/lib.rs:977:13:\nR7 V2: legacy award disabled"}}}}
+LEGACY BYPASS REJECTED: PASS
+=== ATOMIC AUTHORIZED AWARD ===
+SELECTED BUYERS: 6 + 6 UNIT
+EXCLUDED BUYER REFUND: 7 UNIT
+ESCROW: 39 UNIT
+CLAIMABLE: 9 UNIT
+ATOMIC FINANCIAL CONSERVATION: PASS
+=== AWARD REPLAY MUST FAIL ===
+Receipt: 4kg5acnznxLoYhMpdHyUWf5wtBFgiH99QdKM54yvc1m4
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_clearing.rs:106:9:\nassertion `left == right` failed: case is not open\n  left: BundleAwarded\n right: Open"}}}}
+AWARD REPLAY ROLLBACK: PASS
+=== PROVIDER DEFAULT SCENARIO ===
+=== REAL MERKLE MISMATCH MUST FAIL ===
+Receipt: BebhvyBHtqkgUg3r6M2EQzbMEDFvnyGaMx4EW2j8VYSi
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_proof.rs:122:9:\nassertion `left == right` failed: noncanonical metadata sibling\n  left: [20, 27, 40, 111, 81, 28, 138, 20, 215, 98, 102, 35, 57, 72, 155, 44, 75, 78, 226, 248, 220, 216, 72, 190, 0, 103, 248, 59, 93, 39, 181, 21]\n right: [159, 13, 102, 198, 115, 224, 51, 144, 226, 69, 138, 85, 32, 191, 170, 118, 56, 74, 247, 151, 205, 9, 209, 10, 78, 140, 67, 254, 254, 232, 83, 9]"}}}}
+MERKLE MISMATCH ROLLBACK: PASS
+=== SELECTIVE PROVIDER PROOFS ===
+=== NO PREMATURE DEFAULT ===
+Receipt: 7tLWr1xqXfHhFqPpewTfgsn1XEZvGkyoD6pZoEZ2GDGt
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_terminal.rs:41:9:\nrecovery deadline not reached"}}}}
+PRE-DEADLINE REJECTION: PASS
+=== ADVANCE TO RECOVERY DEADLINE ===
+=== PERMISSIONLESS DEFAULT SETTLEMENT ===
+Retrying transaction dev-70396-30688.test.near:4pmbbzBF7yrsMHFxJk1NoTiu1kL821KwwyYVLaexaqee due to expired block hash
+Retrying transaction dev-70396-30688.test.near:4pmbbzBF7yrsMHFxJk1NoTiu1kL821KwwyYVLaexaqee due to expired block hash
+=== VERIFY PROVIDER OUTCOMES ===
+PROVIDER BONDS AND CAPACITY: PASS
+=== VERIFY SELECTED BUYER REFUNDS ===
+SPONSOR REFUNDS: PASS
+EXCLUDED BUYER ISOLATION: PASS
+=== VERIFY FULL ECONOMIC LEDGER ===
+DEFAULT SETTLEMENT: 3 + 45 = 48
+=== SETTLEMENT REPLAY PROTECTION ===
+Receipt: 4zoDcS8C317rAy8QXFXtWD5HSTqPY5sFvN5AoF574VSu
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_terminal.rs:28:9:\nassertion `left == right` failed: bundle already terminal\n  left: SettledDefault\n right: Awarded"}}}}
+SETTLEMENT REPLAY ROLLBACK: PASS
+=== EXCLUDED WORKER REWARD EXPIRY ===
+Receipt: DvBvWqhe24YEr3M5JsW7JkkFGeuAsLqpY5b3k8pipWsA
+	Failure [dev-70396-30688.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/lib.rs:701:9:\nassertion `left == right` failed: rescue job is not active\n  left: Expired\n right: Accepted"}}}}
+EXCLUDED WORKER EXPIRY: PASS
+EXPIRY REPLAY ROLLBACK: PASS
+=== RELEASE REMAINING WORKER REWARDS ===
+FINAL ECONOMIC LEDGER: 0 + 48 = 48 UNIT
+ALL WORKER REWARDS ACCOUNTED: PASS
+=== R7-06E/03B-05E DEFAULT MATRIX: PASS ===
+ECONOMIC EVIDENCE: 48 = 39+9 = 3+45 = 2+46 = 0+48
+PROVIDER DEFAULT MATRIX: VERIFIED
+LIMIT: consent storage refund not implemented
+LIMIT: public Testnet not yet deployed

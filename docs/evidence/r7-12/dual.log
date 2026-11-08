@@ -1,0 +1,67 @@
+Retrying transaction buyer-2.test.near:721srz8jyV9QwdwjpsFTiY91GwqQK3KxjtPJwYLxW2Rw with new nonce.
+Retrying transaction buyer-3.test.near:AiSDzhbXYSmTQBzQVSgJBws2K8BAFqA4LB3koeSkLdXz with new nonce.
+Retrying transaction provider-alpha.test.near:5vzed5qwNizUb4Lgw8vmi38BnnimKmHRgHrNCCGcq5An with new nonce.
+Retrying transaction provider-beta.test.near:9joVH73Qv7Zpk1dQhaHxFPXSveMJ59V1pD12o2bxEy8V with new nonce.
+Retrying transaction provider-gamma.test.near:Dtygnyij9ja7kKdbFSUH8cunkQwbEx7chKL8G1F1DMij with new nonce.
+Retrying transaction provider-delta.test.near:BbPJZSFpRfqNUQgqSrBhfCroz7eVeur3C8ePB5DuJksD with new nonce.
+Retrying transaction worker0.test.near:414XGaEphFKbgZZE6LEKjFaoEkqih6NjVudNySWPB7cs with new nonce.
+Retrying transaction worker1.test.near:GDZ5Q2wvG4VesscUiChG3mFj4zc7nxqiYUZNx4PZPabD with new nonce.
+Retrying transaction keeper.test.near:6CodmrvjfCrhcwDPTeUSzgWjRoecgVAwfinEfQmu2cbE with new nonce.
+SEVEN_ONCHAIN_SIGNERS_ISOLATED: PASS
+NO_PRE_OUTAGE_FUNDING_OR_OFFERS: PASS
+OUTAGE_EVENT_RELEASED_TO_AGENTS: PASS
+AUTONOMOUS_POLICY_REFUSAL: buyer-3
+AUTONOMOUS_POLICY_REFUSAL: provider-delta
+AUTONOMOUS_BUYER_FUNDED: buyer-2 JOB=1 TX=6WDMpu3rHA5WAU35THvNL5nkpDyPiHDxazfV33gS6nTB
+AUTONOMOUS_BUYER_FUNDED: buyer-1 JOB=0 TX=9bBjFwsQd8NwhJ3hZFP2JrrLxeoyg1r79WdrbAKH5Jcp
+AUTONOMOUS_PROVIDER_OFFER: provider-alpha OFFER=1 TX=6FVuLanm18tMxR11BWkvRHtNtrfhWCnRvx5i8hQUr3Lg
+AUTONOMOUS_PROVIDER_OFFER: provider-gamma OFFER=0 TX=F8WDU7EytPQQgjeqteLjwkZGPQ6KhmUKjxt6VpzjA6KJ
+AUTONOMOUS_PROVIDER_OFFER: provider-beta OFFER=2 TX=7mGM1DzJ2NSMmLZfibQNaF7RSGoDyFAaNaRAWKmq9pjD
+AUTONOMOUS_WORKERS_READY_FOR_CLEARING: PASS
+AUTONOMOUS_TWO_BUYER_FUNDS: PASS
+AUTONOMOUS_THREE_PROVIDER_BIDS: PASS
+AUTONOMOUS_TWO_POLICY_REFUSALS: PASS
+ONCHAIN_OFFERS_COMPETITIVE_PRICE: PASS
+ONCHAIN_FUNDS_AND_BONDS_CONSERVED: PASS
+R7-AUTO-05B/01 MARKET_FORMATION_VERIFIED: PASS
+AUTONOMOUS_WORKER_ACCEPTED: worker1 JOB=1 TX=82Ha2wAoiZ9LP6YRQf9gQwQLyHT1J2Jq4YDqL59S74nh
+AUTONOMOUS_WORKER_ACCEPTED: worker0 JOB=0 TX=5g21bxcoH5GBw73yr51oiL76DFfru7SJApq3aY5d86zS
+Retrying transaction dev-4657-47456.test.near:5s7P8q7cs2kCKjweZNtquAnuWbZ1WZQ6ACkTxZWSg37g due to expired block hash
+Retrying transaction dev-4657-47456.test.near:A6ewSzwzmJmsjS63ZWzvhKYh9b3dsbV9fzFFYYrMHJgo due to expired block hash
+BID_CLOSE_REACHED: PASS
+Retrying transaction dev-4657-47456.test.near:5s7P8q7cs2kCKjweZNtquAnuWbZ1WZQ6ACkTxZWSg37g due to expired block hash
+Retrying transaction dev-4657-47456.test.near:A6ewSzwzmJmsjS63ZWzvhKYh9b3dsbV9fzFFYYrMHJgo due to expired block hash
+Retrying transaction dev-4657-47456.test.near:6WucD7bnADeJ1qdXqXViCCf3xJyBKL1d9Ayad17khSS with new nonce.
+Retrying transaction dev-4657-47456.test.near:J36JiQbBLzTyDHvbiFHbh1nXq68Uu1bL28TPkFthVD7Q with new nonce.
+AUTONOMOUS_BUYER_V2_CONSENT: buyer-1 JOB=0 PAYMENT=5500000000000000000000 TX=6XULF234vwhUDEiwnJYTE1ecWv5xzg85UqwXMUVARFHK
+AUTONOMOUS_BUYER_V2_CONSENT: buyer-2 JOB=1 PAYMENT=5500000000000000000000 TX=wSSexFcJat3kNbmrb7zTGpPsPy5mV1AKRodaxSLNfzo
+FAULT_INJECTION_PROVIDER_WITHHELD: provider-beta
+AUTONOMOUS_UNSELECTED_PROVIDER: provider-alpha
+NO_PROOFS_AFTER_AWARD: PASS
+FAULT_INJECTION_PROVIDER_WITHHELD: provider-gamma
+AUTONOMOUS_KEEPER_ATOMIC_AWARD: BUNDLE=0 PRICE=11000000000000000000000 TX=C9BczfCRKNTBGpYoDd8pntCSdbWFmLDKDMycgE9TB1ZU
+Retrying transaction dev-4657-47456.test.near:57bMCzEz5oQFLFuAbj34Pq51snFNwpHDABFQoPYa5HSy with new nonce.
+Receipt: 9uPn7H7VjNjarHcCRegxgVZ1iBoGk2jdg2ELqZytwcG
+	Failure [dev-4657-47456.test.near]: Error: {"index":0,"kind":{"index":0,"kind":{"FunctionCallError":{"ExecutionError":"Smart contract panicked: panicked at src/rescue_terminal.rs:41:9:\nrecovery deadline not reached"}}}}
+PREMATURE_DEFAULT_ROLLBACK: PASS
+AUTONOMOUS_KEEPER_RELEASED_LOSER: OFFER=1 TX=7tVUaBE5pja33vRYu8YNKjpiFk43Az2qJyivqmsKNZUi
+Retrying transaction dev-4657-47456.test.near:DLng2SziSwXN5RCcwMDb967KbVJad1dZukNL31sZdBPC due to expired block hash
+RECOVERY_DEADLINE_ADVANCED: PASS
+Retrying transaction dev-4657-47456.test.near:DLng2SziSwXN5RCcwMDb967KbVJad1dZukNL31sZdBPC due to expired block hash
+Retrying transaction dev-4657-47456.test.near:DLng2SziSwXN5RCcwMDb967KbVJad1dZukNL31sZdBPC due to expired block hash
+Retrying transaction dev-4657-47456.test.near:DLng2SziSwXN5RCcwMDb967KbVJad1dZukNL31sZdBPC due to expired block hash
+Retrying transaction dev-4657-47456.test.near:FsMixvFMBJK391zR1SMjgopYFZ9U7yiUqyDiWN94LLvN with new nonce.
+WORKER_FINAL_DEADLINE_ADVANCED: PASS
+Retrying transaction dev-4657-47456.test.near:v1RZPZfFva2FbTj6SbaPAt6mdZn5xbx2zMWbNsem76L with new nonce.
+Retrying transaction dev-4657-47456.test.near:2u2UQigBWCTFADkFyfxgJBzqTkzofFUPDbMC4Yfb1w84 with new nonce.
+AUTONOMOUS_KEEPER_DEFAULT_SETTLED: BUNDLE=0 TX=8PKgq5myDKYYnAeeqKnaHpErDFmr1fXvDTfCHf9nwms7
+AUTONOMOUS_WORKER_EXPIRED: worker0.test.near JOB=0 TX=8dXF71v2RtH9cXrBUF2c2E5jBfw4A6qvTQRLC3dwAMoQ
+AUTONOMOUS_WORKER_EXPIRED: worker1.test.near JOB=1 TX=2ibP9AQ8bY31igBccp8ycaskRrN8DDhw5ALxq7e1cB4T
+BOTH_PROVIDERS_DEFAULT: PASS
+TWO_LOCKED_BONDS_FORFEITED: PASS
+TWO_WORKER_REWARD_EXPIRIES: PASS
+LOSING_PROVIDER_BOND_RETURNED: PASS
+DUAL_DEFAULT_FINANCIAL_CONSERVATION: 52=0+52
+R7-ADV-01B AUTONOMOUS_DUAL_DEFAULT: PASS
+LIMIT: local synthetic sources and injected outage
+LIMIT: local event relay and same-host agent processes

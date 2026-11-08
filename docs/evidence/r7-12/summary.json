@@ -1,0 +1,73 @@
+{
+  "baseline_commit": "21cafdf67df7eaaf47f9e1cbd83216eb886763d7",
+  "deployed_testnet_v2_wasm_sha256": "2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e",
+  "limitations": [
+    "Negative financial scenarios are local Sandbox runs",
+    "Sandbox transaction hashes are not public Testnet hashes",
+    "Provider defaults are injected by test harness",
+    "Watchdog test uses controlled loopback HTTP responses",
+    "No independent production security audit",
+    "Source-built WASM differs from deployed WASM"
+  ],
+  "network": "local-near-sandbox",
+  "scenarios": {
+    "adversarial": {
+      "log": "adversarial.log",
+      "sha256": "7ee85c802b483bffd1cf6f118205b9ee21efb7e0e1ca25bf0896b5d80e1dbc51",
+      "verified_markers": [
+        "FORGED CALLER ROLLBACK: PASS",
+        "UNDERFUNDED WRITE ROLLBACK: PASS",
+        "MISSING BUYER CONSENT ROLLBACK: PASS",
+        "PLAN TAMPERING ROLLBACK: PASS",
+        "LEGACY BYPASS REJECTED: PASS",
+        "AWARD REPLAY ROLLBACK: PASS",
+        "MERKLE MISMATCH ROLLBACK: PASS",
+        "PRE-DEADLINE REJECTION: PASS",
+        "SETTLEMENT REPLAY ROLLBACK: PASS",
+        "EXPIRY REPLAY ROLLBACK: PASS",
+        "FINAL ECONOMIC LEDGER: 0 + 48 = 48 UNIT",
+        "PROVIDER DEFAULT MATRIX: VERIFIED"
+      ]
+    },
+    "dual": {
+      "log": "dual.log",
+      "sha256": "70f7b101e680751a0d1086eea6196271515b7f703c6659073636aaa15ef621e5",
+      "verified_markers": [
+        "FAULT_INJECTION_PROVIDER_WITHHELD: provider-beta",
+        "FAULT_INJECTION_PROVIDER_WITHHELD: provider-gamma",
+        "NO_PROOFS_AFTER_AWARD: PASS",
+        "PREMATURE_DEFAULT_ROLLBACK: PASS",
+        "BOTH_PROVIDERS_DEFAULT: PASS",
+        "TWO_LOCKED_BONDS_FORFEITED: PASS",
+        "DUAL_DEFAULT_FINANCIAL_CONSERVATION: 52=0+52",
+        "R7-ADV-01B AUTONOMOUS_DUAL_DEFAULT: PASS"
+      ]
+    },
+    "single": {
+      "log": "single.log",
+      "sha256": "117da2fb6197d640d25a0721514fef57f1a7ad2ccc6d8139e610328624bae9d2",
+      "verified_markers": [
+        "FAULT_INJECTION_PROVIDER_WITHHELD: provider-beta",
+        "ONE_PROOF_ONE_MISSING: PASS",
+        "SINGLE_PROVIDER_DEFAULT: PASS",
+        "DEFAULTED_BOND_FORFEITURE: PASS",
+        "TWO_WORKER_REWARD_EXPIRIES: PASS",
+        "DEFAULT_FINANCIAL_CONSERVATION: 52=0+52",
+        "R7-ADV-01A AUTONOMOUS_DEFAULT: PASS"
+      ]
+    },
+    "watchdog": {
+      "log": "watchdog.log",
+      "sha256": "d1108f7cd9bf6988197b60a6268b0f103f6e4a03e0905b3279f2c2ae08563a38",
+      "verified_markers": [
+        "WATCHDOG_INITIAL_HEALTH_GATING: PASS",
+        "WATCHDOG_TRANSIENT_503_DID_NOT_TRIGGER: PASS",
+        "WATCHDOG_RECOVERY_RESET: PASS",
+        "WATCHDOG_SUSTAINED_FAILURE_DETECTED: PASS",
+        "R7_12_WATCHDOG_GUARD: PASS"
+      ]
+    }
+  },
+  "schema": "nomogenesis.r7-12.failure-evidence.v1",
+  "watchdog_evidence_sha256": "b7faa02b8d71112de6b2f6b599ea1a8a8b2eba21a1abce12dc47771836855e9d"
+}
