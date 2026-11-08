@@ -567,6 +567,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_offline_mock_audit_historical_case(self) -> None:
         """Mocked complete historical audit verifying report fields and 632 result."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
 
         cid_bytes = bytes.fromhex(HISTORICAL_CASE_ID)
         q_root_bytes = bytes.fromhex(QUANTITY_ROOT_HEX)
@@ -655,6 +656,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_generic_successful_case_audit_non_632(self) -> None:
         """Generic case audit with result != 632 and job IDs != [0, 1] passes without demo defaults."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
         cid_bytes = bytes.fromhex("11" * 32)
 
         # Component 0: [(10, 5), (20, 10)]
@@ -743,6 +745,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_case_audit_with_expected_result_mismatch(self) -> None:
         """Generic case audit fails if caller's explicit expected_result does not match."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
         cid_bytes = bytes.fromhex("22" * 32)
         q_payload = encode_component_payload(0, [(10, 5)])
         q_root = compute_component_root(0, q_payload)
@@ -807,6 +810,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_case_audit_fails_on_network_mismatch(self) -> None:
         """Audit fails closed if node reports wrong chain_id."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
         with patch.object(shield.rpc, "get_status", return_value={"chain_id": "mainnet"}):
             report = shield.audit_case(HISTORICAL_CASE_ID)
             self.assertFalse(report.passed)
@@ -816,6 +820,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_case_audit_fails_if_not_closed(self) -> None:
         """Audit fails if rescue case phase is not Closed."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
         cid_bytes = bytes.fromhex(HISTORICAL_CASE_ID)
         case_open = {
             "id": list(cid_bytes),
@@ -846,6 +851,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_case_audit_job_not_completed_fails(self) -> None:
         """Audit fails if a worker job is still in Accepted phase."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
         cid_bytes = bytes.fromhex(HISTORICAL_CASE_ID)
         q_root_bytes = bytes.fromhex(QUANTITY_ROOT_HEX)
         p_root_bytes = bytes.fromhex(PRICE_ROOT_HEX)
@@ -905,6 +911,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_case_audit_job_case_id_mismatch_fails(self) -> None:
         """Audit fails if a worker job points to a different rescue case."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
         cid_bytes = bytes.fromhex(HISTORICAL_CASE_ID)
         wrong_cid = bytes.fromhex("ff" * 32)
         q_root_bytes = bytes.fromhex(QUANTITY_ROOT_HEX)
@@ -976,6 +983,7 @@ class TestShieldClientOfflineMock(unittest.TestCase):
     def test_case_audit_financial_expectations_mismatch(self) -> None:
         """Audit fails if caller provides explicit financial expectations that do not match on-chain totals."""
         shield = Shield(network="testnet")
+        shield.rpc.finalized_block_hash = MagicMock(return_value="unit-test-final-block")
         cid_bytes = bytes.fromhex(HISTORICAL_CASE_ID)
         q_root_bytes = bytes.fromhex(QUANTITY_ROOT_HEX)
         p_root_bytes = bytes.fromhex(PRICE_ROOT_HEX)
@@ -1040,6 +1048,92 @@ class TestShieldClientOfflineMock(unittest.TestCase):
             self.assertFalse(report_escrow.financial_expectations_verified)
             self.assertTrue(any("Global rescue escrow mismatch" in err for err in report_escrow.errors))
 
+
+
+class TestR709CSnapshotAndMoney(unittest.TestCase):
+
+    def test_large_exact_money(self):
+        original = "100000000000000001.123456789012345678901"
+        expected = 100000000000000001123456789012345678901
+        self.assertEqual(unit_to_yocto(original), expected)
+        self.assertEqual(
+            unit_to_yocto(yocto_to_unit_decimal(expected)), expected
+        )
+        maximum = (1 << 128) - 1
+        self.assertEqual(
+            unit_to_yocto(yocto_to_unit_decimal(maximum)), maximum
+        )
+
+    def test_financial_rpc_rejects_float(self):
+        shield = Shield(network="testnet")
+        with patch.object(
+            shield.rpc, "view_function",
+            return_value=["1.5", "0"]
+        ):
+            with self.assertRaises(ContractError):
+                shield.payout_totals()
+
+    def test_financial_rpc_rejects_missing(self):
+        shield = Shield(network="testnet")
+        with patch.object(
+            shield.rpc, "view_function", return_value=None
+        ):
+            with self.assertRaises(ContractError):
+                shield.claimable_total()
+
+    def test_snapshot_pins_all_queries(self):
+        rpc = NearRpcClient(["https://example.test"])
+        seen = []
+
+        def fake_rpc(method, params):
+            seen.append((method, dict(params)))
+            if params.get("request_type") == "view_code":
+                return {"hash": "expected"}
+            return {"result": [ord("0")]}
+
+        with patch.object(
+            rpc, "finalized_block_hash",
+            return_value="unit-test-final-block"
+        ), patch.object(rpc, "rpc_call", side_effect=fake_rpc):
+            with rpc.finalized_snapshot():
+                self.assertEqual(
+                    rpc.view_function("contract.testnet", "demo"), 0
+                )
+                self.assertEqual(
+                    rpc.view_code("contract.testnet"), "expected"
+                )
+
+        for method, params in seen:
+            self.assertEqual(method, "query")
+            self.assertEqual(
+                params["block_id"], "unit-test-final-block"
+            )
+            self.assertNotIn("finality", params)
+
+        self.assertIsNone(rpc._pinned_block_id)
+
+    def test_snapshot_clears_after_error(self):
+        rpc = NearRpcClient(["https://example.test"])
+        with patch.object(
+            rpc, "finalized_block_hash", return_value="test-block"
+        ):
+            with self.assertRaises(RuntimeError):
+                with rpc.finalized_snapshot():
+                    raise RuntimeError("test rollback")
+        self.assertIsNone(rpc._pinned_block_id)
+
+    def test_funding_total_overflow(self):
+        shield = Shield(network="testnet")
+        with self.assertRaises(ValidationError):
+            shield.build_funding_call(
+                case_id=bytes(32),
+                worker="worker.testnet",
+                worker_reward_yocto=(1 << 128) - 1,
+                rescue_cap_yocto=1,
+                threshold=1,
+                final_deadline_ns=1800000000000000000,
+                job_storage_cost_yocto=1,
+            )
 
 if __name__ == "__main__":
     unittest.main()

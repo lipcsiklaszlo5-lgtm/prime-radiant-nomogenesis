@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import base64
+from contextlib import contextmanager
 import json
 import urllib.error
 import urllib.request
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from decimal import Decimal
 from typing import Any, Sequence
 
@@ -44,6 +45,13 @@ DEFAULT_HISTORICAL_CASE_ID: str = (
     "b8c0d0ed9f80a399cba96c4c9ac688e548e500cb4705ecbfdbdcedd0a2b9bf12"
 )
 
+def _chain_money(value: Any, name: str) -> int:
+    try:
+        return validate_u128(value, name)
+    except ValidationError as exc:
+        raise ContractError(f"Invalid on-chain amount {name}: {exc}") from exc
+
+
 GAS_FUNDING_YOCTO: str = "200000000000000"  # 200 Tgas
 GAS_CONSENT_YOCTO: str = "50000000000000"   # 50 Tgas
 
@@ -67,6 +75,7 @@ class NearRpcClient:
 
         self.timeout_seconds = float(timeout_seconds)
         self.retries_per_endpoint = max(1, int(retries_per_endpoint))
+        self._pinned_block_id: str | None = None
 
     def rpc_call(self, method: str, params: Any) -> Any:
         """Execute a JSON-RPC 2.0 query across configured endpoints with fallback. Fails closed on malformed data."""
@@ -118,6 +127,36 @@ class NearRpcClient:
 
         raise RpcError(f"All RPC endpoints failed: {'; '.join(errors)}")
 
+
+    def finalized_block_hash(self) -> str:
+        result = self.rpc_call("block", {"finality": "final"})
+        header = result.get("header") if isinstance(result, dict) else None
+        block_hash = header.get("hash") if isinstance(header, dict) else None
+        alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+        if (
+            not isinstance(block_hash, str)
+            or not 32 <= len(block_hash) <= 64
+            or any(c not in alphabet for c in block_hash)
+        ):
+            raise RpcError("Malformed finalized block hash")
+        return block_hash
+
+    @contextmanager
+    def finalized_snapshot(self):
+        if self._pinned_block_id is not None:
+            raise RpcError("Nested snapshot is unsupported")
+        block_hash = self.finalized_block_hash()
+        self._pinned_block_id = block_hash
+        try:
+            yield block_hash
+        finally:
+            self._pinned_block_id = None
+
+    def _block_reference(self, finality: str) -> dict[str, Any]:
+        if self._pinned_block_id is not None:
+            return {"block_id": self._pinned_block_id}
+        return {"finality": finality}
+
     def get_status(self) -> dict[str, Any]:
         """Query node status and return status information containing chain_id."""
         result = self.rpc_call("status", {})
@@ -142,8 +181,8 @@ class NearRpcClient:
             "account_id": contract_id,
             "method_name": method_name,
             "args_base64": args_base64,
-            "finality": finality,
         }
+        params.update(self._block_reference(finality))
 
         result = self.rpc_call("query", params)
 
@@ -184,8 +223,8 @@ class NearRpcClient:
         params = {
             "request_type": "view_code",
             "account_id": contract_id,
-            "finality": finality,
         }
+        params.update(self._block_reference(finality))
         result = self.rpc_call("query", params)
         if not isinstance(result, dict) or "hash" not in result:
             raise RpcError(f"view_code failed for '{contract_id}': {result}")
@@ -288,8 +327,8 @@ class RescueJobView:
             case_id=bytes(d["case_id"]),
             buyer=str(d["buyer"]),
             worker=str(d["worker"]),
-            worker_reward=int(d["worker_reward"]),
-            held_worker_reward=int(d["held_worker_reward"]),
+            worker_reward=_chain_money(d["worker_reward"], "worker_reward"),
+            held_worker_reward=_chain_money(d["held_worker_reward"], "held_worker_reward"),
             result_profile=str(d["result_profile"]),
             result_commitment=bytes(d["result_commitment"]),
             threshold=int(d["threshold"]) if d.get("threshold") is not None else None,
@@ -324,11 +363,11 @@ class RescueMandateView:
     def from_dict(cls, d: dict[str, Any]) -> RescueMandateView:
         return cls(
             job_id=int(d["job_id"]),
-            original_cap=int(d["original_cap"]),
-            held_principal=int(d["held_principal"]),
+            original_cap=_chain_money(d["original_cap"], "original_cap"),
+            held_principal=_chain_money(d["held_principal"], "held_principal"),
             phase=str(d["phase"]),
             locked_bundle_id=int(d["locked_bundle_id"]) if d.get("locked_bundle_id") is not None else None,
-            locked_allocation=int(d["locked_allocation"]) if d.get("locked_allocation") is not None else None,
+            locked_allocation=_chain_money(d["locked_allocation"], "locked_allocation") if d.get("locked_allocation") is not None else None,
             release_reason=str(d["release_reason"]) if d.get("release_reason") is not None else None,
             raw=d,
         )
@@ -367,9 +406,9 @@ class RescueOfferView:
             component_index=int(d["component_index"]),
             provider=str(d["provider"]),
             slot_id=str(d["slot_id"]),
-            fee=int(d["fee"]),
-            bond_capacity=int(d["bond_capacity"]),
-            held_bond=int(d["held_bond"]),
+            fee=_chain_money(d["fee"], "fee"),
+            bond_capacity=_chain_money(d["bond_capacity"], "bond_capacity"),
+            held_bond=_chain_money(d["held_bond"], "held_bond"),
             phase=str(d["phase"]),
             locked_bundle_id=int(d["locked_bundle_id"]) if d.get("locked_bundle_id") is not None else None,
             release_reason=str(d["release_reason"]) if d.get("release_reason") is not None else None,
@@ -399,11 +438,11 @@ class M3StorageQuote:
         return cls(
             quote_version=int(d["quote_version"]),
             case_storage_bytes=int(d["case_storage_bytes"]),
-            case_storage_cost=int(d["case_storage_cost"]),
+            case_storage_cost=_chain_money(d["case_storage_cost"], "case_storage_cost"),
             job_storage_bytes=int(d["job_storage_bytes"]),
-            job_storage_cost=int(d["job_storage_cost"]),
+            job_storage_cost=_chain_money(d["job_storage_cost"], "job_storage_cost"),
             offer_storage_bytes=int(d["offer_storage_bytes"]),
-            offer_storage_cost=int(d["offer_storage_cost"]),
+            offer_storage_cost=_chain_money(d["offer_storage_cost"], "offer_storage_cost"),
             raw=d,
         )
 
@@ -424,8 +463,8 @@ class M3Totals:
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> M3Totals:
         return cls(
-            rescue_escrow=int(d["rescue_escrow"]),
-            storage_reserves=int(d["storage_reserves"]),
+            rescue_escrow=_chain_money(d["rescue_escrow"], "rescue_escrow"),
+            storage_reserves=_chain_money(d["storage_reserves"], "storage_reserves"),
             next_rescue_job_id=int(d["next_rescue_job_id"]),
             raw=d,
         )
@@ -463,8 +502,8 @@ class ConsentView:
             buyer=str(d["buyer"]),
             nonce=int(d["nonce"]),
             plan_hash=bytes(d["plan_hash"]),
-            max_payment=int(d["max_payment"]),
-            exact_payment=int(d["exact_payment"]),
+            max_payment=_chain_money(d["max_payment"], "max_payment"),
+            exact_payment=_chain_money(d["exact_payment"], "exact_payment"),
             expires_at=int(d["expires_at"]),
             raw=d,
         )
@@ -495,7 +534,7 @@ class CoalitionPlanView:
             plan_hash=bytes(d["plan_hash"]),
             selected_job_ids=[int(j) for j in d.get("selected_job_ids", [])],
             offer_ids=[int(o) for o in d.get("offer_ids", [])],
-            total_price=int(d["total_price"]),
+            total_price=_chain_money(d["total_price"], "total_price"),
             payments=list(d.get("payments", [])),
             raw=d,
         )
@@ -572,6 +611,7 @@ class AuditReport:
     rescue_escrow_verified: bool
     passed: bool
     errors: list[str] = field(default_factory=list)
+    snapshot_block_hash: str | None = None
 
     def __str__(self) -> str:
         verdict = "PASSED (VERIFIED ON-CHAIN)" if self.passed else "FAILED"
@@ -586,6 +626,7 @@ class AuditReport:
             f"  NOMOGENESIS SHIELD AUDIT REPORT — {verdict}",
             "================================================================================",
             f"Network:                   {self.network} [{'VERIFIED' if self.network_verified else 'FAILED'}]",
+            f"Snapshot Block:            {self.snapshot_block_hash or 'N/A'}",
             f"Contract ID:               {self.contract_id}",
             f"Deployed Code Hash:        {self.code_hash} [{'MATCH' if self.code_hash_verified else 'MISMATCH'}]",
             f"Case ID:                   {self.case_id}",
@@ -759,18 +800,21 @@ class Shield:
             "get_claimable",
             {"account": acc},
         )
-        return int(res or 0)
+        return _chain_money(res, "contract_balance")
 
     def claimable_total(self) -> int:
         """Query aggregate claimable yoctoNEAR across all contract accounts."""
         res = self.rpc.view_function(self.contract_id, "claimable_total")
-        return int(res or 0)
+        return _chain_money(res, "contract_balance")
 
     def payout_totals(self) -> PayoutTotals:
         """Query aggregate claimable and pending withdrawal totals."""
         res = self.rpc.view_function(self.contract_id, "payout_totals")
-        if isinstance(res, (list, tuple)) and len(res) >= 2:
-            return PayoutTotals(claimable_yocto=int(res[0]), pending_yocto=int(res[1]))
+        if isinstance(res, (list, tuple)) and len(res) == 2:
+            return PayoutTotals(
+                claimable_yocto=_chain_money(res[0], "claimable"),
+                pending_yocto=_chain_money(res[1], "pending"),
+            )
         raise ContractError(f"Unexpected payout_totals shape: {res}")
 
     def m3_totals(self) -> M3Totals:
@@ -781,7 +825,7 @@ class Shield:
     def rescue_escrow_total(self) -> int:
         """Query active rescue escrow in yoctoNEAR."""
         res = self.rpc.view_function(self.contract_id, "rescue_escrow_total")
-        return int(res or 0)
+        return _chain_money(res, "contract_balance")
 
     def m3_storage_quote(self) -> M3StorageQuote:
         """Fetch authoritative storage cost quote for cases, jobs, and offers."""
@@ -791,7 +835,7 @@ class Shield:
     def quote_r7_v2_consent_storage(self) -> int:
         """Fetch authoritative storage deposit quote for registering a buyer consent."""
         res = self.rpc.view_function(self.contract_id, "quote_r7_v2_consent_storage")
-        return int(res)
+        return _chain_money(res, "consent_storage_quote")
 
     def get_r7_v2_consent(self, job_id: int) -> ConsentView | None:
         """Fetch registered buyer consent for a job."""
@@ -871,7 +915,11 @@ class Shield:
             storage_cost = validate_u128(job_storage_cost_yocto, "job_storage_cost_yocto")
 
         commitment = minimum_commitment(cid, thresh)
-        total_deposit = w_reward + r_cap + storage_cost
+        total_deposit = validate_u128(
+            w_reward + r_cap + storage_cost,
+            "total_attached_deposit",
+            allow_zero=False,
+        )
 
         input_payload = {
             "case_id": list(cid),
@@ -966,6 +1014,27 @@ class Shield:
         expected_pending_yocto: int | str | None = None,
         expected_escrow_yocto: int | str | None = None,
     ) -> AuditReport:
+        """Audit one consistent finalized blockchain snapshot."""
+        with self.rpc.finalized_snapshot() as block_hash:
+            report = self._audit_case_at_block(
+                case_id=case_id,
+                expected_code_hash=expected_code_hash,
+                expected_result=expected_result,
+                expected_claimable_yocto=expected_claimable_yocto,
+                expected_pending_yocto=expected_pending_yocto,
+                expected_escrow_yocto=expected_escrow_yocto,
+            )
+            return replace(report, snapshot_block_hash=block_hash)
+
+    def _audit_case_at_block(
+        self,
+        case_id: str | bytes | Sequence[int],
+        expected_code_hash: str | None = None,
+        expected_result: int | str | None = None,
+        expected_claimable_yocto: int | str | None = None,
+        expected_pending_yocto: int | str | None = None,
+        expected_escrow_yocto: int | str | None = None,
+    ) -> AuditReport:
         """
         Perform an independent, read-only on-chain audit of a completed Nomogenesis rescue case.
 
@@ -991,6 +1060,40 @@ class Shield:
             network_verified = True
         except Exception as exc:
             errors.append(f"Network verification failed: {exc}")
+
+        # Never query contract state after a chain identity mismatch.
+        if not network_verified:
+            return AuditReport(
+                network=self.network,
+                network_verified=False,
+                contract_id=self.contract_id,
+                code_hash="",
+                code_hash_verified=False,
+                case_id=cid_hex,
+                case_phase="Unknown",
+                case_phase_verified=False,
+                merkle_proofs_verified=False,
+                component_roots=[],
+                reconstructed_result=0,
+                expected_result=(
+                    validate_u128(expected_result, "expected_result")
+                    if expected_result is not None else None
+                ),
+                result_verified=False,
+                jobs_completed=False,
+                job_statuses={},
+                global_claimable_yocto=0,
+                global_pending_yocto=0,
+                global_rescue_escrow_yocto=0,
+                claimable_total_units=0.0,
+                pending_total_units=0.0,
+                rescue_escrow_units=0.0,
+                financial_expectations_verified=False,
+                payout_totals_verified=False,
+                rescue_escrow_verified=False,
+                passed=False,
+                errors=errors,
+            )
 
         # 2. Deployed code hash verification
         target_code_hash = expected_code_hash or self.expected_code_hash

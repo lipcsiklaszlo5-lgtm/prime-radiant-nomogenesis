@@ -130,52 +130,59 @@ def validate_u64(value: Any, field_name: str = "value", allow_zero: bool = True)
     return num
 
 
+
 def unit_to_yocto(amount_in_units: Any, field_name: str = "amount") -> int:
-    """
-    Convert an amount in UNIT (1 UNIT = 10^21 yoctoNEAR) to exact integer yoctoNEAR.
-    Rejects booleans, floats, non-finite Decimals, fractional yoctoNEAR, and out-of-bound values.
-    """
-    if isinstance(amount_in_units, bool):
-        raise ValidationError(f"{field_name} cannot be a boolean")
-    if isinstance(amount_in_units, float):
-        raise ValidationError(
-            f"{field_name} cannot be a float (ambiguous precision). Use int, Decimal, or canonical decimal string."
-        )
+    """Exact UNIT to yocto conversion without Decimal context rounding."""
+    if isinstance(amount_in_units, (bool, float)):
+        raise ValidationError(f"{field_name}: boolean/float forbidden")
 
     if isinstance(amount_in_units, Decimal):
         d = amount_in_units
-    elif isinstance(amount_in_units, int):
-        d = Decimal(amount_in_units)
-    elif isinstance(amount_in_units, str):
+    elif isinstance(amount_in_units, (str, int)):
         try:
-            d = Decimal(amount_in_units)
+            d = Decimal(str(amount_in_units))
         except Exception as exc:
-            raise ValidationError(f"Invalid decimal string for {field_name}: '{amount_in_units}'") from exc
+            raise ValidationError(f"{field_name}: invalid decimal") from exc
     else:
-        raise ValidationError(
-            f"{field_name} must be int, Decimal, or decimal string, got {type(amount_in_units).__name__}"
-        )
+        raise ValidationError(f"{field_name}: unsupported type")
 
-    if not d.is_finite():
-        raise ValidationError(f"{field_name} cannot be NaN or Infinity")
-    if d < 0:
-        raise ValidationError(f"{field_name} cannot be negative: {d}")
+    if not d.is_finite() or d < 0:
+        raise ValidationError(f"{field_name}: invalid amount")
+    if d.is_zero():
+        return 0
 
-    yocto_dec = d * Decimal(UNIT)
-    if yocto_dec != yocto_dec.to_integral_value():
-        raise ValidationError(
-            f"{field_name} specifies fractional yoctoNEAR ({d} UNIT = {yocto_dec} yoctoNEAR); sub-yocto precision is invalid"
-        )
+    sign, digits, exponent = d.as_tuple()
+    if sign or len(digits) > 256:
+        raise ValidationError(f"{field_name}: invalid representation")
 
-    yocto = int(yocto_dec)
-    if yocto > U128_MAX:
-        raise ValidationError(f"{field_name} in yoctoNEAR exceeds U128 bounds: {yocto}")
-    return yocto
+    coefficient = int("".join(map(str, digits)))
+    shift = exponent + 21
+
+    if shift >= 0:
+        if len(digits) + shift > 39:
+            raise ValidationError(f"{field_name}: U128 overflow")
+        result = coefficient * 10 ** shift
+    else:
+        places = -shift
+        if places > len(digits):
+            raise ValidationError(
+                f"{field_name}: fractional yoctoNEAR"
+            )
+        divisor = 10 ** places
+        result, remainder = divmod(coefficient, divisor)
+        if remainder:
+            raise ValidationError(
+                f"{field_name}: fractional yoctoNEAR"
+            )
+
+    return validate_u128(result, field_name)
 
 
 def yocto_to_unit_decimal(yocto: int) -> Decimal:
-    """Convert integer yoctoNEAR to exact Decimal in UNIT."""
-    return Decimal(yocto) / Decimal(UNIT)
+    """Exact conversion, including all 21 fractional UNIT digits."""
+    value = validate_u128(yocto, "yocto")
+    whole, fraction = divmod(value, UNIT)
+    return Decimal(f"{whole}.{fraction:021d}")
 
 
 def to_bytes32(data: str | bytes | Sequence[int], field_name: str = "hash") -> bytes:

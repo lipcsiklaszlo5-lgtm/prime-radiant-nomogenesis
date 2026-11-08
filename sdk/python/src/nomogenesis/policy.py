@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .exceptions import PolicyError, ValidationError
-from .proof import UNIT, unit_to_yocto, validate_u128
+from .proof import UNIT, unit_to_yocto, yocto_to_unit_decimal, validate_u128
 
 BUYER_DECISION_DOMAIN: str = "NOMOGENESIS/R7-08B/BUYER-AGENT/V1"
 
@@ -28,22 +28,26 @@ class PolicyVerdict:
     @property
     def capacity_units_exact(self) -> Decimal:
         """Exact authorized capacity in UNIT."""
-        return Decimal(self.capacity_yocto) / Decimal(UNIT)
+        return yocto_to_unit_decimal(self.capacity_yocto)
 
     @property
     def incremental_value_units_exact(self) -> Decimal:
         """Exact incremental value in UNIT."""
-        return Decimal(self.incremental_value_yocto) / Decimal(UNIT)
+        return yocto_to_unit_decimal(self.incremental_value_yocto)
 
     @property
     def payment_units_exact(self) -> Decimal:
         """Exact proposed payment in UNIT."""
-        return Decimal(self.payment_yocto) / Decimal(UNIT)
+        return yocto_to_unit_decimal(self.payment_yocto)
 
     @property
     def surplus_units_exact(self) -> Decimal:
         """Exact net consumer surplus in UNIT."""
-        return Decimal(self.surplus_yocto) / Decimal(UNIT)
+        return (
+            yocto_to_unit_decimal(self.surplus_yocto)
+            if self.surplus_yocto >= 0
+            else -yocto_to_unit_decimal(-self.surplus_yocto)
+        )
 
     @property
     def capacity_units(self) -> float:
@@ -125,8 +129,8 @@ class BuyerPolicy:
 
         object.__setattr__(self, "actor_id", str(actor_id).strip())
         object.__setattr__(self, "job_id", int(job_id))
-        object.__setattr__(self, "cap", Decimal(cap_yocto) / Decimal(UNIT))
-        object.__setattr__(self, "value", Decimal(value_yocto) / Decimal(UNIT))
+        object.__setattr__(self, "cap", yocto_to_unit_decimal(cap_yocto))
+        object.__setattr__(self, "value", yocto_to_unit_decimal(value_yocto))
         object.__setattr__(self, "outside_option", Decimal(outside_yocto) / Decimal(UNIT))
         object.__setattr__(self, "active", bool(active))
         object.__setattr__(self, "role", str(role))
@@ -248,7 +252,7 @@ class BuyerPolicy:
 
         if payment_yocto > cap_yocto:
             pay_str = f"{Decimal(payment_yocto) / Decimal(UNIT):.4f}"
-            cap_str = f"{Decimal(cap_yocto) / Decimal(UNIT):.4f}"
+            cap_str = f"{yocto_to_unit_decimal(cap_yocto):.4f}"
             return PolicyVerdict(
                 approved=False,
                 reason=f"Payment ({pay_str} UNIT) exceeds buyer authorized budget cap ({cap_str} UNIT)",
