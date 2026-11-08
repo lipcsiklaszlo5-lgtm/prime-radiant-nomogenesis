@@ -93,6 +93,10 @@ LOG="$ROOT/target/r7-11-evidence/execution.log"
 
 export NOMOGENESIS_V2_WASM="$WASM"
 
+rm -f \
+  "$ROOT/target/r7-11-evidence/evidence.json" \
+  "$ROOT/target/r7-11-evidence/checksums.sha256"
+
 node sandbox/r7_10_four_pillars.cjs \
   2>&1 | tee "$LOG"
 
@@ -129,6 +133,21 @@ PY
 
 sha256sum "$LOG" \
   > "$ROOT/target/r7-11-evidence/execution.sha256"
+
+echo "=== STRUCTURED EVIDENCE ==="
+
+python3 -B scripts/m3/r7_11_capture.py \
+  --log "$LOG" \
+  --wasm "$WASM" \
+  --output "$ROOT/target/r7-11-evidence/evidence.json"
+
+sha256sum \
+  "$LOG" \
+  "$ROOT/target/r7-11-evidence/evidence.json" \
+  > "$ROOT/target/r7-11-evidence/checksums.sha256"
+
+sha256sum -c \
+  "$ROOT/target/r7-11-evidence/checksums.sha256"
 
 echo "EVIDENCE GENERATED: PASS"
 echo "R7_11_CLEAN_CHECKOUT: PASS"
