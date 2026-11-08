@@ -1,0 +1,157 @@
+{
+  "schema": "nomogenesis.r7-13.public-checkpoint.v1",
+  "created_utc": "2026-11-08T23:04:26.536761+00:00",
+  "checkpoint_status": "PARTIAL_LIFECYCLE",
+  "source_commit": "13f2adb98510daf3c69c175a0050f288b9b8a9b9",
+  "network": "near-testnet",
+  "contract": "nmg-r7v2-0b9a0eff20.testnet",
+  "run": "03",
+  "case_id_hex": "f884628615029609fdd48c43ddcc3c9128c1595c8555545cd9c0b0a302ba68a5",
+  "creator": "nmg-r713-8d99c17cced1.testnet",
+  "run_deadlines_utc": {
+    "dependency": "2026-11-08T22:59:23+00:00",
+    "bid_close": "2026-11-08T23:01:23+00:00",
+    "award_close": "2026-11-08T23:06:23+00:00",
+    "recovery": "2026-11-08T23:11:23+00:00",
+    "worker_final": "2026-11-08T23:19:23+00:00"
+  },
+  "verified_local_journal": {
+    "transaction_count": 8,
+    "confirmed_journal_entries": 8,
+    "all_hashes_unique": true,
+    "transactions": [
+      {
+        "role": "bootstrap",
+        "method": "create_rescue_case",
+        "signer": "nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "5wKWLdi5YSjHpGuucYwhaupmg1BSw5JC39JaUdyB9Kgn",
+        "journal_status": "confirmed",
+        "args_sha256": "ff81bd44711c40486c8e1b7648f093601492cf7125da3226ae4c5d74eac1e47e"
+      },
+      {
+        "role": "buyer-1",
+        "method": "create_funded_rescue_job",
+        "signer": "buyer-1.nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "98qM1LongawoLnpsdeyYa4dREGGsSqHPLH92M48HdTiH",
+        "journal_status": "confirmed",
+        "args_sha256": "55fcdb4fa26527114d3734d16d7c4caf4386ef4220b05cecbe747c50e9b13928"
+      },
+      {
+        "role": "buyer-2",
+        "method": "create_funded_rescue_job",
+        "signer": "buyer-2.nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "FKbtzw3RTcNEVpfAwtGHx9g81oCbeULZ7gjAGLNubr1k",
+        "journal_status": "confirmed",
+        "args_sha256": "2c7e92ab900818ffa7dca37e33e5a03f6d4ea332247b0d8d23410cd7ad230f8e"
+      },
+      {
+        "role": "provider-alpha",
+        "method": "post_rescue_offer",
+        "signer": "provider-alpha.nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "4odvWWjWwBm9UpwS8MWkMkNYhvStj43JSwkrYyb6K1NZ",
+        "journal_status": "confirmed",
+        "args_sha256": "0ac406367b5f1655653f9b572ec4481f2659f23bd891a7eb6a1d4656243ffb9c"
+      },
+      {
+        "role": "provider-beta",
+        "method": "post_rescue_offer",
+        "signer": "provider-beta.nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "7MKzTUf9pt6MJxoFysuJPP52KeYY7Twts5mFxJX1neBB",
+        "journal_status": "confirmed",
+        "args_sha256": "c89a4ff01fae8a63118a9f2c2d75e30552af4de047f1eb87c8764d34e70a9a74"
+      },
+      {
+        "role": "provider-gamma",
+        "method": "post_rescue_offer",
+        "signer": "provider-gamma.nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "6EZTwdNdgYBg9pG2RFG5Ak5FS3iAgSrDsZyheBrG1Ca2",
+        "journal_status": "confirmed",
+        "args_sha256": "d718e59ea476eebb7b9531674c606e7d258d2bc783ffdd05c0a0d0fb96800a62"
+      },
+      {
+        "role": "worker0",
+        "method": "accept_rescue_job",
+        "signer": "worker0.nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "ABYCBcvU5eEsu9RDpBcJhPfNnqmrZzH5fiPgft4ntHm1",
+        "journal_status": "confirmed",
+        "args_sha256": "6f32f96ba9cbf1a6847c688d59e243020ae67580a84afdbfc60d764820875151"
+      },
+      {
+        "role": "worker1",
+        "method": "accept_rescue_job",
+        "signer": "worker1.nmg-r713-8d99c17cced1.testnet",
+        "receiver": "nmg-r7v2-0b9a0eff20.testnet",
+        "tx_hash": "GWqbsfEf2Z9QpiowigBbKVNPQDgvuEDJ9cxaGtosmfW7",
+        "journal_status": "confirmed",
+        "args_sha256": "ac7c7f5028b731bba1d4a3c5e95f29dc25f07d07960ab309888c168106ff0794"
+      }
+    ]
+  },
+  "last_read_only_audit": {
+    "source": "public Testnet read-only RPC audit",
+    "rpc": "https://near-testnet.drpc.org",
+    "snapshot_note": "Observed in prior terminal output; not a fresh on-chain query by this checkpoint",
+    "case_phase": "Open",
+    "job_ids": [
+      2,
+      3
+    ],
+    "offer_ids": [
+      3,
+      4,
+      5
+    ],
+    "job_phases": [
+      "Accepted",
+      "Accepted"
+    ],
+    "held_worker_rewards_unit": 2,
+    "held_buyer_mandates_unit": 14,
+    "held_provider_bonds_unit": 36,
+    "total_held_unit": 52,
+    "global_escrow_delta_unit": 52,
+    "global_claimable_delta_unit": 0,
+    "funds_match_global_escrow_delta": true
+  },
+  "failure": {
+    "category": "RPC_RATE_LIMIT",
+    "status": 429,
+    "provider": "FastNear",
+    "impact": "Agents and coordinator stopped polling",
+    "atomic_award_confirmed": false,
+    "settlement_confirmed": false,
+    "worker_completion_confirmed": false
+  },
+  "private_evidence_sha256": {
+    "run_json": "632d07eb5faa08a1fe223e7cd3757812d4735a2bfd7af4347fd27d371ca3b650",
+    "execution_log": "d2dbddaeaf69b7cd01dfa299cda0f3beb3cae6316fa2e3bae7658fa924ddf018",
+    "transaction_journals": {
+      "bootstrap__create_rescue_case.json": "065a76a8ce25a0a9bce91dad8b3d558de7e9fbfcea3f44066173a3a4d6f908c3",
+      "buyer-1__create_funded_rescue_job.json": "bdf8f59a125ae4459b7b649b8268811fd096b8f5968cbc38d408aebb3e93d3cc",
+      "buyer-2__create_funded_rescue_job.json": "75d4c466f8264e080270a33061862c914a6c574e169f47c2d49710b575e0b938",
+      "provider-alpha__post_rescue_offer.json": "d391622987381b325c92fc582faa61ff903ed341cbabe3d19d3224be636503dc",
+      "provider-beta__post_rescue_offer.json": "512e3cbd246c124bc507b84a5278d8431393c33c3c1fcf882b20db6f0bb6be61",
+      "provider-gamma__post_rescue_offer.json": "b561bf9ec28a852f2eba1e66b015d7fdde2cf01587180f286371baad449b87e8",
+      "worker0__accept_rescue_job.json": "6f1415c6037f4f8fafbe1de4c9c9eb3982b8174e1cfa8aede029d13578cbc864",
+      "worker1__accept_rescue_job.json": "156b8e22e2d71673e5e0b7f6627831faf62d6fac5df0b661d2fb4b4e1d34d3f4"
+    }
+  },
+  "limitations": [
+    "Agent processes share one EC2 host",
+    "Controlled synthetic process outage",
+    "Not a complete rescue lifecycle",
+    "Outstanding escrow needs reconciliation"
+  ],
+  "security": {
+    "private_keys_included": false,
+    "raw_private_journals_included": false,
+    "raw_runtime_log_included": false
+  }
+}
