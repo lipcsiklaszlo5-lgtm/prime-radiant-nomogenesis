@@ -38,6 +38,7 @@ function createRpcBroker({
   maxQueued = 180,
   maxReadQueueWaitMs = 5000,
   maxSendQueueWaitMs = 7000,
+  maxReadTotalMs = 12000,
   retryPauseMs = 350,
   fetchImpl = globalThis.fetch
 }) {
@@ -56,6 +57,7 @@ function createRpcBroker({
   assert(Number.isInteger(maxQueued) && maxQueued > 0);
   assert(Number.isInteger(maxReadQueueWaitMs) && maxReadQueueWaitMs > 0);
   assert(Number.isInteger(maxSendQueueWaitMs) && maxSendQueueWaitMs > 0);
+  assert(Number.isInteger(maxReadTotalMs) && maxReadTotalMs > 0);
   assert(Number.isInteger(retryPauseMs) && retryPauseMs >= 0);
   assert.equal(typeof fetchImpl, 'function');
 
@@ -76,6 +78,9 @@ function createRpcBroker({
 
     try {
       while (writes.length || reads.length) {
+        await sleep(Math.max(0, nextSlot - Date.now()));
+
+        // Choose priority AFTER the spacing delay.
         // Writes cannot interrupt an active read,
         // but precede all queued reads.
         const job = writes.length
@@ -85,8 +90,6 @@ function createRpcBroker({
           if (Date.now() - job.entered > job.limit) {
             throw Error('RPC queue deadline expired');
           }
-
-          await sleep(Math.max(0, nextSlot - Date.now()));
 
           // Expired requests never reach an upstream.
           if (Date.now() - job.entered > job.limit) {
@@ -130,7 +133,9 @@ function createRpcBroker({
     });
   }
 
-  async function upstream(url, message) {
+  async function upstream(
+    url, message, requestTimeoutMs = timeoutMs
+  ) {
     let response;
 
     try {
@@ -140,7 +145,9 @@ function createRpcBroker({
           'content-type': 'application/json'
         },
         body: JSON.stringify(message),
-        signal: AbortSignal.timeout(timeoutMs)
+        signal: AbortSignal.timeout(
+          Math.max(1, requestTimeoutMs)
+        )
       });
 
     } catch (error) {
@@ -225,13 +232,28 @@ function createRpcBroker({
     }
 
     let lastError;
+    const deadline = Date.now() + maxReadTotalMs;
 
     for (const endpoint of upstreams) {
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          return await scheduled(() =>
-            upstream(endpoint, message)
-          );
+          if (Date.now() >= deadline) {
+            throw Error('RPC read total deadline expired');
+          }
+
+          return await scheduled(() => {
+            const remaining = deadline - Date.now();
+
+            if (remaining <= 0) {
+              throw Error('RPC read total deadline expired');
+            }
+
+            return upstream(
+              endpoint,
+              message,
+              Math.min(timeoutMs, remaining)
+            );
+          });
 
         } catch (error) {
           lastError = error;
