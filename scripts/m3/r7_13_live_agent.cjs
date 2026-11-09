@@ -59,7 +59,11 @@ const url = process.argv[3];
 const rpcUrl = process.argv[4];
 
 assert.match(url, /^http:\/\/127\.0\.0\.1:\d+$/);
-assert.equal(rpcUrl, 'https://rpc.testnet.fastnear.com');
+assert.equal(
+  rpcUrl,
+  process.env.NMG_R7_13H_RPC_URL ||
+    'https://rpc.testnet.fastnear.com'
+);
 assert(process.send);
 
 

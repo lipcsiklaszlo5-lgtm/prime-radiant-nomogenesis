@@ -55,7 +55,9 @@ assert(
   typeof process.env.NMG_R7_13_RUN_DIR === 'string'
 );
 assert.equal(
-  rpcUrl, 'https://rpc.testnet.fastnear.com'
+  rpcUrl,
+  process.env.NMG_R7_13H_RPC_URL ||
+    'https://rpc.testnet.fastnear.com'
 );
 assert.match(
   eventUrl, /^http:\/\/127\.0\.0\.1:\d+$/

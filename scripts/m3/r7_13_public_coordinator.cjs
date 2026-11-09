@@ -48,7 +48,8 @@ const RUNROOT = path.join(
   KEYROOT, 'live-v2-once-03'
 );
 
-const RPC = 'https://rpc.testnet.fastnear.com';
+const RPC = process.env.NMG_R7_13H_RPC_URL ||
+  'https://rpc.testnet.fastnear.com';
 const CONTRACT = 'nmg-r7v2-0b9a0eff20.testnet';
 const PARENT = 'nmg-r713-8d99c17cced1.testnet';
 
@@ -74,6 +75,13 @@ assert(
   ['--dry-run', '--live'].includes(mode),
   'Use --dry-run or --live'
 );
+
+// Broker integration is dry-run-only.
+if (process.env.NMG_R7_13H_RPC_URL !== undefined) {
+  assert.equal(mode, '--dry-run',
+    'Broker wiring is not approved for live Testnet execution');
+  assert.match(RPC, /^http:\/\/127\.0\.0\.1:\d+\/$/);
+}
 
 if (mode === '--live') {
   assert.equal(
@@ -759,10 +767,13 @@ async function main() {
 
   const actors = manifestActors();
 
-  assert(
-    !fs.existsSync(RUNROOT),
-    'Prior live run exists; inspect journal; never restart automatically'
-  );
+  // Historical journals still block live execution.
+  if (mode === '--live') {
+    assert(
+      !fs.existsSync(RUNROOT),
+      'Prior live run exists; inspect journal; never restart automatically'
+    );
+  }
 
   const baseline = await verifyContract();
 
