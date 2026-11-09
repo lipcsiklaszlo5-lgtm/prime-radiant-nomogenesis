@@ -61,7 +61,7 @@ const RUN_ID =
   'live-v2-once-03';
 
 assert(
-  ['live-v2-once-03', 'live-v2-once-04', 'live-v2-once-05', 'live-v2-once-06', 'live-v2-once-07'].includes(RUN_ID),
+  ['live-v2-once-03', 'live-v2-once-04', 'live-v2-once-05', 'live-v2-once-06', 'live-v2-once-07', 'live-v2-once-08'].includes(RUN_ID),
   'Unapproved run ID'
 );
 
@@ -114,7 +114,9 @@ if (mode === '--live') {
 
   assert.equal(
     process.env.NMG_R7_13H_RUN_ID,
-    'live-v2-once-07',
+    RUN_ID === 'live-v2-once-08'
+      ? 'live-v2-once-08'
+      : 'live-v2-once-07',
     'fresh run identity required'
   );
 
@@ -136,21 +138,32 @@ if (mode === '--live') {
     'Loopback RPC mandatory'
   );
 
+  const run08 = RUN_ID === 'live-v2-once-08';
+
+  const approvalName = run08
+    ? 'NMG_R7_13V_08_LIVE_APPROVAL'
+    : 'NMG_R7_13V_07_LIVE_APPROVAL';
+
+  const approvalValue = run08
+    ? 'YES_AUTHORIZE_RUN08_17_TESTNET_TX'
+    : 'YES_AUTHORIZE_RUN07_17_TESTNET_TX';
+
   assert.equal(
-    process.env.NMG_R7_13V_07_LIVE_APPROVAL,
-    'YES_AUTHORIZE_RUN07_17_TESTNET_TX',
-    'RUN07-specific approval required'
+    process.env[approvalName],
+    approvalValue,
+    run08
+      ? 'RUN08-specific approval required'
+      : 'RUN07-specific approval required'
   );
 
-  assert(
-    fs.existsSync(
-      path.join(
-        KEYROOT,
-        'live-v2-once-07-launch-intent.json'
-      )
-    ),
-    'RUN07 guarded launcher intent required'
-  );
+  const intent = secureJson(path.join(
+    KEYROOT, RUN_ID + '-launch-intent.json'
+  ));
+
+  assert.equal(intent.run, RUN_ID);
+  assert.equal(intent.network, 'testnet');
+  assert.equal(intent.contract, CONTRACT);
+  assert.equal(intent.restart_allowed, false);
 }
 
 
