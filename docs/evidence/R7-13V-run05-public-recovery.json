@@ -1,0 +1,171 @@
+{
+  "schema": "nomogenesis.r7-13v.run05-recovery-public.v1",
+  "network": "near-testnet",
+  "source_run": "live-v2-once-05",
+  "source_run_status": "ABORTED_BEFORE_ATOMIC_AWARD",
+  "recovery_status": "PASS",
+  "contract": "nmg-r7v2-0b9a0eff20.testnet",
+  "contract_wasm_sha256": "2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e",
+  "case_id_hex": "dcde2487fb9463e1c64a86a8b1986241f5e432d302c115c676e9b324ad208da3",
+  "recovery_source_commit": "25b03eeffa0af3d8853f5aa9add7d16069894503",
+  "verified_at_utc": "2026-11-09T15:31:29.907Z",
+  "finalized_audit_block": "FMTD6t22ZpAiXAFxNhcsHRRkGnvADupYwdhRAvJ8pmC4",
+  "finalized_audit_block_timestamp_ns": "1794238267752931127",
+  "before": {
+    "escrow_yocto": "52000000000000000000000",
+    "claimable_yocto": "114000000000000000000000"
+  },
+  "source_transactions": [
+    {
+      "role": "bootstrap",
+      "method": "create_rescue_case",
+      "tx_hash": "CLtvdDuxdZ9jwcXywWTPcCDsVYiC7sBt4ybA74KpMuxH",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "role": "buyer-1",
+      "method": "create_funded_rescue_job",
+      "tx_hash": "DvUTLJZBMnZbDcLrEcx8BXo3jwBcdU27xsMx9Sk96uyN",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "role": "buyer-2",
+      "method": "create_funded_rescue_job",
+      "tx_hash": "8RnXrt9yAcSuM8eBnV5Sn5Q2TE7bXq2KJgyq3csnQV7E",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "role": "provider-alpha",
+      "method": "post_rescue_offer",
+      "tx_hash": "D6gmRwGjYQwBaRikvzqJ1eCkSmiBU27LKYKJGufugqWV",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "role": "provider-beta",
+      "method": "post_rescue_offer",
+      "tx_hash": "BYXfFYQfZ2AjVukLnSB1DWNQvM6KvyNfgegYdDStZcM4",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "role": "provider-gamma",
+      "method": "post_rescue_offer",
+      "tx_hash": "3gfrFqJN3n8fcxXav1sgNUMCj6ZoKTuA1UZ5wM2iGzjW",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "role": "worker0",
+      "method": "accept_rescue_job",
+      "tx_hash": "AV3gE8Yrsd1Mx5WxHJtrxi1YJFHe7aQ3ov219xExhfqR",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "role": "worker1",
+      "method": "accept_rescue_job",
+      "tx_hash": "3YFLnB6zg7bdjws2qgjhLrWVntVmYfNywxc9xqWkKVAd",
+      "final_execution_status": "FINAL"
+    }
+  ],
+  "recovery_transactions": [
+    {
+      "step": "release-offer-7",
+      "method": "release_open_rescue_offer",
+      "args": {
+        "offer_id": 7
+      },
+      "released_yocto": "12000000000000000000000",
+      "tx_hash": "HuKjZLW2MkN6c2xsS21naYtBN2vpRszG91EkSqnJnRPa",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "release-offer-8",
+      "method": "release_open_rescue_offer",
+      "args": {
+        "offer_id": 8
+      },
+      "released_yocto": "12000000000000000000000",
+      "tx_hash": "9orWz4gkNnogSMVZMcrps9bc13wbcbofNhhP9QJkHEiG",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "release-offer-9",
+      "method": "release_open_rescue_offer",
+      "args": {
+        "offer_id": 9
+      },
+      "released_yocto": "12000000000000000000000",
+      "tx_hash": "5H5RNsMgFK5kCZftDjiTDJFNjnXWzCxPp1PppRUAoPat",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "release-mandate-6",
+      "method": "release_expired_rescue_mandate",
+      "args": {
+        "job_id": 6
+      },
+      "released_yocto": "7000000000000000000000",
+      "tx_hash": "DSgdxYbMAQyD5jBz87L8QRvCFcRu8xXMmtUdrkYnexjS",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "release-mandate-7",
+      "method": "release_expired_rescue_mandate",
+      "args": {
+        "job_id": 7
+      },
+      "released_yocto": "7000000000000000000000",
+      "tx_hash": "t53DQAdc4sNJfZhDPYSjhpaB4Rg78FPFKkbyyEb7HCs",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "expire-job-6",
+      "method": "expire_rescue_job",
+      "args": {
+        "job_id": 6
+      },
+      "released_yocto": "1000000000000000000000",
+      "tx_hash": "13vn9wZKHFdWGUQgFvomiYsMs9RidHsEhyhhViSQMEx2",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "expire-job-7",
+      "method": "expire_rescue_job",
+      "args": {
+        "job_id": 7
+      },
+      "released_yocto": "1000000000000000000000",
+      "tx_hash": "593S8LmztY1RHTr2bhKL553Fi6Cu9sjT69aXeLnbQbu",
+      "final_execution_status": "FINAL"
+    }
+  ],
+  "after": {
+    "escrow_yocto": "0",
+    "claimable_yocto": "166000000000000000000000",
+    "storage_reserves_yocto": "250950000000000000000000"
+  },
+  "private_journal_sha256": {
+    "RUN05/run.json": "996392aff8e8743551c429ffb192fb78b929eb760885bdf955ca4f3469c64bc1",
+    "RUN05/launch-intent.json": "a94b596bdb64c40c9435dd8732d32f8eff555c2153df940ac0235c8f39530a94",
+    "RECOVERY/intent.json": "3a2be090cc0bea07065c727c1d59b862744dae89a059f456d7072a6d92882d14",
+    "RECOVERY/final-summary.json": "1d2cd8efa16896c7e458996ab81c3409d695d1384ed8e4ac2959615a9c229de2",
+    "RUN05/bootstrap__create_rescue_case.json": "44bca03399af7d2a584baec487ef134469dc583d99fc9e13e12218e2d309a6d0",
+    "RUN05/buyer-1__create_funded_rescue_job.json": "af6aa3ec13b70a99a288729d2bf442c5fd9a7d888c9522f6f8b25e1e1a4874f8",
+    "RUN05/buyer-2__create_funded_rescue_job.json": "1337ebcfb9a46a94a16b307b5220869640601557ac527281a7fff76f68e4b9c0",
+    "RUN05/provider-alpha__post_rescue_offer.json": "9a4eff71e9004764016045b9aacb7c47c29378cfd406bc7ff49caaf34290cca7",
+    "RUN05/provider-beta__post_rescue_offer.json": "3ae8bcb2cfc6f7bafc54c1b6571eb5c463b2c4f5a19c2241d6ac6fbb68d9a919",
+    "RUN05/provider-gamma__post_rescue_offer.json": "4363b757797f1562794554864ed71c78efb1bedd8f10e4cdf7803fbb0d88c8fa",
+    "RUN05/worker0__accept_rescue_job.json": "f2455bbe27eaa149eaa635a450b24fc914731bb2918d97c474fe81ca9d816091",
+    "RUN05/worker1__accept_rescue_job.json": "ccfa51e41bdd70193f024c4639e1c364fa862e0c3e66beca0c655e889d1c3fa3",
+    "RECOVERY/release-offer-7.json": "9a9ede3111f3e48dfc69f36ae21b0c2a4729e38f15dca759f1fb33d301ea91f9",
+    "RECOVERY/release-offer-8.json": "1613023a7375694a391704a8bbb4b493d69c35d41868964f5e626b83a3cb6fb3",
+    "RECOVERY/release-offer-9.json": "766bbe5aa14815d7588b95189ea75fe98a1cff3e89d3efbfc319f7c3fd4d6aee",
+    "RECOVERY/release-mandate-6.json": "c5d0170d137857052b8fd85d3b20f5f0608f216c24028c1e0db86f704ba10d6d",
+    "RECOVERY/release-mandate-7.json": "df793fa503875151219bc932a9106d13ed590bde06d0038ef83c61a33222ceb8",
+    "RECOVERY/expire-job-6.json": "a5877099a4df7bbc0649b5a2dc980d1e1c061240c493d113caab52e3363e60dc",
+    "RECOVERY/expire-job-7.json": "9fc066977b6eb620f56079436461888f79af72f38803fc576ebbdf6123f852fe"
+  },
+  "limitations": [
+    "The original RUN05 stopped before buyer consent, atomic award and settlement.",
+    "The 52 UNIT were credited internally, not withdrawn to wallets.",
+    "Private journals and signing credentials are not published."
+  ]
+}
