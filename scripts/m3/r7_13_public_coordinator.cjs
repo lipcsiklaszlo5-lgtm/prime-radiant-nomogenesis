@@ -44,9 +44,16 @@ const KEYROOT = path.join(
   os.homedir(), '.nomogenesis-r7-13'
 );
 
-const RUNROOT = path.join(
-  KEYROOT, 'live-v2-once-03'
+const RUN_ID =
+  process.env.NMG_R7_13H_RUN_ID ||
+  'live-v2-once-03';
+
+assert(
+  ['live-v2-once-03', 'live-v2-once-04'].includes(RUN_ID),
+  'Unapproved run ID'
 );
+
+const RUNROOT = path.join(KEYROOT, RUN_ID);
 
 const RPC = process.env.NMG_R7_13H_RPC_URL ||
   'https://rpc.testnet.fastnear.com';
@@ -76,11 +83,14 @@ assert(
   'Use --dry-run or --live'
 );
 
-// Broker integration is dry-run-only.
+// Both dry-run and future live execution require a
+// loopback broker whenever an RPC override is supplied.
 if (process.env.NMG_R7_13H_RPC_URL !== undefined) {
-  assert.equal(mode, '--dry-run',
-    'Broker wiring is not approved for live Testnet execution');
-  assert.match(RPC, /^http:\/\/127\.0\.0\.1:\d+\/$/);
+  assert.match(
+    RPC,
+    /^http:\/\/127\.0\.0\.1:\d+\/$/,
+    'Loopback RPC mandatory'
+  );
 }
 
 if (mode === '--live') {
@@ -88,6 +98,30 @@ if (mode === '--live') {
     process.env.NMG_R7_13_ENABLE_LIVE,
     'YES_PUBLIC_TESTNET',
     'Live execution requires explicit opt-in'
+  );
+
+  assert.equal(
+    process.env.NMG_R7_13H_RUN_ID,
+    'live-v2-once-04',
+    'fresh run identity required'
+  );
+
+  assert.equal(
+    process.env.NMG_R7_13H_LIVE_APPROVAL,
+    'YES_NEW_V2_TESTNET_RUN',
+    'explicit new-run approval required'
+  );
+
+  assert.equal(
+    process.env.NMG_R7_13H_RPC_URL,
+    RPC,
+    'shared loopback broker is mandatory'
+  );
+
+  assert.match(
+    RPC,
+    /^http:\/\/127\.0\.0\.1:\d+\/$/,
+    'Loopback RPC mandatory'
   );
 }
 
