@@ -1,4 +1,16 @@
 'use strict';
+// R7-13V/34 RUN08 READ-ONLY PLAN ENTRYPOINT
+// Exact opt-in flag only. No network or broadcast.
+if (
+  require.main === module &&
+  process.argv.includes('--run08-finality-plan')
+) {
+  require('./r7_13v_run08_launcher.cjs')
+    .main(process.argv.slice(2));
+  process.exit(0);
+}
+// END R7-13V/34
+
 
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
