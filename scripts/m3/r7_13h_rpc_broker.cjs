@@ -33,6 +33,7 @@ function transport(message) {
 
 function createRpcBroker({
   upstreams,
+  sendUpstream = null,
   minGapMs = 350,
   timeoutMs = 15000,
   maxQueued = 180,
@@ -52,6 +53,18 @@ function createRpcBroker({
     /^https:\/\//.test(url) ||
     /^http:\/\/127\.0\.0\.1:\d+$/.test(url)
   ));
+
+
+  const signedEndpoint = sendUpstream ?? upstreams[0];
+
+  assert(
+    typeof signedEndpoint === 'string' &&
+    (
+      /^https:\/\/[a-z0-9.-]+(?::\d+)?\/?$/i.test(signedEndpoint) ||
+      /^http:\/\/127\.0\.0\.1:\d+\/?$/.test(signedEndpoint)
+    ),
+    'Invalid signed transaction endpoint'
+  );
 
   assert(Number.isInteger(minGapMs) && minGapMs >= 0);
   assert(Number.isInteger(timeoutMs) && timeoutMs > 0);
@@ -284,7 +297,7 @@ function createRpcBroker({
     if (send) {
       // NEVER retry or fail over a broadcast.
       return scheduled(
-        () => upstream(upstreams[0], message),
+        () => upstream(signedEndpoint, message),
         true
       );
     }
@@ -378,7 +391,9 @@ function createRpcBroker({
         active_send: activeSend,
         queued_writes: writes.length,
         pending: inflight.size,
-        distinct_signed_payloads: sent.size
+        distinct_signed_payloads: sent.size,
+        send_channel_isolated:
+          !upstreams.includes(signedEndpoint)
       });
 
       return;
