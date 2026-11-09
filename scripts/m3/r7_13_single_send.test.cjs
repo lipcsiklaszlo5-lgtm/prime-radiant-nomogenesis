@@ -91,7 +91,7 @@ function scenario(dir, mode) {
         ['signed_tx_base64', 'wait_until']
       );
 
-      assert.equal(params.wait_until, 'NONE');
+      assert.equal(params.wait_until, 'INCLUDED');
       assert.equal(
         typeof params.signed_tx_base64,
         'string'
@@ -115,7 +115,10 @@ function scenario(dir, mode) {
       assert.equal(saved.tx, encodedHash);
 
       if (mode === 'uncertain-send') {
-        throw Error('synthetic uncertain send');
+        throw Error('INVALID_TRANSACTION synthetic rejected send');
+      }
+      if (mode === 'lost-ack') {
+        throw Error('transport timeout after inclusion');
       }
 
       return {final_execution_status: 'NONE'};
@@ -128,7 +131,7 @@ function scenario(dir, mode) {
     assert.deepEqual(params, {
       tx_hash: encodedHash,
       sender_account_id: 'buyer.testnet',
-      wait_until: 'FINAL'
+      wait_until: 'NONE'
     });
 
     if (mode === 'delayed-final' && reads === 1) {
@@ -219,7 +222,7 @@ test(
 );
 
 test(
-  'uncertain send preserves exact hash and forbids resubmission',
+  'invalid submission is journaled and cannot be resubmitted',
   async () => {
     const dir = directory();
 
@@ -229,7 +232,7 @@ test(
 
       await assert.rejects(
         () => callSignedOnce(cfg),
-        /synthetic uncertain send/
+        /INVALID_TRANSACTION synthetic rejected send/
       );
 
       const saved = readStep(
@@ -237,7 +240,7 @@ test(
       );
 
       assert.equal(
-        saved.state, 'signed_not_confirmed'
+        saved.state, 'rejected'
       );
       assert.equal(saved.tx, setup.encodedHash);
 
@@ -294,6 +297,19 @@ test(
   }
 );
 
+test('lost acknowledgement reconciles the signed hash without another send', async () => {
+  const dir = directory();
+  try {
+    const setup = scenario(dir, 'lost-ack');
+    const result = await callSignedOnce(options(dir, setup));
+    assert.equal(result.tx, setup.encodedHash);
+    assert.deepEqual(setup.counts(), {signatures: 1, sends: 1, reads: 1, legacyCalls: 0});
+    assert.equal(readStep(dir, 'buyer-1', 'fund').state, 'confirmed');
+  } finally {
+    fs.rmSync(dir, {recursive: true, force: true});
+  }
+});
+
 test(
   'final execution failure preserves signed journal',
   async () => {
@@ -314,7 +330,7 @@ test(
       );
 
       assert.equal(
-        saved.state, 'signed_not_confirmed'
+        saved.state, 'failed'
       );
       assert.equal(saved.tx, setup.encodedHash);
 

@@ -24,6 +24,13 @@ const componentRoots = [
 );
 
 const server = http.createServer((request, response) => {
+  if (request.method === 'GET' && request.url === '/components') {
+    const payloads = [...routes.values()].map((filename, index) =>
+      Array.from(componentFromCsv(filename, index).payload));
+    response.writeHead(200, {'content-type': 'application/json'});
+    response.end(JSON.stringify({payloads}));
+    return;
+  }
   const filename = routes.get(request.url);
 
   if (request.method !== 'GET' || !filename) {

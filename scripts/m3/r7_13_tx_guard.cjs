@@ -195,7 +195,7 @@ async function loopbackRpc(method, params) {
       method,
       params
     }),
-    signal: AbortSignal.timeout(16000)
+    signal: AbortSignal.timeout(method === 'send_tx' ? 25000 : 16000)
   });
 
   let body;
@@ -336,12 +336,27 @@ async function callSignedOnce({
   // Durable BEFORE the only network submission.
   atomicReplace(filename, record);
 
-  // Exactly one send. An RPC timeout or error
-  // is uncertain: do NOT send again.
-  await exchange('send_tx', {
-    signed_tx_base64: encoded,
-    wait_until: 'NONE'
-  });
+  // NONE returns before validation. Wait for inclusion so invalid signatures,
+  // nonces and reference blocks are observable instead of looking like a
+  // successful broadcast followed by an endless finality timeout.
+  let submissionError = null;
+  try {
+    await exchange('send_tx', {
+      signed_tx_base64: encoded,
+      wait_until: 'INCLUDED'
+    });
+  } catch (error) {
+    submissionError = error;
+    record.submission_error = String(error.message).slice(0, 2000);
+    atomicReplace(filename, record);
+    if (/INVALID_TRANSACTION/.test(record.submission_error)) {
+      record.state = 'rejected';
+      atomicReplace(filename, record);
+      throw error;
+    }
+    // A transport timeout can follow a successful submission. Reconcile this
+    // exact hash below without signing or sending another transaction.
+  }
 
   // Only read RPCs may be retried.
   const deadline = Date.now() + 90000;
@@ -350,10 +365,13 @@ async function callSignedOnce({
 
   while (Date.now() < deadline) {
     try {
-      const candidate = await exchange('tx', {
+      const candidate = await exchange(method === 'withdraw'
+        ? 'EXPERIMENTAL_tx_status' : 'tx', {
         tx_hash: record.tx,
         sender_account_id: account.accountId,
-        wait_until: 'FINAL'
+        // Nonblocking reads avoid occupying the finality lane for a hash that
+        // was never included. FINAL is still required in the returned status.
+        wait_until: 'NONE'
       });
 
       if (candidate?.final_execution_status === 'FINAL') {
@@ -371,6 +389,7 @@ async function callSignedOnce({
   if (!outcome) {
     throw Error(
       'FINALITY_UNCERTAIN HASH=' + record.tx +
+      ' SUBMISSION=' + (submissionError?.message || 'accepted').slice(0, 400) +
       ' LAST_READ=' +
       (lastReadError?.message || 'no final status')
         .slice(0, 180)
@@ -387,6 +406,13 @@ async function callSignedOnce({
     contractId
   );
 
+  record.outcome = outcome;
+  if (Object.hasOwn(outcome.status || {}, 'Failure') ||
+      (outcome.receipts_outcome || []).some(row =>
+        Object.hasOwn(row.outcome?.status || {}, 'Failure'))) {
+    record.state = 'failed';
+    atomicReplace(filename, record);
+  }
   assert(
     !Object.hasOwn(outcome.status || {}, 'Failure'),
     'Final transaction execution failed'
@@ -416,9 +442,10 @@ async function callSignedOnce({
   const value = decoded ? JSON.parse(decoded) : null;
 
   record.state = 'confirmed';
+  record.outcome = outcome;
   atomicReplace(filename, record);
 
-  return {tx: record.tx, value};
+  return {tx: record.tx, value, outcome};
 }
 
 module.exports = {

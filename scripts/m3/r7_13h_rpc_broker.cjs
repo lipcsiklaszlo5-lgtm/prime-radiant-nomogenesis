@@ -43,6 +43,7 @@ function createRpcBroker({
   maxReadTotalMs = 12000,
   maxConcurrentReads = 1,
   retryPauseMs = 350,
+  expectedChainId = 'testnet',
   fetchImpl = globalThis.fetch
 }) {
   assert(
@@ -332,7 +333,7 @@ function createRpcBroker({
     if (
       message.method === 'status' &&
       parsed.result &&
-      parsed.result.chain_id !== 'testnet'
+      parsed.result.chain_id !== expectedChainId
     ) {
       throw Error('wrong network chain_id');
     }
@@ -344,20 +345,29 @@ function createRpcBroker({
 
   async function forwardFinality(message) {
     let lastError;
-    const deadline = Date.now() + 30000;
+    const deadline = Date.now() + 12000;
 
     for (const endpoint of finalityUpstreams) {
       try {
         const remaining = deadline - Date.now();
         if (remaining <= 0) break;
 
-        return await scheduleFinality(() =>
+        const reply = await scheduleFinality(() =>
           upstream(
             endpoint,
             message,
-            Math.min(timeoutMs, Math.max(1, deadline - Date.now()))
+            Math.min(timeoutMs, 5000, Math.max(1, deadline - Date.now()))
           )
         );
+        // A node may not yet know the hash or track its shard. Another read
+        // endpoint can already have the finalized execution; no resend occurs.
+        const reason = reply.error?.cause?.name;
+        if (['UNKNOWN_TRANSACTION', 'TIMEOUT_ERROR', 'DOES_NOT_TRACK_SHARD']
+          .includes(reason)) {
+          lastError = transport('finality ' + reason);
+          continue;
+        }
+        return reply;
 
       } catch (error) {
         lastError = error;

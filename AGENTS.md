@@ -1,3 +1,10 @@
+## CURRENT ENTRY POINT — Technical closure candidate, 2026-11-10
+
+Read `docs/worklog/TECHNICAL_CLOSURE.md`. Base: `5cc20f8`.
+Run `node scripts/m3/technical_closure.cjs --sandbox`; only after success
+run `--check`, then `--live` on EC2. Do not start another numbered launcher.
+The candidate has targeted checks, not a verified new full lifecycle.
+
 ## CURRENT ENTRY POINT — R7-DEMO-03/04B
 
 Branch: `feat/r7-demo-03-process-outage`.

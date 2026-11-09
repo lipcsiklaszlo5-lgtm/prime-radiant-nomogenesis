@@ -7,6 +7,7 @@ from contextlib import contextmanager
 import json
 import urllib.error
 import urllib.request
+from urllib.parse import urlparse
 from dataclasses import dataclass, field, replace
 from decimal import Decimal
 from typing import Any, Sequence
@@ -681,9 +682,17 @@ class Shield:
                 raise ValidationError(
                     "expected_code_hash must be explicitly configured for mainnet (no default code hash exists)"
                 )
+        elif network == "sandbox":
+            if not rpc_endpoints or not contract_id or not expected_code_hash:
+                raise ValidationError("Sandbox requires explicit RPC, contract and code hash")
+            endpoints = [rpc_endpoints] if isinstance(rpc_endpoints, str) else list(rpc_endpoints)
+            for endpoint in endpoints:
+                parsed = urlparse(endpoint)
+                if parsed.scheme != "http" or parsed.hostname != "127.0.0.1" or not parsed.port:
+                    raise ValidationError("Sandbox RPC must be an explicit loopback URL")
         else:
             raise ValidationError(
-                f"Unsupported network: '{network}'. Only 'testnet' and 'mainnet' are supported."
+                f"Unsupported network: '{network}'. Use testnet, mainnet or sandbox."
             )
 
         validate_account_id(contract_id, "contract_id")
@@ -700,6 +709,9 @@ class Shield:
         target = expected_network or self.network
         status = self.rpc.get_status()
         chain_id = status.get("chain_id")
+        if target == "sandbox" and isinstance(chain_id, str):
+            if chain_id.startswith("test-chain-") or chain_id in ("sandbox", "localnet"):
+                return True
         if chain_id != target:
             raise VerificationError(
                 f"Network mismatch: client configured for '{target}', but RPC reported chain_id '{chain_id}'"

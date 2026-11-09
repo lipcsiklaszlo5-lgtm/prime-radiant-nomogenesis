@@ -23,33 +23,8 @@ assert(
 assert(process.send);
 
 
-function readPersistentSigner(role) {
-  const filename = path.join(
-    os.homedir(),
-    '.nomogenesis-r7-13',
-    'actors',
-    role + '.json'
-  );
-
-  const stat = fs.lstatSync(filename);
-
-  assert(stat.isFile() && !stat.isSymbolicLink());
-  assert.equal(stat.uid, process.getuid());
-  assert.equal(stat.mode & 0o077, 0);
-
-  const item = JSON.parse(
-    fs.readFileSync(filename, 'utf8')
-  );
-
-  assert.equal(item.network, 'testnet');
-  assert.equal(item.role, role);
-  assert.equal(
-    item.account_id,
-    `${role}.nmg-r713-8d99c17cced1.testnet`
-  );
-
-  return item;
-}
+const runtime = require('./r7_runtime.cjs');
+const readPersistentSigner = runtime.credential;
 
 assert(
   typeof process.env.NMG_R7_13_RUN_DIR === 'string'
@@ -167,10 +142,10 @@ async function main() {
 
   const store = new near.keyStores.InMemoryKeyStore();
 
-  await store.setKey('testnet', accountId, keyPair);
+  await store.setKey(runtime.network, accountId, keyPair);
 
   const connection = await near.connect({
-    networkId: 'testnet',
+    networkId: runtime.network,
     nodeUrl: rpcUrl,
     keyStore: store,
     deps: {keyStore: store}

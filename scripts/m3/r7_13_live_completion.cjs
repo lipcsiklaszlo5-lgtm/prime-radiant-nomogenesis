@@ -12,6 +12,35 @@ const {
 const sleep = ms =>
   new Promise(resolve => setTimeout(resolve, ms));
 
+function verifyProviderWithdrawal(record, contractId, expectedAmount) {
+  assert.equal(record?.state, 'confirmed');
+  const outcome = record.outcome;
+  assert.equal(outcome.final_execution_status, 'FINAL');
+  assert.equal(outcome.transaction.hash, record.tx);
+  assert.equal(outcome.transaction.signer_id, record.signer);
+  assert.equal(outcome.transaction.receiver_id, contractId);
+  const call = outcome.transaction.actions.find(action =>
+    action.FunctionCall?.method_name === 'withdraw')?.FunctionCall;
+  assert(call, 'missing withdrawal action');
+  const amount = BigInt(JSON.parse(Buffer.from(call.args, 'base64')).amount);
+  assert.equal(amount, expectedAmount);
+  const transfer = outcome.receipts.find(receipt =>
+    receipt.predecessor_id === contractId && receipt.receiver_id === record.signer &&
+    receipt.receipt?.Action?.actions?.some(action =>
+      action.Transfer?.deposit === amount.toString()));
+  const callback = outcome.receipts.find(receipt =>
+    receipt.receiver_id === contractId && receipt.predecessor_id === contractId &&
+    receipt.receipt?.Action?.actions?.some(action =>
+      action.FunctionCall?.method_name === 'on_withdraw_complete'));
+  for (const receipt of [transfer, callback]) {
+    assert(receipt, 'missing native transfer/callback receipt');
+    const result = outcome.receipts_outcome.find(row => row.id === receipt.receipt_id);
+    assert.equal(result?.outcome.executor_id, receipt.receiver_id);
+    assert(Object.hasOwn(result.outcome.status, 'SuccessValue'), 'failed transfer/callback');
+  }
+  return amount;
+}
+
 function totalFromPayloads(payloads) {
   assert(
     Array.isArray(payloads) &&
@@ -158,7 +187,25 @@ async function providerDeliver({
       'TX=' + signed.txHash
     );
 
-    return;
+    // The settlement returns the locked bond plus this component's fee.
+    // Withdraw only this run's credit, leaving historical claimables alone.
+    const amount = BigInt(offer.held_bond) + BigInt(offer.fee);
+    for (let poll = 0; poll < 1400; poll++) {
+      const current = await look('get_rescue_case', {case_id: caseId});
+      if (current.phase !== 'Closed') {
+        await sleep(900);
+        continue;
+      }
+      assert(current.resolved_payloads.every(Array.isArray));
+      const available = await look('get_claimable', {account: accountId});
+      assert(BigInt(available) >= amount);
+      const paid = await signedCall(account, contractId, 'withdraw',
+        {amount: amount.toString()}, 0n);
+      console.log('AUTONOMOUS_PROVIDER_WITHDRAWN:', policy.actor_id,
+        'AMOUNT=' + amount, 'TX=' + paid.txHash);
+      return;
+    }
+    throw Error('provider settlement/withdrawal timed out');
   }
 
   throw Error('provider proof decision timed out');
@@ -344,6 +391,7 @@ async function keeperSettle({
 }
 
 module.exports = {
+  verifyProviderWithdrawal,
   totalFromPayloads,
   providerDeliver,
   workerComplete,

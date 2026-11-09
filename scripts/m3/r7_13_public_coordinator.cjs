@@ -20,6 +20,7 @@ const os = require('node:os');
 const path = require('node:path');
 const {fork} = require('node:child_process');
 const near = require('near-api-js');
+const {totalFromPayloads, verifyProviderWithdrawal} = require('./r7_13_live_completion.cjs');
 
 const {ROSTER} = require('./r7_06_swarm.cjs');
 
@@ -51,17 +52,16 @@ const {
 } = require('./r7_13_tx_guard.cjs');
 
 const ROOT = path.resolve(__dirname, '../..');
+const runtime = require('./r7_runtime.cjs');
 
-const KEYROOT = path.join(
-  os.homedir(), '.nomogenesis-r7-13'
-);
+const KEYROOT = runtime.keyRoot;
 
 const RUN_ID =
   process.env.NMG_R7_13H_RUN_ID ||
   'live-v2-once-03';
 
 assert(
-  ['live-v2-once-03', 'live-v2-once-04', 'live-v2-once-05', 'live-v2-once-06', 'live-v2-once-07', 'live-v2-once-08'].includes(RUN_ID),
+  ['live-v2-once-03', 'live-v2-once-04', 'live-v2-once-05', 'live-v2-once-06', 'live-v2-once-07', 'live-v2-once-08', 'technical-closure'].includes(RUN_ID),
   'Unapproved run ID'
 );
 
@@ -69,8 +69,8 @@ const RUNROOT = path.join(KEYROOT, RUN_ID);
 
 const RPC = process.env.NMG_R7_13H_RPC_URL ||
   'https://rpc.testnet.fastnear.com';
-const CONTRACT = 'nmg-r7v2-0b9a0eff20.testnet';
-const PARENT = 'nmg-r713-8d99c17cced1.testnet';
+const CONTRACT = runtime.contract;
+const PARENT = runtime.parent;
 
 const SHA =
   '2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e';
@@ -105,7 +105,7 @@ if (process.env.NMG_R7_13H_RPC_URL !== undefined) {
   );
 }
 
-if (mode === '--live') {
+if (mode === '--live' && !runtime.local) {
   assert.equal(
     process.env.NMG_R7_13_ENABLE_LIVE,
     'YES_PUBLIC_TESTNET',
@@ -114,6 +114,7 @@ if (mode === '--live') {
 
   assert.equal(
     process.env.NMG_R7_13H_RUN_ID,
+    RUN_ID === 'technical-closure' ? 'technical-closure' :
     RUN_ID === 'live-v2-once-08'
       ? 'live-v2-once-08'
       : 'live-v2-once-07',
@@ -140,11 +141,13 @@ if (mode === '--live') {
 
   const run08 = RUN_ID === 'live-v2-once-08';
 
-  const approvalName = run08
+  const approvalName = RUN_ID === 'technical-closure'
+    ? 'NMG_TECHNICAL_CLOSURE_APPROVAL' : run08
     ? 'NMG_R7_13V_08_LIVE_APPROVAL'
     : 'NMG_R7_13V_07_LIVE_APPROVAL';
 
-  const approvalValue = run08
+  const approvalValue = RUN_ID === 'technical-closure'
+    ? 'YES_AUTHORIZE_19_TESTNET_TX' : run08
     ? 'YES_AUTHORIZE_RUN08_17_TESTNET_TX'
     : 'YES_AUTHORIZE_RUN07_17_TESTNET_TX';
 
@@ -491,6 +494,30 @@ async function openServer(
 ) {
   const server = http.createServer(
     (request, response) => {
+      if (request.method === 'GET' && request.url === '/data') {
+        void (async () => {
+          let payloads;
+          if (!getState().outage) {
+            const origin = await fetch(services.endpoint + '/components', {
+              signal: AbortSignal.timeout(5000)
+            });
+            assert(origin.ok);
+            ({payloads} = await origin.json());
+          } else {
+            const state = getState();
+            const rescue = await view('get_rescue_case', {case_id: state.caseId});
+            if (!rescue?.resolved_payloads.every(Array.isArray)) {
+              response.writeHead(503).end('awaiting verified recovery');
+              return;
+            }
+            payloads = rescue.resolved_payloads;
+          }
+          response.writeHead(200, {'content-type': 'application/json'});
+          response.end(JSON.stringify({payloads,
+            total: totalFromPayloads(payloads).toString()}));
+        })().catch(() => response.writeHead(503).end('data unavailable'));
+        return;
+      }
       if (
         request.method === 'GET' &&
         request.url === '/state'
@@ -592,7 +619,7 @@ async function openServer(
 }
 
 function manifestActors() {
-  const data = JSON.parse(
+  const data = runtime.local?.manifest || JSON.parse(
     fs.readFileSync(
       path.join(
         ROOT,
@@ -604,7 +631,7 @@ function manifestActors() {
 
   assert.equal(
     data.network,
-    'near-testnet'
+    'near-' + runtime.network
   );
 
   assert.equal(
@@ -633,7 +660,7 @@ async function verifyContract() {
   const status = await rpc('status', []);
   assert.equal(
     status.chain_id,
-    'testnet'
+    runtime.chainId
   );
 
   const code = await rpc('query', {
@@ -674,7 +701,7 @@ async function verifyContract() {
   );
 
   console.log(
-    'PUBLIC_V2_WASM_AND_BASELINE: PASS'
+    runtime.local ? 'SANDBOX_V2_WASM_AND_BASELINE: PASS' : 'PUBLIC_V2_WASM_AND_BASELINE: PASS'
   );
 
   return {
@@ -710,13 +737,13 @@ async function controllerAccount() {
     new near.keyStores.InMemoryKeyStore();
 
   await store.setKey(
-    'testnet',
+    runtime.network,
     PARENT,
     pair
   );
 
   const connection = await near.connect({
-    networkId: 'testnet',
+    networkId: runtime.network,
     nodeUrl: RPC,
     keyStore: store,
     deps: {keyStore: store}
@@ -787,7 +814,7 @@ async function waitClosed(
 
       if (jobs.every(
         job => job.phase === 'Completed'
-      )) {
+      ) && infos.every(info => info.exitCode === 0)) {
         assert.equal(
           rescue.job_ids.length,
           2
@@ -822,8 +849,21 @@ async function waitClosed(
         assert.equal(
           BigInt(claimed) -
           BigInt(baseline.claimable),
-          52n * UNIT
+          19n * UNIT
         );
+
+        const payout = await view('payout_totals');
+        assert.equal(BigInt(payout[1]), 0n, 'pending native withdrawal');
+        const paid = [
+          ['provider-beta', 17n * UNIT],
+          ['provider-gamma', 16n * UNIT]
+        ].map(([role, amount]) => verifyProviderWithdrawal(
+          readStep(RUNROOT, role, 'withdraw'), CONTRACT, amount
+        )).reduce((a, b) => a + b, 0n);
+        assert.equal(paid, 33n * UNIT);
+        assert.equal(BigInt(claimed) - BigInt(baseline.claimable) + paid, 52n * UNIT);
+        console.log('NATIVE_PROVIDER_TRANSFERS_AND_CALLBACKS: PASS');
+        console.log('CONSERVATION: 52 = 19 CLAIMABLE + 33 PAID UNIT');
 
         console.log(
           'PUBLIC_ONCHAIN_SETTLEMENT_AND_COMPLETION: PASS'
@@ -929,6 +969,9 @@ async function main() {
     );
 
     server = hosted.server;
+    const healthyDataResponse = await fetch(hosted.url + '/data');
+    assert.equal(healthyDataResponse.status, 200);
+    const healthyData = await healthyDataResponse.json();
 
     if (mode === '--dry-run') {
       tempDir = fs.mkdtempSync(
@@ -1163,6 +1206,8 @@ async function main() {
     );
 
     state.outage = true;
+    const unavailable = await fetch(hosted.url + '/data');
+    assert.equal(unavailable.status, 503);
 
     console.log(
       'REAL_PROCESS_OUTAGE_DETECTED: PASS',
@@ -1193,7 +1238,9 @@ async function main() {
       ['provider-gamma', 'submit_rescue_component'],
       ['keeper', 'settle_rescue_bundle'],
       ['worker0', 'complete_rescue_job'],
-      ['worker1', 'complete_rescue_job']
+      ['worker1', 'complete_rescue_job'],
+      ['provider-beta', 'withdraw'],
+      ['provider-gamma', 'withdraw']
     ];
 
     const rows = expected.map(
@@ -1227,15 +1274,24 @@ async function main() {
       expected.length
     );
 
+    const recoveredResponse = await fetch(hosted.url + '/data');
+    assert.equal(recoveredResponse.status, 200);
+    const recovered = await recoveredResponse.json();
+    assert.deepEqual(recovered, healthyData);
+    assert.equal(recovered.total, '632');
+    console.log('DATA_ENDPOINT_200_503_200: PASS');
+
     saveExclusive(
       path.join(RUNROOT, 'evidence.json'),
       {
         schema:
           'nomogenesis.r7-13.live-evidence.v1',
-        network: 'testnet',
+        network: runtime.network,
         contract: CONTRACT,
         case_id: caseId,
         transactions: rows,
+        service: {http_statuses: [200, 503, 200],
+          recovered_data_matches_original: true, result: recovered.total},
         terminal,
         prior_claimable:
           baseline.claimable,
@@ -1247,11 +1303,11 @@ async function main() {
     );
 
     console.log(
-      'SEVENTEEN_PUBLIC_TX_HASHES: PASS'
+      'NINETEEN_FINALIZED_TX_HASHES: PASS'
     );
 
     console.log(
-      'R7_13_PUBLIC_FULL_LIFECYCLE: PASS'
+      runtime.local ? 'R7_13_SANDBOX_FULL_LIFECYCLE: PASS' : 'R7_13_PUBLIC_FULL_LIFECYCLE: PASS'
     );
 
   } finally {

@@ -1,3 +1,15 @@
+## CURRENT — Technical closure candidate (2026-11-10)
+
+Base: `5cc20f81e37c80c35046fdaacc5c736439f6c28a`.
+Entry point: `node scripts/m3/technical_closure.cjs --sandbox`.
+After that passes: `--check`, then `--live` for one 19-transaction Testnet run.
+The existing deployed V2 WASM is unchanged. Includes source outage, SDK policies,
+consents, atomic award, Merkle delivery, native provider payouts and SDK audit.
+Targeted Node and SDK checks passed; the new complete lifecycle is NOT YET
+verified. This executor's 16384 FD hard limit blocks NEAR Sandbox startup
+(which requires 65535). EC2 end-to-end execution remains the single next step.
+Details and actual evidence: `docs/worklog/TECHNICAL_CLOSURE.md`.
+
 # Nomogenesis — aktuális állapot és folytatás
 
 ## CURRENT — R7-DEMO-03/04B backup-driven recovery VERIFIED

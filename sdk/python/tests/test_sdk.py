@@ -1135,5 +1135,21 @@ class TestR709CSnapshotAndMoney(unittest.TestCase):
                 job_storage_cost_yocto=1,
             )
 
+class TestSandboxNetwork(unittest.TestCase):
+    def test_explicit_local_chain_is_supported(self):
+        shield = Shield(network="sandbox", contract_id="market.test.near",
+                        rpc_endpoints="http://127.0.0.1:3030/", expected_code_hash="expected")
+        with patch.object(shield.rpc, "get_status", return_value={"chain_id": "test-chain-local"}):
+            self.assertTrue(shield.verify_network())
+        with patch.object(shield.rpc, "get_status", return_value={"chain_id": "testnet"}):
+            with self.assertRaises(VerificationError):
+                shield.verify_network()
+
+    def test_sandbox_cannot_point_to_public_rpc(self):
+        with self.assertRaises(ValidationError):
+            Shield(network="sandbox", contract_id="market.testnet",
+                   rpc_endpoints="https://rpc.testnet.near.org", expected_code_hash="expected")
+
+
 if __name__ == "__main__":
     unittest.main()

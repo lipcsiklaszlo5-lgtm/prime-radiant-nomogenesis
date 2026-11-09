@@ -67,33 +67,8 @@ assert.equal(
 assert(process.send);
 
 
-function readPersistentSigner(role) {
-  const filename = path.join(
-    os.homedir(),
-    '.nomogenesis-r7-13',
-    'actors',
-    role + '.json'
-  );
-
-  const stat = fs.lstatSync(filename);
-
-  assert(stat.isFile() && !stat.isSymbolicLink());
-  assert.equal(stat.uid, process.getuid());
-  assert.equal(stat.mode & 0o077, 0);
-
-  const item = JSON.parse(
-    fs.readFileSync(filename, 'utf8')
-  );
-
-  assert.equal(item.network, 'testnet');
-  assert.equal(item.role, role);
-  assert.equal(
-    item.account_id,
-    `${role}.nmg-r713-8d99c17cced1.testnet`
-  );
-
-  return item;
-}
+const runtime = require('./r7_runtime.cjs');
+const readPersistentSigner = runtime.credential;
 
 assert(
   typeof process.env.NMG_R7_13_RUN_DIR === 'string'
@@ -340,13 +315,13 @@ async function main() {
     new near.keyStores.InMemoryKeyStore();
 
   await store.setKey(
-    'testnet',
+    runtime.network,
     accountId,
     keyPair
   );
 
   const connection = await near.connect({
-    networkId: 'testnet',
+    networkId: runtime.network,
     nodeUrl: rpcUrl,
     keyStore: store,
     deps: {keyStore: store}
@@ -438,7 +413,7 @@ async function main() {
     assert(cap > 0 && cap <= 7);
 
     const worker =
-      `worker${policy.job_id - 1}.nmg-r713-8d99c17cced1.testnet`;
+      `worker${policy.job_id - 1}.${runtime.parent}`;
 
     const threshold = (
       400 + 100 * policy.job_id
