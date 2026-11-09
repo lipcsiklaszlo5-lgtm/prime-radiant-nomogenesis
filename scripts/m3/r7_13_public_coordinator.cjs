@@ -49,7 +49,7 @@ const RUN_ID =
   'live-v2-once-03';
 
 assert(
-  ['live-v2-once-03', 'live-v2-once-04'].includes(RUN_ID),
+  ['live-v2-once-03', 'live-v2-once-04', 'live-v2-once-05'].includes(RUN_ID),
   'Unapproved run ID'
 );
 
@@ -102,7 +102,7 @@ if (mode === '--live') {
 
   assert.equal(
     process.env.NMG_R7_13H_RUN_ID,
-    'live-v2-once-04',
+    'live-v2-once-05',
     'fresh run identity required'
   );
 
@@ -123,7 +123,24 @@ if (mode === '--live') {
     /^http:\/\/127\.0\.0\.1:\d+\/$/,
     'Loopback RPC mandatory'
   );
+
+  assert.equal(
+    process.env.NMG_R7_13V_05_LIVE_APPROVAL,
+    'YES_AUTHORIZE_RUN05_17_TESTNET_TX',
+    'RUN05-specific approval required'
+  );
+
+  assert(
+    fs.existsSync(
+      path.join(
+        KEYROOT,
+        'live-v2-once-05-launch-intent.json'
+      )
+    ),
+    'RUN05 guarded launcher intent required'
+  );
 }
+
 
 function secureJson(filename) {
   const stat = fs.lstatSync(filename);
