@@ -1,0 +1,139 @@
+{
+  "schema": "nomogenesis.r7-13r.public-recovery.v1",
+  "created_utc": "2026-11-09T11:05:41.889642+00:00",
+  "network": "near-testnet",
+  "contract": "nmg-r7v2-0b9a0eff20.testnet",
+  "case_id_hex": "f884628615029609fdd48c43ddcc3c9128c1595c8555545cd9c0b0a302ba68a5",
+  "source_checkpoint": "cda4b5706731825b9c85fe95ffe954175084707b",
+  "source_run": "live-v2-once-03",
+  "source_confirmed_tx_count": 8,
+  "release_confirmed_tx_count": 7,
+  "before": {
+    "rescue_escrow_yocto": "52000000000000000000000",
+    "claimable_total_yocto": "34000000000000000000000"
+  },
+  "release_transactions": [
+    {
+      "step": 1,
+      "method": "release_open_rescue_offer",
+      "args": {
+        "offer_id": 3
+      },
+      "beneficiary": "provider-gamma.nmg-r713-8d99c17cced1.testnet",
+      "amount_yocto": "12000000000000000000000",
+      "tx_hash": "EFB79ixcF6tQX4bZfd8rhCQMAHeonxytvtAUw6bXcagD",
+      "finalized_step_block": "8g3bvWGc7RdHTU3GqjGrRd6BcVrerUdiAnSraCmGUJE6",
+      "post_escrow_yocto": "40000000000000000000000",
+      "post_claimable_yocto": "46000000000000000000000"
+    },
+    {
+      "step": 2,
+      "method": "release_open_rescue_offer",
+      "args": {
+        "offer_id": 4
+      },
+      "beneficiary": "provider-alpha.nmg-r713-8d99c17cced1.testnet",
+      "amount_yocto": "12000000000000000000000",
+      "tx_hash": "C4wpuDDGSxtHYbo4SRs9LTsq94CyKzwEoDfAVcAw5aEC",
+      "finalized_step_block": "77EKa1smrQkBAT7L9FKrsyfBbrDDdqDjnW2tMG5TWGhM",
+      "post_escrow_yocto": "28000000000000000000000",
+      "post_claimable_yocto": "58000000000000000000000"
+    },
+    {
+      "step": 3,
+      "method": "release_open_rescue_offer",
+      "args": {
+        "offer_id": 5
+      },
+      "beneficiary": "provider-beta.nmg-r713-8d99c17cced1.testnet",
+      "amount_yocto": "12000000000000000000000",
+      "tx_hash": "QWZkS6MuMSeqe23bEQNjMkfhhwLVNZFs73WRxg5mpkv",
+      "finalized_step_block": "4ZAatd17AU5ETn4c7MKX8gh2iznF5ovp73tbobc6dVNQ",
+      "post_escrow_yocto": "16000000000000000000000",
+      "post_claimable_yocto": "70000000000000000000000"
+    },
+    {
+      "step": 4,
+      "method": "release_expired_rescue_mandate",
+      "args": {
+        "job_id": 2
+      },
+      "beneficiary": "buyer-1.nmg-r713-8d99c17cced1.testnet",
+      "amount_yocto": "7000000000000000000000",
+      "tx_hash": "5wipjVLHn3AsBXpZkabAQoyiJNs8Ly3t5FFxcGsfqzX1",
+      "finalized_step_block": "8romLEusrPXP6f4LA95fscy26PmP8gzuA5aCgek5phEE",
+      "post_escrow_yocto": "9000000000000000000000",
+      "post_claimable_yocto": "77000000000000000000000"
+    },
+    {
+      "step": 5,
+      "method": "release_expired_rescue_mandate",
+      "args": {
+        "job_id": 3
+      },
+      "beneficiary": "buyer-2.nmg-r713-8d99c17cced1.testnet",
+      "amount_yocto": "7000000000000000000000",
+      "tx_hash": "B3xxvgNMfeWmeERgt3JXh79PtJwBcpaELmupGP4uZ5dF",
+      "finalized_step_block": "5P1VozP3EBxUUkp6xf5Vnk7dTvBWgm2xeMv8NR9xvKkm",
+      "post_escrow_yocto": "2000000000000000000000",
+      "post_claimable_yocto": "84000000000000000000000"
+    },
+    {
+      "step": 6,
+      "method": "expire_rescue_job",
+      "args": {
+        "job_id": 2
+      },
+      "beneficiary": "buyer-1.nmg-r713-8d99c17cced1.testnet",
+      "amount_yocto": "1000000000000000000000",
+      "tx_hash": "AyQFcCGqPVunhb8vwNz943E7BLcbfxETmSuWZunwmFsC",
+      "finalized_step_block": "H5JQ1pEgQHtZT2FL4B3AtiXJbsstyEq1QA1jxL7QmzPG",
+      "post_escrow_yocto": "1000000000000000000000",
+      "post_claimable_yocto": "85000000000000000000000"
+    },
+    {
+      "step": 7,
+      "method": "expire_rescue_job",
+      "args": {
+        "job_id": 3
+      },
+      "beneficiary": "buyer-2.nmg-r713-8d99c17cced1.testnet",
+      "amount_yocto": "1000000000000000000000",
+      "tx_hash": "6VuBLBNXD3fwAvpLDGtiMrUbnp2rMf2eoSqSaxgb8qDP",
+      "finalized_step_block": "Gqn2m79M6qrnmETYtuehQQP71vwGe1FzPGKGb5QuRT7j",
+      "post_escrow_yocto": "0",
+      "post_claimable_yocto": "86000000000000000000000"
+    }
+  ],
+  "after": {
+    "rescue_escrow_yocto": "0",
+    "claimable_total_yocto": "86000000000000000000000",
+    "total_released_yocto": "52000000000000000000000",
+    "final_audit_block": "Hguucc6Gbs8myCAuzAz9deRJ9Fsid3Jt4wVHMEMZDroE",
+    "status": "PASS"
+  },
+  "private_evidence_sha256": {
+    "plan.json": "ec365551e58ca1c6424a39b3f052d33f210495a8f79d208670311fc54524bc57",
+    "final-summary.json": "ed578fdee09f80ba487b71f5a164f71a99c69b5a6549fd2082ab25c8c6c5ccbd",
+    "keeper__release_open_rescue_offer_3.json": "4c900fa5874076baf4f9e8837fdb8f662da733832ac31fca02a9f33cec2ebee5",
+    "verified-1.json": "a2ec73c4a30e0e76c68031295ecb65486b1ac82a5d7bbb523030ffa7d6911d81",
+    "keeper__release_open_rescue_offer_4.json": "23b96725524124fc759e60b2041075c7158f967ca227e5666cc635a9d3714361",
+    "verified-2.json": "cb8adc91f4f403c08230a9ad1e4f49563c320ee7dbbc7d835df4ddcf98455b34",
+    "keeper__release_open_rescue_offer_5.json": "6c412d27d59881569f1ebb04a3f803e5878301ffc0f95b0e4bf9e78d61c36a9a",
+    "verified-3.json": "e3d2bc95631b2e3773e08299bde4cb75e478cceb8ce97d95f019a8d0dbad6ee9",
+    "keeper__release_expired_rescue_mandate_2.json": "739f6bf9f5ca81e3d013b9bc0d87bb400f89f96edc801a46294351c737e28bc0",
+    "verified-4.json": "fed5de9c96fa655ac4a41eec78179718dd348b39cab805a99188a10b64a78de9",
+    "keeper__release_expired_rescue_mandate_3.json": "761c8aceb790abf219892b61ccf138eda6725ebb9cfbd5c7cb1e2c13e8ea5c3f",
+    "verified-5.json": "3d136a6cc6d31580aa071e12f1149f60443aa3a1504fe1990609dede23dfc145",
+    "keeper__expire_rescue_job_2.json": "cda7473bf3c0edd03a24d00db67b95b50f91e5b4303f248962fd421f3d55bb33",
+    "verified-6.json": "1525a1ebf6b16414f25f76d461794639bdde9d26a308359ea4cda5470292d8a7",
+    "keeper__expire_rescue_job_3.json": "6a7dd43b954653b6b70d8ccff3ea954009faa3be4856f53bcbe18c75dc83f5c5",
+    "verified-7.json": "b4bdd095c724bc33d5a1a9afe1d0813b87f1107f341e79c3d7babf6261914420"
+  },
+  "limits": [
+    "Testnet only",
+    "RUN03 was a partial lifecycle without award or settlement",
+    "The 52 UNIT were credited internally, not withdrawn to wallets",
+    "No private signer credentials or raw journals included"
+  ]
+}
