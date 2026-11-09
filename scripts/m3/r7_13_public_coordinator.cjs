@@ -225,36 +225,56 @@ function expectedCaseId(roots, deadlines) {
   ));
 }
 
-async function rpc(method, params) {
-  const response = await fetch(RPC, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      jsonrpc: '2.0',
-      id: 'r7-13-life',
-      method,
-      params
-    }),
-    signal: AbortSignal.timeout(20000)
-  });
+const {readWithRetry} = require('./r7_13_read_resilience.cjs');
 
-  assert.equal(
-    response.status,
-    200,
-    `RPC HTTP ${response.status}`
+async function rpc(method, params) {
+  // Strictly read-only. Signed broadcasts have
+  // a separate, irreversible one-shot path.
+  assert(
+    ['status', 'block', 'query'].includes(method),
+    'Coordinator read-only RPC required'
   );
 
-  const body = await response.json();
+  return readWithRetry(async () => {
+    const response = await fetch(RPC, {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 'r7-13-life',
+        method,
+        params
+      }),
+      signal: AbortSignal.timeout(20000)
+    });
 
-  if (body.error) {
-    throw Error(
-      'RPC: ' + JSON.stringify(body.error)
+    if (!response.ok) {
+      const error = Error(
+        'RPC HTTP ' + response.status
+      );
+      error.status = response.status;
+      throw error;
+    }
+
+    const body = await response.json();
+
+    if (body.error) {
+      const error = Error(
+        'RPC: ' + JSON.stringify(body.error)
+      );
+      error.code = body.error.code;
+      throw error;
+    }
+
+    assert(
+      Object.hasOwn(body, 'result'),
+      'RPC result missing'
     );
-  }
 
-  return body.result;
+    return body.result;
+  }, {
+    label: 'coordinator-' + method
+  });
 }
 
 async function view(method, args = {}) {

@@ -78,12 +78,17 @@ const GAS = 200000000000000n;
 const sleep = ms =>
   new Promise(resolve => setTimeout(resolve, ms));
 
+const {readWithRetry} = require('./r7_13_read_resilience.cjs');
+
 async function view(account, contractId, method, args = {}) {
-  return account.viewFunction({
-    contractId,
-    methodName: method,
-    args
-  });
+  return readWithRetry(
+    () => account.viewFunction({
+      contractId,
+      methodName: method,
+      args
+    }),
+    {label: 'agent-view-' + method}
+  );
 }
 
 async function call(
@@ -107,27 +112,42 @@ async function call(
 }
 
 async function timestamp() {
-  const response = await fetch(rpcUrl, {
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    signal: AbortSignal.timeout(10000),
-    body: JSON.stringify({
-      jsonrpc: '2.0',
-      id: 1,
-      method: 'block',
-      params: {finality: 'optimistic'}
-    })
-  });
+  return readWithRetry(async () => {
+    const response = await fetch(rpcUrl, {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      signal: AbortSignal.timeout(12000),
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'block',
+        params: {finality: 'optimistic'}
+      })
+    });
 
-  assert(response.ok);
+    if (!response.ok) {
+      const error = Error(
+        'Block read HTTP ' + response.status
+      );
+      error.status = response.status;
+      throw error;
+    }
 
-  const data = await response.json();
-  assert(!data.error);
+    const data = await response.json();
 
-  return BigInt(
-    data.result.header.timestamp_nanosec ??
-    data.result.header.timestamp
-  );
+    if (data.error) {
+      throw Error(
+        'Block read RPC: ' +
+        JSON.stringify(data.error)
+      );
+    }
+
+    return BigInt(
+      data.result.header.timestamp_nanosec ??
+      data.result.header.timestamp
+    );
+
+  }, {label: 'agent-block-time'});
 }
 
 async function main() {
@@ -174,7 +194,7 @@ async function main() {
     const event = await response.json();
 
     if (!event.outage) {
-      await sleep(900);
+      await sleep(1800);
       continue;
     }
 
@@ -188,7 +208,7 @@ async function main() {
     );
 
     if (!rescueCase) {
-      await sleep(900);
+      await sleep(1800);
       continue;
     }
 
@@ -233,7 +253,7 @@ async function main() {
         }
       }
 
-      await sleep(900);
+      await sleep(1800);
       continue;
     }
 
@@ -250,7 +270,7 @@ async function main() {
       rescueCase.job_ids.length < 2 ||
       rescueCase.offer_ids.length < 2
     ) {
-      await sleep(900);
+      await sleep(1800);
       continue;
     }
 
@@ -276,7 +296,7 @@ async function main() {
       .sort((a, b) => a - b);
 
     if (selected.length < 2) {
-      await sleep(900);
+      await sleep(1800);
       continue;
     }
 
@@ -302,7 +322,7 @@ async function main() {
     );
 
     if (consents.some(consent => consent === null)) {
-      await sleep(900);
+      await sleep(1800);
       continue;
     }
 

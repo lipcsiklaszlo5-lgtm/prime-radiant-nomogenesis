@@ -111,12 +111,17 @@ const publicKey = keyPair.getPublicKey().toString();
 assert.equal(publicKey, credential.public_key);
 
 
+const {readWithRetry} = require('./r7_13_read_resilience.cjs');
+
 async function view(account, contractId, method, args = {}) {
-  return account.viewFunction({
-    contractId,
-    methodName: method,
-    args
-  });
+  return readWithRetry(
+    () => account.viewFunction({
+      contractId,
+      methodName: method,
+      args
+    }),
+    {label: 'agent-view-' + method}
+  );
 }
 
 async function signedCall(
@@ -140,27 +145,42 @@ async function signedCall(
 }
 
 async function blockTimestamp(rpcUrl) {
-  const response = await fetch(rpcUrl, {
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    signal: AbortSignal.timeout(10000),
-    body: JSON.stringify({
-      jsonrpc: '2.0',
-      id: 1,
-      method: 'block',
-      params: {finality: 'optimistic'}
-    })
-  });
+  return readWithRetry(async () => {
+    const response = await fetch(rpcUrl, {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      signal: AbortSignal.timeout(12000),
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'block',
+        params: {finality: 'optimistic'}
+      })
+    });
 
-  assert(response.ok);
+    if (!response.ok) {
+      const error = Error(
+        'Block read HTTP ' + response.status
+      );
+      error.status = response.status;
+      throw error;
+    }
 
-  const data = await response.json();
-  assert(!data.error);
+    const data = await response.json();
 
-  return BigInt(
-    data.result.header.timestamp_nanosec ??
-    data.result.header.timestamp
-  );
+    if (data.error) {
+      throw Error(
+        'Block read RPC: ' +
+        JSON.stringify(data.error)
+      );
+    }
+
+    return BigInt(
+      data.result.header.timestamp_nanosec ??
+      data.result.header.timestamp
+    );
+
+  }, {label: 'agent-block-time'});
 }
 
 async function autonomouslyConsent(
@@ -180,7 +200,7 @@ async function autonomouslyConsent(
     const now = await blockTimestamp(rpcUrl);
 
     if (now < BigInt(rescueCase.bid_close)) {
-      await sleep(900);
+      await sleep(1800);
       continue;
     }
 
