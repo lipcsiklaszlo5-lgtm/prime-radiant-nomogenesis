@@ -34,6 +34,7 @@ function transport(message) {
 function createRpcBroker({
   upstreams,
   sendUpstream = null,
+  finalityUpstreams = null,
   minGapMs = 350,
   timeoutMs = 15000,
   maxQueued = 180,
@@ -86,6 +87,54 @@ function createRpcBroker({
   const sent = new Set();
   const reads = [];
   const writes = [];
+
+  const finalityQueue = [];
+  let activeFinality = 0;
+  let finalityNextSlot = 0;
+
+  assert(
+    finalityUpstreams === null ||
+    (
+      Array.isArray(finalityUpstreams) &&
+      finalityUpstreams.length > 0 &&
+      finalityUpstreams.every(url =>
+        /^https:\/\/[a-z0-9.-]+(?::\d+)?\/?$/i.test(url) ||
+        /^http:\/\/127\.0\.0\.1:\d+\/?$/.test(url)
+      )
+    ),
+    'Invalid finality endpoints'
+  );
+
+  function drainFinality() {
+    while (activeFinality < 2 && finalityQueue.length) {
+      const job = finalityQueue.shift();
+
+      const start = Math.max(Date.now(), finalityNextSlot);
+      finalityNextSlot = start + 300;
+      activeFinality++;
+
+      void (async () => {
+        await sleep(Math.max(0, start - Date.now()));
+        return job.operation();
+      })().then(job.resolve, job.reject).finally(() => {
+        activeFinality--;
+        drainFinality();
+      });
+    }
+  }
+
+  function scheduleFinality(operation) {
+    if (finalityQueue.length + activeFinality >= 24) {
+      return Promise.reject(
+        Error('Finality queue capacity exceeded')
+      );
+    }
+
+    return new Promise((resolve, reject) => {
+      finalityQueue.push({operation, resolve, reject});
+      drainFinality();
+    });
+  }
 
   let activeReads = 0;
   let activeSend = false;
@@ -293,7 +342,44 @@ function createRpcBroker({
       : {result: parsed.result};
   }
 
+  async function forwardFinality(message) {
+    let lastError;
+    const deadline = Date.now() + 30000;
+
+    for (const endpoint of finalityUpstreams) {
+      try {
+        const remaining = deadline - Date.now();
+        if (remaining <= 0) break;
+
+        return await scheduleFinality(() =>
+          upstream(
+            endpoint,
+            message,
+            Math.min(timeoutMs, Math.max(1, deadline - Date.now()))
+          )
+        );
+
+      } catch (error) {
+        lastError = error;
+        if (!error.transport) throw error;
+      }
+    }
+
+    throw lastError || Error('Finality deadline exhausted');
+  }
+
   async function forward(message, send) {
+    if (
+      !send &&
+      finalityUpstreams !== null &&
+      (
+        message.method === 'tx' ||
+        message.method === 'EXPERIMENTAL_tx_status'
+      )
+    ) {
+      return forwardFinality(message);
+    }
+
     if (send) {
       // NEVER retry or fail over a broadcast.
       return scheduled(
@@ -388,6 +474,9 @@ function createRpcBroker({
         queued,
         queued_reads: reads.length,
         active_reads: activeReads,
+        active_finality: activeFinality,
+        queued_finality: finalityQueue.length,
+        finality_lane_enabled: finalityUpstreams !== null,
         active_send: activeSend,
         queued_writes: writes.length,
         pending: inflight.size,
