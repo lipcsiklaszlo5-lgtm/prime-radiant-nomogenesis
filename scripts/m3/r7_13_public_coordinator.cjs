@@ -49,7 +49,7 @@ const RUN_ID =
   'live-v2-once-03';
 
 assert(
-  ['live-v2-once-03', 'live-v2-once-04', 'live-v2-once-05', 'live-v2-once-06'].includes(RUN_ID),
+  ['live-v2-once-03', 'live-v2-once-04', 'live-v2-once-05', 'live-v2-once-06', 'live-v2-once-07'].includes(RUN_ID),
   'Unapproved run ID'
 );
 
@@ -102,7 +102,7 @@ if (mode === '--live') {
 
   assert.equal(
     process.env.NMG_R7_13H_RUN_ID,
-    'live-v2-once-06',
+    'live-v2-once-07',
     'fresh run identity required'
   );
 
@@ -125,19 +125,19 @@ if (mode === '--live') {
   );
 
   assert.equal(
-    process.env.NMG_R7_13V_06_LIVE_APPROVAL,
-    'YES_AUTHORIZE_RUN06_17_TESTNET_TX',
-    'RUN06-specific approval required'
+    process.env.NMG_R7_13V_07_LIVE_APPROVAL,
+    'YES_AUTHORIZE_RUN07_17_TESTNET_TX',
+    'RUN07-specific approval required'
   );
 
   assert(
     fs.existsSync(
       path.join(
         KEYROOT,
-        'live-v2-once-06-launch-intent.json'
+        'live-v2-once-07-launch-intent.json'
       )
     ),
-    'RUN06 guarded launcher intent required'
+    'RUN07 guarded launcher intent required'
   );
 }
 
