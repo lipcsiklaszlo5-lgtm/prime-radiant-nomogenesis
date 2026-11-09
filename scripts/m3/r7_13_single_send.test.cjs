@@ -5,6 +5,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const crypto = require('node:crypto');
+
 const {baseEncode} = require('@near-js/utils');
 
 const {
@@ -14,87 +16,162 @@ const {
 
 function directory() {
   const dir = fs.mkdtempSync(
-    path.join(os.tmpdir(), 'nmg-r713-single-')
+    path.join(os.tmpdir(), 'nmg-r713-sendtx-')
   );
+
   fs.chmodSync(dir, 0o700);
   return dir;
 }
 
-function scenario(dir, fail) {
-  const hash = Buffer.alloc(32, 7);
-  const encoded = baseEncode(hash);
+function scenario(dir, mode) {
+  const transactionBytes = Buffer.from(
+    'synthetic-offline-transaction'
+  );
+
+  const hash = crypto.createHash('sha256')
+    .update(transactionBytes).digest();
+
+  const encodedHash = baseEncode(hash);
 
   let signatures = 0;
   let sends = 0;
+  let reads = 0;
+  let legacyCalls = 0;
 
   const account = {
     accountId: 'buyer.testnet',
-    accessKeyByPublicKeyCache: {stale: {nonce: 4n}},
+    accessKeyByPublicKeyCache: {stale: true},
 
     async signTransaction(receiver, actions) {
       signatures++;
+
       assert.equal(receiver, 'contract.testnet');
       assert.equal(actions.length, 1);
+
       assert.deepEqual(
         this.accessKeyByPublicKeyCache, {}
       );
-      return [hash, {signed_once: true}];
+
+      return [
+        hash,
+        {
+          transaction: {
+            encode() {
+              return transactionBytes;
+            }
+          },
+          encode() {
+            return Buffer.alloc(160, 7);
+          }
+        }
+      ];
     },
 
     async functionCall() {
-      throw Error('SDK automatic retry path forbidden');
+      legacyCalls++;
+      throw Error('Forbidden SDK functionCall');
     },
 
     connection: {
       provider: {
-        async sendTransaction(tx) {
-          sends++;
-          assert.equal(tx.signed_once, true);
-
-          // The hash must be persisted BEFORE
-          // this method sees the transaction.
-          const record = readStep(
-            dir, 'buyer-1', 'fund'
-          );
-
-          assert.equal(
-            record.state, 'signed_not_confirmed'
-          );
-          assert.equal(record.tx, encoded);
-
-          if (fail) {
-            throw Error('uncertain broadcast');
-          }
-
-          return {
-            transaction: {
-              signer_id: 'buyer.testnet',
-              receiver_id: 'contract.testnet',
-              hash: encoded
-            },
-            status: {
-              SuccessValue:
-                Buffer.from('17').toString('base64')
-            },
-            receipts_outcome: []
-          };
+        async sendTransaction() {
+          legacyCalls++;
+          throw Error('Forbidden SDK sendTransaction');
         }
       }
     }
   };
 
+  async function rpcExchange(method, params) {
+    if (method === 'send_tx') {
+      sends++;
+
+      assert.deepEqual(
+        Object.keys(params).sort(),
+        ['signed_tx_base64', 'wait_until']
+      );
+
+      assert.equal(params.wait_until, 'NONE');
+      assert.equal(
+        typeof params.signed_tx_base64,
+        'string'
+      );
+
+      assert(
+        Buffer.from(
+          params.signed_tx_base64,
+          'base64'
+        ).length > 100
+      );
+
+      const saved = readStep(
+        dir, 'buyer-1', 'fund'
+      );
+
+      assert.equal(
+        saved.state,
+        'signed_not_confirmed'
+      );
+      assert.equal(saved.tx, encodedHash);
+
+      if (mode === 'uncertain-send') {
+        throw Error('synthetic uncertain send');
+      }
+
+      return {final_execution_status: 'NONE'};
+    }
+
+    assert.equal(method, 'tx');
+
+    reads++;
+
+    assert.deepEqual(params, {
+      tx_hash: encodedHash,
+      sender_account_id: 'buyer.testnet',
+      wait_until: 'FINAL'
+    });
+
+    if (mode === 'delayed-final' && reads === 1) {
+      throw Error('UNKNOWN_TRANSACTION');
+    }
+
+    const status =
+      mode === 'failed-final'
+        ? {Failure: {ActionError: {}}}
+        : {
+            SuccessValue:
+              Buffer.from('17').toString('base64')
+          };
+
+    return {
+      final_execution_status: 'FINAL',
+      transaction: {
+        hash: encodedHash,
+        signer_id: 'buyer.testnet',
+        receiver_id: 'contract.testnet'
+      },
+      status,
+      receipts_outcome: []
+    };
+  }
+
   return {
     account,
-    counts: () => ({signatures, sends})
+    rpcExchange,
+    encodedHash,
+    counts: () => ({
+      signatures, sends, reads, legacyCalls
+    })
   };
 }
 
-function options(dir, account) {
+function options(dir, setup) {
   return {
     dir,
     role: 'buyer-1',
     step: 'fund',
-    account,
+    account: setup.account,
+    rpcExchange: setup.rpcExchange,
     contractId: 'contract.testnet',
     method: 'create_funded_rescue_job',
     args: {input: {value: 7}},
@@ -102,69 +179,156 @@ function options(dir, account) {
   };
 }
 
-test('one signed hash, one send, confirmed', async () => {
-  const dir = directory();
+test(
+  'single send_tx then finalized receipt and durable confirmation',
+  async () => {
+    const dir = directory();
 
-  try {
-    const {account, counts} = scenario(dir, false);
-    const cfg = options(dir, account);
+    try {
+      const setup = scenario(dir, 'success');
+      const cfg = options(dir, setup);
 
-    const result = await callSignedOnce(cfg);
+      const result = await callSignedOnce(cfg);
 
-    assert.equal(result.value, 17);
-    assert.equal(
-      readStep(dir, 'buyer-1', 'fund').state,
-      'confirmed'
-    );
+      assert.equal(result.value, 17);
+      assert.equal(result.tx, setup.encodedHash);
 
-    await assert.rejects(
-      () => callSignedOnce(cfg),
-      /already prepared or executed/
-    );
+      assert.equal(
+        readStep(dir, 'buyer-1', 'fund').state,
+        'confirmed'
+      );
 
-    assert.deepEqual(counts(), {
-      signatures: 1,
-      sends: 1
-    });
+      await assert.rejects(
+        () => callSignedOnce(cfg),
+        /already prepared or executed/
+      );
 
-  } finally {
-    fs.rmSync(dir, {recursive: true, force: true});
+      assert.deepEqual(setup.counts(), {
+        signatures: 1,
+        sends: 1,
+        reads: 1,
+        legacyCalls: 0
+      });
+
+    } finally {
+      fs.rmSync(dir, {
+        recursive: true, force: true
+      });
+    }
   }
-});
+);
 
-test('uncertain send preserves hash, forbids retry', async () => {
-  const dir = directory();
+test(
+  'uncertain send preserves exact hash and forbids resubmission',
+  async () => {
+    const dir = directory();
 
-  try {
-    const {account, counts} = scenario(dir, true);
-    const cfg = options(dir, account);
+    try {
+      const setup = scenario(dir, 'uncertain-send');
+      const cfg = options(dir, setup);
 
-    await assert.rejects(
-      () => callSignedOnce(cfg),
-      /uncertain broadcast/
-    );
+      await assert.rejects(
+        () => callSignedOnce(cfg),
+        /synthetic uncertain send/
+      );
 
-    const record = readStep(dir, 'buyer-1', 'fund');
+      const saved = readStep(
+        dir, 'buyer-1', 'fund'
+      );
 
-    assert.equal(
-      record.state, 'signed_not_confirmed'
-    );
-    assert.equal(
-      typeof record.tx, 'string'
-    );
-    assert(record.tx.length > 30);
+      assert.equal(
+        saved.state, 'signed_not_confirmed'
+      );
+      assert.equal(saved.tx, setup.encodedHash);
 
-    await assert.rejects(
-      () => callSignedOnce(cfg),
-      /already prepared or executed/
-    );
+      await assert.rejects(
+        () => callSignedOnce(cfg),
+        /already prepared or executed/
+      );
 
-    assert.deepEqual(counts(), {
-      signatures: 1,
-      sends: 1
-    });
+      assert.deepEqual(setup.counts(), {
+        signatures: 1,
+        sends: 1,
+        reads: 0,
+        legacyCalls: 0
+      });
 
-  } finally {
-    fs.rmSync(dir, {recursive: true, force: true});
+    } finally {
+      fs.rmSync(dir, {
+        recursive: true, force: true
+      });
+    }
   }
-});
+);
+
+test(
+  'transient status error retries only read and never send',
+  async () => {
+    const dir = directory();
+
+    try {
+      const setup = scenario(dir, 'delayed-final');
+      const result = await callSignedOnce(
+        options(dir, setup)
+      );
+
+      assert.equal(result.value, 17);
+
+      assert.deepEqual(setup.counts(), {
+        signatures: 1,
+        sends: 1,
+        reads: 2,
+        legacyCalls: 0
+      });
+
+      assert.equal(
+        readStep(dir, 'buyer-1', 'fund').state,
+        'confirmed'
+      );
+
+    } finally {
+      fs.rmSync(dir, {
+        recursive: true, force: true
+      });
+    }
+  }
+);
+
+test(
+  'final execution failure preserves signed journal',
+  async () => {
+    const dir = directory();
+
+    try {
+      const setup = scenario(dir, 'failed-final');
+
+      await assert.rejects(
+        () => callSignedOnce(
+          options(dir, setup)
+        ),
+        /Final transaction execution failed/
+      );
+
+      const saved = readStep(
+        dir, 'buyer-1', 'fund'
+      );
+
+      assert.equal(
+        saved.state, 'signed_not_confirmed'
+      );
+      assert.equal(saved.tx, setup.encodedHash);
+
+      assert.deepEqual(setup.counts(), {
+        signatures: 1,
+        sends: 1,
+        reads: 1,
+        legacyCalls: 0
+      });
+
+    } finally {
+      fs.rmSync(dir, {
+        recursive: true, force: true
+      });
+    }
+  }
+);

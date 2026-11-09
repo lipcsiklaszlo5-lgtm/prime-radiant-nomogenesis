@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const {baseEncode} = require('@near-js/utils');
 
 const {
@@ -64,61 +65,124 @@ test('bootstrap create_rescue_case signs and journals once', async () => {
 
   let signatures = 0;
   let sends = 0;
+  let reads = 0;
+  let legacyCalls = 0;
 
-  const hash = Buffer.alloc(32, 11);
+  const txBytes = Buffer.from(
+    'synthetic-bootstrap-signed-transaction'
+  );
+
+  const hash = crypto.createHash('sha256')
+    .update(txBytes)
+    .digest();
+
   const encoded = baseEncode(hash);
 
   const account = {
     accountId: 'creator.testnet',
+    accessKeyByPublicKeyCache: {stale: true},
 
-    accessKeyByPublicKeyCache: {},
-
-    async signTransaction() {
+    async signTransaction(receiver, actions) {
       signatures++;
-      return [hash, {mock: true}];
+
+      assert.equal(receiver, 'contract.testnet');
+      assert.equal(actions.length, 1);
+      assert.deepEqual(
+        this.accessKeyByPublicKeyCache, {}
+      );
+
+      return [
+        hash,
+        {
+          transaction: {
+            encode() {
+              return txBytes;
+            }
+          },
+          encode() {
+            return Buffer.alloc(192, 11);
+          }
+        }
+      ];
+    },
+
+    async functionCall() {
+      legacyCalls++;
+      throw Error('Legacy functionCall forbidden');
     },
 
     connection: {
       provider: {
         async sendTransaction() {
-          sends++;
-
-          const row = readStep(
-            dir,
-            'bootstrap',
-            'create_rescue_case'
-          );
-
-          assert.equal(
-            row.state,
-            'signed_not_confirmed'
-          );
-
-          assert.equal(row.tx, encoded);
-
-          return {
-            transaction: {
-              signer_id: 'creator.testnet',
-              receiver_id: 'contract.testnet',
-              hash: encoded
-            },
-            status: {
-              SuccessValue: Buffer.from(
-                JSON.stringify([1, 2, 3])
-              ).toString('base64')
-            },
-            receipts_outcome: []
-          };
+          legacyCalls++;
+          throw Error('Legacy sendTransaction forbidden');
         }
       }
     }
   };
+
+  async function rpcExchange(method, params) {
+    if (method === 'send_tx') {
+      sends++;
+
+      assert.equal(params.wait_until, 'NONE');
+      assert.deepEqual(
+        Object.keys(params).sort(),
+        ['signed_tx_base64', 'wait_until']
+      );
+
+      assert.equal(
+        Buffer.from(
+          params.signed_tx_base64,
+          'base64'
+        ).length,
+        192
+      );
+
+      const row = readStep(
+        dir,
+        'bootstrap',
+        'create_rescue_case'
+      );
+
+      assert.equal(row.state, 'signed_not_confirmed');
+      assert.equal(row.tx, encoded);
+
+      return {final_execution_status: 'NONE'};
+    }
+
+    assert.equal(method, 'tx');
+
+    reads++;
+
+    assert.deepEqual(params, {
+      tx_hash: encoded,
+      sender_account_id: 'creator.testnet',
+      wait_until: 'FINAL'
+    });
+
+    return {
+      final_execution_status: 'FINAL',
+      transaction: {
+        signer_id: 'creator.testnet',
+        receiver_id: 'contract.testnet',
+        hash: encoded
+      },
+      status: {
+        SuccessValue: Buffer.from(
+          JSON.stringify([1, 2, 3])
+        ).toString('base64')
+      },
+      receipts_outcome: []
+    };
+  }
 
   const cfg = {
     dir,
     role: 'bootstrap',
     step: 'create_rescue_case',
     account,
+    rpcExchange,
     contractId: 'contract.testnet',
     method: 'create_rescue_case',
     args: {descriptor: {descriptor_version: 1}},
@@ -130,8 +194,6 @@ test('bootstrap create_rescue_case signs and journals once', async () => {
 
     assert.deepEqual(result.value, [1, 2, 3]);
     assert.equal(result.tx, encoded);
-    assert.equal(signatures, 1);
-    assert.equal(sends, 1);
 
     assert.equal(
       readStep(
@@ -149,6 +211,8 @@ test('bootstrap create_rescue_case signs and journals once', async () => {
 
     assert.equal(signatures, 1);
     assert.equal(sends, 1);
+    assert.equal(reads, 1);
+    assert.equal(legacyCalls, 0);
 
   } finally {
     fs.rmSync(dir, {

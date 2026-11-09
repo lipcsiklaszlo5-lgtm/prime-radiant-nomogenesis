@@ -167,26 +167,88 @@ async function callOnce({
 // Exactly one signed transaction hash per economic step.
 // Unlike Account.functionCall(), this path does not invoke
 // the SDK's signAndSendTransaction nonce retry loop.
+
+const sleep = ms =>
+  new Promise(resolve => setTimeout(resolve, ms));
+
+// This is the ONLY real network path used by
+// callSignedOnce. It must pass through the local
+// shared RPC broker used by the ten-agent runner.
+async function loopbackRpc(method, params) {
+  const endpoint = process.env.NMG_R7_13H_RPC_URL;
+
+  assert.match(
+    endpoint || '',
+    /^http:\/\/127\.0\.0\.1:\d+\/$/,
+    'Signed agent traffic requires the loopback broker'
+  );
+
+  const id = 'nmg-r713-' +
+    crypto.randomBytes(8).toString('hex');
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id,
+      method,
+      params
+    }),
+    signal: AbortSignal.timeout(16000)
+  });
+
+  let body;
+
+  try {
+    body = await response.json();
+  } catch {
+    throw Error(
+      'RPC_NON_JSON HTTP=' + response.status
+    );
+  }
+
+  if (!response.ok || body?.error) {
+    throw Error(
+      'RPC_ERROR HTTP=' + response.status +
+      ' ' + JSON.stringify(
+        body?.error ?? body
+      ).slice(0, 350)
+    );
+  }
+
+  assert.equal(body.jsonrpc, '2.0');
+  assert.equal(body.id, id);
+  assert(
+    Object.hasOwn(body, 'result'),
+    'RPC response missing result'
+  );
+
+  return body.result;
+}
+
+// Exactly one signed transaction hash per step.
+// No Account.functionCall, SDK broadcast retries,
+// automatic re-signing or write failover.
 async function callSignedOnce({
   dir, role, step, account,
   contractId, method, args,
-  deposit = 0n
+  deposit = 0n,
+  rpcExchange
 }) {
   privateDir(dir);
 
   const filename = journalPath(dir, role, step);
 
-  assert(!fs.existsSync(filename),
+  assert(
+    !fs.existsSync(filename),
     'Transaction step already prepared or executed: ' +
-    role + '/' + step);
-
-  assert.equal(typeof account.signTransaction, 'function');
-  assert.equal(
-    typeof account.connection?.provider?.sendTransaction,
-    'function'
+      role + '/' + step
   );
 
+  assert.equal(typeof account?.signTransaction, 'function');
   assert.equal(typeof account.accountId, 'string');
+
   assert.match(contractId, /^[a-z0-9._-]+$/);
   assert.match(method, /^[a-z][a-z0-9_]+$/);
 
@@ -194,6 +256,21 @@ async function callSignedOnce({
   assert(attached >= 0n);
 
   const payload = JSON.stringify(args);
+  assert.equal(typeof payload, 'string');
+
+  // rpcExchange is an injection point for offline
+  // unit tests; production agents provide none.
+  if (rpcExchange !== undefined) {
+    assert.equal(typeof rpcExchange, 'function');
+  } else {
+    assert.match(
+      process.env.NMG_R7_13H_RPC_URL || '',
+      /^http:\/\/127\.0\.0\.1:\d+\/$/,
+      'Production sends require the shared loopback broker'
+    );
+  }
+
+  const exchange = rpcExchange ?? loopbackRpc;
 
   const record = {
     schema: 'nomogenesis.r7-13.single-signed-step.v1',
@@ -209,45 +286,98 @@ async function callSignedOnce({
     tx: null
   };
 
-  // Durable marker before even signing.
+  // Crash-safe one-time reservation before signing.
   writeExclusive(filename, record);
 
   const action = near.transactions.functionCall(
-    method,
-    args,
-    GAS,
-    attached
+    method, args, GAS, attached
   );
 
-  // The v5 SDK caches access-key nonce state.
-  // Force the next signature to read fresh chain state.
   account.accessKeyByPublicKeyCache = {};
 
-  const [hash, signedTx] =
+  const [rawHash, signedTx] =
     await account.signTransaction(
       contractId, [action]
     );
 
-  assert.equal(Buffer.from(hash).length, 32);
+  const hash = Buffer.from(rawHash);
+
+  assert.equal(hash.length, 32);
+
+  assert.equal(
+    typeof signedTx?.encode,
+    'function'
+  );
+
+  assert.equal(
+    typeof signedTx.transaction?.encode,
+    'function'
+  );
+
+  // Prove the journaled hash matches the exact
+  // signed transaction's serialized contents.
+  const digest = crypto.createHash('sha256')
+    .update(
+      Buffer.from(signedTx.transaction.encode())
+    )
+    .digest();
+
+  assert(digest.equals(hash), 'Signed transaction hash mismatch');
+
+  const encoded = Buffer.from(
+    signedTx.encode()
+  ).toString('base64');
+
+  assert(encoded.length > 100);
 
   record.tx = baseEncode(hash);
   record.state = 'signed_not_confirmed';
 
-  // Persist the exact hash BEFORE broadcasting.
+  // Durable BEFORE the only network submission.
   atomicReplace(filename, record);
 
-  // No SDK signAndSendTransaction retry loop.
-  // Provider transport may retry the SAME signed bytes,
-  // which keeps the same transaction hash.
-  const outcome =
-    await account.connection.provider.sendTransaction(
-      signedTx
-    );
+  // Exactly one send. An RPC timeout or error
+  // is uncertain: do NOT send again.
+  await exchange('send_tx', {
+    signed_tx_base64: encoded,
+    wait_until: 'NONE'
+  });
 
-  assert.equal(
-    outcome.transaction?.hash,
-    record.tx
-  );
+  // Only read RPCs may be retried.
+  const deadline = Date.now() + 90000;
+  let outcome = null;
+  let lastReadError = null;
+
+  while (Date.now() < deadline) {
+    try {
+      const candidate = await exchange('tx', {
+        tx_hash: record.tx,
+        sender_account_id: account.accountId,
+        wait_until: 'FINAL'
+      });
+
+      if (candidate?.final_execution_status === 'FINAL') {
+        outcome = candidate;
+        break;
+      }
+
+    } catch (error) {
+      lastReadError = error;
+    }
+
+    await sleep(1100);
+  }
+
+  if (!outcome) {
+    throw Error(
+      'FINALITY_UNCERTAIN HASH=' + record.tx +
+      ' LAST_READ=' +
+      (lastReadError?.message || 'no final status')
+        .slice(0, 180)
+    );
+  }
+
+  assert.equal(outcome.transaction?.hash, record.tx);
   assert.equal(
     outcome.transaction?.signer_id,
     account.accountId
@@ -258,17 +388,19 @@ async function callSignedOnce({
   );
 
   assert(
-    outcome.status &&
-    (
-      Object.hasOwn(outcome.status, 'SuccessValue') ||
-      Object.hasOwn(outcome.status, 'SuccessReceiptId')
-    ),
-    'Transaction did not report successful execution'
+    !Object.hasOwn(outcome.status || {}, 'Failure'),
+    'Final transaction execution failed'
   );
 
   assert(
-    !(outcome.receipts_outcome || []).some(
-      row => Object.hasOwn(
+    Object.hasOwn(outcome.status || {}, 'SuccessValue') ||
+    Object.hasOwn(outcome.status || {}, 'SuccessReceiptId'),
+    'Final transaction has no successful status'
+  );
+
+  assert(
+    !(outcome.receipts_outcome || []).some(row =>
+      Object.hasOwn(
         row.outcome?.status || {}, 'Failure'
       )
     ),
@@ -276,6 +408,7 @@ async function callSignedOnce({
   );
 
   const raw = outcome.status.SuccessValue;
+
   const decoded = typeof raw === 'string'
     ? Buffer.from(raw, 'base64').toString('utf8')
     : '';
@@ -285,10 +418,7 @@ async function callSignedOnce({
   record.state = 'confirmed';
   atomicReplace(filename, record);
 
-  return {
-    tx: record.tx,
-    value
-  };
+  return {tx: record.tx, value};
 }
 
 module.exports = {
