@@ -1,0 +1,67 @@
+{
+  "schema": "nomogenesis.r7-13v.run04-recovery-public.v1",
+  "network": "near-testnet",
+  "source_run": "live-v2-once-04",
+  "source_run_status": "ABORTED_BEFORE_ATOMIC_AWARD",
+  "recovery_status": "PASS",
+  "contract": "nmg-r7v2-0b9a0eff20.testnet",
+  "contract_wasm_sha256": "2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e",
+  "case_id_hex": "5d65446b1f3e27f195c06c4c43b7ed7b4652af0577a4636a8865d952f952925c",
+  "source_commit": "36712e899471dd877c3d5c298e3eae36e5f0f266",
+  "verified_at_utc": "2026-11-09T13:35:03.762Z",
+  "finalized_audit_block": "FP34bkXU52x9iyy56rugBeVRHWpo2DtGZSA2eVrhbdXV",
+  "finalized_audit_block_timestamp_ns": "1794231273802620197",
+  "before": {
+    "escrow_yocto": "28000000000000000000000",
+    "claimable_yocto": "86000000000000000000000"
+  },
+  "release_transactions": [
+    {
+      "step": "expire-job-4",
+      "method": "expire_unaccepted_rescue_job",
+      "args": {
+        "job_id": 4
+      },
+      "released_yocto": "8000000000000000000000",
+      "tx_hash": "2GU6Z1oB6NePASq3WFKFNJVUzdN8YrgxaB4tMSiPCDMF",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "expire-job-5",
+      "method": "expire_unaccepted_rescue_job",
+      "args": {
+        "job_id": 5
+      },
+      "released_yocto": "8000000000000000000000",
+      "tx_hash": "9zP3fTtGbAzhrexLNJdSuNVi485oXAgZL8K2ehyMDtzp",
+      "final_execution_status": "FINAL"
+    },
+    {
+      "step": "release-offer-6",
+      "method": "release_open_rescue_offer",
+      "args": {
+        "offer_id": 6
+      },
+      "released_yocto": "12000000000000000000000",
+      "tx_hash": "6LTDKBmL3xVMFtmQPEfS1BZaWJQQTuRujVyJvFWkRS9k",
+      "final_execution_status": "FINAL"
+    }
+  ],
+  "after": {
+    "escrow_yocto": "0",
+    "claimable_yocto": "114000000000000000000000",
+    "storage_reserves_yocto": "208710000000000000000000"
+  },
+  "private_journal_sha256": {
+    "RUN04/run.json": "73f13a8f135b21f80484bbb26e67b1695d16bfbe47e55287c9c007d1de330922",
+    "recovery03/final-summary.json": "de4935702eac845c78a51322c2499f7e92997bcad95bf0a869d99d6692ab7129",
+    "recovery02/expire-job-4.json": "d5564bc5bb7ded4aeb7a369ffc695a66e97d1c39f0e782fab89fbdbc8c25cea4",
+    "recovery02/expire-job-5.json": "0c479d768cc9a136693f041f5fa17a187fb9df57660a77090f480143587d4361",
+    "recovery03/release-offer-6.json": "2a587cae0e9548710fe34928936526209bee94bae06335e0e8c4762b2643c68d"
+  },
+  "notes": [
+    "Expired job refunds and offer bond release verified.",
+    "This does not prove atomic award, settlement or worker completion.",
+    "All original private journals remain unchanged."
+  ]
+}
