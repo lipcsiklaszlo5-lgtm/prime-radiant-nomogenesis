@@ -1,0 +1,85 @@
+{
+  "schema": "nomogenesis.run07.recovery.live-proof.v1",
+  "network": "near-testnet",
+  "source_run": "live-v2-once-07",
+  "recovery_run": "run07-recovery-once-01",
+  "source_commit": "8e9ccb5518714b3ac9eaedda58ba48da18017b9c",
+  "verified_at_utc": "2026-11-09T21:57:50.523Z",
+  "case_id_hex": "a8ed54f2ee8160e7f51039d189827452628ecccefddf8a7864cfa58516121df6",
+  "intent_sha256": "e3f43f717f06c55b7cbe317212d969c624a6bd8251f8515ce5b499f9f091be95",
+  "summary_sha256": "9630c581e47c5a7696f04aa916441cbb6e0a09e3ad9f35a1ce3d7e6437559ab9",
+  "units": {
+    "yocto_per_protocol_unit": "1000000000000000000000",
+    "released": "52",
+    "remaining_escrow": "0",
+    "claimable": "270",
+    "storage_reserves_yocto": "335430000000000000000000"
+  },
+  "verified_transaction_count": 7,
+  "transactions": [
+    {
+      "step": "expire-job-10",
+      "hash": "7NLtB3hAv7mzs7fF6pb4n4gTjqE8w3N1j9fteuAEeqAU",
+      "signer": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "final_execution_status": "FINAL",
+      "execution": "SUCCESS",
+      "block_hash": "7SGJHoea3wtkgECSTYBFcgPM3akCjqzUYAzKLkfbw1CQ",
+      "provider": "archival-rpc.testnet.fastnear.com"
+    },
+    {
+      "step": "expire-job-11",
+      "hash": "3FP4v1CdUauPsGFP3ka39nV2FbijQE4yNTPhEwZTx6CF",
+      "signer": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "final_execution_status": "FINAL",
+      "execution": "SUCCESS",
+      "block_hash": "5VEdRu75uA2rHrdmsgCqgWr2Rg6DTTAXpLZPfdQS4rhm",
+      "provider": "archival-rpc.testnet.fastnear.com"
+    },
+    {
+      "step": "release-mandate-10",
+      "hash": "ExDf77FqHtyx8duNYXCy6aqjGw6VgDoMySQ8r3aHgLSd",
+      "signer": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "final_execution_status": "FINAL",
+      "execution": "SUCCESS",
+      "block_hash": "DMwUU7FKQR99r7JGVAJxXm628xrRWVuVHUHkM9ibMfPm",
+      "provider": "archival-rpc.testnet.fastnear.com"
+    },
+    {
+      "step": "release-mandate-11",
+      "hash": "5wHeTi6bAiXgkWpDE6sJEHbkawK34ce6wcfznXrjiC5x",
+      "signer": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "final_execution_status": "FINAL",
+      "execution": "SUCCESS",
+      "block_hash": "3TEAUupY336gJ941mT9YuNWZCkJRsGYi3rAZtnD4k2TK",
+      "provider": "archival-rpc.testnet.fastnear.com"
+    },
+    {
+      "step": "release-offer-13",
+      "hash": "44wdrumzsRWtRvwu5HqVuF1GkhUTj6Sq32mgeRWp87n2",
+      "signer": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "final_execution_status": "FINAL",
+      "execution": "SUCCESS",
+      "block_hash": "ApS5jN3QRSumJzqo75ciKqmQ6AWWpyEaBKgk6KRW72E5",
+      "provider": "archival-rpc.testnet.fastnear.com"
+    },
+    {
+      "step": "release-offer-14",
+      "hash": "HAxJVWTfx9YK6BDZQM7ENzdV2LKDyTGS7mUVnqmdseP4",
+      "signer": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "final_execution_status": "FINAL",
+      "execution": "SUCCESS",
+      "block_hash": "DgjFpyZd7ghj3hsdcbGf6Ti8mJty2tdbXbG8cPAqvdcN",
+      "provider": "archival-rpc.testnet.fastnear.com"
+    },
+    {
+      "step": "release-offer-15",
+      "hash": "8GQzxR31kx8XMtq29b7iN22t2AGf1EDbJWV8kR6Bqcwc",
+      "signer": "keeper.nmg-r713-8d99c17cced1.testnet",
+      "final_execution_status": "FINAL",
+      "execution": "SUCCESS",
+      "block_hash": "9xYWCiKthWmv8horKnLB1M5xDexAGBijT57YxhARXgfk",
+      "provider": "archival-rpc.testnet.fastnear.com"
+    }
+  ],
+  "scope": "RUN07 recovery only; does not prove atomic award"
+}
