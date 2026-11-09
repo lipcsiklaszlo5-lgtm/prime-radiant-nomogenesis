@@ -239,3 +239,44 @@ test('CLI requires explicit opt-in', () => {
     /RUN08_NO_AUTOMATIC_NETWORK_OR_SEND/
   );
 });
+
+test('named block params survive broker transport', async () => {
+  const calls = [];
+
+  await withBroker(
+    (req, res) => reply(req, res, calls),
+    async endpoint => {
+      const bridge = createReadOnlyBridge(endpoint);
+
+      const result = await bridge.read(
+        'block',
+        {finality: 'final'}
+      );
+
+      assert.equal(result.method, 'block');
+
+      await assert.rejects(
+        bridge.read('block', null),
+        /RUN08_PARAMS_MUST_BE_ARRAY_OR_OBJECT/
+      );
+
+      await assert.rejects(
+        bridge.read('block', 'invalid'),
+        /RUN08_PARAMS_MUST_BE_ARRAY_OR_OBJECT/
+      );
+    }
+  );
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].method, 'block');
+
+  assert.deepEqual(
+    calls[0].params,
+    {finality: 'final'}
+  );
+
+  assert.equal(
+    Array.isArray(calls[0].params),
+    false
+  );
+});

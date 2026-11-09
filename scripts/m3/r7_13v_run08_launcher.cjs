@@ -69,8 +69,18 @@ function routeFor(method) {
 async function dispatchReadOnly(method, params, adapters) {
   const route = routeFor(method);
 
-  if (!Array.isArray(params)) {
-    throw new Error('RUN08_PARAMS_MUST_BE_ARRAY');
+  const validParams =
+    Array.isArray(params) ||
+    (
+      params !== null &&
+      typeof params === 'object' &&
+      Object.getPrototypeOf(params) === Object.prototype
+    );
+
+  if (!validParams) {
+    throw new Error(
+      'RUN08_PARAMS_MUST_BE_ARRAY_OR_OBJECT'
+    );
   }
 
   const fn = route.channel === 'finality'

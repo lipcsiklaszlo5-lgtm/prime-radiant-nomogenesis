@@ -57,9 +57,17 @@ function createReadOnlyBridge(endpoint, opts = {}) {
   function request(channel, method, params) {
     const route = launcher.routeFor(method);
 
+    const validParams =
+      Array.isArray(params) ||
+      (
+        params !== null &&
+        typeof params === 'object' &&
+        Object.getPrototypeOf(params) === Object.prototype
+      );
+
     if (
       route.channel !== channel ||
-      !Array.isArray(params)
+      !validParams
     ) {
       throw new Error('RUN08_METHOD_OR_PARAMS_REJECTED');
     }
