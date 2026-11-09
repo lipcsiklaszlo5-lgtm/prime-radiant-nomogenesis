@@ -14,7 +14,7 @@ const coordinator = path.join(
 // reach any RPC request or transaction signature.
 const safeFlags = {
   NMG_R7_13_ENABLE_LIVE: 'YES_PUBLIC_TESTNET',
-  NMG_R7_13H_RUN_ID: 'live-v2-once-05',
+  NMG_R7_13H_RUN_ID: 'live-v2-once-06',
   NMG_R7_13H_LIVE_APPROVAL:
     'YES_NEW_V2_TESTNET_RUN',
   NMG_R7_13H_RPC_URL:
