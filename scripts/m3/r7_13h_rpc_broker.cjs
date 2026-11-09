@@ -36,6 +36,8 @@ function createRpcBroker({
   minGapMs = 350,
   timeoutMs = 15000,
   maxQueued = 180,
+  maxReadQueueWaitMs = 5000,
+  maxSendQueueWaitMs = 7000,
   retryPauseMs = 350,
   fetchImpl = globalThis.fetch
 }) {
@@ -52,49 +54,80 @@ function createRpcBroker({
   assert(Number.isInteger(minGapMs) && minGapMs >= 0);
   assert(Number.isInteger(timeoutMs) && timeoutMs > 0);
   assert(Number.isInteger(maxQueued) && maxQueued > 0);
+  assert(Number.isInteger(maxReadQueueWaitMs) && maxReadQueueWaitMs > 0);
+  assert(Number.isInteger(maxSendQueueWaitMs) && maxSendQueueWaitMs > 0);
   assert(Number.isInteger(retryPauseMs) && retryPauseMs >= 0);
   assert.equal(typeof fetchImpl, 'function');
 
-  let tail = Promise.resolve();
   let nextSlot = 0;
   let queued = 0;
+  let draining = false;
   let requestsUpstream = 0;
   let coalesced = 0;
 
   const inflight = new Map();
   const sent = new Set();
+  const reads = [];
+  const writes = [];
 
-  async function scheduled(operation) {
+  async function drain() {
+    if (draining) return;
+    draining = true;
+
+    try {
+      while (writes.length || reads.length) {
+        // Writes cannot interrupt an active read,
+        // but precede all queued reads.
+        const job = writes.length
+          ? writes.shift() : reads.shift();
+
+        try {
+          if (Date.now() - job.entered > job.limit) {
+            throw Error('RPC queue deadline expired');
+          }
+
+          await sleep(Math.max(0, nextSlot - Date.now()));
+
+          // Expired requests never reach an upstream.
+          if (Date.now() - job.entered > job.limit) {
+            throw Error('RPC queue deadline expired');
+          }
+
+          nextSlot = Date.now() + minGapMs;
+          requestsUpstream++;
+
+          job.resolve(await job.operation());
+        } catch (error) {
+          job.reject(error);
+        } finally {
+          queued--;
+        }
+      }
+    } finally {
+      draining = false;
+    }
+  }
+
+  function scheduled(operation, send = false) {
     if (queued >= maxQueued) {
-      throw transport('broker queue full');
+      return Promise.reject(Error('broker queue full'));
     }
 
     queued++;
 
-    let unlock;
-    const prior = tail;
+    return new Promise((resolve, reject) => {
+      (send ? writes : reads).push({
+        operation,
+        resolve,
+        reject,
+        entered: Date.now(),
+        limit: send
+          ? maxSendQueueWaitMs
+          : maxReadQueueWaitMs
+      });
 
-    tail = new Promise(resolve => {
-      unlock = resolve;
+      void drain();
     });
-
-    await prior;
-
-    try {
-      await sleep(
-        Math.max(0, nextSlot - Date.now())
-      );
-
-      nextSlot = Date.now() + minGapMs;
-      requestsUpstream++;
-
-      // Serialize upstream requests.
-      return await operation();
-
-    } finally {
-      queued--;
-      unlock();
-    }
   }
 
   async function upstream(url, message) {
@@ -185,8 +218,9 @@ function createRpcBroker({
   async function forward(message, send) {
     if (send) {
       // NEVER retry or fail over a broadcast.
-      return scheduled(() =>
-        upstream(upstreams[0], message)
+      return scheduled(
+        () => upstream(upstreams[0], message),
+        true
       );
     }
 
@@ -259,6 +293,8 @@ function createRpcBroker({
         upstream_requests: requestsUpstream,
         coalesced_requests: coalesced,
         queued,
+        queued_reads: reads.length,
+        queued_writes: writes.length,
         pending: inflight.size,
         distinct_signed_payloads: sent.size
       });
