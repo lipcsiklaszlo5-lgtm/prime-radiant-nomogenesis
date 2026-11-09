@@ -445,6 +445,7 @@ async function main() {
       'https://archival-rpc.testnet.fastnear.com'
     ],
     minGapMs: 180,
+    maxConcurrentReads: 4,
     maxQueued: 140,
     maxReadQueueWaitMs: 5000,
     maxSendQueueWaitMs: 7000,

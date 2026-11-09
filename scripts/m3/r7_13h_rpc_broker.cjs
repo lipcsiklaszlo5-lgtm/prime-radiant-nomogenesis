@@ -39,6 +39,7 @@ function createRpcBroker({
   maxReadQueueWaitMs = 5000,
   maxSendQueueWaitMs = 7000,
   maxReadTotalMs = 12000,
+  maxConcurrentReads = 1,
   retryPauseMs = 350,
   fetchImpl = globalThis.fetch
 }) {
@@ -58,6 +59,7 @@ function createRpcBroker({
   assert(Number.isInteger(maxReadQueueWaitMs) && maxReadQueueWaitMs > 0);
   assert(Number.isInteger(maxSendQueueWaitMs) && maxSendQueueWaitMs > 0);
   assert(Number.isInteger(maxReadTotalMs) && maxReadTotalMs > 0);
+  assert(Number.isInteger(maxConcurrentReads) && maxConcurrentReads >= 1 && maxConcurrentReads <= 8);
   assert(Number.isInteger(retryPauseMs) && retryPauseMs >= 0);
   assert.equal(typeof fetchImpl, 'function');
 
@@ -72,39 +74,95 @@ function createRpcBroker({
   const reads = [];
   const writes = [];
 
+  let activeReads = 0;
+  let activeSend = false;
+
   async function drain() {
     if (draining) return;
     draining = true;
 
     try {
       while (writes.length || reads.length) {
+        // No new read may start during a signed send.
+        if (activeSend) break;
+
+        // Preserve historical strictly serial semantics
+        // when concurrency is not explicitly enabled.
+        if (
+          maxConcurrentReads === 1 &&
+          writes.length &&
+          activeReads > 0
+        ) {
+          break;
+        }
+
+        if (
+          !writes.length &&
+          activeReads >= maxConcurrentReads
+        ) {
+          break;
+        }
+
         await sleep(Math.max(0, nextSlot - Date.now()));
 
-        // Choose priority AFTER the spacing delay.
-        // Writes cannot interrupt an active read,
-        // but precede all queued reads.
-        const job = writes.length
-          ? writes.shift() : reads.shift();
+        // Re-evaluate priority AFTER spacing.
+        // A newly queued send goes before pending reads.
+        if (activeSend) break;
 
-        try {
-          if (Date.now() - job.entered > job.limit) {
-            throw Error('RPC queue deadline expired');
-          }
-
-          // Expired requests never reach an upstream.
-          if (Date.now() - job.entered > job.limit) {
-            throw Error('RPC queue deadline expired');
-          }
-
-          nextSlot = Date.now() + minGapMs;
-          requestsUpstream++;
-
-          job.resolve(await job.operation());
-        } catch (error) {
-          job.reject(error);
-        } finally {
-          queued--;
+        if (
+          maxConcurrentReads === 1 &&
+          writes.length &&
+          activeReads > 0
+        ) {
+          break;
         }
+
+        if (
+          !writes.length &&
+          activeReads >= maxConcurrentReads
+        ) {
+          break;
+        }
+
+        const isSend = writes.length > 0;
+        const job = isSend
+          ? writes.shift()
+          : reads.shift();
+
+        if (Date.now() - job.entered > job.limit) {
+          job.reject(Error('RPC queue deadline expired'));
+          queued--;
+          continue;
+        }
+
+        nextSlot = Date.now() + minGapMs;
+        requestsUpstream++;
+
+        if (isSend) {
+          activeSend = true;
+        } else {
+          activeReads++;
+        }
+
+        // Parallel READ operations are bounded.
+        // Signed SEND operations remain serialized
+        // and are never retried or failed over.
+        void (async () => {
+          try {
+            job.resolve(await job.operation());
+          } catch (error) {
+            job.reject(error);
+          } finally {
+            if (isSend) {
+              activeSend = false;
+            } else {
+              activeReads--;
+            }
+
+            queued--;
+            void drain();
+          }
+        })();
       }
     } finally {
       draining = false;
@@ -316,6 +374,8 @@ function createRpcBroker({
         coalesced_requests: coalesced,
         queued,
         queued_reads: reads.length,
+        active_reads: activeReads,
+        active_send: activeSend,
         queued_writes: writes.length,
         pending: inflight.size,
         distinct_signed_payloads: sent.size
