@@ -203,11 +203,27 @@ async function main() {
 
     let advanceTask = Promise.resolve();
     let advancing = false;
+    let consentReadyResolve;
+    const consentReady = local
+      ? new Promise(resolve => {
+        consentReadyResolve = resolve;
+      })
+      : null;
     await run(process.execPath, ['scripts/m3/r7_13_public_coordinator.cjs', '--live'], env,
       output => {
+        if (local && output.includes('ALL_BUYERS_CONSENT_WAITING: PASS')) {
+          consentReadyResolve();
+        }
         if (local && !advancing && output.includes('REAL_PROCESS_OUTAGE_DETECTED: PASS')) {
           advancing = true;
           advanceTask = (async () => {
+            await Promise.race([
+              consentReady,
+              (async () => {
+                await pause(120000);
+                throw Error('Buyers did not reach consent wait state');
+              })()
+            ]);
             const runInfo = JSON.parse(fs.readFileSync(path.join(runRoot, 'run.json')));
             for (let i = 0; i < 160; i++) {
               const state = await view(url, contract, 'get_rescue_case', {case_id: runInfo.case_id});

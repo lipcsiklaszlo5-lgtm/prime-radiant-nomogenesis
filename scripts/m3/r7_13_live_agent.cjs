@@ -467,6 +467,16 @@ async function main() {
       'TX=' + funded.txHash
     );
 
+    // The local clock driver must not fast-forward while a buyer is still
+    // preparing its consent transaction.  Otherwise the sandbox can move
+    // more than 100 blocks between signing and inclusion and reject the
+    // otherwise valid transaction as Expired.  This is a readiness signal,
+    // not an authorization or a broadcast.
+    process.send({
+      kind: 'consent_waiting',
+      actor: policy.actor_id
+    });
+
     await autonomouslyConsent(
       account,
       rpcUrl,

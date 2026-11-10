@@ -452,6 +452,14 @@ function spawnAgent(role, url, dir, manifest) {
     return msg;
   });
 
+  info.consentWaiting =
+    role === 'buyer-1' || role === 'buyer-2'
+      ? waitFor(child, 'consent_waiting', 300000).then(msg => {
+        assert.equal(msg.actor, role);
+        return msg;
+      })
+      : Promise.resolve(null);
+
   return info;
 }
 
@@ -486,6 +494,18 @@ async function connectedAgents(infos) {
 
   console.log(
     'TEN_AGENT_CONNECTIONS: PASS'
+  );
+}
+
+async function buyersConsentWaiting(infos) {
+  await Promise.all(
+    infos
+      .filter(item => item.role === 'buyer-1' || item.role === 'buyer-2')
+      .map(item => item.consentWaiting)
+  );
+
+  console.log(
+    'ALL_BUYERS_CONSENT_WAITING: PASS'
   );
 }
 
@@ -1213,6 +1233,12 @@ async function main() {
       'REAL_PROCESS_OUTAGE_DETECTED: PASS',
       failure.since_last_healthy_ms + 'ms'
     );
+
+    // In the local sandbox, the parent may advance the chain clock after
+    // seeing the outage.  Hold that advance until both buyers have finished
+    // funding and are waiting for bid_close, so no consent transaction can
+    // be signed against a block that the clock jump immediately invalidates.
+    await buyersConsentWaiting(infos);
 
     const terminal = await waitClosed(
       caseId,
