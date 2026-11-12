@@ -166,8 +166,14 @@ async function main() {
       assert(stat.isDirectory() && !stat.isSymbolicLink() && stat.uid === process.getuid());
       assert.equal(stat.mode & 0o077, 0);
       manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/evidence/R7-13-public-actors.json')));
-      const price = await rpc(url, 'gas_price', [null]);
-      const protocol = await rpc(url, 'EXPERIMENTAL_protocol_config', {finality: 'final'});
+      // The finalized block already carries the authoritative gas price. Avoid
+      // depending on the optional gas_price RPC route: public providers can
+      // disable or independently rate-limit it while normal block reads work.
+      const budgetBlock = await rpc(url, 'block', {finality: 'final'});
+      assert.equal(typeof budgetBlock.header.gas_price, 'string');
+      const price = {gas_price: budgetBlock.header.gas_price};
+      const protocol = await rpc(url, 'EXPERIMENTAL_protocol_config',
+        {block_id: budgetBlock.header.hash});
       const budgetInputs = {gasPrice: price.gas_price,
         storagePrice: protocol.runtime_config.storage_amount_per_byte,
         quote: await view(url, contract, 'm3_storage_quote'),
