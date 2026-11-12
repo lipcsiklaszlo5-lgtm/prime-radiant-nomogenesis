@@ -172,11 +172,20 @@ async function main() {
       const budgetBlock = await rpc(url, 'block', {finality: 'final'});
       assert.equal(typeof budgetBlock.header.gas_price, 'string');
       const price = {gas_price: budgetBlock.header.gas_price};
-      const protocol = await rpc(url, 'EXPERIMENTAL_protocol_config',
-        {block_id: budgetBlock.header.hash});
+      // The contract quotes are evaluated with env::storage_byte_cost(), so
+      // their exact cost/byte ratio is the authoritative current storage price
+      // without relying on provider-specific EXPERIMENTAL RPC methods.
+      const quote = await view(url, contract, 'm3_storage_quote');
+      const caseBytes = BigInt(quote.case_storage_bytes);
+      assert(caseBytes > 0n);
+      const storagePrice = BigInt(quote.case_storage_cost) / caseBytes;
+      assert(storagePrice > 0n);
+      for (const kind of ['case', 'job', 'offer']) {
+        assert.equal(BigInt(quote[kind + '_storage_cost']),
+          BigInt(quote[kind + '_storage_bytes']) * storagePrice);
+      }
       const budgetInputs = {gasPrice: price.gas_price,
-        storagePrice: protocol.runtime_config.storage_amount_per_byte,
-        quote: await view(url, contract, 'm3_storage_quote'),
+        storagePrice: storagePrice.toString(), quote,
         consentStorage: await view(url, contract, 'quote_r7_v2_consent_storage'),
         policies: Object.fromEntries(ROSTER.map(role => [role, JSON.parse(fs.readFileSync(
           path.join(ROOT, 'demo/policies/r7-06b', role + '.json')))]))};
