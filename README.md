@@ -1,267 +1,82 @@
-# prime-radiant-nomogenesis
+# Nomogenesis
 
-## Current V2 — consent-bound autonomous recovery
+An autonomous rescue market for shared dependencies on NEAR. When one data
+source fails, affected buyer agents can pool bounded commitments, select a
+bonded pair of recovery providers, verify committed component payloads, and
+settle the obligations atomically.
 
-A shared CSV dependency becomes unavailable. Three isolated
-buyer-agent processes decide independently under configured
-policies: two approve a precisely funded rescue, one declines.
+## Verify the complete lifecycle
 
-The NEAR V2 contract validates the selected coalition and
-buyer consents, atomically awards two bonded provider offers,
-verifies delivered data, and settles worker and provider
-obligations.
-
-### Reproduce the complete local Sandbox lifecycle
-
-From a clean checkout of the current V2 branch:
+On Linux x86-64 with Node.js 22, npm, Python 3 and network access for the
+locked npm dependencies:
 
 ```bash
-bash scripts/m3/r7_v2_clean_checkout_gate.sh
+npm ci
+npm run verify
 ```
 
-The gate clones the tracked source to a separate temporary
-directory, installs locked dependencies, runs Rust and CSV
-regressions, builds the `r7-v2` WASM, checks its recorded
-SHA-256, and executes the full recovery lifecycle.
+No NEAR wallet, Testnet funds, private keys, or Rust compiler are required.
+The runner starts a fresh local NEAR Sandbox, deploys the exact V2 WASM in
+`artifacts/nomogenesis-v2.wasm` (SHA-256
+`2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e`),
+creates isolated local signers, and runs the complete recovery. The binary is
+the same one verified against the public Testnet deployment. Account IDs and
+transaction hashes change with each run; the asserted transitions and
+accounting do not.
 
-Expected outcome:
-`R7 V2 CLEAN-CHECKOUT GATE: PASS`
+Expect `LOCAL_TECHNICAL_CLOSURE: PASS`, `ONE_SEND_PER_ECONOMIC_STEP: 19/19`,
+and `PYTHON_SDK_COMPLETED_RUN_AUDIT: PASS`. The run also checks the controlled
+source outage, two approving buyers and one refusing buyer, three competing
+offers, an atomic two-provider award, two Merkle component proofs, worker
+completion, native provider transfers and callbacks, and conservation of
+funds. It saves its local evidence under a fresh temporary directory printed
+as `EVIDENCE=...`.
 
-**Evidence limits:** local controlled HTTP 503, accelerated
-Sandbox chain time, synthetic funded accounts and claimable
-credits. The current V2 lifecycle is not yet proven on
-public NEAR Testnet, does not prove native withdrawals, and
-does not constitute an independent security audit.
+If `npm ci` cannot download dependencies, or NEAR Sandbox cannot bind a local
+port, the environment needs to be fixed before this result can be judged.
+The runner does not use public RPCs or local Testnet keys.
 
-The earlier public Testnet lifecycles documented below used
-a previous contract version. They are historical evidence,
-not a V2 public deployment.
+## Public Testnet evidence
 
----
+The same V2 deployment completed a separate 19-transaction lifecycle on
+public NEAR Testnet on 2026-11-12. Case
+`5b8530acbd28c3e39a90259e41e50c19fc1792798ab9522249fb0b9d7ac6f815`
+closed with both worker jobs completed, accepted component proofs, native
+provider withdrawals and no pending withdrawals or rescue escrow. The
+on-chain code hash was
+`3dz93Y6r2ZxupsYrJokcD6PqubygQA9XYV5qbzCpd7AD`.
 
-**Aktuális belépő:** [állapot és következő ticket](docs/CURRENT_STATE.md) · [review](docs/REVIEW_2026-11-06.md) · [handoff](docs/HANDOFF.md). Ellenőrizd a Git HEAD-et.
-
-## NOMOGENESIS — An economic recovery primitive on NEAR
-
-**One dependency fails. Several funded jobs are blocked.
-No individual buyer wants to pay for the entire recovery.**
-
-NOMOGENESIS lets buyers pool bounded commitments,
-purchase recovery from bonded providers, verify delivery,
-and settle the resulting obligations on NEAR.
-
-### The demonstrated innovation
-
-The Genesis Certificate exhaustively enumerates feasible
-buyer coalitions (up to six buyers), identifies
-inclusion-minimal coalitions, and independently verifies
-provider pairing and capped-equal allocations.
-
-The deployed NEAR contract implements the bonded
-recovery and economic settlement lifecycle.
-Genesis coalition enumeration is currently **off-chain**;
-the contract does not select a minimal coalition on-chain.
-
-### Two complete public Testnet experiments
-
-| | Testnet 01 | Testnet 02 |
-|---|---|---|
-| Buyer caps | 5 + 5 + 5 UNIT | 7 + 7 + 7 UNIT |
-| Recovery price | 12 UNIT | 12 UNIT |
-| Minimal feasible coalitions | 1 | 3 |
-| On-chain allocation | 4 + 4 + 4 | 4 + 4 + 4 |
-| Signed transactions | 17 | 17 |
-| Native payout verified | Yes | Yes |
-
-**Try the interactive jury demo:**
-
-`demo/nomogenesis_jury_demo.html`
-
-**Reproduce the public evidence without a wallet:**
+The [evidence manifest](docs/evidence/technical-closure-testnet-2026-11-12/evidence.json),
+[SDK audit](docs/evidence/technical-closure-testnet-2026-11-12/sdk-audit.json)
+and 19 finalized transaction records are committed together. An offline
+consistency check needs no wallet or RPC:
 
 ```bash
-python3 -B scripts/m3/r7_public_replay.py
-node scripts/m3/r7_05c_public_verify.cjs
+npm run verify:evidence
 ```
 
-The first command reconstructs historical Genesis evidence.
-The second verifies the full second Testnet lifecycle,
-including 17 signed transactions, CSV proofs, worker results,
-contract accounting and native payout receipts.
+This offline check validates the recorded artifacts, not the present chain
+state. The transaction hashes in the manifest can be independently queried
+against public Testnet RPCs. Public RPC verification is against the queried
+nodes; it is not a self-operated validating node.
 
-**Public contract:** `nomogenesis-70e59593a3.testnet`
+## Implementation and limits
 
-**Hackathon contribution:** the bounded Genesis Certificate,
-independent Python/Rust verification, public Testnet replay,
-second market experiment and interactive coalition explorer
-were developed as part of the November 2026 work.
-The underlying rescue contract has earlier development history.
+- `src/` contains the NEAR Rust contract and bounded economic rules.
+- `scripts/m3/technical_closure.cjs` runs the local end-to-end lifecycle.
+- `sdk/python/` is the external read-only verification SDK.
+- `demo/data/` and `demo/policies/` contain the controlled dependency and
+  agent policies.
+- [HACKATHON.md](HACKATHON.md) describes the evidence and reviewer route.
 
-**Limitations:** synthetic Testnet funds; one operator
-controlled the demonstration accounts; no local Merkle
-state proof or independent security audit; eight earlier
-SDK retry hashes remain inconclusive. No production
-readiness or world-first claim is made.
+The demonstration uses synthetic data, Testnet funds and one operator's
+separate agent signers. Merkle verification proves consistency with committed
+data; it does not independently prove arbitrary real-world repair or solve
+the general oracle problem. Genesis coalition enumeration is off-chain.
+There has been no independent security audit, mainnet deployment or TEE
+attestation. Historical experiments and development notes are retained in
+`docs/`, with the previous README at `docs/archive/README-legacy-2026-11.md`.
 
----
-
-Nomogenesis is a NEAR rescue market for agent economies.
-
-When one failed dependency blocks several independently funded jobs, affected buyers can combine bounded rescue mandates and atomically purchase recovery work that none would fund alone.
-
-## Current product direction
-
-**Historical R7-06 development plan:**
-[Project state and new-chat handoff](docs/NOMOGENESIS_SESSION_STATE.md) ·
-[Autonomous formation plan](docs/M3_R7_06_ECONOMIC_FORMATION_PLAN.md).
-
-The formation policy engine is an experimental offline layer.
-It is not part of the deployed NEAR Testnet contract.
-
-
-- [M3 North Star](docs/M3_NORTH_STAR.md)
-- [M3 Rescue Market specification](docs/M3_RESCUE_MARKET_SPEC.md)
-- [Verified development status](docs/STATUS.md)
-
-The M2 Rust/NEAR kernel provides funded tasks, collateral, slot locks, Merkle verification, settlement and native withdrawal recovery. The bounded M3 rescue market now implements funded mandates,
-bonded recovery offers, deterministic bundle awards, authenticated
-component proofs, terminal settlement, worker-result validation,
-reward refunds and native withdrawals.
-
-M3-R4-05: 242 Rust tests and 29 regression gates verified,
-including two corrected storage-audit expectations.
-The contract was validated in local Sandbox and subsequently
-deployed to public NEAR Testnet. It is not independently audited
-or approved for production.
-
-M3-R5-02: signed local Sandbox demo using two CSV
-components, three funded buyers, two providers and three
-worker completions. A native withdrawal is verified from
-its Transfer and callback receipts.
-
-M3-R5-03: twelve local child-process signers completed
-the same economic lifecycle with role-specific signatures,
-independent CSV checks and receipt-verified withdrawal.
-The legacy single-process demo also passed regression.
-
-M3-R6-03: deployed the verified WASM to public
-NEAR Testnet, with byte-for-byte verification via two RPCs.
-
-- Contract: `nomogenesis-70e59593a3.testnet`
-- Deployment transaction: `49NZ9qDKmfy42K9A7UKQDrDbQ9FWETFhijWQaUvcR5Qd`
-- WASM SHA-256: `f6b470b22a3c8c8e94187510e4de7e6123bf61913a2a16ccb7945d2abf1429f7`
-
-M3-R6-04: three public Testnet transactions verified
-case creation, buyer funding and worker acceptance.
-The contract holds 30 UNIT (0.03 testNEAR) in rescue
-escrow. This historical checkpoint was subsequently
-superseded by the completed R6-05B and R7-05C lifecycles.
-
-M3-R6-05B: full public Testnet rescue lifecycle PASS.
-
-- 3 funded buyers, 2 bonded providers, 3 workers.
-- 17 signed public consortium transactions.
-- Atomic award, 2 CSV proofs, terminal settlement.
-- 114 UNIT economic conservation, 20 UNIT native payout.
-- The earlier R6-04 escrow remains separately held.
-- Independently rechecked through two public RPCs.
-
-**Public verification without a wallet or private keys:**
-
-```bash
-node scripts/m3/r6_verify_public.cjs
-```
-
-Public transaction manifest:
-[`docs/evidence/R6-05-public.json`](docs/evidence/R6-05-public.json)
-
-Key transactions:
-- [Atomic award](https://testnet.nearblocks.io/txns/67c1G5C49tKZPjjjehJ9xs1qa9GYtbrW7C2igMjzsybT)
-- [Settlement](https://testnet.nearblocks.io/txns/7wFv9zQWkKcUMSjxMSCMDA4jQM9J9BkpZTryNa4ixgsA)
-- [Native payout](https://testnet.nearblocks.io/txns/AiDr3cP7BWF38k49VsnrKULjcSNU2fXuSKgRHm9GDPWs)
-
-Limitations: synthetic data, Testnet only, one demonstration
-operator controlling the participating accounts; no independent
-security audit, mainnet deployment or proven market advantage.
-
-Current continuation: [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md).
-
-
-## Genesis Proof — reproducible public evidence
-
-Run the complete read-only Genesis reconstruction:
-
-```bash
-python3 -B scripts/m3/r7_public_replay.py
-```
-
-Offline artifact integrity only:
-
-```bash
-python3 -B scripts/m3/r7_public_replay.py --offline
-```
-
-The Genesis Certificate reconstructs the recorded
-three-buyer minimal coalition and the 4+4+4 UNIT
-award. Python/Rust allocation parity is checked
-against 185 deterministic vectors.
-
-The jury demo below also displays every coalition
-and its funding gap. Adjustable inputs are a local
-simulation, not new blockchain transactions.
-
-The archived historical state comes from an RPC
-provider, not a locally validated Merkle proof.
-Demonstration actors were controlled by one operator.
-
-## Second public Testnet lifecycle
-
-The second full NEAR Testnet experiment includes
-17 signed transactions, three buyers with 7 UNIT
-caps, and a 12 UNIT recovery price.
-
-The Genesis Certificate identifies three alternative
-minimal feasible two-buyer coalitions.
-
-The deployed contract uses all three eligible
-buyers, allocating 4+4+4 UNIT on-chain.
-
-Public verification:
-
-```bash
-node scripts/m3/r7_05c_public_verify.cjs
-```
-
-The verifier checks signed transaction arguments,
-recomputes the Genesis Certificate, validates
-the two CSV components and worker results, and
-rechecks final contract state and native payout.
-
-Evidence:
-- `docs/evidence/R7-05C-public.json`
-- `docs/evidence/R7-05C-genesis-certificate.json`
-
-No private keys or Testnet funds are needed.
-Historical RPC data is externally supplied.
-Eight previous SDK retry hashes remain inconclusive.
-
-## Interactive jury demo
-
-Open `demo/nomogenesis_jury_demo.html` in a browser.
-
-White, standalone interface with a local funding simulator
-and 17 linked public Testnet transactions.
-
-Rebuild:
-
-```bash
-node scripts/m3/r6_build_demo.cjs
-```
-
-Test:
-
-```bash
-node --test scripts/m3/r6_demo.test.cjs
-```
-
-The simulator is illustrative, not a live wallet interface.
+To rebuild the exact WASM from source, use the slower optional Rust gate
+`bash scripts/m3/r7_v2_clean_checkout_gate.sh` after a clean commit. It
+requires Rust 1.99.1 and the `wasm32-unknown-unknown` target.

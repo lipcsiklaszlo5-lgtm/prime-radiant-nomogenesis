@@ -1,0 +1,35 @@
+{
+  "network": "testnet",
+  "network_verified": true,
+  "contract_id": "nmg-r7v2-0b9a0eff20.testnet",
+  "code_hash": "3dz93Y6r2ZxupsYrJokcD6PqubygQA9XYV5qbzCpd7AD",
+  "code_hash_verified": true,
+  "case_id": "5b8530acbd28c3e39a90259e41e50c19fc1792798ab9522249fb0b9d7ac6f815",
+  "case_phase": "Closed",
+  "case_phase_verified": true,
+  "merkle_proofs_verified": true,
+  "component_roots": [
+    "c7984c32d4a363564f4f0a0813973f7f520f1a528aa06f9760d388ae14a612ea",
+    "9b217eae2e4eb4d24305d8ed448ef5acc18d604f2116bf8d5186e559eee3f9ed"
+  ],
+  "reconstructed_result": 632,
+  "expected_result": 632,
+  "result_verified": true,
+  "jobs_completed": true,
+  "job_statuses": {
+    "14": "Completed",
+    "15": "Completed"
+  },
+  "global_claimable_yocto": 329000000000000000000000,
+  "global_pending_yocto": 0,
+  "global_rescue_escrow_yocto": 0,
+  "claimable_total_units": 329.0,
+  "pending_total_units": 0.0,
+  "rescue_escrow_units": 0.0,
+  "financial_expectations_verified": true,
+  "payout_totals_verified": true,
+  "rescue_escrow_verified": true,
+  "passed": true,
+  "errors": [],
+  "snapshot_block_hash": "AcFz7GwodwA5UPTrJD1bShdcEFsmybiG8DHab9iTEWts"
+}
