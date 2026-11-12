@@ -5,6 +5,22 @@ source fails, affected buyer agents can pool bounded commitments, select a
 bonded pair of recovery providers, verify committed component payloads, and
 settle the obligations atomically.
 
+## Source provenance
+
+The public Git history begins on 2026-11-03 at the
+[initial commit](https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis/commit/4c9668ee42b8343740c59115731c815c3f79da9d).
+Its M1 task and backup proof work is the foundation for the later M2 escrow
+and refund rules and the M3 multi-buyer rescue market. The
+[initial-to-V2 diff](https://github.com/lipcsiklaszlo5-lgtm/prime-radiant-nomogenesis/compare/4c9668ee42b8343740c59115731c815c3f79da9d...technical-closure-testnet-2026-11-12)
+shows the development through the frozen, publicly exercised V2 core.
+The exact core is tagged `technical-closure-testnet-2026-11-12` at
+`b98f389dd12c5bf2819c317082ac21f5256189c9`.
+
+Third-party dependencies are declared in `Cargo.lock`, `package-lock.json`
+and `sdk/python/pyproject.toml`: in particular `near-sdk` 5.30.0, `sha2`
+0.10.9, `near-workspaces` 5.0.0 and `binaryen` 132.0.0. The Python Shield
+SDK has no runtime package dependencies.
+
 ## Verify the complete lifecycle
 
 On Linux x86-64 with Node.js 22, npm, Python 3 and network access for the
@@ -35,6 +51,8 @@ as `EVIDENCE=...`.
 If `npm ci` cannot download dependencies, or NEAR Sandbox cannot bind a local
 port, the environment needs to be fixed before this result can be judged.
 The runner does not use public RPCs or local Testnet keys.
+The [GitHub Actions workflow](.github/workflows/verify.yml) also executes
+these checks on a clean Ubuntu 24.04 runner with Node 22.23.4 and Python 3.12.
 
 ## Public Testnet evidence
 
