@@ -1,4 +1,26 @@
-## CURRENT — Technical closure candidate (2026-11-10)
+## CURRENT — Public closure balance and send-queue repair (2026-11-12)
+
+EC2 base: `a8f7a393`, tree `15dd4e943c7d55ba5ab82d516e72ac5360e97290`.
+Equivalent local base: `c7c9a954`. The successful local Sandbox lifecycle is
+preserved. The user requested the remaining public Testnet execution.
+Public attempt `ea02801246ad4bccbc464d5fa06153ad19e34af48094efba9bd6cd9d57b9b475`
+stopped with insufficient prepaid gas balances and a serial broadcast queue
+expiry. User-supplied finalized snapshot `GRoQANRz2HaWXscPLJTpaj6fnMk1sSCHuqErJCvJLPNR`
+shows only job 13, 8 UNIT escrow, no offers, 302 UNIT claimable, zero pending.
+Buyer-2 and beta hashes are unknown at all three checked RPCs; their journals
+record queue rejection before upstream submission. No old hash may be resent.
+
+Scope: account for NEP-642 prepaid gas and all remaining actor calls; bound
+parallel independent sends; provide exact-case recovery and journaled Testnet
+top-ups. Keep the Rust contract/WASM and economic policies unchanged. Validate
+the observed failure cases locally; install and check on EC2 before any new run.
+New public lifecycle remains NOT VERIFIED. 21 focused tests, syntax checks
+and diff whitespace checks passed. No network transactions ran on this host.
+Next: install this patch on EC2 and run `public_closure_repair.cjs --check`.
+Read `docs/worklog/PUBLIC_CLOSURE_REPAIR_2026-11-12.md` before the maintenance
+live command; it never resends or edits the old failed journals.
+
+## HISTORICAL — Technical closure candidate (2026-11-10)
 
 Base: `5cc20f81e37c80c35046fdaacc5c736439f6c28a`.
 Entry point: `node scripts/m3/technical_closure.cjs --sandbox`.

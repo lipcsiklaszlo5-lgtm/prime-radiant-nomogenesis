@@ -1,4 +1,15 @@
-## CURRENT — Technical closure candidate (2026-11-10)
+## CURRENT — Public closure repair (2026-11-12)
+
+21 focused offline tests passed: observed gas affordability failure, exact-case
+8 UNIT recovery invariants, lost-acknowledgement native top-ups, bounded five-send
+concurrency, broker deduplication, failure handling and slow-reader stress.
+Syntax checks and `git diff --check` passed. Rust/WASM unchanged; the previously
+successful local full lifecycle was not rerun. No new Testnet write from this
+assistant host. EC2 must first run `public_closure_repair.cjs --check`, then the
+reviewed maintenance command and one fresh public lifecycle. The previous
+attempt's journals must be preserved. Details: `docs/worklog/PUBLIC_CLOSURE_REPAIR_2026-11-12.md`.
+
+## HISTORICAL — Technical closure candidate (2026-11-10)
 
 Base: `5cc20f81e37c80c35046fdaacc5c736439f6c28a`.
 Entry point: `node scripts/m3/technical_closure.cjs --sandbox`.

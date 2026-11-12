@@ -10,6 +10,7 @@ const crypto = require('node:crypto');
 const {spawn} = require('node:child_process');
 const {createRpcBroker} = require('./r7_13h_rpc_broker.cjs');
 const {ROSTER} = require('./r7_06_swarm.cjs');
+const {actorBudget} = require('./r7_public_budget.cjs');
 
 const ROOT = path.resolve(__dirname, '../..');
 const SHA = '2730e3d0413929aa15201d27f23ce4173731745dab658c1b21f12c624cb93b9e';
@@ -129,7 +130,7 @@ async function main() {
       finalityUpstreams: local ? [upstream] :
         [upstream, 'https://archival-rpc.testnet.fastnear.com', 'https://rpc.testnet.near.org'],
       expectedChainId: chainId, minGapMs: local ? 20 : 250,
-      maxConcurrentReads: 4, timeoutMs: 12000,
+      maxConcurrentReads: 4, maxConcurrentSends: local ? 1 : 5, timeoutMs: 12000,
       fetchImpl: async (url, options) => {
         const message = JSON.parse(options.body);
         if (mode === '--check') {
@@ -165,6 +166,14 @@ async function main() {
       assert(stat.isDirectory() && !stat.isSymbolicLink() && stat.uid === process.getuid());
       assert.equal(stat.mode & 0o077, 0);
       manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/evidence/R7-13-public-actors.json')));
+      const price = await rpc(url, 'gas_price', [null]);
+      const protocol = await rpc(url, 'EXPERIMENTAL_protocol_config', {finality: 'final'});
+      const budgetInputs = {gasPrice: price.gas_price,
+        storagePrice: protocol.runtime_config.storage_amount_per_byte,
+        quote: await view(url, contract, 'm3_storage_quote'),
+        consentStorage: await view(url, contract, 'quote_r7_v2_consent_storage'),
+        policies: Object.fromEntries(ROSTER.map(role => [role, JSON.parse(fs.readFileSync(
+          path.join(ROOT, 'demo/policies/r7-06b', role + '.json')))]))};
       for (const role of ['bootstrap', ...roles]) {
         const file = role === 'bootstrap' ? path.join(keyRoot, 'bootstrap.json') :
           path.join(keyRoot, 'actors', role + '.json');
@@ -176,7 +185,10 @@ async function main() {
         assert.equal(value.account_id, role === 'bootstrap' ? parent : role + '.' + parent);
         const account = await rpc(url, 'query', {request_type: 'view_account',
           account_id: value.account_id, finality: 'final'});
-        assert(BigInt(account.amount) >= 50n * UNIT, 'Insufficient balance: ' + role);
+        const budget = actorBudget(role, account, budgetInputs);
+        console.log('ACTOR_BUDGET:', role, 'AVAILABLE=' + budget.amount,
+          'REQUIRED=' + budget.required);
+        assert(budget.amount >= budget.required, 'Insufficient full-run balance: ' + role);
         const access = await rpc(url, 'query', {request_type: 'view_access_key',
           account_id: value.account_id, public_key: value.public_key, finality: 'final'});
         assert.equal(access.permission, 'FullAccess');

@@ -42,6 +42,7 @@ function createRpcBroker({
   maxSendQueueWaitMs = 7000,
   maxReadTotalMs = 12000,
   maxConcurrentReads = 1,
+  maxConcurrentSends = 1,
   retryPauseMs = 350,
   expectedChainId = 'testnet',
   fetchImpl = globalThis.fetch
@@ -75,6 +76,7 @@ function createRpcBroker({
   assert(Number.isInteger(maxSendQueueWaitMs) && maxSendQueueWaitMs > 0);
   assert(Number.isInteger(maxReadTotalMs) && maxReadTotalMs > 0);
   assert(Number.isInteger(maxConcurrentReads) && maxConcurrentReads >= 1 && maxConcurrentReads <= 8);
+  assert(Number.isInteger(maxConcurrentSends) && maxConcurrentSends >= 1 && maxConcurrentSends <= 5);
   assert(Number.isInteger(retryPauseMs) && retryPauseMs >= 0);
   assert.equal(typeof fetchImpl, 'function');
 
@@ -138,7 +140,7 @@ function createRpcBroker({
   }
 
   let activeReads = 0;
-  let activeSend = false;
+  let activeSends = 0;
 
   async function drain() {
     if (draining) return;
@@ -146,13 +148,15 @@ function createRpcBroker({
 
     try {
       while (writes.length || reads.length) {
-        // No new read may start during a signed send.
-        if (activeSend) break;
+        // Default callers retain the serial lane. The public ten-agent runner
+        // explicitly permits five independent sends and concurrent read RPCs.
+        if (activeSends && maxConcurrentSends === 1) break;
 
         // Preserve historical strictly serial semantics
         // when concurrency is not explicitly enabled.
         if (
           maxConcurrentReads === 1 &&
+          maxConcurrentSends === 1 &&
           writes.length &&
           activeReads > 0
         ) {
@@ -160,8 +164,8 @@ function createRpcBroker({
         }
 
         if (
-          !writes.length &&
-          activeReads >= maxConcurrentReads
+          (!writes.length || activeSends >= maxConcurrentSends) &&
+          (!reads.length || activeReads >= maxConcurrentReads)
         ) {
           break;
         }
@@ -170,10 +174,11 @@ function createRpcBroker({
 
         // Re-evaluate priority AFTER spacing.
         // A newly queued send goes before pending reads.
-        if (activeSend) break;
+        if (activeSends && maxConcurrentSends === 1) break;
 
         if (
           maxConcurrentReads === 1 &&
+          maxConcurrentSends === 1 &&
           writes.length &&
           activeReads > 0
         ) {
@@ -181,13 +186,13 @@ function createRpcBroker({
         }
 
         if (
-          !writes.length &&
-          activeReads >= maxConcurrentReads
+          (!writes.length || activeSends >= maxConcurrentSends) &&
+          (!reads.length || activeReads >= maxConcurrentReads)
         ) {
           break;
         }
 
-        const isSend = writes.length > 0;
+        const isSend = writes.length > 0 && activeSends < maxConcurrentSends;
         const job = isSend
           ? writes.shift()
           : reads.shift();
@@ -202,14 +207,14 @@ function createRpcBroker({
         requestsUpstream++;
 
         if (isSend) {
-          activeSend = true;
+          activeSends++;
         } else {
           activeReads++;
         }
 
         // Parallel READ operations are bounded.
-        // Signed SEND operations remain serialized
-        // and are never retried or failed over.
+        // SEND concurrency is bounded separately. Signed payloads are never
+        // retried or failed over, regardless of the configured concurrency.
         void (async () => {
           try {
             job.resolve(await job.operation());
@@ -217,7 +222,7 @@ function createRpcBroker({
             job.reject(error);
           } finally {
             if (isSend) {
-              activeSend = false;
+              activeSends--;
             } else {
               activeReads--;
             }
@@ -487,7 +492,9 @@ function createRpcBroker({
         active_finality: activeFinality,
         queued_finality: finalityQueue.length,
         finality_lane_enabled: finalityUpstreams !== null,
-        active_send: activeSend,
+        active_send: activeSends > 0,
+        active_sends: activeSends,
+        max_concurrent_sends: maxConcurrentSends,
         queued_writes: writes.length,
         pending: inflight.size,
         distinct_signed_payloads: sent.size,

@@ -1,4 +1,13 @@
-## CURRENT — Technical closure candidate (2026-11-10)
+## CURRENT — Public closure repair (2026-11-12)
+
+The local 19-TX closure passed at EC2 `a8f7a39`, tree `15dd4e94`. The public
+attempt failed on prepaid gas affordability and a serial send queue expiry.
+Its reconciled state is job 13 Accepted, 8 UNIT escrow, no offers, 302 UNIT
+claimable and zero pending withdrawals. No public success is claimed.
+Read `docs/worklog/PUBLIC_CLOSURE_REPAIR_2026-11-12.md` for the scoped repair,
+actual validation, maintenance command and remaining EC2 acceptance gate.
+
+## HISTORICAL — Technical closure candidate (2026-11-10)
 
 Base: `5cc20f81e37c80c35046fdaacc5c736439f6c28a`.
 Entry point: `node scripts/m3/technical_closure.cjs --sandbox`.

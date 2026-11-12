@@ -1,4 +1,15 @@
-## CURRENT ENTRY POINT — Technical closure candidate, 2026-11-10
+## CURRENT ENTRY POINT — Public closure repair, 2026-11-12
+
+Read `docs/worklog/PUBLIC_CLOSURE_REPAIR_2026-11-12.md` first. Local closure
+passed on EC2 at `a8f7a39`; the new public attempt failed. Its exact state is
+one accepted job (13), 8 UNIT escrow and no offers. Never resend old hashes or
+run an earlier numbered recovery script. This change fixes prepaid gas budgets
+and the broadcast queue; `public_closure_repair.cjs --check` is read-only.
+The scoped maintenance live command preserves all failed journals, funds the
+existing Testnet actors and releases only job 13 after its deadline. A fresh
+19-transaction lifecycle is still NOT VERIFIED. No contract/WASM changes.
+
+## HISTORICAL ENTRY POINT — Technical closure candidate, 2026-11-10
 
 Read `docs/worklog/TECHNICAL_CLOSURE.md`. Base: `5cc20f8`.
 Run `node scripts/m3/technical_closure.cjs --sandbox`; only after success
