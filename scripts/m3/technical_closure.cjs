@@ -263,7 +263,16 @@ async function main() {
                 for (let k = 0; k < 20; k++) {
                   const block = await rpc(upstream, 'block', {finality: 'final'});
                   const now = BigInt(block.header.timestamp_nanosec);
-                  if (now >= BigInt(state.bid_close)) return;
+                  if (now >= BigInt(state.bid_close)) {
+                    // Buyers wait for this atomic marker before preparing a
+                    // consent. A clock jump in progress can otherwise expire
+                    // its reference block before the signed send is included.
+                    const marker = path.join(runRoot, 'sandbox-clock-ready.json');
+                    save(marker + '.tmp', {ready: true});
+                    fs.renameSync(marker + '.tmp', marker);
+                    console.log('SANDBOX_BID_CLOSE_READY: PASS');
+                    return;
+                  }
                   const left = (BigInt(state.bid_close) - now) / 500000000n + 2n;
                   await worker.provider.fastForward(Number(left > 100n ? 100n : left));
                 }

@@ -467,15 +467,26 @@ async function main() {
       'TX=' + funded.txHash
     );
 
-    // The local clock driver must not fast-forward while a buyer is still
-    // preparing its consent transaction.  Otherwise the sandbox can move
-    // more than 100 blocks between signing and inclusion and reject the
-    // otherwise valid transaction as Expired.  This is a readiness signal,
-    // not an authorization or a broadcast.
+    // Funding is complete. The sandbox clock may advance to bid_close now;
+    // consent must wait until that advance has fully stopped, so its signed
+    // reference block cannot expire during the jump.
     process.send({
       kind: 'consent_waiting',
       actor: policy.actor_id
     });
+
+    if (process.env.NMG_LOCAL_SANDBOX_CONFIG) {
+      const marker = path.join(
+        process.env.NMG_R7_13_RUN_DIR,
+        'sandbox-clock-ready.json'
+      );
+      const deadline = Date.now() + 120000;
+      while (!fs.existsSync(marker) && Date.now() < deadline) {
+        await sleep(100);
+      }
+      assert(fs.existsSync(marker), 'Sandbox clock did not reach bid close');
+      assert.deepEqual(JSON.parse(fs.readFileSync(marker, 'utf8')), {ready: true});
+    }
 
     await autonomouslyConsent(
       account,
